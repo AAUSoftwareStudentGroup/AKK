@@ -12,11 +12,16 @@ namespace AKK
     {
         public static void Main(string[] args)
         {
+            string PORT = Environment.GetEnvironmentVariable("ASPNET_HTTP_PORT");
+	    Console.WriteLine(PORT);
+            PORT = (PORT == null ? "81" : PORT);
+
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
+		.UseUrls("http://localhost:"+PORT)
                 .Build();
 
             host.Run();
