@@ -256,3 +256,4 @@ web.config
 *.xproj
 *.user
 .directory
+.vscode/
