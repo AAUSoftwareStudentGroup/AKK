@@ -36,15 +36,19 @@ namespace AKK
 	        services.AddDbContext<MainDbContext>(options =>
 	        	options.UseSqlite(connection)
 	        );
+            
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 
             app.UseStaticFiles();
 
             app.UseMvc();
+
+            app.ApplicationServices.GetRequiredService<MainDbContext>().Seed();
         }
     }
 }
