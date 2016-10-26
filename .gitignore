@@ -257,3 +257,5 @@ web.config
 *.user
 .directory
 .vscode/
+Properties/
+/AKK.sln
