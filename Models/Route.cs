@@ -4,6 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKK.Models {
     public enum Grades {Green, Blue, Red, Black, White};
+    public enum SortOrder {Newest};
+
     public class Route {
         
         [Key]
