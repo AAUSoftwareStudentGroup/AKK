@@ -257,3 +257,4 @@ web.config
 *.user
 .directory
 .vscode/
+Properties/
