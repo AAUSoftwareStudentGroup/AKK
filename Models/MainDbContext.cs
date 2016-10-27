@@ -17,13 +17,7 @@ namespace AKK.Models
         
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             modelBuilder.Entity<Route>().HasOne(r => r.Section)
-                                        .WithMany(s => s.Routes)
-                                        .HasForeignKey(r => r.SectionID);
-
-            modelBuilder.Entity<Section>().HasMany(s => s.Routes)
-                                          .WithOne(r => r.Section)
-                                          .HasForeignKey(s => s.SectionID)
-                                          .OnDelete(DeleteBehavior.Cascade);
+                                        .WithMany(s => s.Routes);
         }
     }
     public static class DbContextExtensions

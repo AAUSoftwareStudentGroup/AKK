@@ -39,7 +39,7 @@ namespace AKK.Migrations
                         column: x => x.SectionID,
                         principalTable: "Sections",
                         principalColumn: "Name",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
