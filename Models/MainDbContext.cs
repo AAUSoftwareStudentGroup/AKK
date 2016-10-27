@@ -18,6 +18,8 @@ namespace AKK.Models
             modelBuilder.Entity<Route>().HasOne(r => r.Section)
                                         .WithMany(s => s.Routes)
                                         .HasForeignKey(r => r.SectionID);
+
+            modelBuilder.Entity<Section>().HasMany(s => s.Routes).WithOne(r => r.Section);
         }
     }
     public static class DbContextExtensions
