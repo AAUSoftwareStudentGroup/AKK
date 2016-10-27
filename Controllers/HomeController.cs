@@ -5,7 +5,7 @@ namespace AKK.Controllers {
     public class HomeController : Controller {
         [HttpGet]
         public IActionResult Index() {
-            return View();
+            return View("Views/Home/Index.cshtml");
         }
     }
 }
