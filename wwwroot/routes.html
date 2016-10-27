@@ -1,36 +1,55 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>AKK - Find Route</title>
-		<link rel="stylesheet" type="text/css" href="css/styles.css">
-		<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-		<script type="text/javascript" src="js/client.js"></script>
-	</head>
-	<body>
-		<div class="header">
-			<h1 class="page-title">Find Route</h1>
-			<div class="button">
-				<span>+</span>
-			</div>
-		</div>
-		<div class="options">
-			<div class="drop-down-container fl">
-				<span>Grade</span>
-				<div class="drop-down"></div>
-			</div>
-			<div class="drop-down-container fl">
-				<span>Section</span>
-				<div class="drop-down"></div>
-			</div>
-			<div class="drop-down-container fr">
-				<span>Sort by</span>
-				<div class="drop-down"></div>
-			</div>
-		</div>
-		<div class="content">
-			<div class="list">
-				
-			</div>
-		</div>
-	</body>
+    <head>
+        <title>AKK - Find Route</title>
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="js/route.js"></script>
+        <script type="text/javascript" src="js/client.js"></script>
+    </head>
+    <body>
+        <div class="header">
+            <h1 class="page-title">Find Route</h1>
+            <div class="button">
+                <span>+</span>
+            </div>
+        </div>
+        <div class="options">
+            <form>
+                <div class="drop-down-container fl">
+                    <span>Grade</span>
+                    <select class="drop-down" type="dropdown" name="grade">
+                        <option value="">All</option>
+                        <option value="0">Green</option>
+                        <option value="1">Blue</option>
+                        <option value="2">Red</option>
+                        <option value="3">Black</option>
+                        <option value="4">White</option>
+                    </select>
+                </div>
+                <div class="drop-down-container fl">
+                    <span>Section</span>
+                    <select class="drop-down" type="dropdown" name="section">
+                        <option value="">All</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <div class="drop-down-container fr">
+                    <span>Sort by</span>
+                    <select class="drop-down" type="dropdown" name="sortBy">
+                        <option value="date">Date</option>
+                        <option value="author">Creator</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+        <div class="content">
+            <div class="list">
+                
+            </div>
+        </div>
+    </body>
 </html>
