@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using System.IO;
 using Microsoft.Extensions.FileProviders;
-using AKK.Models;
+using AKK.Classes.Models;
 
 namespace AKK
 {

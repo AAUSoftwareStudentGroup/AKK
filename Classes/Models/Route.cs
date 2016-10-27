@@ -2,8 +2,10 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AKK.Models {
+namespace AKK.Classes.Models {
     public enum Grades {Green, Blue, Red, Black, White};
+    public enum SortOrder {Newest};
+
     public class Route {
         
         [Key]
