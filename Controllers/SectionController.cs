@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using AKK.Models;
+using AKK.Classes.Models;
+using AKK.Classes.ApiResponses;
+
+
 
 namespace AKK.Controllers {
     [Route("api/section")]
@@ -13,17 +17,22 @@ namespace AKK.Controllers {
         }
 
         [HttpGet]
-        public JsonResult GetAll() {
-            var sections = _mainDbContext.Sections.AsQueryable(); 
+        public ApiSuccessResponse GetAll() {
+            var sections = _mainDbContext.Sections.AsQueryable();
+            // var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
 
-            return new JsonResult(sections);
+            return new ApiSuccessResponse(sections);
         }
 
         [HttpGet("{name}")]
-        public JsonResult GetAll(string name) {
-            var sections = _mainDbContext.Sections.AsQueryable(); 
+        public ApiResponse GetAll(string name) {
+            var sections = _mainDbContext.Sections.AsQueryable();
 
-            return new JsonResult(sections.Where(s => s.Name == name));
+            sections = sections.Where(s => s.Name == name);
+            if(sections.Count() != 1)
+                return new ApiErrorResponse("No section with name " + name);
+
+            return new ApiSuccessResponse(sections.Where(s => s.Name == name));
         }
     }
 }

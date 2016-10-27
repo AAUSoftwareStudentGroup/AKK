@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using AKK.Models;
+using AKK.Classes.Models;
 
 namespace AKK.Migrations
 {
@@ -16,7 +16,7 @@ namespace AKK.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("AKK.Models.Route", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
                     b.Property<Guid>("ID")
                         .ValueGeneratedOnAdd();
@@ -40,7 +40,7 @@ namespace AKK.Migrations
                     b.ToTable("Routes");
                 });
 
-            modelBuilder.Entity("AKK.Models.Section", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Section", b =>
                 {
                     b.Property<string>("Name");
 
@@ -49,9 +49,9 @@ namespace AKK.Migrations
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("AKK.Models.Route", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
-                    b.HasOne("AKK.Models.Section", "Section")
+                    b.HasOne("AKK.Classes.Models.Section", "Section")
                         .WithMany("Routes")
                         .HasForeignKey("SectionID")
                         .OnDelete(DeleteBehavior.Cascade);

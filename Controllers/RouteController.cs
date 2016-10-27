@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System;
 using System.Linq;
-using AKK.Models;
+using AKK.Classes.Models;
+using AKK.Classes.ApiResponses;
 
 namespace AKK.Controllers {
     [Route("api/route")]
@@ -13,7 +12,7 @@ namespace AKK.Controllers {
         }
 
         [HttpGet]
-        public JsonResult GetAll(Grades? grade, string section, SortOrder sortBy) {
+        public ApiResponse GetAll(Grades? grade, string section, SortOrder sortBy) {
             var routes = _mainDbContext.Routes.AsQueryable(); 
             
             if(grade != null)
@@ -23,7 +22,7 @@ namespace AKK.Controllers {
             if(sortBy == SortOrder.Newest)
                 routes = routes.OrderByDescending(p => p.Date);
 
-            return new JsonResult(routes);
+            return new ApiSuccessResponse(routes);
         }
     }
 }

@@ -1,10 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using AKK.Models;
+using AKK.Classes.Models;
 using System.Collections.Generic;
 using System;
 
-namespace AKK.Models
+namespace AKK.Classes.Models
 {
     public class MainDbContext : DbContext
     {
