@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-
 using AKK.Models;
 
 namespace AKK.Controllers {
@@ -15,16 +14,16 @@ namespace AKK.Controllers {
 
         [HttpGet]
         public JsonResult GetAll(Grades? grade, string section, SortOrder sortBy) {
-            IEnumerable<Route> result = _mainDbContext.Routes.ToList(); 
+            var routes = _mainDbContext.Routes.AsQueryable(); 
             
             if(grade != null)
-                result = result.Where(p => p.Grade == grade);
+                routes = routes.Where(p => p.Grade == grade);
             if(section != null)
-                result = result.Where(p => p.SectionID == section);
+                routes = routes.Where(p => p.SectionID == section);
             if(sortBy == SortOrder.Newest)
-                result = result.OrderByDescending(p => p.Date);
+                routes = routes.OrderByDescending(p => p.Date);
 
-            return new JsonResult(result);
+            return new JsonResult(routes);
         }
     }
 }
