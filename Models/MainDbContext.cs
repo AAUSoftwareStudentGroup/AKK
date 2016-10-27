@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using AKK.Models;
 using System.Collections.Generic;
 using System;
@@ -19,7 +20,10 @@ namespace AKK.Models
                                         .WithMany(s => s.Routes)
                                         .HasForeignKey(r => r.SectionID);
 
-            modelBuilder.Entity<Section>().HasMany(s => s.Routes).WithOne(r => r.Section);
+            modelBuilder.Entity<Section>().HasMany(s => s.Routes)
+                                          .WithOne(r => r.Section)
+                                          .HasForeignKey(s => s.SectionID)
+                                          .OnDelete(DeleteBehavior.Cascade);
         }
     }
     public static class DbContextExtensions

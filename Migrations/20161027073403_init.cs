@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AKK.Migrations
 {
-    public partial class SectionsAndRoutes : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,7 +39,7 @@ namespace AKK.Migrations
                         column: x => x.SectionID,
                         principalTable: "Sections",
                         principalColumn: "Name",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

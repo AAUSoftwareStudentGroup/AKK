@@ -8,8 +8,8 @@ using AKK.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161026103951_SectionsAndRoutes")]
-    partial class SectionsAndRoutes
+    [Migration("20161027073403_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,7 +53,8 @@ namespace AKK.Migrations
                 {
                     b.HasOne("AKK.Models.Section", "Section")
                         .WithMany("Routes")
-                        .HasForeignKey("SectionID");
+                        .HasForeignKey("SectionID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }

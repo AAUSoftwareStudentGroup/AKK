@@ -52,7 +52,8 @@ namespace AKK.Migrations
                 {
                     b.HasOne("AKK.Models.Section", "Section")
                         .WithMany("Routes")
-                        .HasForeignKey("SectionID");
+                        .HasForeignKey("SectionID")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
