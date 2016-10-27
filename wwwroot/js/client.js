@@ -15,20 +15,26 @@ $(document).ready(function() {
 
 function sendApiRequest(type, parameters) {
     $.ajax({
-      type: type,
-      url: 'api/route',
-      data: parameters,
-      success: createRoutes,
-      dataType: 'json'
+        type: type,
+        url: 'api/route',
+        data: parameters,
+        success: createRoutes,
+        dataType: 'json'
     });
 }
 
-function createRoutes(data) {
-    var routeList = $('.list');
-    $('.route').remove();
-    
-    data.forEach(function(data) {
-        var nextRoute = new Route(data['grade'], data['name'], data['sectionID'], data['author'], data['colorOfHolds'], data['date']);
-        nextRoute.route.appendTo(routeList);
-    });
+function createRoutes(response) {
+    console.log(response);
+
+    if (response['success'] == true) {
+        var routeList = $('.list');
+        $('.route').remove();
+
+        response.data.forEach(function(route) {
+            var nextRoute = new Route(route['grade'], route['name'], route['sectionID'], route['author'], route['colorOfHolds'], route['date']);
+            nextRoute.route.appendTo(routeList);
+        });
+    } else {
+        alert(response['message']);
+    }
 }
