@@ -9,7 +9,7 @@ html, body {
 }
 
 .fl {
-	float: left;
+    float: left;
 }
 
 .fr {
@@ -18,11 +18,10 @@ html, body {
 
 .header {
     width: 100%;
-	height: 164px;
     position: fixed;
     top: 0;
     display: block;
-	background-color: #424242;
+    background-color: #424242;
 }
 
 .arrow {
@@ -34,10 +33,11 @@ html, body {
 }
 
 .page-title {
-    margin: 45px 20px;
+    margin-top: 21px;
     float: left;
-    font-size: 60px;
+    font-size: 20px;
     color: white;
+    line-height: 24px;
 }
 
 .button {
@@ -53,6 +53,15 @@ html, body {
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
 }
 
+.back-button {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin: 22px 18px 18px 18px;
+    float: left;
+}
+
+
 .button span {
     margin: 28px 42px;
     float: left;
@@ -61,15 +70,19 @@ html, body {
 
 .options {
     width: 100%;
-	height: 250px;
+    height: 250px;
     margin-top: 164px;
 /*    position: fixed;*/
 /*    top: 164px;*/
     display: block;
     background-color: white;
 }
+
 .content {
-    display: block;
+    width: 100%;
+    max-width: 320px;
+    margin: 72px auto 0px auto; 
+    padding: 8px;
 }
 
 .drop-down-container {
@@ -87,7 +100,6 @@ html, body {
     width: 100%;
     height: 80px;
     margin-top: 16px;
-/*    background-color: grey; */
 }
 
 .route {
@@ -96,10 +108,6 @@ html, body {
     padding: 26px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     font-size: 45px
-}
-
-.route:first-of-type {
-/*    margin-top: 414px; */
 }
 
 .route > div {
@@ -120,31 +128,158 @@ html, body {
 .route .grade .number {
 }
 
-.route .grade-green {
-    background-color: green;
+.grade-green {
+    background-color: #43A047 !important;
 }
 
-.route .grade-blue {
-    background-color: blue;
+.grade-blue {
+    background-color: #2196FE !important;
 }
 
-.route .grade-red {
-    background-color: red;
+.grade-red {
+    background-color: #EF5350 !important;
 }
 
-.route .grade-black {
-    background-color: black;
+.grade-black {
+    background-color: #616161 !important;
 }
 
-.route .grade-white {
-    background-color: white;
+.grade-white {
+    background-color: #FBFBFB !important;
 }
 
 .route .grip svg {
-    
 }
 
 .date,
 .author {
     text-align: right;
+}
+
+/** NEW ROUTE **/
+.new-route .content-section  {
+    width: 100%;
+    margin-bottom: 32px;
+    display: block;
+}
+
+.new-route .content-section h2 {
+    width: 50%;
+    margin: 10px 0;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(0, 0, 0, 0.40);
+}
+
+.radio-inputs {
+    height: 48px;
+    text-align: justify;
+}
+
+.radio-inputs input {
+    display: none;
+}
+
+.radio-inputs label {
+    width: 48px;
+    height: 48px;
+    vertical-align: top;
+    display: inline-block;
+}
+
+.radio-inputs label.shadow {
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    border: 0;
+    background-color: #FFF;
+}
+
+.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
+}
+
+/* Section */
+.section-picker label {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid #E0E0E0;
+    background-color: #F5F5F5;
+}
+
+.section-picker label span {
+    width: 46px;
+    color: #E0E0E0;
+    font-size: 18px;
+    display: inline-block;
+    text-align: center;
+    line-height: 49px;
+}
+
+.section-picker input:checked + label {
+    border-color: #448AFF;
+}
+
+.section-picker input:checked + label span {
+    color: #448AFF;
+}
+
+/* Grade */
+.grade-picker label  {
+    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30)
+}
+
+.grade-checkmark {
+    width: 24px;
+    height: 24px;
+    margin: 10px;
+    padding: 5px;
+    display: none;
+    fill: #FAFAFA;
+    filter: url(#shadow);
+}
+
+.grade-picker input:checked + label {
+/*    filter: brightness(90%); */
+}
+
+.grade-picker input:checked + label .grade-checkmark {
+    display: block;
+}
+
+
+/* Route number and creator*/
+.number-picker input,
+.author-picker input {
+    width: 100%;
+    max-width: 400px;
+    border: none;
+    border-bottom: 2px solid #009688;
+    font-size: 16px;
+}
+
+.number-picker input:focus,
+.author-picker input:focus {
+    outline: none;
+}
+
+.submit-button {
+    padding: 11px 18px 10px 18px;
+    float: right;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    background-color: #448AFF;
+    text-transform: uppercase;
+    font-size: 14px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
+    outline: none;
+}
+
+.submit-button:active {
+    background-color: #539FFF;
 }

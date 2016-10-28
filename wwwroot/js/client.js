@@ -6,7 +6,7 @@ $(document).ready(function() {
         var parameters = {
             grade: $( this ).find( "select[name='grade']" ).val(),
             section: $( this ).find( "select[name='section']" ).val(),
-            sortBy: $( this ).find( "select[name='sortBy']" ).val()
+            orderBy: $( this ).find( "select[name='sortBy']" ).val()
         };
         
         sendApiRequest('GET', parameters);
