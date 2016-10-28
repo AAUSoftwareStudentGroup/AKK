@@ -14,6 +14,7 @@ namespace AKK.Controllers {
             _mainDbContext = mainDbContext;
         }
 
+        // GET: /api/section
         [HttpGet]
         public ApiSuccessResponse GetAllSections() {
             var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
@@ -21,17 +22,7 @@ namespace AKK.Controllers {
             return new ApiSuccessResponse(sections);
         }
 
-        [HttpGet("{name}")]
-        public ApiResponse GetSection(string name) {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
-
-            sections = sections.Where(s => s.Name == name);
-            if(sections.Count() != 1)
-                return new ApiErrorResponse("No section with name " + name);
-
-            return new ApiSuccessResponse(sections.Where(s => s.Name == name));
-        }
-
+        // POST: /api/section
         [HttpPost]
         public ApiResponse AddSection(string name) {
             var sectionExsits = _mainDbContext.Sections.Where(s => s.Name == name);
@@ -46,6 +37,19 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse("Failed to create new section with name "+name);
         }
 
+        // GET: /api/section/{name}
+        [HttpGet("{name}")]
+        public ApiResponse GetSection(string name) {
+            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+
+            sections = sections.Where(s => s.Name == name);
+            if(sections.Count() != 1)
+                return new ApiErrorResponse("No section with name " + name);
+
+            return new ApiSuccessResponse(sections.Where(s => s.Name == name));
+        }
+
+        // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
         public ApiResponse DeleteSection(string name) {
             var section = _mainDbContext.Sections.Where(s => s.Name == name);
