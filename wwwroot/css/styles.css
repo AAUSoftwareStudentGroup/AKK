@@ -120,23 +120,23 @@ html, body {
 .route .grade .number {
 }
 
-.route .grade-green {
+.route .grade-0 {
     background-color: green;
 }
 
-.route .grade-blue {
+.route .grade-1 {
     background-color: blue;
 }
 
-.route .grade-red {
+.route .grade-2 {
     background-color: red;
 }
 
-.route .grade-black {
+.route .grade-3 {
     background-color: black;
 }
 
-.route .grade-white {
+.route .grade-4 {
     background-color: white;
 }
 

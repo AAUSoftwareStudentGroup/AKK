@@ -24,7 +24,7 @@ class Route {
     buildID() {
         var gradeColors = ['green', 'blue', 'red', 'black', 'white'];
         
-        var domGrade = $(`<div class="grade grade-${gradeColors[this.grade]} fl"/>`);
+        var domGrade = $(`  `);
         $(`<span class="number">${this.number}</span>`).appendTo(domGrade);
         
         var domSection = $(`<div class="route-section fl"/>`);
