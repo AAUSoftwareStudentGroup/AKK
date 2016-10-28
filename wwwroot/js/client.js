@@ -1,35 +1,125 @@
-$(document).ready(function() {
+function RouteClient(url)
+{
+    this.getRoutes = function(grade, section, sortBy, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            data: 
+            {  
+                grade: grade,
+                section: section,
+                sortBy: sortBy
+            },
+            success: success
+        });
+    };
 
-    sendApiRequest('GET', null);
+    this.getRoute = function(id, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/" + id,
+            data:
+            {
+                id: id
+            },
+            success: success
+        });
+    };
 
-    $('form').change(function(e) {
-        var parameters = {
-            grade: $( this ).find( "select[name='grade']" ).val(),
-            section: $( this ).find( "select[name='section']" ).val(),
-            sortBy: $( this ).find( "select[name='sortBy']" ).val()
-        };
-        
-        sendApiRequest('GET', parameters);
-    });
-});
+    this.addRoute = function(sectionID, name, author, colorOfHolds, grade, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                sectionID: sectionID,
+                name: name,
+                author: author,
+                colorOfHolds: colorOfHolds,
+                grade: grade
+            },
+            success: success
+        });
+    };
 
-function sendApiRequest(type, parameters) {
-    $.ajax({
-      type: type,
-      url: 'api/route',
-      data: parameters,
-      success: createRoutes,
-      dataType: 'json'
-    });
+    this.deleteRoute = function(id, success)
+    {
+        $.ajax({
+            type: "DELETE", 
+            dataType: "json",
+            url: url + "/" + id,
+            data:
+            {
+                id: id
+            },
+            success: success
+        });
+    };
 }
 
-function createRoutes(response) {
-    console.log(response);
-    var routeList = $('.list');
-    $('.route').remove();
-    
-    response.data.forEach(function(route) {
-        var nextRoute = new Route(route['grade'], route['name'], route['sectionID'], route['author'], route['colorOfHolds'], route['date']);
-        nextRoute.route.appendTo(routeList);
-    });
+function SectionClient(url)
+{
+    this.getAllSections = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            success: success
+        });
+    };
+
+    this.getSection = function(name, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/" + name,
+            data:
+            {
+                name: name
+            },
+            success: success
+        });
+    };
+
+        this.addSection = function(name, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                name: name
+            },
+            success: success
+        });
+    };
+
+    this.deleteSection = function(name, success)
+    {
+        $.ajax({
+            type: "DELETE", 
+            dataType: "json",
+            url: url + "/" + name,
+            data:
+            {
+                name: name
+            },
+            success: success
+        });
+    };
+}
+
+function Client(routeUrl, sectionUrl)
+{
+    this.routes = new RouteClient(API_ROUTE_URL);
+    this.sections = new SectionClient(API_SECTION_URL);
 }
