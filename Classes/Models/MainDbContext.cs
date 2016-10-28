@@ -1,9 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using AKK.Models;
+using Microsoft.EntityFrameworkCore.Metadata;
+using AKK.Classes.Models;
 using System.Collections.Generic;
 using System;
 
-namespace AKK.Models
+namespace AKK.Classes.Models
 {
     public class MainDbContext : DbContext
     {
@@ -19,7 +20,10 @@ namespace AKK.Models
                                         .WithMany(s => s.Routes)
                                         .HasForeignKey(r => r.SectionID);
 
-            modelBuilder.Entity<Section>().HasMany(s => s.Routes).WithOne(r => r.Section);
+            modelBuilder.Entity<Section>().HasMany(s => s.Routes)
+                                          .WithOne(r => r.Section)
+                                          .HasForeignKey(s => s.SectionID)
+                                          .OnDelete(DeleteBehavior.Cascade);
         }
     }
     public static class DbContextExtensions

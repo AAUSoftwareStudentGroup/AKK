@@ -1,8 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
-namespace AKK.Models {
+namespace AKK.Classes.Models {
     public enum Grades {Green, Blue, Red, Black, White};
     public enum SortOrder {Newest};
 
@@ -22,6 +23,7 @@ namespace AKK.Models {
         
         public Grades Grade { get; set; }
         
+        [JsonIgnore]
         public Section Section { get; set; }
 
         public string SectionID { get; set; }
