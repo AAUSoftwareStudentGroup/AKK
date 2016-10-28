@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using AKK.Models;
+using AKK.Classes.Models;
 using System.Linq;
 
 namespace AKK.Controllers {

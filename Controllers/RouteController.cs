@@ -15,16 +15,16 @@ namespace AKK.Controllers {
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse GetRoutes(Grades? grade, string section, SortOrder sortBy) {
+        public ApiResponse GetRoutes(Grades? grade, Guid sectionId, SortOrder sortBy) {
             var routes = _mainDbContext.Routes.AsQueryable(); 
             
             if(grade != null)
                 routes = routes.Where(p => p.Grade == grade);
-            if(section != null)
-                routes = routes.Where(p => p.SectionID == section);
+            if(sectionId != null)
+                routes = routes.Where(p => p.SectionId == sectionId);
             switch(sortBy) {
                 case SortOrder.Newest:
-                    routes = routes.OrderByDescending(p => p.Date);
+                    routes = routes.OrderByDescending(p => p.CreatedDate);
                     break;
             }
 
@@ -33,13 +33,13 @@ namespace AKK.Controllers {
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse AddRoute(string sectionID, string name, string author, uint colorOfHolds, Grades grade) {
-            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == sectionID);
+        public ApiResponse AddRoute(Guid sectionId, string name, string author, uint colorOfHolds, Grades grade) {
+            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.SectionId == sectionId);
             if(sections.Count() == 0)
-                return new ApiErrorResponse("No section with name "+sectionID);
+                return new ApiErrorResponse("No section with name "+sectionId);
             
             Section section = sections.First();
-            Route route = new Route() {Name=name, Author=author, Date=DateTime.Now, ColorOfHolds=colorOfHolds, Grade=grade, Section=section, SectionID=sectionID};
+            Route route = new Route() {Name=name, Author=author, CreatedDate=DateTime.Now, ColorOfHolds=colorOfHolds, Grade=grade, Section=section, SectionId=sectionId};
             section.Routes.Add(route);
             _mainDbContext.SaveChanges();
             return new ApiSuccessResponse(route);
@@ -48,27 +48,27 @@ namespace AKK.Controllers {
         // GET: /api/route/{id}
         [HttpGet("{id}")]
         public ApiResponse GetRoute(Guid id) {
-            var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.ID == id);
+            var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.RouteId == id);
             if(routes.Count() == 0)
                 return new ApiErrorResponse("No route exsits with id "+id);
             
             return new ApiSuccessResponse(routes);
         }
 
-        // PATCH: /api/route/{id}
-        [HttpPatch("{id}")]
-        public ApiResponse UpdateRoute(Guid id, string sectionID, string name, string author, uint? colorOfHolds, Grades? grade) {
-            var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.ID == id);
+        // PATCH: /api/route/{routeId}
+        [HttpPatch("{routeId}")]
+        public ApiResponse UpdateRoute(Guid routeId, Guid sectionId, string name, string author, uint? colorOfHolds, Grades? grade) {
+            var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.RouteId == routeId);
             if(routes.Count() == 0)
-                return new ApiErrorResponse("No route exsits with id "+id);
+                return new ApiErrorResponse("No route exsits with id "+routeId);
             var route = routes.First();
             
-            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == sectionID);
+            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.SectionId == sectionId);
             if(sections.Count() == 1) {
                 var section = sections.First();
-                var oldSection = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == route.SectionID).First();
+                var oldSection = _mainDbContext.Sections.AsQueryable().Where(s => s.SectionId == route.SectionId).First();
                 oldSection.Routes.Remove(route);
-                route.SectionID = sectionID;
+                route.SectionId = sectionId;
                 route.Section = section;
                 section.Routes.Add(route);
             }
@@ -88,12 +88,12 @@ namespace AKK.Controllers {
             return new ApiSuccessResponse(route);
         }
 
-        // DELETE: /api/route/{id}
-        [HttpDelete("{id}")]
-        public ApiResponse DeleteRoute(Guid id) {
-            var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.ID == id);
+        // DELETE: /api/route/{routeId}
+        [HttpDelete("{routeId}")]
+        public ApiResponse DeleteRoute(Guid routeId) {
+            var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.RouteId == routeId);
             if(routes.Count() == 0) {
-                return new ApiErrorResponse("No route exsits with id "+id);
+                return new ApiErrorResponse("No route exsits with id "+routeId);
             }
             
             // create copy that can be sent as result
@@ -101,7 +101,7 @@ namespace AKK.Controllers {
             
             _mainDbContext.Routes.RemoveRange(routes);
             if(_mainDbContext.SaveChanges() == 0) {
-                return new ApiErrorResponse("Failed to remove routes with id "+id);
+                return new ApiErrorResponse("Failed to remove routes with id "+routeId);
             }
 
             return new ApiSuccessResponse(resultCopy);
