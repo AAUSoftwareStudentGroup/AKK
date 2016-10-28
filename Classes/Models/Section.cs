@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace AKK.Models {
+namespace AKK.Classes.Models {
     public class Section {
         
         [Key]
