@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AKK.Migrations
+namespace Akk.Migrations
 {
-    public partial class init : Migration
+    public partial class DbInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,40 +12,41 @@ namespace AKK.Migrations
                 name: "Sections",
                 columns: table => new
                 {
-                    Name = table.Column<string>(nullable: false)
+                    SectionId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sections", x => x.Name);
+                    table.PrimaryKey("PK_Sections", x => x.SectionId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Routes",
                 columns: table => new
                 {
-                    ID = table.Column<Guid>(nullable: false),
+                    RouteId = table.Column<Guid>(nullable: false),
                     Author = table.Column<string>(nullable: true),
                     ColorOfHolds = table.Column<uint>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: false),
                     Grade = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
-                    SectionID = table.Column<string>(nullable: true)
+                    SectionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Routes", x => x.ID);
+                    table.PrimaryKey("PK_Routes", x => x.RouteId);
                     table.ForeignKey(
-                        name: "FK_Routes_Sections_SectionID",
-                        column: x => x.SectionID,
+                        name: "FK_Routes_Sections_SectionId",
+                        column: x => x.SectionId,
                         principalTable: "Sections",
-                        principalColumn: "Name",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "SectionId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Routes_SectionID",
+                name: "IX_Routes_SectionId",
                 table: "Routes",
-                column: "SectionID");
+                column: "SectionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using AKK.Models;
 
-namespace AKK.Migrations
+namespace Akk.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161027080731_init")]
-    partial class init
+    [Migration("20161028093345_DbInit")]
+    partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,33 +18,36 @@ namespace AKK.Migrations
 
             modelBuilder.Entity("AKK.Models.Route", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<Guid>("RouteId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Author");
 
                     b.Property<uint>("ColorOfHolds");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedDate");
 
                     b.Property<int>("Grade");
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("SectionID");
+                    b.Property<Guid>("SectionId");
 
-                    b.HasKey("ID");
+                    b.HasKey("RouteId");
 
-                    b.HasIndex("SectionID");
+                    b.HasIndex("SectionId");
 
                     b.ToTable("Routes");
                 });
 
             modelBuilder.Entity("AKK.Models.Section", b =>
                 {
+                    b.Property<Guid>("SectionId")
+                        .ValueGeneratedOnAdd();
+
                     b.Property<string>("Name");
 
-                    b.HasKey("Name");
+                    b.HasKey("SectionId");
 
                     b.ToTable("Sections");
                 });
@@ -53,7 +56,8 @@ namespace AKK.Migrations
                 {
                     b.HasOne("AKK.Models.Section", "Section")
                         .WithMany("Routes")
-                        .HasForeignKey("SectionID");
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
