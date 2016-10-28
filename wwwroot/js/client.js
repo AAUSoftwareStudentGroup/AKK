@@ -23,12 +23,13 @@ function sendApiRequest(type, parameters) {
     });
 }
 
-function createRoutes(data) {
+function createRoutes(response) {
+    console.log(response);
     var routeList = $('.list');
     $('.route').remove();
     
-    data.forEach(function(data) {
-        var nextRoute = new Route(data['grade'], data['name'], data['sectionID'], data['author'], data['colorOfHolds'], data['date']);
+    response.data.forEach(function(route) {
+        var nextRoute = new Route(route['grade'], route['name'], route['sectionID'], route['author'], route['colorOfHolds'], route['date']);
         nextRoute.route.appendTo(routeList);
     });
 }
