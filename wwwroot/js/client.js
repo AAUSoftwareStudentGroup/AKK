@@ -26,7 +26,7 @@ function sendApiRequest(type, parameters) {
 function createRoutes(response) {
     if (response['success'] == true) {
         var routeList = $('.list');
-        $('.route').remove();
+        //$('.route').remove();
 
         response.data.forEach(function(route) {
             var nextRoute = new Route(route['grade'], route['name'], route['sectionID'], route['author'], route['colorOfHolds'], route['date']);

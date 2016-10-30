@@ -2,58 +2,117 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3">
         <title>AKK - Find Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="js/route.js"></script>
-        <script type="text/javascript" src="js/client.js"></script>
     </head>
     <body>
         <div class="header">
-            <h1 class="page-title">Find Route</h1>
-            <a href="new_route.html">
-                <div class="button">
-                    <span>+</span>
-                </div>
-            </a>
-        </div>
-        <div class="options">
-            <form>
-                <div class="drop-down-container fl">
-                    <span>Grade</span>
-                    <select class="drop-down" type="dropdown" name="grade">
-                        <option value="">All</option>
-                        <option value="0">Green</option>
-                        <option value="1">Blue</option>
-                        <option value="2">Red</option>
-                        <option value="3">Black</option>
-                        <option value="4">White</option>
-                    </select>
-                </div>
-                <div class="drop-down-container fl">
-                    <span>Section</span>
-                    <select class="drop-down" type="dropdown" name="section">
-                        <option value="">All</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                    </select>
-                </div>
-                <div class="drop-down-container fr">
-                    <span>Sort by</span>
-                    <select class="drop-down" type="dropdown" name="sortBy">
-                        <option value="date">Date</option>
-                        <option value="author">Creator</option>
-                    </select>
-                </div>
-            </form>
-        </div>
-        <div class="content">
-            <div class="list">
-                
+            <div class="header-content">
+                <div class="header-button left"></div>
+                <h1 class="page-title">Find Route</h1>
+                <a class="header-button right" href="new_route.html">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" >
+                        <polygon points="20 10.8571429 13.1428571 10.8571429 13.1428571 4 10.8571429 4 10.8571429 10.8571429 4 10.8571429 4 13.1428571 10.8571429 13.1428571 10.8571429 20 13.1428571 20 13.1428571 13.1428571 20 13.1428571"/>
+                    </svg>
+                </a>
             </div>
         </div>
+        <div class="content routes">
+            <div class="content-section options">
+                <form>
+                    <div class="drop-down-container left">
+                        <h2>Grade</h2>
+                        <select class="drop-down" type="dropdown" name="grade">
+                            <option value="">All</option>
+                            <option value="0">Green</option>
+                            <option value="1">Blue</option>
+                            <option value="2">Red</option>
+                            <option value="3">Black</option>
+                            <option value="4">White</option>
+                        </select>
+                    </div>
+                    <div class="drop-down-container left">
+                        <h2>Section</h2>
+                        <select class="drop-down" type="dropdown" name="section">
+                            <option value="">All</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                        </select>
+                    </div>
+                    <div class="drop-down-container right">
+                        <h2>Sort by</h2>
+                        <select class="drop-down" type="dropdown" name="sortBy">
+                            <option value="date">Date</option>
+                            <option value="author">Creator</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="content-section route-list">
+
+                <a href="route.html">
+                    <div class="route-card">
+                        <div class="route-card-top">
+                            <div class="route-grade-number grade-green">
+                                <span class="number">42</span>
+                            </div>
+                            <span class="route-section"></span>
+                            <span class="route-section">Section: A</span>
+                            <div class="route-grip">
+                                <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
+                                    <g>
+                                        <path id="grip-midtone" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="#53263b"></path>
+                                        <path id="grip-highlight" d="m98.4,80.75c27.7,-10.8 1.9,-42.2 13.1,-61c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.2,-2.6 -11.4,-2.6 -16.6,0c-10.7,5.3 -33.1,15.5 -56.8,20.5c-1.8,0.4 -3.5,1 -5,1.8l0,0c0,0 22.8,-4.7 37.6,20.5c14.6,25.1 17.6,41.9 45.3,31.2z" fill="#76495e"></path>
+                                        <path id="grip-shadow" d="m126.5,82.35c2.5,-3.2 3.8,-7 4,-10.8c-8,7.9 -22,20.7 -32.1,25.2c-14.9,6.7 -26.6,-12.1 -56.1,-20.8c-14.2,-4.2 -24.9,-3.2 -32.1,-1.1c3.2,3.3 7.6,5.4 12.5,5.6c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.1 19,-11.1 27.7,-22.3z" fill="#2b0013"></path>
+                                        <g>
+                                            <circle r="11.7" cy="57.25" cx="90.6" fill="#E6E7E8"></circle>
+                                            <circle r="7.8" cy="57.25" cx="90.6" fill="#414042"></circle>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="route-card-bottom">
+                            <span class="route-author">Made by: Henrik Sørensen</span>
+                            <span class="route-date">03/04/16</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="route.html">
+                    <div class="route-card">
+                        <div class="route-card-top">
+                            <div class="route-grade-number grade-white">
+                                <span class="number">42</span>
+                            </div>
+                            <span class="route-section">Section: A</span>
+                            <div class="route-grip">
+                                <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
+                                    <g id="svg_1">
+                                        <path id="svg_2" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="#53263b"></path>
+                                        <path id="svg_3" d="m98.4,80.75c27.7,-10.8 1.9,-42.2 13.1,-61c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.2,-2.6 -11.4,-2.6 -16.6,0c-10.7,5.3 -33.1,15.5 -56.8,20.5c-1.8,0.4 -3.5,1 -5,1.8l0,0c0,0 22.8,-4.7 37.6,20.5c14.6,25.1 17.6,41.9 45.3,31.2z" fill="#76495e"></path>
+                                        <g id="svg_4">
+                                            <circle id="svg_5" r="11.7" cy="57.25" cx="90.6" fill="#E6E7E8"></circle>
+                                            <circle id="svg_6" r="7.8" cy="57.25" cx="90.6" fill="#414042"></circle>
+                                        </g>
+                                        <path id="svg_7" d="m126.5,82.35c2.5,-3.2 3.8,-7 4,-10.8c-8,7.9 -22,20.7 -32.1,25.2c-14.9,6.7 -26.6,-12.1 -56.1,-20.8c-14.2,-4.2 -24.9,-3.2 -32.1,-1.1c3.2,3.3 7.6,5.4 12.5,5.6c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.1 19,-11.1 27.7,-22.3z" fill="#2b0013"></path>
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="route-card-bottom">
+                            <span class="route-author">Made by: Henrik Sørensen</span>
+                            <span class="route-date">03/04/16</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
     </body>
 </html>

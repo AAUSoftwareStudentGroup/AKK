@@ -2,23 +2,21 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3">
         <title>AKK - Find Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-        <!--
-        <script type="text/javascript" src="js/route.js"></script>
-        <script type="text/javascript" src="js/client.js"></script>
-        -->
     </head>
     <body>
         <div class="header">
-            <a href="routes.html">
-                <svg class="back-button" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
-                    <polygon id="arrow-shape" points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
-                </svg>
-            </a>
-            <h1 class="page-title">New Route</h1>
+            <div class="header-content">
+                <a class="header-button left" href="routes.html">
+                    <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                        <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
+                    </svg>
+                </a>
+                <h1 class="page-title">New Route</h1>
+            </div>
         </div>
         <div class="content new-route">
             <form>
@@ -102,7 +100,7 @@
                     <h2>Route creator</h2>
                     <input class="author-input" type="text" name="author" value="" placeholder="Author">
                 </div>
-                <input class="submit-button" type="submit" value="Create"></input>
+                <input class="submit-button create-route-button" type="submit" value="Create"></input>
             </form>
         </div>
     </body>
