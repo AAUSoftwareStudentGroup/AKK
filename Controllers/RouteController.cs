@@ -15,7 +15,7 @@ namespace AKK.Controllers {
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse GetRoutes(Grades? grade, Guid sectionId, SortOrder sortBy) {
+        public ApiResponse GetRoutes(Grades? grade, Guid? sectionId, SortOrder sortBy) {
             var routes = _mainDbContext.Routes.AsQueryable(); 
             
             if(grade != null)

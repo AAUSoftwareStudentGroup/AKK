@@ -1,6 +1,6 @@
 function RouteClient(url)
 {
-    this.getRoutes = function(grade, section, sortBy, success)
+    this.getRoutes = function(grade, sectionId, sortBy, success)
     {
         $.ajax({
             type: "GET",
@@ -9,7 +9,7 @@ function RouteClient(url)
             data: 
             {  
                 grade: grade,
-                section: section,
+                sectionId: sectionId,
                 sortBy: sortBy
             },
             success: success
@@ -120,6 +120,6 @@ function SectionClient(url)
 
 function Client(routeUrl, sectionUrl)
 {
-    this.routes = new RouteClient(API_ROUTE_URL);
-    this.sections = new SectionClient(API_SECTION_URL);
+    this.routes = new RouteClient(routeUrl);
+    this.sections = new SectionClient(sectionUrl);
 }
