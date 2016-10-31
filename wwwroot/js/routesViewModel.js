@@ -45,9 +45,7 @@ function RoutesViewModel(client, changed)
                     viewModel.routes = response.data;
                     for(var i = 0; i < viewModel.routes.length; i++)
                     {
-                        viewModel.routes[i].sectionName = viewModel.sections.filter(function(section){
-                            return section.value == viewModel.routes[i].sectionId;
-                        })[0].name;
+                        viewModel.routes[i].sectionName = "A";
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
                     }
                     viewModel.changed();
