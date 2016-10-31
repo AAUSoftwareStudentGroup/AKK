@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
@@ -20,7 +21,9 @@ namespace AKK.Controllers {
         public ApiSuccessResponse GetAllSections() {
             var sections = _mainDbContext.Sections.AsQueryable().OrderBy(s => s.Name);
 
-            return new ApiSuccessResponse(sections);
+            return new ApiSuccessResponse(
+                Mappings.Mapper.Map<IEnumerable<Section>, IEnumerable<SectionTransferObject>>(sections)
+            );
         }
 
         // POST: /api/section
@@ -33,7 +36,7 @@ namespace AKK.Controllers {
             Section section = new Section() {Name=name};
             _mainDbContext.Sections.Add(section);
             if(_mainDbContext.SaveChanges() > 0)
-                return new ApiSuccessResponse(section);
+                return new ApiSuccessResponse(Mappings.Mapper.Map<Section, SectionTransferObject>(section));
             else
                 return new ApiErrorResponse("Failed to create new section with name "+name);
         }
@@ -70,7 +73,7 @@ namespace AKK.Controllers {
             if(sections.Count() != 1)
                 return new ApiErrorResponse("No section with name/id " + name);
 
-            return new ApiSuccessResponse(sections);
+            return new ApiSuccessResponse(Mappings.Mapper.Map<Section, SectionTransferObject>(sections.First()));
         }
 
         // DELETE: /api/section/{name}
@@ -88,7 +91,7 @@ namespace AKK.Controllers {
             if(sections.Count() == 0)
                 return new ApiErrorResponse("No section exsists with name/id "+name);
             else {
-                // create copy that can be sent as result
+                // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
                 var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));
         
                 _mainDbContext.Sections.Remove(sections.First());
@@ -114,7 +117,11 @@ namespace AKK.Controllers {
 
             if(sections.Count() != 1)
                 return new ApiErrorResponse("No section with name/id "+name);
-            return new ApiSuccessResponse(sections.First().Routes);
+            return new ApiSuccessResponse(
+                Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(
+                    sections.First().Routes
+                )
+            );
         }
 
         // DELETE: /api/section/{name}/routes
@@ -134,7 +141,11 @@ namespace AKK.Controllers {
 
             var section = sections.First();
             // create copy that can be sent as result
-            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section.Routes));
+            var resultCopy = JsonConvert.DeserializeObject(
+                JsonConvert.SerializeObject(
+                    Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(section.Routes)
+                )
+            );
             section.Routes.RemoveAll(r => true);
             if(_mainDbContext.SaveChanges() == 0) {
                 return new ApiErrorResponse("Failed to delete routes of section with name/id "+name);
