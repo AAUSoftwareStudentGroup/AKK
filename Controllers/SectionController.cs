@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
+using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
-using Newtonsoft.Json;
 
 
 namespace AKK.Controllers {
@@ -17,7 +18,7 @@ namespace AKK.Controllers {
         // GET: /api/section
         [HttpGet]
         public ApiSuccessResponse GetAllSections() {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable().OrderBy(s => s.Name);
 
             return new ApiSuccessResponse(sections);
         }
@@ -27,7 +28,7 @@ namespace AKK.Controllers {
         public ApiResponse AddSection(string name) {
             var sectionExsits = _mainDbContext.Sections.Where(s => s.Name == name);
             if(sectionExsits.Count() > 0) {
-                return new ApiErrorResponse("A section with "+name+" already exsists");
+                return new ApiErrorResponse("A section with name "+name+" already exsists");
             }
             Section section = new Section() {Name=name};
             _mainDbContext.Sections.Add(section);
@@ -37,36 +38,66 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse("Failed to create new section with name "+name);
         }
 
+        // DELETE: /api/section
+        [HttpDelete]
+        public ApiResponse DeleteAllSections() {
+            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            if(sections.Count() == 0)
+                return new ApiErrorResponse("No sections exsits");
+            
+            // create copy that can be sent as result
+            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));
+
+            _mainDbContext.Sections.RemoveRange(sections);
+            if(_mainDbContext.SaveChanges() == 0)
+                return new ApiErrorResponse("Failed to remove sections from database");
+            
+            return new ApiSuccessResponse(resultCopy);
+        }
+
         // GET: /api/section/{name}
         [HttpGet("{name}")]
         public ApiResponse GetSection(string name) {
             var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            
+            try {
+                Guid id = new Guid(name);
+                sections = sections.Where(s => s.SectionId == id);
+            } catch(System.FormatException) {
+                sections = sections.Where(s => s.Name == name);
+            }
 
-            sections = sections.Where(s => s.Name == name);
             if(sections.Count() != 1)
-                return new ApiErrorResponse("No section with name " + name);
+                return new ApiErrorResponse("No section with name/id " + name);
 
-            return new ApiSuccessResponse(sections.Where(s => s.Name == name));
+            return new ApiSuccessResponse(sections);
         }
 
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
         public ApiResponse DeleteSection(string name) {
-            var section = _mainDbContext.Sections.Where(s => s.Name == name);
+            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            
+            try {
+                Guid id = new Guid(name);
+                sections = sections.Where(s => s.SectionId == id);
+            } catch(System.FormatException) {
+                sections = sections.Where(s => s.Name == name);
+            }
 
-            if(section.Count() == 0)
-                return new ApiErrorResponse("No section exsists with name "+name);
+            if(sections.Count() == 0)
+                return new ApiErrorResponse("No section exsists with name/id "+name);
             else {
                 // create copy that can be sent as result
-                var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section));
+                var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));
         
-                _mainDbContext.Sections.Remove(section.First());
+                _mainDbContext.Sections.Remove(sections.First());
 
                 if(_mainDbContext.SaveChanges() > 0)
                     return new ApiSuccessResponse(resultCopy);
             }
 
-            return new ApiErrorResponse("Failed to delete section with name "+name);
+            return new ApiErrorResponse("Failed to delete section with name/id "+name);
         }
     }
 }

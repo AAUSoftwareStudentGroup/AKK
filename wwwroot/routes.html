@@ -4,14 +4,24 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3">
         <title>AKK - Find Route</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-latest.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
-        <script type="text/javascript" src="js/routes.js"></script>
+        <script type="text/javascript" src="js/routesViewModel.js"></script>
     </head>
     <body>
+        <script type="text/javascript">
+            var viewModel;
+            $(document).ready(function () {
+                var template = Handlebars.compile($("#routes-template").html());
+                var client = new Client(API_ROUTE_URL, API_SECTION_URL);
+                var changed = function changed() { $('#content').html(template(viewModel)); };
+                viewModel = new RoutesViewModel(client, changed);
+            });
+        </script>
         <script id="routes-template" type="text/x-handlebars-template">
 	        <div class="header">
 	            <div class="header-content">
@@ -59,10 +69,10 @@
 	                    <div class="route-card">
 	                        <div class="route-card-top">
 	                            <div class="route-grade-number grade-{{grade}}">
-	                                <span class="number">{{number}}</span>
+	                                <span class="number">{{name}}</span>
 	                            </div>
 	                            <span class="route-section"></span>
-	                            <span class="route-section">Section: {{sectionID}}</span>
+	                            <span class="route-section">Section: {{sectionName}}</span>
 	                            <div class="route-grip">
 	                                <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
 	                                    <g>
@@ -87,6 +97,7 @@
 	            </div>
 	        </div>
         </script>
+        <div id="content"></div>
     </body>
 </html>
 

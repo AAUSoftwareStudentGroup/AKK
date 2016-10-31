@@ -19,23 +19,23 @@
             </div>
         </div>
         <div class="content new-route">
-            <form>
+            <form action="api/route" method="post">
                 <div class="content-section section-picker">
                     <h2 class="">Section</h2>
                     <div class="radio-inputs">
-                        <input id="section-input-A" class="section-box" type="radio" name="section" value="A">
+                        <input id="section-input-A" class="section-box" type="radio" name="sectionName" value="A">
                         <label for="section-input-A">
                             <span>A</span>
                         </label>
-                        <input id="section-input-B" class="section-box" type="radio" name="section" value="B">
+                        <input id="section-input-B" class="section-box" type="radio" name="sectionName" value="B">
                         <label for="section-input-B">
                             <span>B</span>
                         </label>
-                        <input id="section-input-C" class="section-box" type="radio" name="section" value="C">
+                        <input id="section-input-C" class="section-box" type="radio" name="sectionName" value="C">
                         <label for="section-input-C">
                             <span>C</span>
                         </label>
-                        <input id="section-input-D" class="section-box" type="radio" name="section" value="D">
+                        <input id="section-input-D" class="section-box" type="radio" name="sectionName" value="D">
                         <label for="section-input-D">
                             <span>D</span>
                         </label>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="content-section number-picker">
                     <h2>Route number</h2>
-                    <input class="number-input" type="number" name="number" value="" placeholder="Number" pattern="[0-9]*" inputmode="numeric">
+                    <input class="number-input" type="number" name="name" value="" placeholder="Number" pattern="[0-9]*" inputmode="numeric">
                 </div>
                 <div class="content-section author-picker">
                     <h2>Route creator</h2>
