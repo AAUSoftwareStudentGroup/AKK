@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3">
+        <title>AKK - Find Route</title>
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="header">
+            <div class="header-content">
+                <a class="header-button left" href="routes.html">
+                    <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                        <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
+                    </svg>
+                </a>
+                <h1 class="page-title">New Route</h1>
+            </div>
+        </div>
+        <div class="content new-route">
+            <form>
+                <div class="content-section section-picker">
+                    <h2 class="">Section</h2>
+                    <div class="radio-inputs">
+                        <input id="section-input-A" class="section-box" type="radio" name="section" value="A">
+                        <label for="section-input-A">
+                            <span>A</span>
+                        </label>
+                        <input id="section-input-B" class="section-box" type="radio" name="section" value="B">
+                        <label for="section-input-B">
+                            <span>B</span>
+                        </label>
+                        <input id="section-input-C" class="section-box" type="radio" name="section" value="C">
+                        <label for="section-input-C">
+                            <span>C</span>
+                        </label>
+                        <input id="section-input-D" class="section-box" type="radio" name="section" value="D">
+                        <label for="section-input-D">
+                            <span>D</span>
+                        </label>
+                        <label class="shadow"></label>  
+                        <div class="stretch"></div>
+                    </div>
+                </div>
+                <div class="content-section grade-picker">
+                    <h2>Grade</h2>
+                    <div class="radio-inputs">
+                        <input id="grade-input-green" class="grade-box" type="radio" name="grade" value="Green">
+                        <label class="grade-0" for="grade-input-green">
+                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                                <defs xmlns="http://www.w3.org/2000/svg">
+                                    <filter id="shadow" x="-100%" y="-100%" width="500%" height="500%">
+                                        <feGaussianBlur in="SourceAlpha" stdDeviation="3"/> 
+                                        <feOffset dx="2" dy="2" result="offsetblur"/>
+                                        <feComponentTransfer>
+                                            <feFuncA type="linear" slope="0.5"/>
+                                        </feComponentTransfer>
+                                        <feMerge> 
+                                            <feMergeNode/>
+                                            <feMergeNode in="SourceGraphic"/> 
+                                        </feMerge>
+                                    </filter>
+                                </defs>
+                                 <polygon id="checkmark-shape" points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
+                            </svg>
+                        </label>
+                        <input id="grade-input-blue" class="grade-box" type="radio" name="grade" value="Blue">
+                        <label class="grade-1 "for="grade-input-blue">
+                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                                <polygon id="checkmark-shape" points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
+                            </svg>
+                        </label>
+                        <input id="grade-input-red" class="grade-box" type="radio" name="grade" value="Red">
+                        <label class="grade-2" for="grade-input-red">
+                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                                <polygon id="checkmark-shape" points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
+                            </svg>
+                        </label>
+                        <input id="grade-input-black" class="grade-box" type="radio" name="grade" value="Black">
+                        <label class="grade-3" for="grade-input-black">
+                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                                <polygon id="checkmark-shape" points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
+                            </svg>
+                        </label>
+                        <input id="grade-input-white" class="grade-box" type="radio" name="grade" value="White">
+                        <label class="grade-4" for="grade-input-white">
+                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                                <polygon id="checkmark-shape" points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6" ></polygon>
+                            </svg>
+                        </label>
+                        <div class="stretch"></div>
+                    </div>
+                </div>
+                <div class="content-section number-picker">
+                    <h2>Route number</h2>
+                    <input class="number-input" type="number" name="number" value="" placeholder="Number" pattern="[0-9]*" inputmode="numeric">
+                </div>
+                <div class="content-section author-picker">
+                    <h2>Route creator</h2>
+                    <input class="author-input" type="text" name="author" value="" placeholder="Author">
+                </div>
+                <input class="submit-button create-route-button" type="submit" value="Create"></input>
+            </form>
+        </div>
+    </body>
+</html>

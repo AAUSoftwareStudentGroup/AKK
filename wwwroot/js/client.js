@@ -89,7 +89,8 @@ function SectionClient(url)
         });
     };
 
-        this.addSection = function(name, success)
+
+    this.addSection = function(name, success)
     {
         $.ajax({
             type: "POST",
