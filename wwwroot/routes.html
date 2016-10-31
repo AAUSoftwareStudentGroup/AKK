@@ -10,7 +10,7 @@
         <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-latest.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
-        <script type="text/javascript" src="js/routesViewModel.js"></script>
+        <script type="text/javascript" src="js/routes-view-model.js"></script>
     </head>
     <body>
         <script type="text/javascript">
@@ -27,7 +27,7 @@
 	            <div class="header-content">
 	                <div class="header-button left"></div>
 	                <h1 class="page-title">Find Route</h1>
-	                <a class="header-button right" href="new_route.html">
+	                <a class="header-button right" href="new-route.html">
 	                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" >
 	                        <polygon points="20 10.8571429 13.1428571 10.8571429 13.1428571 4 10.8571429 4 10.8571429 10.8571429 4 10.8571429 4 13.1428571 10.8571429 13.1428571 10.8571429 20 13.1428571 20 13.1428571 13.1428571 20 13.1428571"/>
 	                    </svg>
@@ -39,7 +39,8 @@
 	                <form>
 	                    <div class="drop-down-container left">
 	                        <h2>Grade</h2>
-	                        <select class="drop-down" type="dropdown" name="grade">
+	                        <select class="drop-down" onchange="viewModel.changeGrade(this.value)" type="dropdown" name="grade">
+                                <option value="{{selectedGrade.value}}" selected="selected" disabled="disabled">{{selectedGrade.name}}</option>
 	                            {{#each grades}}
 	                            <option value="{{value}}">{{name}}</option>
 	                            {{/each}}
@@ -47,8 +48,9 @@
 	                    </div>
 	                    <div class="drop-down-container left">
 	                        <h2>Section</h2>
-	                        <select class="drop-down" type="dropdown" name="section">
-	                            {{#each sectionNames}}
+	                        <select class="drop-down" onchange="viewModel.changeSection(this.value)" type="dropdown" name="section">
+                                <option value="{{selectedSection.value}}" selected="selected" disabled="disabled">{{selectedSection.name}}</option>
+	                            {{#each sections}}
 	                            <option value="{{value}}">{{name}}</option>
 	                            {{/each}}
 	                        </select>
