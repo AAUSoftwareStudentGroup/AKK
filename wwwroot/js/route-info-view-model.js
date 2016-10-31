@@ -7,8 +7,8 @@ function RouteInfoViewModel(client, changed)
             client.routes.getRoute(window.location.search.split("routeId=")[1], function(routeResponse) {
                 if(routeResponse.success)
                 {
-                    viewModel.route = routeResponse.data[0];
-                    client.sections.getSection(viewModel.route.sectionId, function (sectionResponse) {
+                    viewModel.route = routeResponse.data;
+                    viewModel.client.sections.getSection(viewModel.route.sectionId, function (sectionResponse) {
                         if(sectionResponse.success)
                         {
                             viewModel.route.sectionName = sectionResponse.name;
