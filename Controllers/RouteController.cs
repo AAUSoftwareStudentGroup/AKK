@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
+using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
-using Newtonsoft.Json;
 
 namespace AKK.Controllers {
     [Route("api/route")]
@@ -15,8 +15,8 @@ namespace AKK.Controllers {
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse GetRoutes(Grades? grade, Guid sectionId, SortOrder sortBy) {
-            var routes = _mainDbContext.Routes.AsQueryable(); 
+        public ApiResponse GetRoutes(Grades? grade, Guid? sectionId, SortOrder sortBy) {
+            var routes = _mainDbContext.Routes.AsQueryable();
             
             if(grade != null)
                 routes = routes.Where(p => p.Grade == grade);
@@ -33,16 +33,36 @@ namespace AKK.Controllers {
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse AddRoute(Guid sectionId, string name, string author, uint colorOfHolds, Grades grade) {
-            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.SectionId == sectionId);
+        public ApiResponse AddRoute(string sectionName, Guid sectionId, string name, string author, uint colorOfHolds, Grades grade) {
+            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
             if(sections.Count() == 0)
                 return new ApiErrorResponse("No section with name "+sectionId);
             
             Section section = sections.First();
             Route route = new Route() {Name=name, Author=author, CreatedDate=DateTime.Now, ColorOfHolds=colorOfHolds, Grade=grade, Section=section, SectionId=sectionId};
             section.Routes.Add(route);
-            _mainDbContext.SaveChanges();
+            _mainDbContext.Routes.Add(route);
+
+            if(_mainDbContext.SaveChanges() == 0)
+                return new ApiErrorResponse("Failed to update database");
             return new ApiSuccessResponse(route);
+        }
+        
+        // DELETE: /api/route
+        [HttpDelete]
+        public ApiResponse DeleteAllRoutes() {
+            var routes = _mainDbContext.Routes.AsQueryable();
+            if(routes.Count() == 0)
+                return new ApiErrorResponse("No routes exsits");
+            
+            // create copy that can be sent as result
+            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(routes));
+
+            _mainDbContext.Routes.RemoveRange(routes);
+            if(_mainDbContext.SaveChanges() == 0)
+                return new ApiErrorResponse("Failed to remove routes from database");
+            
+            return new ApiSuccessResponse(resultCopy);
         }
 
         // GET: /api/route/{id}
@@ -57,13 +77,13 @@ namespace AKK.Controllers {
 
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
-        public ApiResponse UpdateRoute(Guid routeId, Guid sectionId, string name, string author, uint? colorOfHolds, Grades? grade) {
+        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Guid sectionId, string name, string author, uint? colorOfHolds, Grades? grade) {
             var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.RouteId == routeId);
             if(routes.Count() == 0)
                 return new ApiErrorResponse("No route exsits with id "+routeId);
             var route = routes.First();
             
-            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.SectionId == sectionId);
+            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
             if(sections.Count() == 1) {
                 var section = sections.First();
                 var oldSection = _mainDbContext.Sections.AsQueryable().Where(s => s.SectionId == route.SectionId).First();
