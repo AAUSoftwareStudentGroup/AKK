@@ -8,6 +8,7 @@ function RouteInfoViewModel(client, changed)
                 if(routeResponse.success)
                 {
                     viewModel.route = routeResponse.data;
+                    viewModel.route.colorOfHolds = (Math.floor(viewModel.route.colorOfHolds / 256)).toString(16);
                     viewModel.client.sections.getSection(viewModel.route.sectionId, function (sectionResponse) {
                         if(sectionResponse.success)
                         {

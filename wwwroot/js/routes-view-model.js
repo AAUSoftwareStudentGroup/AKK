@@ -4,11 +4,19 @@ function RoutesViewModel(client, changed)
     var viewModel = {
         init: function()
         {
-            viewModel.selectedGrade = viewModel.grades[0];
-            viewModel.selectedSection = viewModel.sections[0];
-            viewModel.selectedSortBy = viewModel.sortOptions[0];
-            viewModel.refreshSections();
-            viewModel.refreshRoutes();
+            viewModel.client.sections.getAllSections(function(response)
+            {
+                if(response.success)
+                {
+                    viewModel.sections = [{ sectionId: -1, name: "All" }];
+                    viewModel.sections = viewModel.sections.concat(response.data);
+                    viewModel.selectedGrade = viewModel.grades[0];
+                    viewModel.selectedSection = viewModel.sections[0];
+                    viewModel.selectedSortBy = viewModel.sortOptions[0];
+                    viewModel.refreshRoutes();
+                    viewModel.changed();
+                }
+            });
         },
         client: client,
         changed: changed,
@@ -30,18 +38,6 @@ function RoutesViewModel(client, changed)
         selectedSection: null,
         selectedSortBy: null,
         routes: [],
-        refreshSections: function()
-        {
-            viewModel.client.sections.getAllSections(function(response)
-            {
-                if(response.success)
-                {
-                    viewModel.sections = [{ sectionId: -1, name: "All" }];
-                    viewModel.sections = viewModel.sections.concat(response.data);
-                    viewModel.changed();
-                }
-            });
-        },
         refreshRoutes: function()
         {
             var gradeValue = viewModel.selectedGrade.value == -1 ? null : viewModel.selectedGrade.value;
@@ -57,6 +53,7 @@ function RoutesViewModel(client, changed)
                             return s.sectionId == viewModel.routes[i].sectionId; 
                         })[0].name;
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
+                        viewModel.routes[i].colorOfHolds = (Math.floor(viewModel.routes[i].colorOfHolds / 256)).toString(16);
                     }
                     viewModel.changed();
                 }
