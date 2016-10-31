@@ -34,10 +34,15 @@ namespace AKK.Controllers {
         // POST: /api/route
         [HttpPost]
         public ApiResponse AddRoute(string sectionName, Guid sectionId, string name, string author, uint colorOfHolds, Grades grade) {
+            int num;
             var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
             if(sections.Count() == 0)
                 return new ApiErrorResponse("No section with name "+sectionId);
             
+            if(!int.TryParse(name, out num) || num < 0) {
+                return new ApiErrorResponse("Name must be a non-negative integer");
+            }
+
             Section section = sections.First();
             Route route = new Route() {Name=name, Author=author, CreatedDate=DateTime.Now, ColorOfHolds=colorOfHolds, Grade=grade, Section=section, SectionId=sectionId};
             section.Routes.Add(route);
@@ -53,7 +58,7 @@ namespace AKK.Controllers {
         public ApiResponse DeleteAllRoutes() {
             var routes = _mainDbContext.Routes.AsQueryable();
             if(routes.Count() == 0)
-                return new ApiErrorResponse("No routes exsits");
+                return new ApiErrorResponse("No routes exsist");
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(routes));
@@ -78,6 +83,7 @@ namespace AKK.Controllers {
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
         public ApiResponse UpdateRoute(Guid routeId, string sectionName, Guid sectionId, string name, string author, uint? colorOfHolds, Grades? grade) {
+            int num;
             var routes = _mainDbContext.Routes.AsQueryable().Where(r => r.RouteId == routeId);
             if(routes.Count() == 0)
                 return new ApiErrorResponse("No route exsits with id "+routeId);
@@ -93,8 +99,12 @@ namespace AKK.Controllers {
                 section.Routes.Add(route);
             }
 
-            if(name != null)
-                route.Name = name;
+            if(name != null) {
+                if(!int.TryParse(name, out num) || num < 0)
+                    return new ApiErrorResponse("Name must be a non-negative integer");
+                else
+                    route.Name = name;
+            }
             if(author != null)
                 route.Author = author;
             if(colorOfHolds != null)
