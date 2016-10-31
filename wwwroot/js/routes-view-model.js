@@ -7,6 +7,7 @@ function RoutesViewModel(client, changed)
             viewModel.selectedGrade = viewModel.grades[0];
             viewModel.selectedSection = viewModel.sections[0];
             viewModel.selectedSortBy = viewModel.sortOptions[0];
+            viewModel.refreshSections();
             viewModel.refreshRoutes();
         },
         client: client,
@@ -20,11 +21,7 @@ function RoutesViewModel(client, changed)
             { value: 4, name: "White"}
         ],
         sections: [
-            { value: "-1", name: "All" },
-            { value: "4803675e-d55e-44f8-b6bd-c9d88fe93eaf", name: "A" },
-            { value: "5f16da85-2482-4346-ac31-466b6d407dec", name: "C" },
-            { value: "4fbc639a-48a6-49ab-9554-298e3af6654a", name: "B" },
-            { value: "ed5fe8fa-c27f-41f5-ad6e-9449b4d9ba50", name: "D" }
+            { sectionId: -1, name: "All" }
         ],
         sortOptions: [
             { value: 0, name: "Newest" }
@@ -33,19 +30,32 @@ function RoutesViewModel(client, changed)
         selectedSection: null,
         selectedSortBy: null,
         routes: [],
+        refreshSections: function()
+        {
+            viewModel.client.sections.getAllSections(function(response)
+            {
+                if(response.success)
+                {
+                    viewModel.sections = [{ sectionId: -1, name: "All" }];
+                    viewModel.sections = viewModel.sections.concat(response.data);
+                    viewModel.changed();
+                }
+            });
+        },
         refreshRoutes: function()
         {
-            viewModel.client.routes.getRoutes(
-                viewModel.selectedGrade.value == -1 ? null : viewModel.selectedGrade.value, 
-                viewModel.selectedSection.value == -1 ? null : viewModel.selectedSection.value, 
-                viewModel.selectedSortBy.value, 
-                function(response) {
+            var gradeValue = viewModel.selectedGrade.value == -1 ? null : viewModel.selectedGrade.value;
+            var sectionId = viewModel.selectedSection.sectionId == -1 ? null : viewModel.selectedSection.sectionId;
+            var sortByValue = viewModel.selectedSortBy.value == -1 ? null : viewModel.selectedSortBy.value;
+            viewModel.client.routes.getRoutes(gradeValue, sectionId, sortByValue, function(response) {
                 if(response.success)
                 {
                     viewModel.routes = response.data;
                     for(var i = 0; i < viewModel.routes.length; i++)
                     {
-                        viewModel.routes[i].sectionName = "A";
+                        viewModel.routes[i].sectionName = viewModel.sections.filter(function(s) { 
+                            return s.sectionId == viewModel.routes[i].sectionId; 
+                        })[0].name;
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
                     }
                     viewModel.changed();
@@ -57,9 +67,9 @@ function RoutesViewModel(client, changed)
             viewModel.selectedGrade = viewModel.grades.filter(function(grade){ return grade.value == gradeValue; })[0];
             viewModel.refreshRoutes();
         },
-        changeSection: function(sectionValue)
+        changeSection: function(sectionId)
         {
-            viewModel.selectedSection = viewModel.sections.filter(function(section){ return section.value == sectionValue; })[0];
+            viewModel.selectedSection = viewModel.sections.filter(function(section){ return section.sectionId == sectionId; })[0];
             viewModel.refreshRoutes();
         },
         changeSortBy: function(sortByValue)

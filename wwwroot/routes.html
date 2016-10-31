@@ -49,9 +49,9 @@
 	                    <div class="drop-down-container left">
 	                        <h2>Section</h2>
 	                        <select class="drop-down" onchange="viewModel.changeSection(this.value)" type="dropdown" name="section">
-                                <option value="{{selectedSection.value}}" selected="selected" disabled="disabled">{{selectedSection.name}}</option>
+                                <option value="{{selectedSection.sectionId}}" selected="selected" disabled="disabled">{{selectedSection.name}}</option>
 	                            {{#each sections}}
-	                            <option value="{{value}}">{{name}}</option>
+	                            <option value="{{sectionId}}">{{name}}</option>
 	                            {{/each}}
 	                        </select>
 	                    </div>
