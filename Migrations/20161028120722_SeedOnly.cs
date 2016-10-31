@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace AKK.Migrations
+namespace Akk.Migrations
 {
-    public partial class init2 : Migration
+    public partial class SeedOnly : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

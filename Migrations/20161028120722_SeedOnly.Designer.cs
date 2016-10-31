@@ -3,57 +3,61 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using AKK.Models;
+using AKK.Classes.Models;
 
-namespace AKK.Migrations
+namespace Akk.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161026103951_SectionsAndRoutes")]
-    partial class SectionsAndRoutes
+    [Migration("20161028120722_SeedOnly")]
+    partial class SeedOnly
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("AKK.Models.Route", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
-                    b.Property<Guid>("ID")
+                    b.Property<Guid>("RouteId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Author");
 
                     b.Property<uint>("ColorOfHolds");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("CreatedDate");
 
                     b.Property<int>("Grade");
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("SectionID");
+                    b.Property<Guid>("SectionId");
 
-                    b.HasKey("ID");
+                    b.HasKey("RouteId");
 
-                    b.HasIndex("SectionID");
+                    b.HasIndex("SectionId");
 
                     b.ToTable("Routes");
                 });
 
-            modelBuilder.Entity("AKK.Models.Section", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Section", b =>
                 {
+                    b.Property<Guid>("SectionId")
+                        .ValueGeneratedOnAdd();
+
                     b.Property<string>("Name");
 
-                    b.HasKey("Name");
+                    b.HasKey("SectionId");
 
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("AKK.Models.Route", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
-                    b.HasOne("AKK.Models.Section", "Section")
+                    b.HasOne("AKK.Classes.Models.Section", "Section")
                         .WithMany("Routes")
-                        .HasForeignKey("SectionID");
+                        .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
         }
     }
