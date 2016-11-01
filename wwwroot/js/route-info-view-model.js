@@ -13,7 +13,7 @@ function RouteInfoViewModel(client, changed)
                     viewModel.client.sections.getSection(viewModel.route.sectionId, function (sectionResponse) {
                         if(sectionResponse.success)
                         {
-                            viewModel.route.sectionName = sectionResponse.name;
+                            viewModel.route.sectionName = sectionResponse.data.name;
                             viewModel.changed();
                         }
                     });
