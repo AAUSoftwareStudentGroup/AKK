@@ -275,7 +275,11 @@ input {
     margin: 12px;
     display: none;
     fill: #FAFAFA;
-    filter: url(#shadow);
+   /* filter: url(#shadow);*/
+}
+
+.grade-4 .grade-checkmark {
+    fill: #222222;
 }
 
 .grade-picker input:checked + label .grade-checkmark {
