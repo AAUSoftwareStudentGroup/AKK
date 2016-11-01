@@ -47,15 +47,14 @@ function RouteClient(url)
         });
     };
 
-    this.updateRoute = function(routeId, sectionId, name, author, grade)
+    this.updateRoute = function(routeId, sectionId, name, author, grade, success)
     {
         $.ajax({
             type: "PATCH",
             dataType: "json",
-            url: url,
+            url: url + "/" + routeId,
             data:
             {
-                routeId: routeId,
                 sectionId: sectionId,
                 author: author,
                 name: name,
