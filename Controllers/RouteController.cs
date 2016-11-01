@@ -42,8 +42,11 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse("No section with name "+sectionId);
             
             if(!int.TryParse(name, out num) || num < 0) {
-                return new ApiErrorResponse("Name must be a non-negative integer");
+                return new ApiErrorResponse("Route number must be a non-negative integer");
             }
+            
+            if(_mainDbContext.Routes.AsQueryable().Where(r => r.Grade == grade && r.Name == name).Count() > 0)
+                return new ApiErrorResponse("A route with this grade and number already exsists");
 
             Section section = sections.First();
             Route route = new Route() {
