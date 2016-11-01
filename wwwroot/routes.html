@@ -17,7 +17,12 @@
             $(document).ready(function () {
                 var template = Handlebars.compile($("#routes-template").html());
                 var client = new Client(API_ROUTE_URL, API_SECTION_URL);
-                var changed = function changed() { $('#content').html(template(viewModel)); };
+                var changed = function changed() { 
+                    $('#content').html(template(viewModel)); 
+                    $('#grade-' + viewModel.selectedGrade.value).prop("selected", true);
+                    $('#section-' + viewModel.selectedSection.name).prop("selected", true);
+                    $('#sortby-' + viewModel.selectedSortBy.value).prop("selected", true);
+                };
                 viewModel = new RoutesViewModel(client, changed);
             });
         </script>
@@ -39,26 +44,24 @@
                         <div class="drop-down-container left">
                             <h2>Grade</h2>
                             <select class="drop-down" onchange="viewModel.changeGrade(this.value)" type="dropdown" name="grade">
-                                <option value="{{selectedGrade.value}}" selected="selected" disabled="disabled">{{selectedGrade.name}}</option>
                                 {{#each grades}}
-                                <option value="{{value}}">{{name}}</option>
+                                <option id="grade-{{value}}" value="{{value}}">{{name}}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <div class="drop-down-container left">
                             <h2>Section</h2>
                             <select class="drop-down" onchange="viewModel.changeSection(this.value)" type="dropdown" name="section">
-                                <option value="{{selectedSection.sectionId}}" selected="selected" disabled="disabled">{{selectedSection.name}}</option>
                                 {{#each sections}}
-                                <option value="{{sectionId}}">{{name}}</option>
+                                <option id="section-{{name}}" value="{{sectionId}}">{{name}}</option>
                                 {{/each}}
                             </select>
                         </div>
                         <div class="drop-down-container right">
                             <h2>Sort by</h2>
-                            <select class="drop-down" type="dropdown" name="sortBy">
+                            <select class="drop-down" onchange="viewModel.changeSortBy(this.value)" type="dropdown" name="sortBy">
                                 {{#each sortOptions}}
-                                <option value="{{value}}">{{name}}</option>
+                                <option id="sortby-{{value}}" value="{{value}}">{{name}}</option>
                                 {{/each}}
                             </select>
                         </div>
