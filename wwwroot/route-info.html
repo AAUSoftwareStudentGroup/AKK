@@ -29,7 +29,7 @@
                             <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
                         </svg>
                     </a>
-                    <h1 class="page-title">New Route</h1>
+                    <h1 class="page-title">Route Info</h1>
                 </div>
             </div>
             <div class="content single-route">
@@ -64,7 +64,8 @@
                         <span class="route-date">{{route.date}}</span>
                     </div>
                 </div>
-                <input class="submit-button delete-route-button" type="button" onclick="viewModel.deleteRoute('{{route.routeId}}')" value="Delete"></input>
+                <input class="submit-button create-route-button left" type="button" onclick="viewModel.editRoute('{{route.routeId}}')" value="Edit"></input>
+                <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute('{{route.routeId}}')" value="Delete"></input>
             </div>
         </script>
         <div id="content"></div>

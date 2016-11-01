@@ -40,11 +40,11 @@ input {
 }
 
 .left {
-    float: left;
+    float: left !important;
 }
 
 .right {
-    float: right;
+    float: right !important;
 }
 
 .grade-0 {
@@ -88,8 +88,8 @@ input {
 .header-button {
     width: 24px;
     height: 24px;
-    padding: 0;
-    margin: 22px 18px 18px 18px;
+    padding: 8px;
+    margin: 13px 11px 11px 11px;
     position: relative;
     z-index: 1;
 }
@@ -151,11 +151,11 @@ input {
 }
 
 .delete-route-button {
-    background-color: #D50000;
+    background-color: #EF5350;
 }
 
 .delete-route-button:active {
-    background-color: #FF3455;
+    background-color: #ED6F6D;
 }
 
 /* Route cards */

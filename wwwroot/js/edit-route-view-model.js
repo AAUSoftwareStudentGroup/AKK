@@ -1,10 +1,29 @@
-function NewRouteViewModel(client, changed)
+function EditRouteViewModel(client, changed)
 {
     var viewModel = {
         init: function()
         {
-            viewModel.getSections();
+            viewModel.routeId = window.location.search.split("routeId=")[1];
+            viewModel.client.sections.getAllSections(function(response)
+            {
+                if(response.success)
+                {
+                    viewModel.sections = response.data;
+                    viewModel.client.routes.getRoute(viewModel.routeId, function(routeResponse)
+                    {
+                        if(routeResponse.success)
+                        {
+                            viewModel.changeSection(routeResponse.data.sectionId);
+                            viewModel.changeGrade(routeResponse.data.grade);
+                            viewModel.changeRouteNumber(routeResponse.data.name);
+                            viewModel.changeAuthor(routeResponse.data.author);
+                            viewModel.changed();
+                        }
+                    });
+                }
+            });
         },
+        routeId: null,
         client: client,
         changed: changed,
         sections: [],
@@ -46,31 +65,16 @@ function NewRouteViewModel(client, changed)
                 }
             });
         },
-        addRoute: function()
-        {
-            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && !isNaN(viewModel.routeNumber))
-            {
-                var sectionId = viewModel.selectedSection.sectionId;
-                var gradeValue = viewModel.selectedGrade.value;
-                var routeNumber = viewModel.routeNumber;
-                var author = viewModel.author;
-                viewModel.client.routes.addRoute(sectionId, author, routeNumber, gradeValue, function(response) {
-                    if(response.success)
-                    {
-                        window.history.back();
-                    }
-                });
-            }
-        },
         updateRoute: function()
         {
             if(viewModel.selectedSection != null && viewModel.selectedGrade != null && !isNaN(viewModel.routeNumber))
             {
+                var routeId = viewModel.routeId;
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade.value;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
-                viewModel.client.routes.addRoute(sectionId, author, routeNumber, gradeValue, function(response) {
+                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, gradeValue, function(response) {
                     if(response.success)
                     {
                         window.history.back();
