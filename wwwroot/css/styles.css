@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
+/** GENERAL **/
 html, body {
     width: 100%;
     height: 100%;
@@ -8,143 +9,306 @@ html, body {
     font-family: 'Roboto', sans-serif;
 }
 
-.fl {
-	float: left;
+h2 {
+    width: 100%;
+    margin: 10px 0px;
+    font-size: 12px;
+    line-height: 16px;
+    color: rgba(0, 0, 0, 0.40);
 }
 
-.fr {
+h1 {
+    margin-top: 21px;
+    float: left;
+    font-size: 20px;
+    color: white;
+    line-height: 24px;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+    cursor: inherit;
+}
+
+input {
+    -moz-appearance: none; 
+    -webkit-appearance: none;
+}
+
+.left {
+    float: left;
+}
+
+.right {
     float: right;
+}
+
+.grade-0 {
+    background-color: #43A047 !important;
+}
+
+.grade-1 {
+    background-color: #2196FE !important;
+}
+
+.grade-2 {
+    background-color: #EF5350 !important;
+}
+
+.grade-3 {
+    background-color: #616161 !important;
+}
+
+.grade-4 {
+    background-color: #FBFBFB !important;
+    color: rgba(0, 0, 0, 0.65) !important;
 }
 
 .header {
     width: 100%;
-	height: 164px;
+    height: 64px;
     position: fixed;
     top: 0;
     display: block;
-	background-color: #424242;
+    background-color: #424242;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.40);
 }
 
-.arrow {
-    width: 60px;
-    height: 60px;
-    margin: 20px;
-    background-color: grey;
-    float: left;
+.header-content {
+    width: 100%;
+    max-width: 304px;
+    margin: 0px auto;
 }
 
-.page-title {
-    margin: 45px 20px;
-    float: left;
-    font-size: 60px;
-    color: white;
-}
-
-.button {
-    float: right;
-    margin: 26px 52px;
+.header-button {
+    width: 24px;
+    height: 24px;
     padding: 0;
-    border-radius: 112px;
-    background-color: #2196F3;
-    font-size: 35px;
-    color: white;
-    width: 112px;
-    height: 112px;
-    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    margin: 22px 18px 18px 18px;
 }
 
-.button span {
-    margin: 28px 42px;
-    float: left;
-    font-size: 48px;
+.content {
+    width: 100%;
+    max-width: 304px;
+    margin: 64px auto 0px auto; 
+    padding: 8px;
+    overflow: hidden;
+}
+
+.submit-button {
+    padding: 11px 18px 10px 18px;
+    float: right;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    text-transform: uppercase;
+    font-size: 14px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
+    outline: none;
+}
+
+/** ROUTE LIST **/
+.new-route .content-section {
+    width: 100%;
+    margin-bottom: 32px;
+    display: block;
 }
 
 .options {
     width: 100%;
-	height: 250px;
-    margin-top: 164px;
-/*    position: fixed;*/
-/*    top: 164px;*/
-    display: block;
-    background-color: white;
-}
-.content {
+    height: 60px;
     display: block;
 }
 
 .drop-down-container {
-    width: 200px;
-    margin: 26px;
-    padding: 8px;;
-}
-
-.drop-down-container span {
-    width: 100%;
-    font-size: 40px;
+    width: 56px;
+    margin-right: 16px;
 }
 
 .drop-down {
     width: 100%;
-    height: 80px;
+    height: 24px;
+}
+
+/** SINGLE ROUTE **/
+.single-route .route-card {
+    margin-bottom: 16px;
+}
+
+.delete-route-button {
+    background-color: #D50000;
+}
+
+.delete-route-button:active {
+    background-color: #FF3455;
+}
+
+/* Route cards */
+.route-card {
     margin-top: 16px;
-/*    background-color: grey; */
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20);
 }
 
-.route {
-    margin: 26px;
-    overflow: auto;
-    padding: 26px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    font-size: 45px
+.route-card-top {
+    height: 50px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
-.route:first-of-type {
-/*    margin-top: 414px; */
+.route-grade-number {
+    width: 42px;
+    height: 42px;
+    float: left;
+    color: rgba(245, 245, 245, 1.0);
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30);
+    font-weight: bold;
 }
 
-.route > div {
-    width: 50%;
-    height: 110px;
-    margin: 14px 0;
+.route-grade-number span {
+    width: 42px;
+    display: inline-block;
+    text-align: center;
+    line-height: 42px;
+}
+
+.route-section {
+    margin-left: 8px;
+    float: left;
+    line-height: 42px;
+}
+
+.route-grip {
+    width: 50px;
+    float: right;
+}
+
+.route-card-bottom {
+    height: 8px;
+    padding: 8px 0px;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.route-author {
     float: left;
 }
 
-.route .grade {
-    width: 26px;
-    height: 26px;
-    margin-right: 20px;
-    padding: 26px 26px;
-    border: 2px solid grey;
+.route-date {
+    float: right;
 }
 
-.route .grade .number {
+
+/** NEW ROUTE **/
+.new-route .content-section  {
+    width: 100%;
+    margin-bottom: 32px;
+    display: block;
 }
 
-.route .grade-green {
-    background-color: green;
+.radio-inputs {
+    height: 48px;
+    text-align: justify;
 }
 
-.route .grade-blue {
-    background-color: blue;
+.radio-inputs input {
+    display: none;
 }
 
-.route .grade-red {
-    background-color: red;
+.radio-inputs label {
+    width: 48px;
+    height: 48px;
+    vertical-align: top;
+    display: inline-block;
 }
 
-.route .grade-black {
-    background-color: black;
+.radio-inputs label.shadow {
+    box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box;
+    border: 0;
+    background-color: #FFF;
 }
 
-.route .grade-white {
-    background-color: white;
+.stretch {
+    width: 100%;
+    display: inline-block;
+    font-size: 0;
+    line-height: 0
 }
 
-.route .grip svg {
-    
+/* Section */
+.section-picker label {
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    border: 1px solid #E0E0E0;
+    background-color: #F5F5F5;
 }
 
-.date,
-.author {
-    text-align: right;
+.section-picker label span {
+    width: 46px;
+    color: #E0E0E0;
+    font-size: 18px;
+    display: inline-block;
+    text-align: center;
+    line-height: 49px;
+}
+
+.section-picker input:checked + label {
+    border-color: #448AFF;
+}
+
+.section-picker input:checked + label span {
+    color: #448AFF;
+}
+
+/* Grade */
+.grade-picker label  {
+    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30)
+}
+
+.grade-checkmark {
+    width: 24px;
+    height: 24px;
+    margin: 12px;
+    display: none;
+    fill: #FAFAFA;
+   /* filter: url(#shadow);*/
+}
+
+.grade-4 .grade-checkmark {
+    fill: #222222;
+}
+
+.grade-picker input:checked + label .grade-checkmark {
+    display: block;
+}
+
+/* Route number and creator*/
+.number-picker input,
+.author-picker input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #009688;
+    border-radius: 0px;
+    font-size: 16px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}
+
+.number-picker input:focus,
+.author-picker input:focus {
+    outline: none;
+}
+
+/* Create button */
+.create-route-button {
+    background-color: #448AFF;
+}
+
+.create-route-button:active {
+    background-color: #539FFF;
 }
