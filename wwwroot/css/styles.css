@@ -68,6 +68,26 @@ input {
     color: rgba(0, 0, 0, 0.65) !important;
 }
 
+.holdColor-0 {
+    background-color: #43A047 !important;
+}
+
+.holdColor-1 {
+    background-color: #2196FE !important;
+}
+
+.holdColor-2 {
+    background-color: #EF5350 !important;
+}
+
+.holdColor-3 {
+    background-color: #616161 !important;
+}
+
+.holdColor-4 {
+    background-color: #FBFBFB !important;
+    color: rgba(0, 0, 0, 0.65) !important;
+}
 .header {
     width: 100%;
     height: 64px;

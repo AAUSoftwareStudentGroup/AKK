@@ -28,6 +28,11 @@ function RoutesViewModel(client, changed)
             { value: 3, name: "Black"},
             { value: 4, name: "White"}
         ],
+        holdColors: [
+            { value: 0, name: "Green"},
+            { value: 1, name: "Blue"},
+            { value: 2, name: "Black"}
+        ],
         sections: [
             { sectionId: -1, name: "All" }
         ],
@@ -38,12 +43,14 @@ function RoutesViewModel(client, changed)
             { value: 3, name: "Author" },
         ],
         selectedGrade: null,
+        selectedColor: null,
         selectedSection: null,
         selectedSortBy: null,
         routes: [],
         refreshRoutes: function()
         {
             var gradeValue = viewModel.selectedGrade.value == -1 ? null : viewModel.selectedGrade.value;
+            var colorValue = viewModel.selectedColor.value == -1 ? null : viewModel.selectedColor.value;
             var sectionId = viewModel.selectedSection.sectionId == -1 ? null : viewModel.selectedSection.sectionId;
             var sortByValue = viewModel.selectedSortBy.value == -1 ? null : viewModel.selectedSortBy.value;
             viewModel.client.routes.getRoutes(gradeValue, sectionId, sortByValue, function(response) {
@@ -65,6 +72,11 @@ function RoutesViewModel(client, changed)
         changeGrade: function(gradeValue)
         {
             viewModel.selectedGrade = viewModel.grades.filter(function(grade){ return grade.value == gradeValue; })[0];
+            viewModel.refreshRoutes();
+        },
+        changeHoldColor: function(colorValue)
+        {
+            viewModel.selectedColor = viewModel.holdColors.filter(function(holdColor)){ return holdColor.value == colorValue; })[0];
             viewModel.refreshRoutes();
         },
         changeSection: function(sectionId)
