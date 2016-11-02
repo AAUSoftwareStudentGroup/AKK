@@ -15,6 +15,8 @@ namespace AKK.Classes.Models {
 
         public Color ColorOfHolds { get; set; }
 
+        public Color ColorOfTape { get; set; }
+
         public virtual Grade Grade { get; set; }
 
         public Guid SectionId { get; set; }
