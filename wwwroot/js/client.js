@@ -47,6 +47,23 @@ function RouteClient(url)
         });
     };
 
+    this.updateRoute = function(routeId, sectionId, name, author, grade, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url + "/" + routeId,
+            data:
+            {
+                sectionId: sectionId,
+                author: author,
+                name: name,
+                grade: grade
+            },
+            success: success
+        });
+    };
+
     this.deleteRoute = function(id, success)
     {
         $.ajax({
