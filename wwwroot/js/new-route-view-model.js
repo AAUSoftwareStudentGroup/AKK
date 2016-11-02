@@ -21,9 +21,20 @@ function NewRouteViewModel(client, changed)
             { value: 4, name: "White"}
         ],
         holdColors: [
-            { value: 0, name: "Green"},
-            { value: 1, name: "Blue"},
-            { value: 2, name: "Black"}
+            { value: 0, name: "Cyan"},
+            { value: 1, name: "Azure"},
+            { value: 2, name: "Blue"},
+            { value: 3, name: "Violet"},
+            { value: 4, name: "Magenta"},
+            { value: 5, name: "Rose"},
+            { value: 6, name: "Red"},
+            { value: 7, name: "Orange"},
+            { value: 8, name: "Yellow"},
+            { value: 9, name: "Chartreuse Green"},
+            { value: 10, name: "Green"},
+            { value: 11, name: "Black"},
+            { value: 12, name: "Brown"},
+            { value: 13, name: "White"}
         ],
         changeSection: function(sectionId)
         {
@@ -58,7 +69,7 @@ function NewRouteViewModel(client, changed)
         },
         addRoute: function()
         {
-            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && !isNaN(viewModel.routeNumber))
+            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
             {
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade.value;
@@ -75,7 +86,7 @@ function NewRouteViewModel(client, changed)
         },
         updateRoute: function()
         {
-            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && !isNaN(viewModel.routeNumber))
+            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
             {
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade.value;
