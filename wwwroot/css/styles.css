@@ -121,6 +121,10 @@ input {
 }
 
 .holdColor-13 {
+    background-color: #5c5959 !important;
+}
+
+.holdColor-14 {
     background-color: #FBFBFB !important;
     color: rgba(0, 0, 0, 0.65) !important;
 }
@@ -280,6 +284,7 @@ input {
 
 .radio-inputs {
     height: 48px;
+    margin-bottom: 12px;
     text-align: justify;
 }
 
@@ -336,7 +341,8 @@ input {
 }
 
 /* Grade */
-.grade-picker label  {
+.grade-picker label,
+.color-picker label  {
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30)
 }
 
@@ -348,11 +354,15 @@ input {
     fill: #FAFAFA;
 }
 
-.grade-4 .grade-checkmark {
+.grade-4 .grade-checkmark,
+.holdColor-8 .grade-checkmark,
+.holdColor-9 .grade-checkmark,
+.holdColor-14 .grade-checkmark {
     fill: #222222;
 }
 
-.grade-picker input:checked + label .grade-checkmark {
+.grade-picker input:checked + label .grade-checkmark,
+.color-picker input:checked + label .grade-checkmark {
     display: block;
 }
 

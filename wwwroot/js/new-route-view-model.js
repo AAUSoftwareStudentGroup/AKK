@@ -34,7 +34,8 @@ function NewRouteViewModel(client, changed)
             { value: 10, name: "Green"},
             { value: 11, name: "Black"},
             { value: 12, name: "Brown"},
-            { value: 13, name: "White"}
+            { value: 13, name: "Grey"},
+            { value: 14, name: "White"}
         ],
         changeSection: function(sectionId)
         {
