@@ -78,6 +78,23 @@
                     <h2>Route creator</h2>
                     <input id="author" class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Author">
                 </div>
+                                <div class="content-section color-picker">
+                    <h2>Colour of holds</h2>
+                    <div class="radio-inputs holdcolors">
+                        {{#each holdColors}}
+                        <input id="hold-input-{{value}}" onclick="viewModel.changeHoldColor({{value}})" name="hold" type="radio">
+                        <label class="hold-box holdColor-{{value}}" for="hold-input-{{value}}">
+                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                                <polygon points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>  
+                            </svg>
+                        </label>
+                        {{/each}}
+                        <div class="stretch"></div>
+                    </div>
+                </div>
+                <span id=error-message>
+                    
+                </span>
                 <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save"></input>
             </div>
         </script>

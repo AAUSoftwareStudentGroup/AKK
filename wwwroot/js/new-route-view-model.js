@@ -21,21 +21,21 @@ function NewRouteViewModel(client, changed)
             { value: 4, name: "White"}
         ],
         holdColors: [
-            { value: 0, name: "Cyan", color: 65535},
-            { value: 1, name: "Azure", color: 65535},
-            { value: 2, name: "Blue", color: 65535},
-            { value: 3, name: "Violet", color: 65535},
-            { value: 4, name: "Magenta", color: 65535},
-            { value: 5, name: "Rose", color: 65535},
-            { value: 6, name: "Red", color: 65535},
-            { value: 7, name: "Orange", color: 65535},
-            { value: 8, name: "Yellow", color: 65535},
-            { value: 9, name: "Chartreuse Green", color: 65535},
-            { value: 10, name: "Green", color: 65535},
-            { value: 11, name: "Black", color: 65535},
-            { value: 12, name: "Brown", color: 65535},
-            { value: 13, name: "Grey", color: 65535},
-            { value: 14, name: "White", color: 65535}
+            { value: 0, name: "Cyan"},
+            { value: 1, name: "Azure"},
+            { value: 2, name: "Blue"},
+            { value: 3, name: "Violet"},
+            { value: 4, name: "Magenta"},
+            { value: 5, name: "Rose"},
+            { value: 6, name: "Red"},
+            { value: 7, name: "Orange"},
+            { value: 8, name: "Yellow"},
+            { value: 9, name: "Chartreuse Green"},
+            { value: 10, name: "Green"},
+            { value: 11, name: "Black"},
+            { value: 12, name: "Brown"},
+            { value: 13, name: "Grey"},
+            { value: 14, name: "White"}
         ],
         changeSection: function(sectionId)
         {
@@ -74,7 +74,7 @@ function NewRouteViewModel(client, changed)
             {
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade.value;
-                var holdColor = viewModel.selectedColor.color;
+                var holdColor = viewModel.selectedColor.value;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
                 viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
@@ -98,7 +98,7 @@ function NewRouteViewModel(client, changed)
                 var holdColor = viewModel.selectedColor.value;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
-                viewModel.client.routes.addRoute(sectionId, author, routeNumber, gradeValue, holdColor, function(response) {
+                viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
                     if(response.success)
                     {
                         window.history.back();

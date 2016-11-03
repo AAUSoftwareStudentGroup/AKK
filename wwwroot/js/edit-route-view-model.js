@@ -15,6 +15,7 @@ function EditRouteViewModel(client, changed)
                         {
                             viewModel.changeSection(routeResponse.data.sectionId);
                             viewModel.changeGrade(routeResponse.data.grade);
+                            viewModel.changeHoldColor(routeResponse.data.colorOfHolds);
                             viewModel.changeRouteNumber(routeResponse.data.name);
                             viewModel.changeAuthor(routeResponse.data.author);
                             viewModel.changed();
@@ -29,6 +30,7 @@ function EditRouteViewModel(client, changed)
         sections: [],
         selectedSection: null,
         selectedGrade: null,
+        selectedColor: null,
         routeNumber: null,
         author: null,
         grades: [
@@ -38,6 +40,23 @@ function EditRouteViewModel(client, changed)
             { value: 3, name: "Black"},
             { value: 4, name: "White"}
         ],
+        holdColors: [
+            { value: 0, name: "Cyan"},
+            { value: 1, name: "Azure"},
+            { value: 2, name: "Blue"},
+            { value: 3, name: "Violet"},
+            { value: 4, name: "Magenta"},
+            { value: 5, name: "Rose"},
+            { value: 6, name: "Red"},
+            { value: 7, name: "Orange"},
+            { value: 8, name: "Yellow"},
+            { value: 9, name: "Chartreuse Green"},
+            { value: 10, name: "Green"},
+            { value: 11, name: "Black"},
+            { value: 12, name: "Brown"},
+            { value: 13, name: "Grey"},
+            { value: 14, name: "White"}
+        ],
         changeSection: function(sectionId)
         {
             viewModel.selectedSection = viewModel.sections.filter(function(s) { return s.sectionId == sectionId; })[0];
@@ -45,6 +64,10 @@ function EditRouteViewModel(client, changed)
         changeGrade: function(gradeValue)
         {
             viewModel.selectedGrade = viewModel.grades.filter(function(g) { return g.value == gradeValue; })[0];
+        },
+        changeHoldColor: function(holdColor)
+        {
+            viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.value == holdColor; })[0];
         },
         changeRouteNumber: function(routeNumber)
         {
@@ -67,14 +90,15 @@ function EditRouteViewModel(client, changed)
         },
         updateRoute: function()
         {
-            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && !isNaN(viewModel.routeNumber))
+            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
             {
                 var routeId = viewModel.routeId;
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade.value;
+                var holdColor = viewModel.selectedColor.value;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
-                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, gradeValue, function(response) {
+                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, gradeValue, holdColor, function(response) {
                     if(response.success)
                     {
                         window.history.back();
