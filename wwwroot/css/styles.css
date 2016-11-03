@@ -68,65 +68,8 @@ input {
     color: rgba(0, 0, 0, 0.65) !important;
 }
 
-.holdColor-0 {
-    background-color: #00FFFF !important;
-}
-
-.holdColor-1 {
-    background-color: #017EFF !important;
-}
-
-.holdColor-2 {
-    background-color: #0000FF !important;
-}
-
-.holdColor-3 {
-    background-color: #7F00FF !important;
-}
-
-.holdColor-4 {
-    background-color: #FF00FF !important;
-}
-
-.holdColor-5 {
-    background-color: #FF017F !important;
-}
-
-.holdColor-6 {
-    background-color: #FF0000 !important;
-}
-
-.holdColor-7 {
-    background-color: #FF7F00 !important;
-}
-
-.holdColor-8 {
-    background-color: #FFFF00 !important;
-}
-
-.holdColor-9 {
-    background-color: #80FF00 !important;
-}
-
-.holdColor-10 {
-    background-color: #00FF00 !important;
-}
-
-.holdColor-11 {
-    background-color: #000000 !important;
-}
-
-.holdColor-12 {
-    background-color: #7E360F !important;
-}
-
-.holdColor-13 {
-    background-color: #5c5959 !important;
-}
-
 .holdColor-14 {
-    background-color: #FBFBFB !important;
-    color: rgba(0, 0, 0, 0.65) !important;
+    background-color: #999999 !important;
 }
 
 .header {
@@ -316,7 +259,8 @@ input {
 }
 
 /* Section */
-.section-picker label {
+.section-picker label,
+.color-picker label {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -324,7 +268,8 @@ input {
     background-color: #F5F5F5;
 }
 
-.section-picker label span {
+.section-picker label span,
+.color-picker label svg {
     width: 46px;
     color: #E0E0E0;
     font-size: 18px;
@@ -333,12 +278,19 @@ input {
     line-height: 49px;
 }
 
-.section-picker input:checked + label {
+.section-picker input:checked + label,
+.color-picker  input:checked + label {
     border-color: #448AFF;
 }
 
-.section-picker input:checked + label span {
+.section-picker input:checked + label span,
+.color-picker input:checked + label svg {
     color: #448AFF;
+}
+
+.color-picker svg {
+    margin-left:3px;
+    margin-top:3px;
 }
 
 /* Grade */
