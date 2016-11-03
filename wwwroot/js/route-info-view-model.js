@@ -23,9 +23,16 @@ function RouteInfoViewModel(client, changed)
         client: client,
         changed: changed,
         route: null,
-        deleteRoute: function()
+        editRoute: function()
         {
             if(viewModel.route != null)
+            {
+                window.location = "edit-route.html?routeId=" + viewModel.route.routeId;
+            }
+        },
+        deleteRoute: function()
+        {
+            if(viewModel.route != null && confirm("Do you really want to delete this route?"))
             {
                 viewModel.client.routes.deleteRoute(viewModel.route.routeId, function(response) {
                     if(response.success)

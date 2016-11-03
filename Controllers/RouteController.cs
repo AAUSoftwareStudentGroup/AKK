@@ -28,6 +28,15 @@ namespace AKK.Controllers {
                 case SortOrder.Newest:
                     routes = routes.OrderByDescending(p => p.CreatedDate);
                     break;
+                case SortOrder.Oldest:
+                    routes = routes.OrderBy(p => p.CreatedDate);
+                    break;
+                case SortOrder.Author:
+                    routes = routes.OrderBy(p => p.Author);
+                    break;
+                case SortOrder.Grading:
+                    routes = routes.OrderBy(p => p.Grade);
+                    break;
             }
             
             return new ApiSuccessResponse(Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(routes));

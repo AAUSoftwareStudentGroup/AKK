@@ -32,7 +32,10 @@ function RoutesViewModel(client, changed)
             { sectionId: -1, name: "All" }
         ],
         sortOptions: [
-            { value: 0, name: "Newest" }
+            { value: 0, name: "Newest" },
+            { value: 1, name: "Oldest" },
+            { value: 2, name: "Grading" },
+            { value: 3, name: "Author" },
         ],
         selectedGrade: null,
         selectedSection: null,

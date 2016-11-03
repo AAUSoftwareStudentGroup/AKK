@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=3">
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=3">
         <title>AKK - Route Info</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -29,7 +29,7 @@
                             <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
                         </svg>
                     </a>
-                    <h1 class="page-title">New Route</h1>
+                    <h1 class="page-title">Route Info</h1>
                 </div>
             </div>
             <div class="content single-route">
@@ -44,6 +44,11 @@
                             <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
                                 <g>
                                     <path id="grip-midtone" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="#{{route.colorOfHolds}}"></path>
+                                    <g fill="none">
+                                        <path d="M 36.836383,33.068567 C 35.213237,32.496533 27.693198,29.524638 26.0254,29.248225 c 2.143442,-1.861054 3.712738,-3.316786 5.856531,-4.894293 1.367188,-0.382813 12.179769,-3.777121 14.179769,-4.488059 -2.964755,5.020908 -5.947458,8.02823 -9.225317,13.202694 z"/>
+                                        <path d="m 24.442188,73.077988 c 1.557844,3.447141 11.510897,5.693371 12.417063,1.46103 -2.103343,-14.804299 -0.389963,-37.666269 -0.02593,-41.468466 0.03049,-1.239421 -6.95035,-5.688298 -10.802212,-3.827023 -2.750526,12.215569 -2.640597,36.472758 -1.588921,43.834459 z"/>
+                                        <path d="m 24.447945,73.064321 1.636801,7.663963 c 4.70668,0.419845 6.404662,0.720301 13.036371,1.983757 L 36.856992,74.539086 C 33.266215,73.666251 27.750168,73.100003 24.447945,73.064321 Z"/>
+                                    </g>
                                     <path id="grip-highlight" d="m98.4,80.75c27.7,-10.8 1.9,-42.2 13.1,-61c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.2,-2.6 -11.4,-2.6 -16.6,0c-10.7,5.3 -33.1,15.5 -56.8,20.5c-1.8,0.4 -3.5,1 -5,1.8l0,0c0,0 22.8,-4.7 37.6,20.5c14.6,25.1 17.6,41.9 45.3,31.2z" fill="rgba(255,255,255,0.15)"></path>
                                     <path id="grip-shadow" d="m126.5,82.35c2.5,-3.2 3.8,-7 4,-10.8c-8,7.9 -22,20.7 -32.1,25.2c-14.9,6.7 -26.6,-12.1 -56.1,-20.8c-14.2,-4.2 -24.9,-3.2 -32.1,-1.1c3.2,3.3 7.6,5.4 12.5,5.6c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.1 19,-11.1 27.7,-22.3z" fill="rgba(0,0,0,0.15)"></path>
                                     <g>
@@ -59,7 +64,8 @@
                         <span class="route-date">{{route.date}}</span>
                     </div>
                 </div>
-                <input class="submit-button delete-route-button" type="button" onclick="viewModel.deleteRoute('{{route.routeId}}')" value="Delete"></input>
+                <input class="submit-button create-route-button left" type="button" onclick="viewModel.editRoute('{{route.routeId}}')" value="Edit"></input>
+                <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute('{{route.routeId}}')" value="Delete"></input>
             </div>
         </script>
         <div id="content"></div>
