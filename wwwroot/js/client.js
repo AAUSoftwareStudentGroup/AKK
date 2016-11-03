@@ -30,7 +30,7 @@ function RouteClient(url)
         });
     };
 
-    this.addRoute = function(sectionName, sectionId, name, author, routeNumber, holdColor, grade, success)
+    this.addRoute = function(sectionId, name, author, holdColor, grade, success)
     {
         $.ajax({
             type: "POST",
@@ -38,11 +38,9 @@ function RouteClient(url)
             url: url,
             data:
             {
-                sectionName: sectionName,
                 sectionId: sectionId,
                 name: name,
                 author: author,
-                routeNumber: routeNumber,
                 grade: grade,
                 holdColor: holdColor
             },
