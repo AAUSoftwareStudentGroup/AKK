@@ -30,7 +30,7 @@ function RouteClient(url)
         });
     };
 
-    this.addRoute = function(sectionName, sectionId, name, author, colorOfHolds, grade, success)
+    this.addRoute = function(sectionName, sectionId, name, author, routeNumber, holdColor, grade, success)
     {
         $.ajax({
             type: "POST",
@@ -42,14 +42,15 @@ function RouteClient(url)
                 sectionId: sectionId,
                 name: name,
                 author: author,
-                colorOfHolds: colorOfHolds,
-                grade: grade
+                routeNumber: routeNumber,
+                grade: grade,
+                holdColor: holdColor
             },
             success: success
         });
     };
 
-    this.updateRoute = function(routeId, sectionName, sectionId, name, author, colorOfHolds, grade, success)
+    this.updateRoute = function(routeId, sectionId, name, author, grade, success)
     {
         $.ajax({
             type: "PATCH",
@@ -58,11 +59,11 @@ function RouteClient(url)
             data:
             {
                 routeId: routeId,
-                sectionName: sectionName,
+            //    sectionName: sectionName,
                 sectionId: sectionId,
                 name: name,
                 author: author,
-                colorOfHolds: colorOfHolds,
+            //    holdColor: holdColor,
                 grade: grade
             },
             success: success

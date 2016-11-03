@@ -178,7 +178,7 @@ input {
 /** ROUTE LIST **/
 .new-route .content-section {
     width: 100%;
-    margin-bottom: 32px;
+  /*  margin-bottom: 32px;*/
     display: block;
 }
 
@@ -278,13 +278,13 @@ input {
 /** NEW ROUTE **/
 .new-route .content-section  {
     width: 100%;
-    margin-bottom: 32px;
+/*    margin-bottom: 32px;*/
     display: block;
 }
 
 .radio-inputs {
-    height: 48px;
-    margin-bottom: 12px;
+/*    height: 48px;
+    margin-bottom: 12px;*/
     text-align: justify;
 }
 
@@ -297,8 +297,11 @@ input {
     height: 48px;
     vertical-align: top;
     display: inline-block;
+}/*
+.radio-inputs.holdcolors {
+    height: 144px;
 }
-
+*/
 .radio-inputs label.shadow {
     box-sizing: content-box;
     -moz-box-sizing: content-box;

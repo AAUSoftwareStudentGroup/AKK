@@ -20,6 +20,7 @@
                 var changed = function changed() { 
                     $('#content').html(template(viewModel)); 
                     $('#grade-' + viewModel.selectedGrade.value).prop("selected", true);
+             //       $('#hold-' + viewModel.selectedColor.value).prop("selected", true);
                     $('#section-' + viewModel.selectedSection.name).prop("selected", true);
                     $('#sortby-' + viewModel.selectedSortBy.value).prop("selected", true);
                 };
