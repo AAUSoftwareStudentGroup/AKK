@@ -82,6 +82,10 @@ function NewRouteViewModel(client, changed)
                     {
                         window.history.back();
                     }
+                    else
+                    {
+                        $("#error-message").html(response.message);
+                    }
                 });
             }
         },
