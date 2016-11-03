@@ -13,7 +13,7 @@ function NewRouteViewModel(client, changed)
         selectedColor: null,
         routeNumber: null,
         author: null,
-        grades: [
+        grades: [ 
             { value: 0, name: "Green"},
             { value: 1, name: "Blue"},
             { value: 2, name: "Red"},

@@ -176,7 +176,7 @@ input {
 }
 
 /** ROUTE LIST **/
-.new-route .content-section {
+.routes .content-section {
     width: 100%;
     margin-bottom: 32px;
     display: block;
@@ -278,12 +278,12 @@ input {
 /** NEW ROUTE **/
 .new-route .content-section  {
     width: 100%;
-    margin-bottom: 32px;
+/*    margin-bottom: 32px; */
     display: block;
 }
 
 .radio-inputs {
-    height: 48px;
+ /*   height: 48px;*/
     margin-bottom: 12px;
     text-align: justify;
 }
@@ -354,22 +354,11 @@ input {
     fill: #FAFAFA;
 }
 
-.grade-4 .grade-checkmark,
-.holdColor-8 .grade-checkmark,
-.holdColor-9 .grade-checkmark,
-.holdColor-14 .grade-checkmark {
-    fill: #222222;
-}
-
-.grade-picker input:checked + label .grade-checkmark,
-.color-picker input:checked + label .grade-checkmark {
-    display: block;
-}
-
 /* Route number and creator*/
 .number-picker input,
 .author-picker input {
     width: 100%;
+    margin-bottom: 32px;
     border: none;
     border-bottom: 2px solid #009688;
     border-radius: 0px;
@@ -382,6 +371,22 @@ input {
 .number-picker input:focus,
 .author-picker input:focus {
     outline: none;
+}
+
+.hold-box {
+    margin-bottom: 12px;
+}
+
+.grade-4 .grade-checkmark,
+.holdColor-8 .grade-checkmark,
+.holdColor-9 .grade-checkmark,
+.holdColor-14 .grade-checkmark {
+    fill: #222222;
+}
+
+.grade-picker input:checked + label .grade-checkmark,
+.color-picker input:checked + label .grade-checkmark {
+    display: block;
 }
 
 /* Create button */
