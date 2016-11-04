@@ -48,7 +48,7 @@ function RouteClient(url)
         });
     };
 
-    this.updateRoute = function(routeId, sectionId, name, author, grade, success)
+    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, success)
     {
         $.ajax({
             type: "PATCH",
@@ -61,7 +61,7 @@ function RouteClient(url)
                 sectionId: sectionId,
                 name: name,
                 author: author,
-            //    holdColor: holdColor,
+                holdColor: holdColor,
                 grade: grade
             },
             success: success

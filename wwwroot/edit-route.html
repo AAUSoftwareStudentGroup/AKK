@@ -27,6 +27,7 @@
                     $('#content').html(template(viewModel)); 
                     $('#section-input-' + viewModel.selectedSection.name).prop("checked", true);
                     $('#grade-input-' + viewModel.selectedGrade.value).prop("checked", true);
+                    $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked". true);
                 };
                 viewModel = new EditRouteViewModel(client, changed);
             });
