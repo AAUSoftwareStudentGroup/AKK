@@ -67,11 +67,11 @@ input {
     background-color: #FBFBFB !important;
     color: rgba(0, 0, 0, 0.65) !important;
 }
-
+/*
 .holdColor-14 {
     background-color: #999999 !important;
 }
-
+*/
 .header {
     width: 100%;
     height: 64px;
@@ -238,11 +238,8 @@ input {
     height: 48px;
     vertical-align: top;
     display: inline-block;
-}/*
-.radio-inputs.holdcolors {
-    height: 144px;
 }
-*/
+
 .radio-inputs label.shadow {
     box-sizing: content-box;
     -moz-box-sizing: content-box;
@@ -271,7 +268,7 @@ input {
 .section-picker label span,
 .color-picker label svg {
     width: 46px;
-    color: #E0E0E0;
+    color: #222222;
     font-size: 18px;
     display: inline-block;
     text-align: center;
@@ -280,12 +277,8 @@ input {
 
 .section-picker input:checked + label,
 .color-picker  input:checked + label {
-    border-color: #448AFF;
-}
-
-.section-picker input:checked + label span,
-.color-picker input:checked + label svg {
-    color: #448AFF;
+    background-color: #CCCCCC;
+    border-color: #222222;
 }
 
 .color-picker svg {
@@ -294,8 +287,7 @@ input {
 }
 
 /* Grade */
-.grade-picker label,
-.color-picker label  {
+.grade-picker label {
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30)
 }
 
@@ -330,10 +322,7 @@ input {
     margin-bottom: 12px;
 }
 
-.grade-4 .grade-checkmark,
-.holdColor-8 .grade-checkmark,
-.holdColor-9 .grade-checkmark,
-.holdColor-14 .grade-checkmark {
+.grade-4 .grade-checkmark {
     fill: #222222;
 }
 

@@ -42,7 +42,7 @@ function RouteClient(url)
                 name: name,
                 author: author,
                 grade: grade,
-                holdColor: holdColor
+                colorOfHolds: holdColor
             },
             success: success
         });
@@ -61,7 +61,7 @@ function RouteClient(url)
                 sectionId: sectionId,
                 name: name,
                 author: author,
-                holdColor: holdColor,
+                colorOfHolds: holdColor,
                 grade: grade
             },
             success: success

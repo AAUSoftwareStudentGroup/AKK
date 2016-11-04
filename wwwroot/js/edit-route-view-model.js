@@ -15,7 +15,7 @@ function EditRouteViewModel(client, changed)
                         {
                             viewModel.changeSection(routeResponse.data.sectionId);
                             viewModel.changeGrade(routeResponse.data.grade);
-                            viewModel.changeHoldColor(routeResponse.data.colorOfHolds);
+                            viewModel.changeHoldColor((Math.floor(routeResponse.data.colorOfHolds / 256)).toString(16));
                             viewModel.changeRouteNumber(routeResponse.data.name);
                             viewModel.changeAuthor(routeResponse.data.author);
                             viewModel.changed();
@@ -67,7 +67,7 @@ function EditRouteViewModel(client, changed)
         },
         changeHoldColor: function(holdColor)
         {
-            viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.value == holdColor; })[0];
+            viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.color == holdColor; })[0];
         },
         changeRouteNumber: function(routeNumber)
         {

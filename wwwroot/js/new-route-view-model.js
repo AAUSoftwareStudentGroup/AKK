@@ -74,7 +74,7 @@ function NewRouteViewModel(client, changed)
             {
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade.value;
-                var holdColor = viewModel.selectedColor.value;
+                var holdColor = parseInt(viewModel.selectedColor.color, 16) * 256;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
                 viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
@@ -95,7 +95,7 @@ function NewRouteViewModel(client, changed)
             {
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade.value;
-                var holdColor = viewModel.selectedColor.value;
+                var holdColor = parseInt(viewModel.selectedColor.color, 16) * 256;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
                 viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
