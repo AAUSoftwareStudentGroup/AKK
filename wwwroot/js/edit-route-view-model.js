@@ -41,21 +41,21 @@ function EditRouteViewModel(client, changed)
             { value: 4, name: "White"}
         ],
         holdColors: [
-            { value: 0, name: "Cyan", color: "00c8c8"},
-            { value: 1, name: "Azure", color: "017EFF"},
-            { value: 2, name: "Blue", color: "0000FF"},
-            { value: 3, name: "Violet", color: "7F00FF"},
-            { value: 4, name: "Magenta", color: "FF00FF"},
-            { value: 5, name: "Rose", color: "FF017F"},
-            { value: 6, name: "Red", color: "FF0000"},
-            { value: 7, name: "Orange", color: "FF7F00"},
-            { value: 8, name: "Yellow", color: "e4dc00"},
-            { value: 9, name: "Chartreuse Green", color: "79FF00"},
-            { value: 10, name: "Green", color: "00e900"},
-            { value: 11, name: "Black", color: "000000"},
-            { value: 12, name: "Brown", color: "7E360F"},
-            { value: 13, name: "Grey", color: "5c5959"},
-            { value: 14, name: "White", color: "D0D0D0"}
+            { value: 0, name: "Cyan"},
+            { value: 1, name: "Azure"},
+            { value: 2, name: "Blue"},
+            { value: 3, name: "Violet"},
+            { value: 4, name: "Magenta"},
+            { value: 5, name: "Rose"},
+            { value: 6, name: "Red"},
+            { value: 7, name: "Orange"},
+            { value: 8, name: "Yellow"},
+            { value: 9, name: "Chartreuse Green"},
+            { value: 10, name: "Green"},
+            { value: 11, name: "Black"},
+            { value: 12, name: "Brown"},
+            { value: 13, name: "Grey"},
+            { value: 14, name: "White"}
         ],
         changeSection: function(sectionId)
         {
