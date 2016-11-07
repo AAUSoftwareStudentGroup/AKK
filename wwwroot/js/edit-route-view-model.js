@@ -15,7 +15,7 @@ function EditRouteViewModel(client, changed)
                         {
                             viewModel.changeSection(routeResponse.data.sectionId);
                             viewModel.changeGrade(routeResponse.data.grade);
-                            viewModel.changeHoldColor((Math.floor(routeResponse.data.colorOfHolds / 256)).toString(16));
+                            //viewModel.changeHoldColor((Math.floor(routeResponse.data.colorOfHolds / 256)).toString(16));
                             viewModel.changeRouteNumber(routeResponse.data.name);
                             viewModel.changeAuthor(routeResponse.data.author);
                             viewModel.changed();

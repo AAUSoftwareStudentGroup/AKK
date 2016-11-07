@@ -39,6 +39,7 @@ function RoutesViewModel(client, changed)
         ],
         selectedGrade: null,
         selectedSection: null,
+        selectedColor: null,
         selectedSortBy: null,
         routes: [],
         refreshRoutes: function()
@@ -56,7 +57,8 @@ function RoutesViewModel(client, changed)
                             return s.sectionId == viewModel.routes[i].sectionId; 
                         })[0].name;
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
-                        viewModel.routes[i].colorOfHolds = (Math.floor(viewModel.routes[i].colorOfHolds / 256)).toString(16);
+                  //      viewModel.routes[i].colorOfHolds = (Math.floor(viewModel.routes[i].colorOfHolds / 256)).toString(16);
+                        viewModel.routes[i].selectedColor = viewModel.routes[i].colorOfHolds;
                     }
                     viewModel.changed();
                 }
