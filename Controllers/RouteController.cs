@@ -10,18 +10,18 @@ using AKK.Classes.ApiResponses;
 namespace AKK.Controllers {
     [Route("api/route")]
     public class RouteController : Controller {
-        MainDbContext _mainDbContext;
+        MainDbContext db;
         public RouteController(MainDbContext mainDbContext) {
-            _mainDbContext = mainDbContext;
+            db = mainDbContext;
         }
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse GetRoutes(Grades? grade, Guid? sectionId, SortOrder sortBy) {
-            var routes = _mainDbContext.Routes.Include(r => r.Section).AsQueryable();
+        public ApiResponse GetRoutes(int? grade, Guid? sectionId, SortOrder sortBy) {
+            var routes = db.Routes.Include(r => r.Section).Include(r => r.Grade.Color).Include(r => r.ColorOfHolds).Include(r => r.ColorOfTape).AsQueryable();
             
             if(grade != null)
-                routes = routes.Where(p => p.Grade == grade);
+                routes = routes.Where(r => r.Grade.Difficulty == grade);
             if(sectionId != null)
                 routes = routes.Where(p => p.SectionId == sectionId);
             switch(sortBy) {
@@ -44,17 +44,23 @@ namespace AKK.Controllers {
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse AddRoute(string sectionName, Guid sectionId, string name, string author, uint colorOfHolds, Grades grade) {
+        public ApiResponse AddRoute(string sectionName, Guid sectionId, string name, string author, Color colorOfHolds, Color colorOfTape, Grade grade) {
             int num;
-            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
+            Grade _grade;
+            var grades = db.Grades.Include(g => g.Color).Where(g => g.Difficulty == grade.Difficulty);
+            if(grades.Count() != 1)
+                return new ApiErrorResponse("No grade exsist with difficulty " + grade.Difficulty);
+            _grade = grades.First();
+
+            var sections = db.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
             if(sections.Count() == 0)
-                return new ApiErrorResponse("No section with name "+sectionId);
+                return new ApiErrorResponse("No section with name/id "+sectionId);
             
             if(!int.TryParse(name, out num) || num < 0) {
                 return new ApiErrorResponse("Route number must be a non-negative integer");
             }
             
-            if(_mainDbContext.Routes.AsQueryable().Where(r => r.Grade == grade && r.Name == name).Count() > 0)
+            if(db.Routes.AsQueryable().Where(r => r.Grade == grade && r.Name == name).Count() > 0)
                 return new ApiErrorResponse("A route with this grade and number already exsists");
 
             Section section = sections.First();
@@ -62,16 +68,18 @@ namespace AKK.Controllers {
                 Name=name, 
                 Author=author, 
                 CreatedDate=DateTime.Now, 
-                ColorOfHolds=colorOfHolds, 
-                Grade=grade, 
+                ColorOfHolds=colorOfHolds,
+                ColorOfTape=colorOfTape,
+                Grade=_grade,
+                GradeId=_grade.GradeId,
                 Section=section, 
                 SectionId=sectionId
             };
             
             section.Routes.Add(route);
-            _mainDbContext.Routes.Add(route);
+            db.Routes.Add(route);
 
-            if(_mainDbContext.SaveChanges() == 0)
+            if(db.SaveChanges() == 0)
                 return new ApiErrorResponse("Failed to update database");
             return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(route));
         }
@@ -79,7 +87,7 @@ namespace AKK.Controllers {
         // DELETE: /api/route
         [HttpDelete]
         public ApiResponse DeleteAllRoutes() {
-            var routes = _mainDbContext.Routes.Include(r => r.Section).AsQueryable();
+            var routes = db.Routes.Include(r => r.Section).Include(r => r.Grade).ThenInclude(g => g.Color).Include(r => r.ColorOfHolds).Include(r => r.ColorOfTape).AsQueryable();
             if(routes.Count() == 0)
                 return new ApiErrorResponse("No routes exsist");
             
@@ -92,8 +100,8 @@ namespace AKK.Controllers {
                 )
             );
 
-            _mainDbContext.Routes.RemoveRange(routes);
-            if(_mainDbContext.SaveChanges() == 0)
+            db.Routes.RemoveRange(routes);
+            if(db.SaveChanges() == 0)
                 return new ApiErrorResponse("Failed to remove routes from database");
             
             return new ApiSuccessResponse(resultCopy);
@@ -102,7 +110,7 @@ namespace AKK.Controllers {
         // GET: /api/route/{id}
         [HttpGet("{id}")]
         public ApiResponse GetRoute(Guid id) {
-            var routes = _mainDbContext.Routes.Include(r => r.Section).AsQueryable().Where(r => r.RouteId == id);
+            var routes = db.Routes.Include(r => r.Section).Include(r => r.Grade.Color).Include(r => r.ColorOfHolds).Include(r => r.ColorOfTape).AsQueryable().Where(r => r.RouteId == id);
             if(routes.Count() == 0)
                 return new ApiErrorResponse("No route exsits with id "+id);
             
@@ -111,46 +119,63 @@ namespace AKK.Controllers {
 
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
-        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Guid sectionId, string name, string author, uint? colorOfHolds, Grades? grade) {
-            int num;
-            var routes = _mainDbContext.Routes.Include(r => r.Section).AsQueryable().Where(r => r.RouteId == routeId);
-            if(routes.Count() == 0)
-                return new ApiErrorResponse("No route exsits with id "+routeId);
-            var route = routes.First();
+        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Route route) {
+            Route oldRoute = null;
+            bool changed = false;
+            var routes = db.Routes
+                .Include(r => r.Section)
+                .Include(r => r.ColorOfTape)
+                .Include(r => r.ColorOfHolds)
+                .Include(r => r.Grade).ThenInclude(g => g.Color).AsQueryable().Where(r => r.RouteId == routeId);
+
+            if(routes.Count() != 1)
+                return new ApiErrorResponse("Route does not exsist");
+            oldRoute = routes.First();
             
-            var sections = _mainDbContext.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
-            if(sections.Count() == 1) {
-                var section = sections.First();
-                var oldSection = _mainDbContext.Sections.AsQueryable().Where(s => s.SectionId == route.SectionId).First();
-                oldSection.Routes.Remove(route);
-                route.SectionId = sectionId;
-                route.Section = section;
-                section.Routes.Add(route);
+            if(route.Name != null && route.Name != oldRoute.Name) { oldRoute.Name = route.Name; changed = true;}
+            if(route.Author != null) oldRoute.Author = route.Author;
+            if(route.ColorOfHolds != null) oldRoute.ColorOfHolds = route.ColorOfHolds;
+            if(route.ColorOfTape != null) oldRoute.ColorOfTape = route.ColorOfTape;
+            if(route.Grade != null) {
+                var grades = db.Grades.Include(g => g.Color).Where(g => g.Difficulty == route.Grade.Difficulty);
+                if(grades.Count() != 1)
+                    return new ApiErrorResponse("No grade with given difficulty");
+                
+                if(route.Grade.Difficulty != oldRoute.Grade.Difficulty)
+                    changed = true;
+                oldRoute.Grade = grades.First();
             }
 
-            if(name != null) {
-                if(!int.TryParse(name, out num) || num < 0)
-                    return new ApiErrorResponse("Name must be a non-negative integer");
-                else
-                    route.Name = name;
+            if(changed) {
+                var routeswithgradeAndName = db.Routes.Where(r => r.Grade.Difficulty == oldRoute.Grade.Difficulty).Where(r => r.Name == oldRoute.Name);
+                if(routeswithgradeAndName.Count() > 0)
+                    return new ApiErrorResponse("A route with that grade and name already exsist");
             }
-            if(author != null)
-                route.Author = author;
-            if(colorOfHolds != null)
-                route.ColorOfHolds = (uint)colorOfHolds;
-            if(grade != null) 
-                route.Grade = (Grades)grade;
-            
-            if(_mainDbContext.SaveChanges() == 0)
-                return new ApiErrorResponse("Failed to update database");
 
-            return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(route));
+            if(route.SectionId != default(Guid)) {
+                var section = db.Sections.Where(s => s.SectionId == route.SectionId);
+                if(section.Count() != 1)
+                    return new ApiErrorResponse("No section with id " + route.RouteId);
+
+                oldRoute.Section = section.First();
+            }
+            else if(sectionName != null) {
+                var section = db.Sections.Where(s => s.Name == sectionName);
+                if(section.Count() != 1)
+                    return new ApiErrorResponse("No section with name " + sectionName);
+
+                oldRoute.Section = section.First();
+            }
+
+            db.SaveChanges();
+
+            return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(oldRoute));
         }
 
         // DELETE: /api/route/{routeId}
         [HttpDelete("{routeId}")]
         public ApiResponse DeleteRoute(Guid routeId) {
-            var routes = _mainDbContext.Routes.Include(r => r.Section).AsQueryable().Where(r => r.RouteId == routeId);
+            var routes = db.Routes.Include(r => r.Section).Include(r => r.Grade).ThenInclude(g => g.Color).Include(r => r.ColorOfHolds).Include(r => r.ColorOfTape).AsQueryable().Where(r => r.RouteId == routeId);
             if(routes.Count() == 0) {
                 return new ApiErrorResponse("No route exsits with id "+routeId);
             }
@@ -164,8 +189,8 @@ namespace AKK.Controllers {
                 )
             );
             
-            _mainDbContext.Routes.RemoveRange(routes);
-            if(_mainDbContext.SaveChanges() == 0) {
+            db.Routes.RemoveRange(routes);
+            if(db.SaveChanges() == 0) {
                 return new ApiErrorResponse("Failed to remove routes with id "+routeId);
             }
 
