@@ -14,8 +14,8 @@ function EditRouteViewModel(client, changed)
                         if(routeResponse.success)
                         {
                             viewModel.changeSection(routeResponse.data.sectionId);
-                            viewModel.changeGrade(routeResponse.data.grade);
-                            //viewModel.changeHoldColor((Math.floor(routeResponse.data.colorOfHolds / 256)).toString(16));
+                            viewModel.changeGrade(routeResponse.data.grade.difficulty);
+                            viewModel.changeHoldColor(routeResponse.data.colorOfHolds);
                             viewModel.changeRouteNumber(routeResponse.data.name);
                             viewModel.changeAuthor(routeResponse.data.author);
                             viewModel.changed();
@@ -48,7 +48,7 @@ function EditRouteViewModel(client, changed)
             { value: 4, name: "Magenta", color: "FF00FF"},
             { value: 5, name: "Rose", color: "FF017F"},
             { value: 6, name: "Red", color: "FF0000"},
-            { value: 7, name: "Orange", color: "FF7F00"},
+            { value: 7, name: "Orange", color: "FF7B00"},
             { value: 8, name: "Yellow", color: "e4dc00"},
             { value: 9, name: "Chartreuse Green", color: "79FF00"},
             { value: 10, name: "Green", color: "00e900"},
