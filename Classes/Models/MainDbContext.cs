@@ -13,6 +13,7 @@ namespace AKK.Classes.Models
 
         public DbSet<Route> Routes { get; set; }
         public DbSet<Section> Sections { get; set; }
+        public DbSet<Grade> Grades { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +48,7 @@ namespace AKK.Classes.Models
                 new Grade {Difficulty = 3, Color = new Color(0,0,0), GradeId = new Guid()},
                 new Grade {Difficulty = 4, Color = new Color(255,255,255), GradeId = new Guid()},
             };
+            
             Section sectionA = new Section { SectionId = new Guid(), Name = "A" };
             List<Route> routesForA = new List<Route> {
                 new Route{Name = "4", ColorOfHolds = new Color(255, 0, 0), Author = "Anton", Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},

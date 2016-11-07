@@ -1,4 +1,5 @@
 using System;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AKK.Classes.Models {
@@ -21,6 +22,7 @@ namespace AKK.Classes.Models {
 
         public Guid SectionId { get; set; }
 
+        [JsonIgnore]
         public Guid GradeId { get; set; }
 
         public bool PendingDeletion { get; set; }

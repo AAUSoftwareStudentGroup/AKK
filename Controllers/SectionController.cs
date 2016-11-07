@@ -18,7 +18,7 @@ namespace AKK.Controllers {
 
         // GET: /api/section
         [HttpGet]
-        public ApiSuccessResponse GetAllSections() {
+        public ApiResponse GetAllSections() {
             var sections = _mainDbContext.Sections.AsQueryable().OrderBy(s => s.Name);
 
             return new ApiSuccessResponse(
@@ -44,7 +44,10 @@ namespace AKK.Controllers {
         // DELETE: /api/section
         [HttpDelete]
         public ApiResponse DeleteAllSections() {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
             if(sections.Count() == 0)
                 return new ApiErrorResponse("No sections exsits");
             
@@ -79,7 +82,10 @@ namespace AKK.Controllers {
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
         public ApiResponse DeleteSection(string name) {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
             
             try {
                 Guid id = new Guid(name);
@@ -106,7 +112,10 @@ namespace AKK.Controllers {
         // GET: /api/section/{name}/routes
         [HttpGet("{name}/routes")]
         public ApiResponse GetSectionRoutes(string name) {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
 
             try {
                 Guid id = new Guid(name);
@@ -127,7 +136,11 @@ namespace AKK.Controllers {
         // DELETE: /api/section/{name}/routes
         [HttpDelete("{name}/routes")]
         public ApiResponse DeleteSectionRoutes(string name) {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Section)
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
 
             try {
                 Guid id = new Guid(name);
