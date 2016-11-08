@@ -75,7 +75,7 @@
                 </div>
                 <div class="content-section number-picker">
                     <h2>Route number</h2>
-                    <input id="route-number" class="number-input" type="number" onchange="viewModel.changeRouteNumber(this.value)" value="{{routeNumber}}" placeholder="Number" pattern="[0-9]*" inputmode="numeric">
+                    <input id="route-number" class="number-input" type="number" onchange="viewModel.changeRouteNumber(this.value)" value="{{routeNumber}}" placeholder="Number" pattern="[1-9][0-9]*" inputmode="numeric" min="0" max="50">
                 </div>
                 <div class="content-section author-picker">
                     <h2>Route creator</h2>
