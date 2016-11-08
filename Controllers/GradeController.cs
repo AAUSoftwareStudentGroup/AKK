@@ -28,7 +28,7 @@ namespace AKK.Controllers {
         [HttpPost]
         public ApiResponse AddGrade(Grade grade) {
             if(db.Grades.Where(g => g.Difficulty == grade.Difficulty).Count() != 0)
-                return new ApiErrorResponse("A grade already exsist with the given difficulty");
+                return new ApiErrorResponse("A grade already exists with the given difficulty");
 
             db.Grades.Add(grade);
             if(db.SaveChanges() == 0)
@@ -41,7 +41,7 @@ namespace AKK.Controllers {
         public ApiResponse GetGrade(string id) {
             Grade grade = FindGrade(id, db.Grades.Include(g => g.Color).AsQueryable());
             if(grade == null)
-                return new ApiErrorResponse("No grades with given id exsist");
+                return new ApiErrorResponse("No grades with given id exist");
 
             return new ApiSuccessResponse(grade);
         }
@@ -51,11 +51,11 @@ namespace AKK.Controllers {
         public ApiResponse UpdateGrade(string id, int? difficulty, Color color) {
             Grade oldGrade = FindGrade(id, db.Grades.Include(g => g.Color).AsQueryable());
             if(oldGrade == null)
-                return new ApiErrorResponse("No grade exsist with difficulty/id " + id);
+                return new ApiErrorResponse("No grade exists with difficulty/id " + id);
 
             if(difficulty != null) {
                 if(db.Grades.Where(g => g.Difficulty == difficulty).Count() > 0)
-                    return new ApiErrorResponse("A grade with this difficulty already exsist");
+                    return new ApiErrorResponse("A grade with this difficulty already exist");
     
                 oldGrade.Difficulty = (int)difficulty; 
             }
@@ -73,10 +73,10 @@ namespace AKK.Controllers {
         public ApiResponse DeleteGrade(string id) {
             Grade grade = FindGrade(id, db.Grades.Include(g => g.Color).Include(g => g.Routes).AsQueryable());
             if(grade == null)
-                return new ApiErrorResponse("No grade exsist with difficulty/id " + id);
+                return new ApiErrorResponse("No grade exists with difficulty/id " + id);
             
             if(grade.Routes.Count() != 0)
-                return new ApiErrorResponse("Routes exsit with this grade. Remove those before you delete this grade");
+                return new ApiErrorResponse("Routes already exists with this grade. Remove those before you delete this grade");
 
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade));
@@ -98,7 +98,7 @@ namespace AKK.Controllers {
             );
 
             if(grade == null)
-                return new ApiErrorResponse("No grades with given id exsist");
+                return new ApiErrorResponse("No grades with given id exists");
 
 
             return new ApiSuccessResponse(grade.Routes);

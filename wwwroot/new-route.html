@@ -98,9 +98,7 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <span id=error-message>
-
-                </span>
+                <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
 
                 <input class="submit-button create-route-button" type="button" onclick="viewModel.addRoute()" value="Create"></input>
             </div>

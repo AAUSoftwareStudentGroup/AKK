@@ -20,7 +20,15 @@ function EditRouteViewModel(client, changed)
                             viewModel.changeAuthor(routeResponse.data.author);
                             viewModel.changed();
                         }
+                        else
+                        {
+                            $("#error-message").html(response.message).show();
+                        }
                     });
+                }
+                else
+                {
+                    $("#error-message").html(response.message).show();
                 }
             });
         },
@@ -104,6 +112,10 @@ function EditRouteViewModel(client, changed)
                     viewModel.sections = response.data;
                     viewModel.changed();
                 }
+                else
+                {
+                    $("#error-message").html(response.message).show();
+                }
             });
         },
         updateRoute: function()
@@ -120,6 +132,10 @@ function EditRouteViewModel(client, changed)
                     if(response.success)
                     {
                         window.history.back();
+                    }
+                    else
+                    {
+                        $("#error-message").html(response.message).show();
                     }
                 });
             }

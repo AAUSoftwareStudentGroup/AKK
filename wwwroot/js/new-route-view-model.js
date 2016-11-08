@@ -66,6 +66,10 @@ function NewRouteViewModel(client, changed)
                     viewModel.sections = response.data;
                     viewModel.changed();
                 }
+                else
+                {
+                    $("#error-message").html(response.message).show();
+                }
             });
         },
         addRoute: function()
@@ -84,7 +88,7 @@ function NewRouteViewModel(client, changed)
                     }
                     else
                     {
-                        $("#error-message").html(response.message);
+                        $("#error-message").html(response.message).show();
                     }
                 });
             }
@@ -102,6 +106,10 @@ function NewRouteViewModel(client, changed)
                     if(response.success)
                     {
                         window.history.back();
+                    }
+                    else
+                    {
+                        $("#error-message").html(response.message).show();
                     }
                 });
             }
