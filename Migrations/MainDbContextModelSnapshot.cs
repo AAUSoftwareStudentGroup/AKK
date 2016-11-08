@@ -15,48 +15,30 @@ namespace AKK.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("AKK.Classes.Models.Color", b =>
-                {
-                    b.Property<Guid>("ColorId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<byte>("a");
-
-                    b.Property<byte>("b");
-
-                    b.Property<byte>("g");
-
-                    b.Property<byte>("r");
-
-                    b.HasKey("ColorId");
-
-                    b.ToTable("Color");
-                });
-
             modelBuilder.Entity("AKK.Classes.Models.Grade", b =>
                 {
                     b.Property<Guid>("GradeId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ColorId");
+                    b.Property<uint?>("ColorDB");
 
                     b.Property<int>("Difficulty");
 
                     b.HasKey("GradeId");
 
-                    b.HasIndex("ColorId");
-
-                    b.ToTable("Grade");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
                     b.Property<Guid>("RouteId")
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Author");
 
-                    b.Property<Guid?>("ColorOfHoldsColorId");
+                    b.Property<uint?>("ColorOfHoldsDB");
+
+                    b.Property<uint?>("ColorOfTapeDB");
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -69,8 +51,6 @@ namespace AKK.Migrations
                     b.Property<Guid>("SectionId");
 
                     b.HasKey("RouteId");
-
-                    b.HasIndex("ColorOfHoldsColorId");
 
                     b.HasIndex("GradeId");
 
@@ -91,19 +71,8 @@ namespace AKK.Migrations
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Grade", b =>
-                {
-                    b.HasOne("AKK.Classes.Models.Color", "Color")
-                        .WithMany()
-                        .HasForeignKey("ColorId");
-                });
-
             modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
-                    b.HasOne("AKK.Classes.Models.Color", "ColorOfHolds")
-                        .WithMany()
-                        .HasForeignKey("ColorOfHoldsColorId");
-
                     b.HasOne("AKK.Classes.Models.Grade", "Grade")
                         .WithMany("Routes")
                         .HasForeignKey("GradeId")
