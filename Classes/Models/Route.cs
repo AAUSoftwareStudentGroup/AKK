@@ -1,6 +1,4 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 
 namespace AKK.Classes.Models
@@ -8,30 +6,14 @@ namespace AKK.Classes.Models
     public enum Grades { Green, Blue, Red, Black, White };
     public enum SortOrder { Newest, Oldest, Grading, Author };
 
-    public class Route
+    public class Route : RouteInformation
     {
         public Route()
         {
             CreatedDate = DateTime.Now.Date;
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid RouteId { get; set; }
-
-        public string Name { get; set; }
-
-        public string Author { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public uint ColorOfHolds { get; set; }
-
-        public Grades Grade { get; set; }
-
         [JsonIgnore]
-        public Section Section { get; set; }
-
-        public Guid SectionId { get; set; }
+        public virtual Section Section { get; set; }        
     }
 }
