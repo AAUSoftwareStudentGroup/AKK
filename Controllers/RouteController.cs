@@ -44,27 +44,32 @@ namespace AKK.Controllers {
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse AddRoute(string sectionName, Guid sectionId, Route route) {
+        public ApiResponse AddRoute(Route route, string sectionName) {
             if(route.Author == null) return new ApiErrorResponse("An author must be specified");
             if(route.ColorOfHolds == null) return new ApiErrorResponse("A hold color must be specified");
             if(route.Grade == null) return new ApiErrorResponse("A grade must be specified");
             if(route.Name == null) return new ApiErrorResponse("A route number must be specified");
-            if(sectionName == null) return new ApiErrorResponse("A section name or id must be specified");
+
+            var sections = db.Sections.AsQueryable();
+            if(route.SectionId != null && route.SectionId != default(Guid)) {
+                sections = sections.Where(s => s.SectionId == route.SectionId);
+                if(sections.Count() == 0)
+                    return new ApiErrorResponse("No section with id "+route.SectionId);
+            }
+            else if(sectionName != null) {
+                sections = sections.Where(s => s.Name == sectionName);
+                if(sections.Count() == 0)
+                    return new ApiErrorResponse("No section with name "+sectionName);
+            }
+            else {
+                return new ApiErrorResponse("A section must be specified");
+            }
             
             var grades = db.Grades.Include(g => g.Color).Where(g => g.Difficulty == route.Grade.Difficulty);
             if(grades.Count() != 1)
                 return new ApiErrorResponse("No grade with given difficulty");
             route.Grade = grades.First();
             
-            var sections = db.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
-            try {
-                Guid id = new Guid(sectionName);
-                sections = sections.Where(s => s.SectionId == id);
-            } catch(System.FormatException) {
-                sections = sections.Where(s => s.Name == sectionName);
-            }
-            if(sections.Count() == 0)
-                return new ApiErrorResponse("No section with name/id "+sectionId);
 
             if(db.Routes.AsQueryable().Where(r => r.Grade.Difficulty == route.Grade.Difficulty && r.Name == route.Name).Count() > 0)
                 return new ApiErrorResponse("A route with this grade and number already exists");
