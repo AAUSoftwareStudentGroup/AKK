@@ -318,7 +318,7 @@ input {
     outline: none;
 }
 
-.hold-box {
+.hold-box, .section-box {
     margin-bottom: 12px;
 }
 
