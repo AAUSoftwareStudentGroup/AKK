@@ -35,7 +35,7 @@ namespace AKK.Controllers {
                     routes = routes.OrderBy(p => p.Author);
                     break;
                 case SortOrder.Grading:
-                    routes = routes.OrderBy(p => p.Grade);
+                    routes = routes.OrderBy(p => p.Grade.Difficulty);
                     break;
             }
             
