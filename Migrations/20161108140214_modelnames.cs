@@ -4,23 +4,21 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AKK.Migrations
 {
-    public partial class AnotherStructure : Migration
+    public partial class modelnames : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Color",
+                name: "Grades",
                 columns: table => new
                 {
-                    ColorId = table.Column<Guid>(nullable: false),
-                    a = table.Column<byte>(nullable: false),
-                    b = table.Column<byte>(nullable: false),
-                    g = table.Column<byte>(nullable: false),
-                    r = table.Column<byte>(nullable: false)
+                    GradeId = table.Column<Guid>(nullable: false),
+                    ColorDB = table.Column<uint>(nullable: true),
+                    Difficulty = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Color", x => x.ColorId);
+                    table.PrimaryKey("PK_Grades", x => x.GradeId);
                 });
 
             migrationBuilder.CreateTable(
@@ -36,31 +34,13 @@ namespace AKK.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Grade",
-                columns: table => new
-                {
-                    GradeId = table.Column<Guid>(nullable: false),
-                    ColorId = table.Column<Guid>(nullable: true),
-                    Difficulty = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Grade", x => x.GradeId);
-                    table.ForeignKey(
-                        name: "FK_Grade_Color_ColorId",
-                        column: x => x.ColorId,
-                        principalTable: "Color",
-                        principalColumn: "ColorId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Routes",
                 columns: table => new
                 {
                     RouteId = table.Column<Guid>(nullable: false),
                     Author = table.Column<string>(nullable: true),
-                    ColorOfHoldsColorId = table.Column<Guid>(nullable: true),
+                    ColorOfHoldsDB = table.Column<uint>(nullable: true),
+                    ColorOfTapeDB = table.Column<uint>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     GradeId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -71,15 +51,9 @@ namespace AKK.Migrations
                 {
                     table.PrimaryKey("PK_Routes", x => x.RouteId);
                     table.ForeignKey(
-                        name: "FK_Routes_Color_ColorOfHoldsColorId",
-                        column: x => x.ColorOfHoldsColorId,
-                        principalTable: "Color",
-                        principalColumn: "ColorId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Routes_Grade_GradeId",
+                        name: "FK_Routes_Grades_GradeId",
                         column: x => x.GradeId,
-                        principalTable: "Grade",
+                        principalTable: "Grades",
                         principalColumn: "GradeId",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
@@ -89,16 +63,6 @@ namespace AKK.Migrations
                         principalColumn: "SectionId",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Grade_ColorId",
-                table: "Grade",
-                column: "ColorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Routes_ColorOfHoldsColorId",
-                table: "Routes",
-                column: "ColorOfHoldsColorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Routes_GradeId",
@@ -117,13 +81,10 @@ namespace AKK.Migrations
                 name: "Routes");
 
             migrationBuilder.DropTable(
-                name: "Grade");
+                name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "Sections");
-
-            migrationBuilder.DropTable(
-                name: "Color");
         }
     }
 }
