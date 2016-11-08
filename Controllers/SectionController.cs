@@ -31,7 +31,7 @@ namespace AKK.Controllers {
         public ApiResponse AddSection(string name) {
             var sectionExsits = _mainDbContext.Sections.Where(s => s.Name == name);
             if(sectionExsits.Count() > 0) {
-                return new ApiErrorResponse("A section with name "+name+" already exsists");
+                return new ApiErrorResponse("A section with name "+name+" already exist");
             }
             Section section = new Section() {Name=name};
             _mainDbContext.Sections.Add(section);
@@ -49,7 +49,7 @@ namespace AKK.Controllers {
                 .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
                 .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
             if(sections.Count() == 0)
-                return new ApiErrorResponse("No sections exsits");
+                return new ApiErrorResponse("No sections exist");
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));
@@ -95,7 +95,7 @@ namespace AKK.Controllers {
             }
 
             if(sections.Count() == 0)
-                return new ApiErrorResponse("No section exsists with name/id "+name);
+                return new ApiErrorResponse("No section exists with name/id "+name);
             else {
                 // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
                 var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));

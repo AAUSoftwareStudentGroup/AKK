@@ -44,37 +44,35 @@ namespace AKK.Controllers {
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse AddRoute(string sectionName, Guid sectionId, string name, string author, Color colorOfHolds, Color colorOfTape, Grade grade) {
-            int num;
-            Grade _grade;
-            var grades = db.Grades.Include(g => g.Color).Where(g => g.Difficulty == grade.Difficulty);
+        public ApiResponse AddRoute(string sectionName, Guid sectionId, Route route) {
+            if(route.Author == null) return new ApiErrorResponse("An author must be specified");
+            if(route.ColorOfHolds == null) return new ApiErrorResponse("A hold color must be specified");
+            if(route.Grade == null) return new ApiErrorResponse("A grade must be specified");
+            if(route.Name == null) return new ApiErrorResponse("A route number must be specified");
+            if(sectionName == null) return new ApiErrorResponse("A section name or id must be specified");
+            
+            var grades = db.Grades.Include(g => g.Color).Where(g => g.Difficulty == route.Grade.Difficulty);
             if(grades.Count() != 1)
-                return new ApiErrorResponse("No grade exsist with difficulty " + grade.Difficulty);
-            _grade = grades.First();
-
+                return new ApiErrorResponse("No grade with given difficulty");
+            route.Grade = grades.First();
+            
             var sections = db.Sections.AsQueryable().Where(s => s.Name == sectionName || s.SectionId == sectionId);
+            try {
+                Guid id = new Guid(sectionName);
+                sections = sections.Where(s => s.SectionId == id);
+            } catch(System.FormatException) {
+                sections = sections.Where(s => s.Name == sectionName);
+            }
             if(sections.Count() == 0)
                 return new ApiErrorResponse("No section with name/id "+sectionId);
-            
-            if(!int.TryParse(name, out num) || num < 0) {
-                return new ApiErrorResponse("Route number must be a non-negative integer");
-            }
-            
-            if(db.Routes.AsQueryable().Where(r => r.Grade == grade && r.Name == name).Count() > 0)
-                return new ApiErrorResponse("A route with this grade and number already exsists");
+
+            if(db.Routes.AsQueryable().Where(r => r.Grade.Difficulty == route.Grade.Difficulty && r.Name == route.Name).Count() > 0)
+                return new ApiErrorResponse("A route with this grade and number already exists");
 
             Section section = sections.First();
-            Route route = new Route() {
-                Name=name, 
-                Author=author, 
-                CreatedDate=DateTime.Now, 
-                ColorOfHolds=colorOfHolds,
-                ColorOfTape=colorOfTape,
-                Grade=_grade,
-                GradeId=_grade.GradeId,
-                Section=section, 
-                SectionId=sectionId
-            };
+            route.CreatedDate = DateTime.Now; 
+            route.Section = section; 
+            route.SectionId=section.SectionId;
             
             section.Routes.Add(route);
             db.Routes.Add(route);
@@ -89,7 +87,7 @@ namespace AKK.Controllers {
         public ApiResponse DeleteAllRoutes() {
             var routes = db.Routes.Include(r => r.Section).Include(r => r.Grade).ThenInclude(g => g.Color).Include(r => r.ColorOfHolds).Include(r => r.ColorOfTape).AsQueryable();
             if(routes.Count() == 0)
-                return new ApiErrorResponse("No routes exsist");
+                return new ApiErrorResponse("No routes exist");
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(
@@ -112,7 +110,7 @@ namespace AKK.Controllers {
         public ApiResponse GetRoute(Guid id) {
             var routes = db.Routes.Include(r => r.Section).Include(r => r.Grade.Color).Include(r => r.ColorOfHolds).Include(r => r.ColorOfTape).AsQueryable().Where(r => r.RouteId == id);
             if(routes.Count() == 0)
-                return new ApiErrorResponse("No route exsits with id "+id);
+                return new ApiErrorResponse("No route exists with id "+id);
             
             return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(routes.First()));
         }
@@ -129,7 +127,7 @@ namespace AKK.Controllers {
                 .Include(r => r.Grade).ThenInclude(g => g.Color).AsQueryable().Where(r => r.RouteId == routeId);
 
             if(routes.Count() != 1)
-                return new ApiErrorResponse("Route does not exsist");
+                return new ApiErrorResponse("Route does not exist");
             oldRoute = routes.First();
             
             if(route.Name != null && route.Name != oldRoute.Name) { oldRoute.Name = route.Name; changed = true;}
@@ -149,7 +147,7 @@ namespace AKK.Controllers {
             if(changed) {
                 var routeswithgradeAndName = db.Routes.Where(r => r.Grade.Difficulty == oldRoute.Grade.Difficulty).Where(r => r.Name == oldRoute.Name);
                 if(routeswithgradeAndName.Count() > 0)
-                    return new ApiErrorResponse("A route with that grade and name already exsist");
+                    return new ApiErrorResponse("A route with that grade and name already exist");
             }
 
             if(route.SectionId != default(Guid)) {
@@ -177,7 +175,7 @@ namespace AKK.Controllers {
         public ApiResponse DeleteRoute(Guid routeId) {
             var routes = db.Routes.Include(r => r.Section).Include(r => r.Grade).ThenInclude(g => g.Color).Include(r => r.ColorOfHolds).Include(r => r.ColorOfTape).AsQueryable().Where(r => r.RouteId == routeId);
             if(routes.Count() == 0) {
-                return new ApiErrorResponse("No route exsits with id "+routeId);
+                return new ApiErrorResponse("No route exists with id "+routeId);
             }
             
             // create copy that can be sent as result
