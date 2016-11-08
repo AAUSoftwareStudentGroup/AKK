@@ -68,6 +68,7 @@ function EditRouteViewModel(client, changed)
         getHoldColor: function(holdColor)
         {
             var temp = viewModel.holdColors;
+            viewModel.selectedColor = temp[0];
             for(var i = 0; i < temp.length; i++) {
                 if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
                     viewModel.selectedColor = temp[i];
@@ -115,7 +116,7 @@ function EditRouteViewModel(client, changed)
                 var holdColor = viewModel.selectedColor;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
-                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, gradeValue, holdColor, function(response) {
+                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
                     if(response.success)
                     {
                         window.history.back();

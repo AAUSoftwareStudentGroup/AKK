@@ -37,8 +37,8 @@
                     <h2 class="">Section</h2>
                     <div class="radio-inputs">
                         {{#each sections}}
-                        <input id="section-input-{{name}}" class="section-box" onclick="viewModel.changeSection('{{sectionId}}')" name="section" type="radio">
-                        <label for="section-input-{{name}}">
+                        <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{sectionId}}')" name="section" type="radio">
+                        <label for="section-input-{{name}}" class="section-box">
                             <span>{{name}}</span>
                         </label>
                         {{/each}}

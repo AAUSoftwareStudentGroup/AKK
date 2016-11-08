@@ -62,7 +62,7 @@ function RouteClient(url)
                 name: name,
                 author: author,
                 colorOfHolds: holdColor,
-                grade: grade
+                grade: {difficulty: grade.value}
             },
             success: success
         });
