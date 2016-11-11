@@ -137,6 +137,20 @@ function SectionClient(url)
             success: success
         });
     };
+
+    this.deleteSectionRoutes = function(name, success)
+    {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: url + "/" + name,
+            data:
+            {
+                name: name
+            },
+            success: success
+        });
+    };
 }
 
 function Client(routeUrl, sectionUrl)
