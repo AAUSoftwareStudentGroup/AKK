@@ -151,6 +151,21 @@ function SectionClient(url)
             success: success
         });
     };
+
+    this.renameSection = function(sectionId, newName, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                sectionId: sectionId,
+                newName: newName
+            },
+            success: success
+        });
+    };
 }
 
 function Client(routeUrl, sectionUrl)

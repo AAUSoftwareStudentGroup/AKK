@@ -100,9 +100,20 @@ function SectionsViewModel(client, changed)
         },
         deleteSection: function()
         {
-            if(viewModel.selectedSection != null && confirm("Dho you really want permanently delete this section?"))
-                {
+            if(viewModel.selectedSection != null && confirm("Do you really want permanently delete this section?"))
+            {
                 viewModel.client.sections.deleteSection(viewModel.selectedSection.sectionId, function(response) {
+                    if(response.success)
+                        viewModel.refreshSections();
+                });
+            }
+        },
+        renameSection: function()
+        {
+            var newName = prompt("Enter the new name","");
+            if(viewModel.selectedSection != null && confirm("Do you really want to rename this section?"))
+            {
+                viewModel.client.sections.renameSection(viewModel.selectedSection.sectionId, newName, function(response) {
                     if(response.success)
                         viewModel.refreshSections();
                 });
