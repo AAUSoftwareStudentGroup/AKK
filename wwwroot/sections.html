@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=3">
         <title>AKK - Find Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <link rel="stylesheet" type="text/css" href="css/adminStyles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-latest.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
@@ -18,8 +19,8 @@
                 var template = Handlebars.compile($("#sections-template").html());
                 var client = new Client(API_ROUTE_URL, API_SECTION_URL);
                 var changed = function changed() { 
-                    $('#content').html(template(viewModel)); 
-                    $('#section-' + viewModel.selectedSection.name).prop("selected", true);
+                    $('#content').html(template(viewModel));
+                  //  $('#section-' + viewModel.selectedSection.name).prop("selected", true);
                 };
                 viewModel = new SectionsViewModel(client, changed);
             });
@@ -27,7 +28,11 @@
         <script id="sections-template" type="text/x-handlebars-template">
             <div class="header">
                 <div class="header-content">
-                    <div class="header-button left"></div>
+                    <a class="header-button left" href="javascript:window.history.back();">
+                        <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                            <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
+                        </svg>
+                    </a>
                     <h1 class="page-title">Sections</h1>
                 </div>
             </div>
@@ -40,16 +45,22 @@
                         <span id="section-{{name}}">{{name}}</span>
                     </label>
                     {{/each}}
+                    <input id="section-input-new" onclick="viewModel.addNewSection()" name="section" type="radio">
+                    <label for="section-input-new" class="section-box">
+                        <span id="section-new">+</span>
+                    </label>
                     <label class="shadow"></label>  
                 <div class="stretch"></div>
             </div>
-            <div class="content">
+            <div class="sectionContent">
                 <h2>Section Details</h2>
-                <div class="section-overview" border="1,1,1,1">
-                    <p>{{routes.length}}</p>
-                    </div>
+                <div>
+                    <p>Routes in section: {{routes.length}}</p>
+                </div>
+                <input class="submit-button create-route-button section-button-clear left" type="button" onclick="viewModel.clearSection()" value="Clear"></input>
+                <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteSection('{{selectedSection.name}}')" value="Delete"></input>
             </div>
-            <div class="content routes">
+            <div class="routeOverview">
                 <div class="content-section route-list">
                     {{#each routes}}
                     <a href="route-info.html?routeId={{routeId}}">

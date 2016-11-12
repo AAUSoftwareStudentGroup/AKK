@@ -52,9 +52,18 @@ function SectionsViewModel(client, changed)
                             return s.sectionId == viewModel.routes[i].sectionId; 
                         })[0].name;
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
-                  //      viewModel.routes[i].colorOfHolds = (Math.floor(viewModel.routes[i].colorOfHolds / 256)).toString(16);
                         viewModel.routes[i].selectedColor = viewModel.routes[i].colorOfHolds;
                     }
+                    viewModel.changed();
+                }
+            });
+        },
+        refreshSections: function()
+        {
+            viewModel.client.sections.getAllSections(function(response) {
+                if(response.success) {
+                    viewModel.sections = response.data;
+
                     viewModel.changed();
                 }
             });
@@ -66,9 +75,38 @@ function SectionsViewModel(client, changed)
           var response;
             viewModel.client.routes.getRoutes(viewModel.grades[0], viewModel.selectedSection.sectionId, viewModel.sortOptions[0], function(response) {
                 if(response.success)
-                    viewModel.routes = response.data;
+                    viewModel.refreshRoutes();
             });
-            viewModel.refreshRoutes();
+
+        },
+        addNewSection: function()
+        {
+            var name = prompt("Enter name of new Section","");
+            var response;
+            viewModel.client.sections.addSection(name, function(response) {
+                if(response.success)
+                    viewModel.refreshSections();
+            });
+        },
+        clearSection: function()
+        {
+            if(viewModel.selectedSection != null && confirm("Do you really want to remove all routes from this section?"))
+            {
+                viewModel.client.sections.deleteSectionRoutes(viewModel.selectedSection.sectionId, function(response) {
+                    if(response.success)
+                        viewModel.refreshRoutes();
+                });
+            }
+        },
+        deleteSection: function()
+        {
+            if(viewModel.selectedSection != null && confirm("Dho you really want permanently delete this section?"))
+                {
+                viewModel.client.sections.deleteSection(viewModel.selectedSection.sectionId, function(response) {
+                    if(response.success)
+                        viewModel.refreshSections();
+                });
+            }
         }
     };
     viewModel.init();
