@@ -5,73 +5,63 @@
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=3">
         <title>AKK - Find Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
+        <link rel="stylesheet" type="text/css" href="css/adminStyles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-latest.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
-        <script type="text/javascript" src="js/routes-view-model.js"></script>
+        <script type="text/javascript" src="js/sections-view-model.js"></script>
     </head>
     <body>
         <script type="text/javascript">
             var viewModel;
             $(document).ready(function () {
-                var template = Handlebars.compile($("#routes-template").html());
+                var template = Handlebars.compile($("#sections-template").html());
                 var client = new Client(API_ROUTE_URL, API_SECTION_URL);
                 var changed = function changed() { 
-                    $('#content').html(template(viewModel)); 
-                    $('#grade-' + viewModel.selectedGrade.value).prop("selected", true);
-             //       $('#hold-' + viewModel.selectedColor.value).prop("selected", true);
-                    $('#section-' + viewModel.selectedSection.name).prop("selected", true);
-                    $('#sortby-' + viewModel.selectedSortBy.value).prop("selected", true);
+                    $('#content').html(template(viewModel));
+                  //  $('#section-' + viewModel.selectedSection.name).prop("selected", true);
                 };
-                viewModel = new RoutesViewModel(client, changed);
+                viewModel = new SectionsViewModel(client, changed);
             });
         </script>
-        <script id="routes-template" type="text/x-handlebars-template">
+        <script id="sections-template" type="text/x-handlebars-template">
             <div class="header">
                 <div class="header-content">
-                    <a class="header-button left" href="sections.html" background-color="#ffffff">
-                        <svg height="36" width="36">
-                            <circle cx="14" cy="14" r="14" stroke="black" stroke-width="1" fill="red" />
-                        </svg> 
-                    </a>
-                    <h1 class="page-title">Find Route</h1>
-                    <a class="header-button right" href="new-route.html">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF" >
-                            <polygon points="20 10.8571429 13.1428571 10.8571429 13.1428571 4 10.8571429 4 10.8571429 10.8571429 4 10.8571429 4 13.1428571 10.8571429 13.1428571 10.8571429 20 13.1428571 20 13.1428571 13.1428571 20 13.1428571"/>
+                    <a class="header-button left" href="javascript:window.history.back();">
+                        <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                            <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
                         </svg>
                     </a>
+                    <h1 class="page-title">Sections</h1>
                 </div>
             </div>
-            <div class="content routes">
-                <div class="content-section options">
-                    <form>
-                        <div class="drop-down-container left">
-                            <h2>Grade</h2>
-                            <select class="drop-down" onchange="viewModel.changeGrade(this.value)" type="dropdown" name="grade">
-                                {{#each grades}}
-                                <option id="grade-{{value}}" value="{{value}}">{{name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <div class="drop-down-container left">
-                            <h2>Section</h2>
-                            <select class="drop-down" onchange="viewModel.changeSection(this.value)" type="dropdown" name="section">
-                                {{#each sections}}
-                                <option id="section-{{name}}" value="{{sectionId}}">{{name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                        <div class="drop-down-container right">
-                            <h2>Sort by</h2>
-                            <select class="drop-down" onchange="viewModel.changeSortBy(this.value)" type="dropdown" name="sortBy">
-                                {{#each sortOptions}}
-                                <option id="sortby-{{value}}" value="{{value}}">{{name}}</option>
-                                {{/each}}
-                            </select>
-                        </div>
-                    </form>
+            <div class="content routes section-picker">
+                <h2>Section</h2>
+                <div class="radio-inputs">
+                    {{#each sections}}
+                    <input id="section-input-{{name}}" onclick="viewModel.getSectionDetails('{{sectionId}}')" name="section" type="radio">
+                    <label for="section-input-{{name}}" class="section-box">
+                        <span id="section-{{name}}">{{name}}</span>
+                    </label>
+                    {{/each}}
+                    <input id="section-input-new" onclick="viewModel.addNewSection()" name="section" type="radio">
+                    <label for="section-input-new" class="section-box">
+                        <span id="section-new">+</span>
+                    </label>
+                    <label class="shadow"></label>  
+                <div class="stretch"></div>
+            </div>
+            <div class="sectionContent">
+                <h2>Section Details</h2>
+                <div>
+                    <p>Routes in section: {{routes.length}}</p>
                 </div>
+                <input class="submit-button create-route-button section-button-clear left" type="button" onclick="viewModel.clearSection()" value="Clear"></input>
+                <input class="submit-button create-route-button rename-section-button middle" type="button" onclick="viewModel.renameSection()" value="Rename"></input>
+                <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteSection('{{selectedSection.name}}')" value="Delete"></input>
+            </div>
+            <div class="routeOverview">
                 <div class="content-section route-list">
                     {{#each routes}}
                     <a href="route-info.html?routeId={{routeId}}">
@@ -113,7 +103,7 @@
                             </div>
                             <div class="route-card-bottom">
                                 <span class="route-author">Made by: {{{author}}}</span>
-                                <span class="route-date">{{date}}</span>
+                                <span class="route-date">{{createdDate}}</span>
                             </div>
                         </div>
                     </a>

@@ -24,7 +24,7 @@
         <script id="route-info-template" type="text/x-handlebars-template">
             <div class="header">
                 <div class="header-content">
-                    <a class="header-button left" href="routes.html">
+                    <a class="header-button left" href="javascript:window.history.back();">
                         <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
                             <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
                         </svg>
@@ -74,7 +74,7 @@
                         <span class="route-date">{{route.date}}</span>
                     </div>
                 </div>
-                <input class="submit-button create-route-button left" type="button" onclick="viewModel.editRoute('{{route.routeId}}')" value="Edit"></input>
+                <input class="submit-button create-route-button left" type="button" onclick="viewModel.editRoute('{{viewModel.selectedSection.routeId}}')" value="Edit"></input>
                 <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute('{{route.routeId}}')" value="Delete"></input>
             </div>
         </script>
