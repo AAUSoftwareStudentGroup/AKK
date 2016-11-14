@@ -4,6 +4,7 @@ function SectionsViewModel(client, changed)
 	    var viewModel = {
         init: function()
         {
+            viewModel.getGrades();
             viewModel.client.sections.getAllSections(function(response)
             {
                 if(response.success)
@@ -23,13 +24,7 @@ function SectionsViewModel(client, changed)
         selectedGrade: null,
         routes: [],
         grades: [
-            { value: -1, name: "All"},
-            { value: 0, name: "Green"},
-            { value: 1, name: "Blue"},
-            { value: 2, name: "Red"},
-            { value: 3, name: "Black"},
-            { value: 4, name: "White"}
-        ],
+            { value: -1, name: "All"}],
         sections: [],
         sortOptions: [
             { value: 0, name: "Newest" },
@@ -78,6 +73,19 @@ function SectionsViewModel(client, changed)
                     viewModel.refreshRoutes();
             });
 
+        },
+        getGrades: function()
+        {
+            viewModel.client.grades.getAllGrades(function(response) {
+                if(response.success)
+                {
+                    viewModel.grades = viewModel.grades.concat(response.data);
+                    for (var i = 1; i < viewModel.grades.length; i++) {
+                       // viewModel.grades[i].name = "Green";
+                    };
+                  //  viewModel.changed();
+                }
+            })
         },
         addNewSection: function()
         {

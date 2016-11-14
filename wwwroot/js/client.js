@@ -168,8 +168,22 @@ function SectionClient(url)
     };
 }
 
-function Client(routeUrl, sectionUrl)
+function GradeClient(url)
+{
+    this.getAllGrades = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            success: success
+        });
+    };
+}
+
+function Client(routeUrl, sectionUrl, gradeUrl)
 {
     this.routes = new RouteClient(routeUrl);
     this.sections = new SectionClient(sectionUrl);
+    this.grades = new GradeClient(gradeUrl);
 }

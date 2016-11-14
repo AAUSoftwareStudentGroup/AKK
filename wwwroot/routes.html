@@ -16,10 +16,10 @@
             var viewModel;
             $(document).ready(function () {
                 var template = Handlebars.compile($("#routes-template").html());
-                var client = new Client(API_ROUTE_URL, API_SECTION_URL);
+                var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
                 var changed = function changed() { 
                     $('#content').html(template(viewModel)); 
-                    $('#grade-' + viewModel.selectedGrade.value).prop("selected", true);
+                    $('#grade-' + viewModel.selectedGrade.difficulty).prop("selected", true);
              //       $('#hold-' + viewModel.selectedColor.value).prop("selected", true);
                     $('#section-' + viewModel.selectedSection.name).prop("selected", true);
                     $('#sortby-' + viewModel.selectedSortBy.value).prop("selected", true);
@@ -50,7 +50,7 @@
                             <h2>Grade</h2>
                             <select class="drop-down" onchange="viewModel.changeGrade(this.value)" type="dropdown" name="grade">
                                 {{#each grades}}
-                                <option id="grade-{{value}}" value="{{value}}">{{name}}</option>
+                                <option id="grade-{{difficulty}}" value="{{difficulty}}">{{name}}</option>
                                 {{/each}}
                             </select>
                         </div>
