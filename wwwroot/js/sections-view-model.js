@@ -11,7 +11,7 @@ function SectionsViewModel(client, changed)
                 {
                     viewModel.sections = viewModel.sections.concat(response.data);
                     viewModel.selectedGrade = viewModel.grades[0];
-                   // viewModel.selectedSection = viewModel.sections[0];
+                    viewModel.selectedSection = viewModel.sections[0];
                     viewModel.selectedSortBy = viewModel.sortOptions[0];
                    // viewModel.refreshRoutes();
                     viewModel.changed();
@@ -67,11 +67,12 @@ function SectionsViewModel(client, changed)
         {
             viewModel.selectedSection = viewModel.sections.filter(function(section){ return section.sectionId == sectionId; })[0];
           //  viewModel.selectedSection = viewModel.client.sections.getSection(viewModel.selectedSection.sectionId);
-          var response;
+         /* var response;
             viewModel.client.routes.getRoutes(viewModel.grades[0], viewModel.selectedSection.sectionId, viewModel.sortOptions[0], function(response) {
                 if(response.success)
                     viewModel.refreshRoutes();
-            });
+            });*/
+            viewModel.refreshRoutes();
 
         },
         getGrades: function()

@@ -20,7 +20,7 @@
                 var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
                 var changed = function changed() { 
                     $('#content').html(template(viewModel));
-                  //  $('#section-' + viewModel.selectedSection.name).prop("selected", true);
+                    $('#section-input-' + viewModel.selectedSection.name).prop("selected", true);
                 };
                 viewModel = new SectionsViewModel(client, changed);
             });
