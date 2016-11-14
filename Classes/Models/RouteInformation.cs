@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AKK.Classes.Models {
     public abstract class RouteInformation {
 
+        protected uint? ColorOfHoldsDB { get; set; }
+        protected uint? ColorOfTapeDB { get; set; }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid RouteId { get; set; }
 
@@ -14,9 +17,24 @@ namespace AKK.Classes.Models {
 
         public DateTime CreatedDate { get; set; }
 
-        public Color ColorOfHolds { get; set; }
-
-        public Color ColorOfTape { get; set; }
+        [NotMapped]
+        public Color ColorOfHolds { 
+            get {
+                return Color.FromUint(ColorOfHoldsDB);
+            }
+            set {
+                ColorOfHoldsDB = value?.ToUint();
+            }
+        }
+        [NotMapped]
+        public Color ColorOfTape {
+            get {
+                return Color.FromUint(ColorOfTapeDB);
+            }
+            set {
+                ColorOfTapeDB = value?.ToUint();
+            }
+        }
 
         public virtual Grade Grade { get; set; }
 
@@ -25,7 +43,7 @@ namespace AKK.Classes.Models {
         [JsonIgnore]
         public Guid GradeId { get; set; }
 
-        public bool PendingDeletion { get; set; }
-    
+        public bool PendingDeletion { get; set; }      
+
     }
 }

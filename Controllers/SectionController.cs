@@ -30,8 +30,12 @@ namespace AKK.Controllers {
         [HttpPost]
         public ApiResponse AddSection(string name) {
             var sectionExsits = _mainDbContext.Sections.Where(s => s.Name == name);
-            if(sectionExsits.Count() > 0) {
+            if(sectionExsits.Any()) {
                 return new ApiErrorResponse("A section with name "+name+" already exist");
+            }
+            if (name == null)
+            {
+                return new ApiErrorResponse("Name must have a value");
             }
             Section section = new Section() {Name=name};
             _mainDbContext.Sections.Add(section);
@@ -48,7 +52,7 @@ namespace AKK.Controllers {
                 .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
                 .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
                 .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
-            if(sections.Count() == 0)
+            if(!sections.Any())
                 return new ApiErrorResponse("No sections exist");
             
             // create copy that can be sent as result
@@ -94,7 +98,7 @@ namespace AKK.Controllers {
                 sections = sections.Where(s => s.Name == name);
             }
 
-            if(sections.Count() == 0)
+            if(!sections.Any())
                 return new ApiErrorResponse("No section exists with name/id "+name);
             else {
                 // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
