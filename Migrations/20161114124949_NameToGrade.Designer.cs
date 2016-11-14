@@ -8,8 +8,8 @@ using AKK.Classes.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161108140214_modelnames")]
-    partial class modelnames
+    [Migration("20161114124949_NameToGrade")]
+    partial class NameToGrade
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,6 +24,8 @@ namespace AKK.Migrations
                     b.Property<uint?>("ColorDB");
 
                     b.Property<int>("Difficulty");
+
+                    b.Property<string>("Name");
 
                     b.HasKey("GradeId");
 

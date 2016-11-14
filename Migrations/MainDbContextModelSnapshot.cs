@@ -24,6 +24,8 @@ namespace AKK.Migrations
 
                     b.Property<int>("Difficulty");
 
+                    b.Property<string>("Name");
+
                     b.HasKey("GradeId");
 
                     b.ToTable("Grades");

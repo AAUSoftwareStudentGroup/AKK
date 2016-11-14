@@ -13,6 +13,8 @@ namespace AKK.Classes.Models {
         [JsonIgnore]
         public Guid GradeId  { get; set; }
 
+        public string Name { get; set; }
+
         public int Difficulty { get; set; }
 
         [NotMapped]
@@ -27,7 +29,7 @@ namespace AKK.Classes.Models {
 
         [JsonIgnore]
         public virtual List<Route> Routes { get; set; }
-
+        // https://weblogs.asp.net/ricardoperes/mapping-non-public-members-with-entity-framework-code-first
         public static readonly Expression<Func<Grade, uint?>> ColorPriv = p => p.ColorDB;  
     }
 }
