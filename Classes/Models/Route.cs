@@ -1,5 +1,4 @@
 using System;
-using System.Linq.Expressions;
 using Newtonsoft.Json;
 
 namespace AKK.Classes.Models
@@ -15,10 +14,6 @@ namespace AKK.Classes.Models
         }
 
         [JsonIgnore]
-        public virtual Section Section { get; set; }  
-
-        
-        public static readonly Expression<Func<Route, uint?>> ColorOfHoldsPriv = p => p.ColorOfHoldsDB; 
-        public static readonly Expression<Func<Route, uint?>> ColorOfTapePriv = p => p.ColorOfTapeDB;       
+        public virtual Section Section { get; set; }        
     }
 }

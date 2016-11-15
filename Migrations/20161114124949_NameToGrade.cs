@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AKK.Migrations
 {
-    public partial class modelnames : Migration
+    public partial class NameToGrade : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,7 +14,8 @@ namespace AKK.Migrations
                 {
                     GradeId = table.Column<Guid>(nullable: false),
                     ColorDB = table.Column<uint>(nullable: true),
-                    Difficulty = table.Column<int>(nullable: false)
+                    Difficulty = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

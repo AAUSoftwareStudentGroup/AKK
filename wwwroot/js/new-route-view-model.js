@@ -4,6 +4,8 @@ function NewRouteViewModel(client, changed)
         init: function()
         {
             viewModel.getSections();
+            viewModel.getGrades();
+            viewModel.changed();
         },
         client: client,
         changed: changed,
@@ -13,13 +15,7 @@ function NewRouteViewModel(client, changed)
         selectedColor: null,
         routeNumber: null,
         author: null,
-        grades: [ 
-            { value: 0, difficulty: 0, color: [{r: 67, g: 160, b: 71, a: 1}]},
-            { value: 1, difficulty: 1, color: [{r: 33, g: 150, b: 254, a: 1}]},
-            { value: 2, difficulty: 2, color: [{r: 239, g: 83, b: 80, a: 1}]},
-            { value: 3, difficulty: 3, color: [{r: 97, g: 97, b: 97, a: 1}]},
-            { value: 4, difficulty: 4, color: [{r: 251, g: 251, b: 251, a: 1}]},
-        ],
+        grades: [ ],
         holdColors: [
             { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
             { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1},
@@ -64,13 +60,23 @@ function NewRouteViewModel(client, changed)
                 if(response.success)
                 {
                     viewModel.sections = response.data;
-                    viewModel.changed();
+                 //   viewModel.changed();
                 }
                 else
                 {
                     $("#error-message").html(response.message).show();
                 }
             });
+        },
+        getGrades: function()
+        {
+            viewModel.client.grades.getAllGrades(function(response) {
+                if(response.success)
+                {
+                    viewModel.grades = response.data;
+                    viewModel.changed();
+                }
+            })
         },
         addRoute: function()
         {

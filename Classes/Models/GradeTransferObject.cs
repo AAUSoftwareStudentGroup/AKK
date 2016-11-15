@@ -6,5 +6,7 @@ namespace AKK.Classes.Models {
         public int Difficulty { get; set; }
 
         public Color Color { get; set; }
+
+        public string Name { get; set; }
     }
 }

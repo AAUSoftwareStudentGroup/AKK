@@ -16,9 +16,13 @@
             var viewModel;
             $(document).ready(function () {
                 var template = Handlebars.compile($("#new-route-template").html());
-                var client = new Client(API_ROUTE_URL, API_SECTION_URL);
+                var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
                 var changed = function changed() { $('#content').html(template(viewModel)); };
                 viewModel = new NewRouteViewModel(client, changed);
+
+                for (var i = 0; i < viewModel.grades.length; i++) {
+                    document.getElementById(grade-[i]).color = viewModel.grades[i].color.r;
+                };
             });
         </script>
         <script id="new-route-template" type="text/x-handlebars-template">
@@ -50,8 +54,8 @@
                     <h2>Grade</h2>
                     <div class="radio-inputs">
                         {{#each grades}}
-                        <input id="grade-input-{{value}}" class="grade-box" onclick="viewModel.changeGrade({{value}})" name="grade" type="radio">
-                        <label class="grade-{{value}}" for="grade-input-{{value}}">
+                        <input id="grade-input-{{difficulty}}" class="grade-box" onclick="viewModel.changeGrade({{difficulty}})" name="grade" type="radio">
+                        <label class="grade-{{difficulty}}" for="grade-input-{{difficulty}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
                             <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
                                 <polygon points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
                             </svg>

@@ -47,26 +47,11 @@ input {
     float: right !important;
 }
 
-.grade-0 {
-    background-color: #43A047 !important;
-}
-
-.grade-1 {
-    background-color: #2196FE !important;
-}
-
-.grade-2 {
-    background-color: #EF5350 !important;
-}
-
-.grade-3 {
-    background-color: #616161 !important;
-}
-
 .grade-4 {
-    background-color: #FBFBFB !important;
+   /* background-color: #FBFBFB !important;*/
     color: rgba(0, 0, 0, 0.65) !important;
 }
+
 /*
 .holdColor-14 {
     background-color: #999999 !important;
