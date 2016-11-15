@@ -62,7 +62,7 @@ function RouteClient(url)
                 name: name,
                 author: author,
                 colorOfHolds: holdColor,
-                grade: {difficulty: grade.value}
+                grade: grade
             },
             success: success
         });
@@ -176,6 +176,48 @@ function GradeClient(url)
             type: "GET",
             dataType: "json",
             url: url,
+            success: success
+        });
+    };
+
+    this.addGrade = function(grade, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                grade: grade
+            },
+            success: success
+        });
+    };
+
+    this.getGrade = function(gradeId, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                id: gradeId
+            },
+            success: success
+        });
+    };
+
+    this.deleteGrade = function(gradeId, success)
+    {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: url + "/" + gradeId,
+            data:
+            {
+                id: gradeId
+            },
             success: success
         });
     };

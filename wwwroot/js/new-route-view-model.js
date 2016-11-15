@@ -5,6 +5,7 @@ function NewRouteViewModel(client, changed)
         {
             viewModel.getSections();
             viewModel.getGrades();
+            viewModel.changed();
         },
         client: client,
         changed: changed,
@@ -59,7 +60,7 @@ function NewRouteViewModel(client, changed)
                 if(response.success)
                 {
                     viewModel.sections = response.data;
-                    viewModel.changed();
+                 //   viewModel.changed();
                 }
                 else
                 {
@@ -73,7 +74,7 @@ function NewRouteViewModel(client, changed)
                 if(response.success)
                 {
                     viewModel.grades = response.data;
-                  //  viewModel.changed();
+                    viewModel.changed();
                 }
             })
         },
