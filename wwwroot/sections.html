@@ -24,6 +24,12 @@
                 };
                 viewModel = new SectionsViewModel(client, changed);
             });
+            Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+                if(v1.g <= v2) {
+                    return options.fn(this);
+                }
+                return options.inverse(this);
+            });
         </script>
         <script id="sections-template" type="text/x-handlebars-template">
             <div class="header">
@@ -68,7 +74,12 @@
                         <div class="route-card">
                             <div class="route-card-top">
                                 <div class="route-grade-number grade-{{grade.difficulty}}">
-                                    <span class="number">{{name}}</span>
+                                {{#ifCond grade.color 200}}    
+                                    <span class="number" style="background-color: rgb({{grade.color.r}}, {{grade.color.g}}, {{grade.color.b}})">
+                                {{else}}
+                                    <span class="number" style="background-color: rgb({{grade.color.r}}, {{grade.color.g}}, {{grade.color.b}}); color: black">
+                                {{/ifCond}}
+                                    {{name}}</span>
                                 </div>
                                 <span class="route-section"></span>
                                 <span class="route-section">Section: {{sectionName}}</span>

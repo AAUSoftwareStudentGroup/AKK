@@ -21,7 +21,12 @@
                     else
                         return opts.inverse(this);
                 });
-
+                Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+                    if(v1.g <= v2) {
+                        return options.fn(this);
+                    }
+                    return options.inverse(this);
+                });
                 var template = Handlebars.compile($("#edit-route-template").html());
                 var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
                 var changed = function changed() { 
@@ -65,7 +70,12 @@
                         {{#each grades}}
                         <input id="grade-input-{{difficulty}}" class="grade-box" onclick="viewModel.changeGrade({{difficulty}})" name="grade" type="radio">
                         <label class="grade-{{difficulty}}" for="grade-input-{{difficulty}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
-                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
+                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
+                            {{#ifCond color 200}}
+                                fill="#FFFFFF">
+                            {{else}}
+                                fill="#222222">
+                            {{/ifCond}}
                                 <polygon id="checkmark-shape" points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
                             </svg>
                         </label>
