@@ -143,7 +143,7 @@ function SectionClient(url)
         $.ajax({
             type: "DELETE",
             dataType: "json",
-            url: url + "/" + name,
+            url: url + "/" + name + "/routes",
             data:
             {
                 name: name
