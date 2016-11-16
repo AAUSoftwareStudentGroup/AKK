@@ -1,9 +1,10 @@
-function EditRouteViewModel(client, changed)
+function EditRouteViewModel(client, changed, changed2)
 {
     var viewModel = {
         init: function()
         {
             viewModel.routeId = window.location.search.split("routeId=")[1];
+            viewModel.getGrades();
             viewModel.client.sections.getAllSections(function(response)
             {
                 if(response.success)
@@ -17,8 +18,20 @@ function EditRouteViewModel(client, changed)
                             viewModel.changeGrade(routeResponse.data.grade.difficulty);
                             viewModel.getHoldColor(routeResponse.data.colorOfHolds);
                             viewModel.changeRouteNumber(routeResponse.data.name);
+                            var temp = routeResponse.data.colorOfTape;
+                            if(temp != null) {
+                                for(i = 0; i < viewModel.holdColors.length; i++) {
+                                    if(viewModel.holdColors[i].r == temp.r && viewModel.holdColors[i].g == temp.g && viewModel.holdColors[i].b == temp.b) {
+                                        viewModel.selectedTapeColor = viewModel.holdColors[i];
+                                        break;
+                                    }
+                                }
+                            }
+                            if(viewModel.selectedTapeColor != null)
+                                viewModel.hasTape = true;
                             viewModel.changeAuthor(routeResponse.data.author);
                             viewModel.changed();
+                            viewModel.changed2();
                         }
                         else
                         {
@@ -35,19 +48,16 @@ function EditRouteViewModel(client, changed)
         routeId: null,
         client: client,
         changed: changed,
+        changed2: changed2,
         sections: [],
         selectedSection: null,
         selectedGrade: null,
         selectedColor: null,
         routeNumber: null,
+        selectedTapeColor: null,
+        hasTape: false,
         author: null,
-        grades: [
-            { value: 0, difficulty: 0, color: [{r: 67, g: 160, b: 71, a: 1}]},
-            { value: 1, difficulty: 1, color: [{r: 33, g: 150, b: 254, a: 1}]},
-            { value: 2, difficulty: 2, color: [{r: 239, g: 83, b: 80, a: 1}]},
-            { value: 3, difficulty: 3, color: [{r: 97, g: 97, b: 97, a: 1}]},
-            { value: 4, difficulty: 4, color: [{r: 251, g: 251, b: 251, a: 1}]},
-        ],
+        grades: [ ],
         holdColors: [
             { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
             { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1},
@@ -71,7 +81,17 @@ function EditRouteViewModel(client, changed)
         },
         changeGrade: function(gradeValue)
         {
-            viewModel.selectedGrade = viewModel.grades.filter(function(g) { return g.value == gradeValue; })[0];
+            viewModel.selectedGrade = viewModel.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
+        },
+        getGrades: function()
+        {
+            viewModel.client.grades.getAllGrades(function(response) {
+                if(response.success)
+                {
+                    viewModel.grades = response.data;
+                  //  viewModel.changed();
+                }
+            })
         },
         getHoldColor: function(holdColor)
         {
@@ -94,6 +114,10 @@ function EditRouteViewModel(client, changed)
                 }
             }*/
            viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.value == holdColor; })[0];
+        },
+        changeTapeColor: function(tapeColor)
+        {
+            viewModel.selectedTapeColor = viewModel.holdColors.filter(function(g) {return g.value == tapeColor; })[0];
         },
         changeRouteNumber: function(routeNumber)
         {
@@ -118,6 +142,16 @@ function EditRouteViewModel(client, changed)
                 }
             });
         },
+        gradesGotTape: function()
+        {
+            if(viewModel.hasTape === true) {
+                viewModel.hasTape = false;
+                viewModel.selectedTapeColor = null;
+            }
+            else
+                viewModel.hasTape = true;
+            viewModel.changed2();
+        },
         updateRoute: function()
         {
             if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
@@ -125,10 +159,11 @@ function EditRouteViewModel(client, changed)
                 var routeId = viewModel.routeId;
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade;
+                var tapeColor = viewModel.selectedTapeColor;
                 var holdColor = viewModel.selectedColor;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
-                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
+                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, function(response) {
                     if(response.success)
                     {
                         window.history.back();

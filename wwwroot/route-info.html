@@ -16,15 +16,21 @@
             var viewModel;
             $(document).ready(function () {
                 var template = Handlebars.compile($("#route-info-template").html());
-                var client = new Client(API_ROUTE_URL, API_SECTION_URL);
+                var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
                 var changed = function changed() { $('#content').html(template(viewModel)); };
                 viewModel = new RouteInfoViewModel(client, changed);
+            });
+            Handlebars.registerHelper('ifCond', function(v1, v2, options) {
+                if(v1.g <= v2) {
+                    return options.fn(this);
+                }
+                return options.inverse(this);
             });
         </script>
         <script id="route-info-template" type="text/x-handlebars-template">
             <div class="header">
                 <div class="header-content">
-                    <a class="header-button left" href="javascript:window.history.back();">
+                    <a class="header-button left" href="routes.html">
                         <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
                             <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
                         </svg>
@@ -36,7 +42,13 @@
                 <div class="route-card">
                     <div class="route-card-top">
                         <div class="route-grade-number grade-{{route.grade.difficulty}}">
-                            <span class="number">{{route.name}}</span>
+                            <span class="number" 
+                            {{#ifCond route.grade.color 200}}
+                                style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}})">
+                            {{else}}
+                                style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}}); color: black">
+                            {{/ifCond}}
+                            {{route.name}}</span>
                         </div>
                         <span class="route-section"></span>
                         <span class="route-section">Section: {{route.sectionName}}</span>
