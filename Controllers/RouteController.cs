@@ -138,7 +138,7 @@ namespace AKK.Controllers {
             if(route.Name != null && route.Name != oldRoute.Name) { oldRoute.Name = route.Name; changed = true;}
             if(route.Author != null) oldRoute.Author = route.Author;
             if(route.ColorOfHolds != null) oldRoute.ColorOfHolds = route.ColorOfHolds;
-            if(route.ColorOfTape != null) oldRoute.ColorOfTape = route.ColorOfTape;
+            oldRoute.ColorOfTape = route.ColorOfTape;
             if(route.Grade != null) {
                 var grades = db.Grades.Include(g => g.Color).Where(g => g.Difficulty == route.Grade.Difficulty);
                 if(grades.Count() != 1)

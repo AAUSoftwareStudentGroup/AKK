@@ -78,7 +78,7 @@ namespace AKK.Classes.Models
 
             Section sectionD = new Section { SectionId = new Guid(), Name = "D" };
             List<Route> routesForD = new List<Route> {
-                new Route{Name = "20", ColorOfHolds = new Color(35, 0, 22), Author = "Manfred", Grade = grades[1], CreatedDate = new DateTime(2016, 03, 01)},
+                new Route{Name = "20", ColorOfHolds = new Color(35, 0, 22), Author = "Manfred", Grade = grades[1], CreatedDate = new DateTime(2016, 03, 01), ColorOfTape = new Color(123,255,22)},
                 new Route{Name = "9", ColorOfHolds = new Color(123, 255, 22), Author = "Bettina", Grade = grades[0], CreatedDate = new DateTime(2016, 10, 27)},
                 new Route{Name = "76", ColorOfHolds = new Color(0, 22, 68), Author = "Kasper", Grade = grades[0], CreatedDate = new DateTime(2016, 09, 04)},
                 new Route{Name = "54", ColorOfHolds = new Color(123, 22, 123), Author = "Rasmus", Grade = grades[4], CreatedDate = new DateTime(2016, 06, 22)} };

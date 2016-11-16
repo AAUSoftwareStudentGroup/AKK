@@ -36,6 +36,7 @@ function RoutesViewModel(client, changed)
         selectedGrade: null,
         selectedSection: null,
         selectedColor: null,
+        selectedTape: null,
         selectedSortBy: null,
         routes: [],
         refreshRoutes: function()

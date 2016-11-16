@@ -1,20 +1,25 @@
-function NewRouteViewModel(client, changed)
+function NewRouteViewModel(client, changed, changed2)
 {
     var viewModel = {
         init: function()
-        {
+        {   
             viewModel.getSections();
             viewModel.getGrades();
+            setTimeout(function() {
             viewModel.changed();
+            viewModel.changed2(); }, 10);
         },
         client: client,
         changed: changed,
+        changed2: changed2,
         sections: [],
         selectedSection: null,
         selectedGrade: null,
         selectedColor: null,
+        selectedTapeColor: null,
         routeNumber: null,
         author: null,
+        hasTape: false,
         grades: [ ],
         holdColors: [
             { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
@@ -44,6 +49,10 @@ function NewRouteViewModel(client, changed)
         changeHoldColor: function(holdColor)
         {
             viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.value == holdColor; })[0];
+        },
+        changeTapeColor: function(tapeColor)
+        {
+            viewModel.selectedTapeColor = viewModel.holdColors.filter(function(g) {return g.value == tapeColor; })[0];
         },
         changeRouteNumber: function(routeNumber)
         {
@@ -78,6 +87,16 @@ function NewRouteViewModel(client, changed)
                 }
             })
         },
+        gradesGotTape: function()
+        {
+            if(viewModel.hasTape === true) {
+                viewModel.hasTape = false;
+                viewModel.selectedTapeColor = null;
+            }
+            else
+                viewModel.hasTape = true;
+            viewModel.changed2();
+        },
         addRoute: function()
         {
             if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
@@ -85,9 +104,10 @@ function NewRouteViewModel(client, changed)
                 var sectionId = viewModel.selectedSection.sectionId;
                 var gradeValue = viewModel.selectedGrade;
                 var holdColor = viewModel.selectedColor;
+                var tapeColor = viewModel.selectedTapeColor;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
-                viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
+                viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, function(response) {
                     if(response.success)
                     {
                         window.history.back();
@@ -98,7 +118,7 @@ function NewRouteViewModel(client, changed)
                     }
                 });
             }
-        },
+        }/*,
         updateRoute: function()
         {
             if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
@@ -119,7 +139,7 @@ function NewRouteViewModel(client, changed)
                     }
                 });
             }
-        }
+        }*/
     };
     viewModel.init();
     return viewModel;
