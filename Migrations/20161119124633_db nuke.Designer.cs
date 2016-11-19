@@ -8,8 +8,8 @@ using AKK.Classes.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161114124949_NameToGrade")]
-    partial class NameToGrade
+    [Migration("20161119124633_db nuke")]
+    partial class dbnuke
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,30 +18,30 @@ namespace AKK.Migrations
 
             modelBuilder.Entity("AKK.Classes.Models.Grade", b =>
                 {
-                    b.Property<Guid>("GradeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<uint?>("ColorDB");
+                    b.Property<uint?>("ColorDb");
 
                     b.Property<int>("Difficulty");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("GradeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
-                    b.Property<Guid>("RouteId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Author");
 
-                    b.Property<uint?>("ColorOfHoldsDB");
+                    b.Property<uint?>("ColorOfHoldsDb");
 
-                    b.Property<uint?>("ColorOfTapeDB");
+                    b.Property<uint?>("ColorOfTapeDb");
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -51,25 +51,25 @@ namespace AKK.Migrations
 
                     b.Property<bool>("PendingDeletion");
 
-                    b.Property<Guid>("SectionId");
+                    b.Property<Guid>("Id");
 
-                    b.HasKey("RouteId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GradeId");
 
-                    b.HasIndex("SectionId");
+                    b.HasIndex("Id");
 
                     b.ToTable("Routes");
                 });
 
             modelBuilder.Entity("AKK.Classes.Models.Section", b =>
                 {
-                    b.Property<Guid>("SectionId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
-                    b.HasKey("SectionId");
+                    b.HasKey("Id");
 
                     b.ToTable("Sections");
                 });
@@ -83,7 +83,7 @@ namespace AKK.Migrations
 
                     b.HasOne("AKK.Classes.Models.Section", "Section")
                         .WithMany("Routes")
-                        .HasForeignKey("SectionId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

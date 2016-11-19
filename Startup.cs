@@ -4,12 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using System.IO;
-using Microsoft.Extensions.FileProviders;
 using AKK.Classes.Models;
+using AKK.Classes.Models.Repository;
 
 namespace AKK
 {
@@ -29,6 +25,10 @@ namespace AKK
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IRepository<Route>,RouteRepository>();
+            services.AddSingleton<IRepository<Section>, SectionRepository>();
+            services.AddSingleton<IRepository<Grade>, GradeRepository>();
+
             services.AddMvc();
 
             var connection = Configuration["ConnectionStrings:DefaultConnection"];
@@ -48,7 +48,14 @@ namespace AKK
 
             app.UseMvc();
 
-            app.ApplicationServices.GetRequiredService<MainDbContext>().Seed();
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var db = serviceScope.ServiceProvider.GetService<MainDbContext>();
+                if (db.Database.EnsureCreated())
+                {
+                    db.Seed();
+                }
+            }
         }
     }
 }
