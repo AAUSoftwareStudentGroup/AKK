@@ -15,22 +15,8 @@ namespace AKK.Classes.Models
         public DbSet<Section> Sections { get; set; }
         public DbSet<Grade> Grades { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Route>()
-                .Ignore(m => m.ColorOfHolds)
-                .Property(Route.ColorOfHoldsPriv);
-            
-            modelBuilder.Entity<Route>()
-                .Ignore(m => m.ColorOfTape)                
-                .Property(Route.ColorOfTapePriv);
-            
-            modelBuilder.Entity<Grade>()
-                .Ignore(m => m.Color)                
-                .Property(Grade.ColorPriv);
-
-
             modelBuilder.Entity<Route>().HasOne(r => r.Section)
                                         .WithMany(s => s.Routes)
                                         .HasForeignKey(r => r.SectionId)
@@ -40,7 +26,6 @@ namespace AKK.Classes.Models
                                         .WithOne(r => r.Grade)
                                         .HasForeignKey(r => r.GradeId)
                                         .OnDelete(DeleteBehavior.SetNull);
-
         }
     }
     public static class DbContextExtensions
@@ -54,25 +39,24 @@ namespace AKK.Classes.Models
             // Perform database delete and create
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
+
             // Adds first section including routes:
             List<Grade> grades = new List<Grade> {
-                new Grade {Difficulty = 0, Color = new Color(0,255,0), GradeId = new Guid()},
-                new Grade {Difficulty = 1, Color = new Color(0,0,255), GradeId = new Guid()},
-                new Grade {Difficulty = 2, Color = new Color(255,0,0), GradeId = new Guid()},
-                new Grade {Difficulty = 3, Color = new Color(0,0,0), GradeId = new Guid()},
-                new Grade {Difficulty = 4, Color = new Color(255,255,255), GradeId = new Guid()},
+                new Grade {Name = "Green", Difficulty = 0, Color = new Color(0,255,0), GradeId = new Guid()},
+                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(0,0,255), GradeId = new Guid()},
+                new Grade {Name = "Red", Difficulty = 2, Color = new Color(255,0,0), GradeId = new Guid()},
+                new Grade {Name = "Black", Difficulty = 3, Color = new Color(0,0,0), GradeId = new Guid()},
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(255,255,255), GradeId = new Guid()},
             };
 
             Section sectionA = new Section { SectionId = new Guid(), Name = "A" };
             List<Route> routesForA = new List<Route> {
-                new Route{Name = "4", ColorOfHolds = new Color(100, 100, 100), Author = "Anton", Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
-                new Route{Name = "14", ColorOfHolds = new Color(100, 100, 100), Author = "Jakobsen", Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
-                new Route{Name = "43", ColorOfHolds = new Color(100, 100, 100), Author = "Hornum", Grade = grades[2], CreatedDate = new DateTime(2016, 11, 11)},
-                new Route{Name = "21", ColorOfHolds = new Color(100, 100, 100), Author = "Jakob", Grade = grades[3], CreatedDate = new DateTime(2016, 03, 24)} };
+                new Route{Name = "4", ColorOfHolds = new Color(255, 0, 0), Author = "Anton", Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
+                new Route{Name = "14", ColorOfHolds = new Color(0, 255, 0), Author = "Jakobsen", Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
+                new Route{Name = "43", ColorOfHolds = new Color(255, 0, 255), Author = "Hornum", Grade = grades[2], CreatedDate = new DateTime(2016, 11, 11)},
+                new Route{Name = "21", ColorOfHolds = new Color(255, 255, 0), Author = "Jakob", Grade = grades[3], CreatedDate = new DateTime(2016, 03, 24)} };
             sectionA.Routes.AddRange(routesForA);
             context.Sections.Add(sectionA);
-            context.SaveChanges();
-            
 
             Section sectionB = new Section { SectionId = new Guid(), Name = "B" };
             List<Route> routesForB = new List<Route> {
@@ -101,11 +85,9 @@ namespace AKK.Classes.Models
             sectionD.Routes.AddRange(routesForD);
             context.Sections.Add(sectionD);
 
-            // save changes and release resources
+            //// save changes and release resources
             context.SaveChanges();
             context.Dispose();
         }
-        
     }
-    
 }
