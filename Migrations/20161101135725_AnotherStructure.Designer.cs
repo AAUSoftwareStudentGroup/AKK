@@ -8,9 +8,10 @@ using AKK.Classes.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161101135725_AnotherStructure")]
+    partial class AnotherStructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
@@ -41,8 +42,6 @@ namespace AKK.Migrations
                     b.Property<Guid?>("ColorId");
 
                     b.Property<int>("Difficulty");
-
-                    b.Property<string>("Name");
 
                     b.HasKey("GradeId");
 

@@ -1,14 +1,51 @@
-function NewRouteViewModel(client, changed, changed2)
+function EditRouteViewModel(client, changed, changed2)
 {
     var viewModel = {
         init: function()
-        {   
-            viewModel.getSections();
+        {
+            viewModel.routeId = window.location.search.split("routeId=")[1];
             viewModel.getGrades();
-            setTimeout(function() {
-            viewModel.changed();
-            viewModel.changed2(); }, 10);
+            viewModel.client.sections.getAllSections(function(response)
+            {
+                if(response.success)
+                {
+                    viewModel.sections = response.data;
+                    viewModel.client.routes.getRoute(viewModel.routeId, function(routeResponse)
+                    {
+                        if(routeResponse.success)
+                        {
+                            viewModel.changeSection(routeResponse.data.sectionId);
+                            viewModel.changeGrade(routeResponse.data.grade.difficulty);
+                            viewModel.getHoldColor(routeResponse.data.colorOfHolds);
+                            viewModel.changeRouteNumber(routeResponse.data.name);
+                            var temp = routeResponse.data.colorOfTape;
+                            if(temp != null) {
+                                for(i = 0; i < viewModel.holdColors.length; i++) {
+                                    if(viewModel.holdColors[i].r == temp.r && viewModel.holdColors[i].g == temp.g && viewModel.holdColors[i].b == temp.b) {
+                                        viewModel.selectedTapeColor = viewModel.holdColors[i];
+                                        break;
+                                    }
+                                }
+                            }
+                            if(viewModel.selectedTapeColor != null)
+                                viewModel.hasTape = true;
+                            viewModel.changeAuthor(routeResponse.data.author);
+                            viewModel.changed();
+                            viewModel.changed2();
+                        }
+                        else
+                        {
+                            $("#error-message").html(response.message).show();
+                        }
+                    });
+                }
+                else
+                {
+                    $("#error-message").html(response.message).show();
+                }
+            });
         },
+        routeId: null,
         client: client,
         changed: changed,
         changed2: changed2,
@@ -16,10 +53,10 @@ function NewRouteViewModel(client, changed, changed2)
         selectedSection: null,
         selectedGrade: null,
         selectedColor: null,
-        selectedTapeColor: null,
         routeNumber: null,
-        author: null,
+        selectedTapeColor: null,
         hasTape: false,
+        author: null,
         grades: [ ],
         holdColors: [
             { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
@@ -46,9 +83,37 @@ function NewRouteViewModel(client, changed, changed2)
         {
             viewModel.selectedGrade = viewModel.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
         },
-        changeHoldColor: function(holdColor)
+        getGrades: function()
         {
-            viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.value == holdColor; })[0];
+            viewModel.client.grades.getAllGrades(function(response) {
+                if(response.success)
+                {
+                    viewModel.grades = response.data;
+                  //  viewModel.changed();
+                }
+            })
+        },
+        getHoldColor: function(holdColor)
+        {
+            var temp = viewModel.holdColors;
+            viewModel.selectedColor = temp[0];
+            for(var i = 0; i < temp.length; i++) {
+                if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
+                    viewModel.selectedColor = temp[i];
+                    return;
+                }
+            }
+        },
+        changeHoldColor: function(holdColor)
+        {/*
+            var temp = viewModel.holdColors;
+            for(var i = 0; i < temp.length; i++) {
+                if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
+                    viewModel.selectedColor = holdColor;
+                    return;
+                }
+            }*/
+           viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.value == holdColor; })[0];
         },
         changeTapeColor: function(tapeColor)
         {
@@ -69,23 +134,13 @@ function NewRouteViewModel(client, changed, changed2)
                 if(response.success)
                 {
                     viewModel.sections = response.data;
-                 //   viewModel.changed();
+                    viewModel.changed();
                 }
                 else
                 {
                     $("#error-message").html(response.message).show();
                 }
             });
-        },
-        getGrades: function()
-        {
-            viewModel.client.grades.getAllGrades(function(response) {
-                if(response.success)
-                {
-                    viewModel.grades = response.data;
-                    viewModel.changed();
-                }
-            })
         },
         gradesGotTape: function()
         {
@@ -97,38 +152,18 @@ function NewRouteViewModel(client, changed, changed2)
                 viewModel.hasTape = true;
             viewModel.changed2();
         },
-        addRoute: function()
-        {
-            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
-            {
-                var sectionId = viewModel.selectedSection.sectionId;
-                var gradeValue = viewModel.selectedGrade;
-                var holdColor = viewModel.selectedColor;
-                var tapeColor = viewModel.selectedTapeColor;
-                var routeNumber = viewModel.routeNumber;
-                var author = viewModel.author;
-                viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, function(response) {
-                    if(response.success)
-                    {
-                        window.history.back();
-                    }
-                    else
-                    {
-                        $("#error-message").html(response.message).show();
-                    }
-                });
-            }
-        }/*,
         updateRoute: function()
         {
             if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
             {
+                var routeId = viewModel.routeId;
                 var sectionId = viewModel.selectedSection.sectionId;
-                var gradeValue = viewModel.selectedGrade.value;
-                var holdColor = parseInt(viewModel.selectedColor.color, 16) * 256;
+                var gradeValue = viewModel.selectedGrade;
+                var tapeColor = viewModel.selectedTapeColor;
+                var holdColor = viewModel.selectedColor;
                 var routeNumber = viewModel.routeNumber;
                 var author = viewModel.author;
-                viewModel.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeValue, function(response) {
+                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, function(response) {
                     if(response.success)
                     {
                         window.history.back();
@@ -139,7 +174,7 @@ function NewRouteViewModel(client, changed, changed2)
                     }
                 });
             }
-        }*/
+        }
     };
     viewModel.init();
     return viewModel;

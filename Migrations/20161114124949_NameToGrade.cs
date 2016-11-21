@@ -2,12 +2,26 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Akk.Migrations
+namespace AKK.Migrations
 {
-    public partial class DbInit : Migration
+    public partial class NameToGrade : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Grades",
+                columns: table => new
+                {
+                    GradeId = table.Column<Guid>(nullable: false),
+                    ColorDB = table.Column<uint>(nullable: true),
+                    Difficulty = table.Column<int>(nullable: false),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Grades", x => x.GradeId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Sections",
                 columns: table => new
@@ -26,15 +40,23 @@ namespace Akk.Migrations
                 {
                     RouteId = table.Column<Guid>(nullable: false),
                     Author = table.Column<string>(nullable: true),
-                    ColorOfHolds = table.Column<uint>(nullable: false),
+                    ColorOfHoldsDB = table.Column<uint>(nullable: true),
+                    ColorOfTapeDB = table.Column<uint>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
-                    Grade = table.Column<int>(nullable: false),
+                    GradeId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
+                    PendingDeletion = table.Column<bool>(nullable: false),
                     SectionId = table.Column<Guid>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Routes", x => x.RouteId);
+                    table.ForeignKey(
+                        name: "FK_Routes_Grades_GradeId",
+                        column: x => x.GradeId,
+                        principalTable: "Grades",
+                        principalColumn: "GradeId",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Routes_Sections_SectionId",
                         column: x => x.SectionId,
@@ -42,6 +64,11 @@ namespace Akk.Migrations
                         principalColumn: "SectionId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Routes_GradeId",
+                table: "Routes",
+                column: "GradeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Routes_SectionId",
@@ -53,6 +80,9 @@ namespace Akk.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Routes");
+
+            migrationBuilder.DropTable(
+                name: "Grades");
 
             migrationBuilder.DropTable(
                 name: "Sections");

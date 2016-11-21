@@ -3,7 +3,8 @@ function RoutesViewModel(client, changed)
 {
     var viewModel = {
         init: function()
-        {
+        {   viewModel.grades = [{ difficulty: -1, name: "All" }];
+            viewModel.getGrades();
             viewModel.client.sections.getAllSections(function(response)
             {
                 if(response.success)
@@ -21,26 +22,26 @@ function RoutesViewModel(client, changed)
         client: client,
         changed: changed,
         grades: [
-            { value: -1, name: "All"},
-            { value: 0, name: "Green"},
-            { value: 1, name: "Blue"},
-            { value: 2, name: "Red"},
-            { value: 3, name: "Black"},
-            { value: 4, name: "White"}
+            { difficulty: -1, name: "All" }
         ],
         sections: [
             { sectionId: -1, name: "All" }
         ],
         sortOptions: [
-            { value: 0, name: "Newest" }
+            { value: 0, name: "Newest" },
+            { value: 1, name: "Oldest" },
+            { value: 2, name: "Grading" },
+            { value: 3, name: "Author" },
         ],
         selectedGrade: null,
         selectedSection: null,
+        selectedColor: null,
+        selectedTape: null,
         selectedSortBy: null,
         routes: [],
         refreshRoutes: function()
         {
-            var gradeValue = viewModel.selectedGrade.value == -1 ? null : viewModel.selectedGrade.value;
+            var gradeValue = viewModel.selectedGrade.difficulty == -1 ? null : viewModel.selectedGrade.difficulty;
             var sectionId = viewModel.selectedSection.sectionId == -1 ? null : viewModel.selectedSection.sectionId;
             var sortByValue = viewModel.selectedSortBy.value == -1 ? null : viewModel.selectedSortBy.value;
             viewModel.client.routes.getRoutes(gradeValue, sectionId, sortByValue, function(response) {
@@ -53,7 +54,8 @@ function RoutesViewModel(client, changed)
                             return s.sectionId == viewModel.routes[i].sectionId; 
                         })[0].name;
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
-                        viewModel.routes[i].colorOfHolds = (Math.floor(viewModel.routes[i].colorOfHolds / 256)).toString(16);
+                  //      viewModel.routes[i].colorOfHolds = (Math.floor(viewModel.routes[i].colorOfHolds / 256)).toString(16);
+                        viewModel.routes[i].selectedColor = viewModel.routes[i].colorOfHolds;
                     }
                     viewModel.changed();
                 }
@@ -61,8 +63,17 @@ function RoutesViewModel(client, changed)
         },
         changeGrade: function(gradeValue)
         {
-            viewModel.selectedGrade = viewModel.grades.filter(function(grade){ return grade.value == gradeValue; })[0];
+            viewModel.selectedGrade = viewModel.grades.filter(function(grade){ return grade.difficulty == gradeValue; })[0];
             viewModel.refreshRoutes();
+        },
+        getGrades: function()
+        {
+            viewModel.client.grades.getAllGrades(function(response) {
+                if(response.success)
+                {
+                    viewModel.grades = viewModel.grades.concat(response.data);
+                }
+            })
         },
         changeSection: function(sectionId)
         {

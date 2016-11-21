@@ -18,7 +18,7 @@ namespace AKK.Controllers {
 
         // GET: /api/section
         [HttpGet]
-        public ApiSuccessResponse GetAllSections() {
+        public ApiResponse GetAllSections() {
             var sections = _mainDbContext.Sections.AsQueryable().OrderBy(s => s.Name);
 
             return new ApiSuccessResponse(
@@ -30,8 +30,12 @@ namespace AKK.Controllers {
         [HttpPost]
         public ApiResponse AddSection(string name) {
             var sectionExsits = _mainDbContext.Sections.Where(s => s.Name == name);
-            if(sectionExsits.Count() > 0) {
-                return new ApiErrorResponse("A section with name "+name+" already exsists");
+            if(sectionExsits.Any()) {
+                return new ApiErrorResponse("A section with name "+name+" already exist");
+            }
+            if (name == null)
+            {
+                return new ApiErrorResponse("Name must have a value");
             }
             Section section = new Section() {Name=name};
             _mainDbContext.Sections.Add(section);
@@ -44,9 +48,12 @@ namespace AKK.Controllers {
         // DELETE: /api/section
         [HttpDelete]
         public ApiResponse DeleteAllSections() {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
-            if(sections.Count() == 0)
-                return new ApiErrorResponse("No sections exsits");
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
+            if(!sections.Any())
+                return new ApiErrorResponse("No sections exist");
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));
@@ -79,7 +86,10 @@ namespace AKK.Controllers {
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
         public ApiResponse DeleteSection(string name) {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
             
             try {
                 Guid id = new Guid(name);
@@ -88,8 +98,8 @@ namespace AKK.Controllers {
                 sections = sections.Where(s => s.Name == name);
             }
 
-            if(sections.Count() == 0)
-                return new ApiErrorResponse("No section exsists with name/id "+name);
+            if(!sections.Any())
+                return new ApiErrorResponse("No section exists with name/id "+name);
             else {
                 // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
                 var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));
@@ -106,7 +116,10 @@ namespace AKK.Controllers {
         // GET: /api/section/{name}/routes
         [HttpGet("{name}/routes")]
         public ApiResponse GetSectionRoutes(string name) {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
 
             try {
                 Guid id = new Guid(name);
@@ -127,7 +140,11 @@ namespace AKK.Controllers {
         // DELETE: /api/section/{name}/routes
         [HttpDelete("{name}/routes")]
         public ApiResponse DeleteSectionRoutes(string name) {
-            var sections = _mainDbContext.Sections.Include(s => s.Routes).AsQueryable();
+            var sections = _mainDbContext.Sections
+                .Include(s => s.Routes).ThenInclude(r => r.Section)
+                .Include(s => s.Routes).ThenInclude(r => r.Grade).ThenInclude(g => g.Color)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfHolds)
+                .Include(s => s.Routes).ThenInclude(r => r.ColorOfTape).AsQueryable();
 
             try {
                 Guid id = new Guid(name);

@@ -30,7 +30,7 @@ function RouteClient(url)
         });
     };
 
-    this.addRoute = function(sectionId, author, name, grade, success)
+    this.addRoute = function(sectionId, name, author, holdColor, grade, tape, success)
     {
         $.ajax({
             type: "POST",
@@ -39,9 +39,32 @@ function RouteClient(url)
             data:
             {
                 sectionId: sectionId,
-                author: author,
                 name: name,
-                grade: grade
+                author: author,
+                grade: grade,
+                colorOfHolds: holdColor,
+                ColorOfTape: tape
+            },
+            success: success
+        });
+    };
+
+    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, tape, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url + "/" + routeId,
+            data:
+            {
+                routeId: routeId,
+            //    sectionName: sectionName,
+                sectionId: sectionId,
+                name: name,
+                author: author,
+                colorOfHolds: holdColor,
+                grade: grade,
+                ColorOfTape: tape
             },
             success: success
         });
@@ -116,10 +139,95 @@ function SectionClient(url)
             success: success
         });
     };
+
+    this.deleteSectionRoutes = function(name, success)
+    {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: url + "/" + name + "/routes",
+            data:
+            {
+                name: name
+            },
+            success: success
+        });
+    };
+
+    this.renameSection = function(sectionId, newName, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                sectionId: sectionId,
+                newName: newName
+            },
+            success: success
+        });
+    };
 }
 
-function Client(routeUrl, sectionUrl)
+function GradeClient(url)
+{
+    this.getAllGrades = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            success: success
+        });
+    };
+
+    this.addGrade = function(grade, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                grade: grade
+            },
+            success: success
+        });
+    };
+
+    this.getGrade = function(gradeId, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                id: gradeId
+            },
+            success: success
+        });
+    };
+
+    this.deleteGrade = function(gradeId, success)
+    {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: url + "/" + gradeId,
+            data:
+            {
+                id: gradeId
+            },
+            success: success
+        });
+    };
+}
+
+function Client(routeUrl, sectionUrl, gradeUrl)
 {
     this.routes = new RouteClient(routeUrl);
     this.sections = new SectionClient(sectionUrl);
+    this.grades = new GradeClient(gradeUrl);
 }

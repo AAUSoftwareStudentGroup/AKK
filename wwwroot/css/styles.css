@@ -40,32 +40,11 @@ input {
 }
 
 .left {
-    float: left;
+    float: left !important;
 }
 
 .right {
-    float: right;
-}
-
-.grade-0 {
-    background-color: #43A047 !important;
-}
-
-.grade-1 {
-    background-color: #2196FE !important;
-}
-
-.grade-2 {
-    background-color: #EF5350 !important;
-}
-
-.grade-3 {
-    background-color: #616161 !important;
-}
-
-.grade-4 {
-    background-color: #FBFBFB !important;
-    color: rgba(0, 0, 0, 0.65) !important;
+    float: right !important;
 }
 
 .header {
@@ -88,8 +67,8 @@ input {
 .header-button {
     width: 24px;
     height: 24px;
-    padding: 0;
-    margin: 22px 18px 18px 18px;
+    padding: 8px;
+    margin: 13px 11px 11px 11px;
     position: relative;
     z-index: 1;
 }
@@ -115,9 +94,9 @@ input {
 }
 
 /** ROUTE LIST **/
-.new-route .content-section {
+.routes .content-section {
     width: 100%;
-    margin-bottom: 32px;
+  /*  margin-bottom: 32px;*/
     display: block;
 }
 
@@ -151,11 +130,11 @@ input {
 }
 
 .delete-route-button {
-    background-color: #D50000;
+    background-color: #EF5350;
 }
 
 .delete-route-button:active {
-    background-color: #FF3455;
+    background-color: #ED6F6D;
 }
 
 /* Route cards */
@@ -217,12 +196,11 @@ input {
 /** NEW ROUTE **/
 .new-route .content-section  {
     width: 100%;
-    margin-bottom: 32px;
     display: block;
 }
 
 .radio-inputs {
-    height: 48px;
+    margin-bottom: 12px;
     text-align: justify;
 }
 
@@ -253,7 +231,8 @@ input {
 }
 
 /* Section */
-.section-picker label {
+.section-picker label,
+.color-picker label {
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -261,25 +240,29 @@ input {
     background-color: #F5F5F5;
 }
 
-.section-picker label span {
+.section-picker label span,
+.color-picker label svg {
     width: 46px;
-    color: #E0E0E0;
+    color: #222222;
     font-size: 18px;
     display: inline-block;
     text-align: center;
     line-height: 49px;
 }
 
-.section-picker input:checked + label {
-    border-color: #448AFF;
+.section-picker input:checked + label,
+.color-picker  input:checked + label {
+    background-color: #CCCCCC;
+    border-color: #222222;
 }
 
-.section-picker input:checked + label span {
-    color: #448AFF;
+.color-picker svg {
+    margin-left:3px;
+    margin-top:3px;
 }
 
 /* Grade */
-.grade-picker label  {
+.grade-picker label {
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30)
 }
 
@@ -288,21 +271,13 @@ input {
     height: 24px;
     margin: 12px;
     display: none;
-    fill: #FAFAFA;
-}
-
-.grade-4 .grade-checkmark {
-    fill: #222222;
-}
-
-.grade-picker input:checked + label .grade-checkmark {
-    display: block;
 }
 
 /* Route number and creator*/
 .number-picker input,
 .author-picker input {
     width: 100%;
+    margin-bottom: 32px;
     border: none;
     border-bottom: 2px solid #009688;
     border-radius: 0px;
@@ -317,6 +292,15 @@ input {
     outline: none;
 }
 
+.hold-box, .section-box {
+    margin-bottom: 12px;
+}
+
+.grade-picker input:checked + label .grade-checkmark,
+.color-picker input:checked + label .grade-checkmark {
+    display: block;
+}
+
 /* Create button */
 .create-route-button {
     background-color: #448AFF;
@@ -324,4 +308,17 @@ input {
 
 .create-route-button:active {
     background-color: #539FFF;
+}
+
+#error-message {
+    display: none;
+    background-color: #F44336;
+    padding: 11px 18px 10px 18px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    font-size: 14px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
 }

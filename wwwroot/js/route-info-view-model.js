@@ -9,7 +9,8 @@ function RouteInfoViewModel(client, changed)
                 {
                     viewModel.route = routeResponse.data;
                     viewModel.route.date = viewModel.route.createdDate.split("T")[0].split("-").reverse().join("/");
-                    viewModel.route.colorOfHolds = (Math.floor(viewModel.route.colorOfHolds / 256)).toString(16);
+                    viewModel.route.colorOfHolds = viewModel.route.colorOfHolds;
+                    viewModel.route.grade = viewModel.route.grade;
                     viewModel.client.sections.getSection(viewModel.route.sectionId, function (sectionResponse) {
                         if(sectionResponse.success)
                         {
@@ -22,10 +23,17 @@ function RouteInfoViewModel(client, changed)
         },
         client: client,
         changed: changed,
-        route: null,
-        deleteRoute: function()
+        grade: null,
+        editRoute: function()
         {
             if(viewModel.route != null)
+            {
+                window.location = "edit-route.html?routeId=" + viewModel.route.routeId;
+            }
+        },
+        deleteRoute: function()
+        {
+            if(viewModel.route != null && confirm("Do you really want to delete this route?"))
             {
                 viewModel.client.routes.deleteRoute(viewModel.route.routeId, function(response) {
                     if(response.success)

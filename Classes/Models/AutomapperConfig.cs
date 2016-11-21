@@ -6,6 +6,7 @@ namespace AKK.Classes.Models {
                 .ForMember(dest => dest.SectionName, 
                            opts => opts.MapFrom(r => r.Section.Name));
             cfg.CreateMap<Section, SectionTransferObject>();
+            cfg.CreateMap<Grade, GradeTransferObject>();
         });
         public static IMapper Mapper { get; } = config.CreateMapper();
     }

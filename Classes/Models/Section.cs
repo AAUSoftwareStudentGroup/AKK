@@ -18,7 +18,7 @@ namespace AKK.Classes.Models {
 
         public string Name { get; set; }    
             
-        public List<Route> Routes { get; set; }
+        public virtual List<Route> Routes { get; set; }
 
     }
 }
