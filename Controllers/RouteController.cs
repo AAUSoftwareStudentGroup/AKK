@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using AKK.Classes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
@@ -138,8 +138,7 @@ namespace AKK.Controllers {
 
         // GET: /api/route/{id}
         [HttpGet("{id}")]
-        public ApiResponse GetRoute(Guid id)
-        {
+        public ApiResponse GetRoute(Guid id) {
             var route = _routeRepository.Find(id);
             if(route == null)
                 return new ApiErrorResponse("No route exists with id "+id);
@@ -147,9 +146,51 @@ namespace AKK.Controllers {
             return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(route));
         }
 
+        // GET: /api/route/search
+        [HttpGet("search")]
+        public ApiResponse GetRoutesByString(string searchStr, int elements)
+        {
+            if (String.IsNullOrEmpty(searchStr))
+                return new ApiErrorResponse("No routes matched your search");
+
+            var searchTerms = searchStr.Split(' ');
+            var allRoutes = _routeRepository.GetAll();
+            int numRoutes = allRoutes.Count();
+            elements = Math.Min(elements, numRoutes);
+
+            List<Tuple<Route, int>> routesWithDist = new List<Tuple<Route, int>>();
+            for (int i = 0; i < numRoutes; i++) {
+                routesWithDist.Add(new Tuple<Route, int>(allRoutes.ElementAt(i), 0));
+            }
+
+            foreach (var searchTerm in searchTerms)
+            {
+                for (int i = 0; i < numRoutes; i++)
+                {
+                    var route = routesWithDist[i].Item1;
+                    var dist = routesWithDist[i].Item2 + RouteSearcher.computeDistance(route, searchTerm);
+                
+                    routesWithDist[i] = new Tuple<Route, int>(route, dist);
+                }                
+            }
+
+            var sortedRoutes = routesWithDist.OrderBy(x => x.Item2);
+
+            var foundRoutes = new List<Route>();
+            for (int i = 0; i < elements; i++) {
+                foundRoutes.Add(sortedRoutes.ElementAt(i).Item1);
+            }
+
+            if (!foundRoutes.Any())
+                return new ApiErrorResponse("No routes matched your search");
+
+            return new ApiSuccessResponse(Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(foundRoutes));
+        }
+
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
-        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Route route) {
+        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Route route)
+        {
             Route oldRoute = null;
             bool changed = false;
             var routes = _routeRepository.GetAll();
