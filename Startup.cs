@@ -25,10 +25,6 @@ namespace AKK
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IRepository<Route>,RouteRepository>();
-            services.AddSingleton<IRepository<Section>, SectionRepository>();
-            services.AddSingleton<IRepository<Grade>, GradeRepository>();
-
             services.AddMvc();
 
             var connection = Configuration["ConnectionStrings:DefaultConnection"];
@@ -36,7 +32,10 @@ namespace AKK
 	        services.AddDbContext<MainDbContext>(options =>
 	        	options.UseSqlite(connection)
 	        );
-            
+
+            services.AddScoped<IRepository<Route>, RouteRepository>();
+            services.AddScoped<IRepository<Section>, SectionRepository>();
+            services.AddScoped<IRepository<Grade>, GradeRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
