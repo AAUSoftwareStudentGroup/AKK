@@ -51,10 +51,7 @@ namespace AKK
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 var db = serviceScope.ServiceProvider.GetService<MainDbContext>();
-                if (db.Database.EnsureCreated())
-                {
-                    db.Seed();
-                }
+                db.Seed();
             }
         }
     }
