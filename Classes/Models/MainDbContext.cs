@@ -42,11 +42,11 @@ namespace AKK.Classes.Models
 
             // Adds first section including routes:
             List<Grade> grades = new List<Grade> {
-                new Grade {Name = "Green", Difficulty = 0, Color = new Color(0,255,0), GradeId = new Guid()},
-                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(0,0,255), GradeId = new Guid()},
-                new Grade {Name = "Red", Difficulty = 2, Color = new Color(255,0,0), GradeId = new Guid()},
-                new Grade {Name = "Black", Difficulty = 3, Color = new Color(0,0,0), GradeId = new Guid()},
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(255,255,255), GradeId = new Guid()},
+                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67,160,71), GradeId = new Guid()},
+                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33,150,254), GradeId = new Guid()},
+                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228,83,80), GradeId = new Guid()},
+                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97,97,97), GradeId = new Guid()},
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251,251,251), GradeId = new Guid()},
             };
 
             Section sectionA = new Section { SectionId = new Guid(), Name = "A" };
@@ -78,7 +78,7 @@ namespace AKK.Classes.Models
 
             Section sectionD = new Section { SectionId = new Guid(), Name = "D" };
             List<Route> routesForD = new List<Route> {
-                new Route{Name = "20", ColorOfHolds = new Color(35, 0, 22), Author = "Manfred", Grade = grades[1], CreatedDate = new DateTime(2016, 03, 01)},
+                new Route{Name = "20", ColorOfHolds = new Color(35, 0, 22), Author = "Manfred", Grade = grades[1], CreatedDate = new DateTime(2016, 03, 01), ColorOfTape = new Color(123,255,22)},
                 new Route{Name = "9", ColorOfHolds = new Color(123, 255, 22), Author = "Bettina", Grade = grades[0], CreatedDate = new DateTime(2016, 10, 27)},
                 new Route{Name = "76", ColorOfHolds = new Color(0, 22, 68), Author = "Kasper", Grade = grades[0], CreatedDate = new DateTime(2016, 09, 04)},
                 new Route{Name = "54", ColorOfHolds = new Color(123, 22, 123), Author = "Rasmus", Grade = grades[4], CreatedDate = new DateTime(2016, 06, 22)} };

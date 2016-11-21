@@ -30,7 +30,7 @@ function RouteClient(url)
         });
     };
 
-    this.addRoute = function(sectionId, name, author, holdColor, grade, success)
+    this.addRoute = function(sectionId, name, author, holdColor, grade, tape, success)
     {
         $.ajax({
             type: "POST",
@@ -42,13 +42,14 @@ function RouteClient(url)
                 name: name,
                 author: author,
                 grade: grade,
-                colorOfHolds: holdColor
+                colorOfHolds: holdColor,
+                ColorOfTape: tape
             },
             success: success
         });
     };
 
-    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, success)
+    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, tape, success)
     {
         $.ajax({
             type: "PATCH",
@@ -62,7 +63,8 @@ function RouteClient(url)
                 name: name,
                 author: author,
                 colorOfHolds: holdColor,
-                grade: grade
+                grade: grade,
+                ColorOfTape: tape
             },
             success: success
         });
@@ -143,7 +145,7 @@ function SectionClient(url)
         $.ajax({
             type: "DELETE",
             dataType: "json",
-            url: url + "/" + name,
+            url: url + "/" + name + "/routes",
             data:
             {
                 name: name
