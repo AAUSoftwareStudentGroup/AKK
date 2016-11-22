@@ -51,10 +51,10 @@ function RoutesViewModel(client, changed)
                     for(var i = 0; i < viewModel.routes.length; i++)
                     {
                         viewModel.routes[i].sectionName = viewModel.sections.filter(function(s) { 
-                            return s.sectionId == viewModel.routes[i].sectionId; 
+                            return s.id == viewModel.routes[i].sectionId; 
                         })[0].name;
+                        
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
-                  //      viewModel.routes[i].colorOfHolds = (Math.floor(viewModel.routes[i].colorOfHolds / 256)).toString(16);
                         viewModel.routes[i].selectedColor = viewModel.routes[i].colorOfHolds;
                     }
                     viewModel.changed();
