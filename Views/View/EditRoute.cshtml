@@ -6,7 +6,7 @@
         <title>AKK - Find Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-latest.js"></script>
+        <script type="text/javascript" src="js/handlebars.min.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
         <script type="text/javascript" src="js/edit-route-view-model.js"></script>
@@ -51,7 +51,7 @@
         <script id="edit-route-template" type="text/x-handlebars-template">
             <div class="header">
                 <div class="header-content">
-                    <a class="header-button left" href="route-info.html?routeId={{routeId}}">
+                    <a class="header-button left" href="route-info?routeId={{id}}">
                         <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
                             <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
                         </svg>

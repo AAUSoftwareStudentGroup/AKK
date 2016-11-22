@@ -28,7 +28,7 @@ function RouteInfoViewModel(client, changed)
         {
             if(viewModel.route != null)
             {
-                window.location = "edit-route.html?routeId=" + viewModel.route.routeId;
+                window.location = "edit-route?routeId=" + viewModel.route.routeId;
             }
         },
         deleteRoute: function()
