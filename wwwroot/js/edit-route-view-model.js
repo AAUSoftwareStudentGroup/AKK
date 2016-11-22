@@ -8,7 +8,7 @@ function EditRouteViewModel(client)
 {
     var self = this;
 
-    var init = function() {
+    this.init = function() {
         self.routeId = window.location.search.split("routeId=")[1];
         self.getGrades();
         self.client.sections.getAllSections(function(response)
@@ -184,8 +184,6 @@ function EditRouteViewModel(client)
         }
     }
     this.client = client;
-    
-    init();
 }
 
 EditRouteViewModel.prototype = new EventNotifier();

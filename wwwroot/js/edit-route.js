@@ -35,4 +35,6 @@ $(document)
             else
                 $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
         });
+
+        viewModel.init();
     });
