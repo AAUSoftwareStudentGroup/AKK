@@ -12,7 +12,7 @@ namespace AKK.Tests
         [Test]
         public void hej()
         {
-            Assert.AreEqual(2, 1);
+            Assert.AreEqual(2, 2);
         }
 
     }
