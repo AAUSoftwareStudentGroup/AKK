@@ -7,29 +7,30 @@ namespace AKK.Classes
     {
         internal static int computeDistance(Route route, string searchStr)
         {
-            int[] distances = new int[5];
+            int[] distances = new int[4];
 
             distances[0] = computeLevenshtein(route.Author, searchStr);
             distances[1] = computeLevenshtein(route.Name, searchStr);
             distances[2] = computeLevenshtein(route.Grade.Name, searchStr);
             distances[3] = computeLevenshtein(route.Section.Name, searchStr);
-            distances[4] = computeLevenshtein(route.CreatedDate.ToString(), searchStr);
             
             int smallestDist = int.MaxValue;
-            //int smallestIndex;
-            for (int i = 0; i < 5; i++) 
+
+            for (int i = 0; i < distances.Length; i++) 
             {
                 if (distances[i] < smallestDist) 
                 {
                     smallestDist = distances[i];
-                    //smallestIndex = i;
                 }
             }
-
             return smallestDist;
         }
 
+        //Levenshtein algorithm copied from https://www.dotnetperls.com/levenshtein
         private static int computeLevenshtein(string s, string t) {
+            s = s.ToLower();
+            t = t.ToLower();
+
             int n = s.Length;
             int m = t.Length;
             int[,] d = new int[n + 1, m + 1];
@@ -42,15 +43,12 @@ namespace AKK.Classes
 
             for (int i = 1; i <= n; i++) {
                 for (int j = 1; j <= m; j++) {
-
                     int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
-
                     d[i, j] = Math.Min(
                         Math.Min(d[i - 1, j] + 1, d[i, j - 1] + 1), 
                         d[i - 1, j - 1] + cost);
                 }
             }
-
             return d[n, m];
         }
     }
