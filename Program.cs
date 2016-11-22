@@ -13,7 +13,7 @@ namespace AKK
         public static void Main(string[] args)
         {
             string PORT = Environment.GetEnvironmentVariable("ASPNET_HTTP_PORT");
-	    Console.WriteLine(PORT);
+    	    Console.WriteLine(PORT);
             PORT = (PORT == null ? "5000" : PORT);
 
             var host = new WebHostBuilder()

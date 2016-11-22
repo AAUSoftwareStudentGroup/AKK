@@ -151,50 +151,14 @@ namespace AKK.Controllers {
         public ApiResponse GetRoutesByString(string searchStr, int maxResults)
         {
             //If search string is empty or null 
-            if (String.IsNullOrEmpty(searchStr))
+            if (string.IsNullOrEmpty(searchStr))
                 return new ApiErrorResponse("No routes matched your search");
 
-            //var searchTerms = searchStr.Split(' ');
-            var searchTerms = System.Text.RegularExpressions.Regex.Split(searchStr, @"\s{2,}");
-            var allRoutes = _routeRepository.GetAll();
-            int numRoutes = allRoutes.Count();
-            maxResults = Math.Min(maxResults, numRoutes);
+            //Initialize a RouteSearcher
+            var searcher = new RouteSearcher(_routeRepository.GetAll(), maxResults);
 
-            //Binds all routes together with an int value representing the Levenshtein distance.
-            List<Tuple<Route, float>> routesWithDist = new List<Tuple<Route, float>>();
-            for (int i = 0; i < numRoutes; i++) {
-                routesWithDist.Add(new Tuple<Route, float>(allRoutes.ElementAt(i), 0));
-            }
-
-            //Calculates the Levenshtein distance for each search term and adds it to each route's specific Levenshtein distance value.
-            foreach (var searchTerm in searchTerms)
-            {
-                var searchTermLength = searchTerm.Length;
-
-                for (int i = 0; i < numRoutes; i++)
-                {
-                    var route = routesWithDist[i].Item1;
-                    float dist = routesWithDist[i].Item2 + (RouteSearcher.computeDistance(route, searchTerm)/(float)searchTermLength);
-
-                    //Delete 
-                    Console.WriteLine($"dist: {dist}");
-
-                    routesWithDist[i] = new Tuple<Route, float>(route, dist);
-                }                
-            }
-
-            //Sorts routes by their Levenshtein distance.
-            var sortedRoutes = routesWithDist.OrderBy(x => x.Item2);
-
-            //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
-            var foundRoutes = new List<Route>();
-            for (int i = 0; i < maxResults; i++) {
-                var el = sortedRoutes.ElementAt(i);
-                if (el.Item2 > 0.5)
-                    break;
-
-                foundRoutes.Add(el.Item1);
-            }
+            //Search for route
+            var foundRoutes = searcher.Search(searchStr);
 
             //If no routes were found.
             if (!foundRoutes.Any())

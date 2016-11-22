@@ -64,6 +64,7 @@ namespace AKK.Classes.Models
             Section sectionA = new Section { Id = new Guid(), Name = "A" };
             List<Route> routesForA = new List<Route> {
                 new Route{Name = "4", ColorOfHolds = new Color(255, 0, 0), Author = "Anton", Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
+                new Route{Name = "4", ColorOfHolds = new Color(0, 255, 0), Author = "Grunberg", Grade = grades[1], CreatedDate = new DateTime(2016, 03, 24)},
                 new Route{Name = "14", ColorOfHolds = new Color(0, 255, 0), Author = "Jakobsen", Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
                 new Route{Name = "43", ColorOfHolds = new Color(255, 0, 255), Author = "Hornum", Grade = grades[2], CreatedDate = new DateTime(2016, 11, 11)},
                 new Route{Name = "21", ColorOfHolds = new Color(255, 255, 0), Author = "Jakob", Grade = grades[3], CreatedDate = new DateTime(2016, 03, 24)} };
@@ -82,6 +83,7 @@ namespace AKK.Classes.Models
             Section sectionC = new Section { Id = new Guid(), Name = "C" };
             List<Route> routesForC = new List<Route> {
                 new Route{Name = "66", ColorOfHolds =  new Color(255, 0, 0), Author = "Geo", Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
+                new Route{Name = "94", ColorOfHolds =  new Color(255, 0, 0), Author = "Geogebra", Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
                 new Route{Name = "33", ColorOfHolds =  new Color(0, 22, 123), Author = "Bacci", Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
                 new Route{Name = "22", ColorOfHolds =  new Color(255, 123, 0), Author = "Kurt", Grade = grades[1], CreatedDate = new DateTime(2016, 11, 11)},
                 new Route{Name = "44", ColorOfHolds =  new Color(123, 22, 22), Author = "Benja", Grade = grades[2], CreatedDate = new DateTime(2016, 03, 24)} };
