@@ -36,7 +36,7 @@ function RoutesViewModel(client) {
                 self.selectedSection = self.sections[0];
                 self.selectedSortBy = self.sortOptions[0];
                 self.refreshRoutes();
-                self.Trigger("RoutesChanged");
+                self.trigger("RoutesChanged");
             }
         });
     };
@@ -78,7 +78,7 @@ function RoutesViewModel(client) {
                         .join("/");
                     self.routes[i].selectedColor = self.routes[i].colorOfHolds;
                 }
-                self.Trigger("RoutesChanged");
+                self.trigger("RoutesChanged");
             }
         });
     };

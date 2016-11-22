@@ -2,12 +2,12 @@ function EventNotifier() {
     this.listeners = []
 }
 
-EventNotifier.prototype.AddEventListener = function(event, callback) {
+EventNotifier.prototype.addEventListener = function(event, callback) {
     this.listeners[event] = this.listeners[event] || [];
     this.listeners[event].push(callback);
 }
 
-EventNotifier.prototype.Trigger = function(event, arguments) {
+EventNotifier.prototype.trigger = function(event, arguments) {
     arguments = arguments || {};
     var currentEvent = this.listeners[event];
     if (currentEvent) {
@@ -17,7 +17,7 @@ EventNotifier.prototype.Trigger = function(event, arguments) {
     }
 }
 
-EventNotifier.prototype.RemoveEventListener = function(event, callback) {
+EventNotifier.prototype.removeEventListener = function(event, callback) {
     if (!this.listeners[event]) return false;
     var eventListeners = this.listeners[event];
     for (var i = 0; i < eventListeners.length; i++) {

@@ -17,10 +17,10 @@ $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
     viewModel = new NewRouteViewModel(client);
     
-    viewModel.AddEventListener("DataLoaded", function() {
+    viewModel.addEventListener("DataLoaded", function() {
         $('#content').html(template(viewModel));
     });
-    viewModel.AddEventListener("HoldColorUpdated", function() {
+    viewModel.addEventListener("HoldColorUpdated", function() {
         $('#holdColorContent').html(colortemplate(viewModel));
         if (viewModel.hasTape === false)
             $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);

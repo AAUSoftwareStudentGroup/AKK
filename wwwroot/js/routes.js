@@ -3,7 +3,7 @@ $(document).ready(function () {
     var template = Handlebars.compile($("#routes-template").html());
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
     viewModel = new RoutesViewModel(client);
-    viewModel.AddEventListener("RoutesChanged", function() {
+    viewModel.addEventListener("RoutesChanged", function() {
         $('#content').html(template(viewModel));
         $('#grade-' + viewModel.selectedGrade.difficulty).prop("selected", true);
         //       $('#hold-' + viewModel.selectedColor.value).prop("selected", true);

@@ -13,7 +13,7 @@ function RouteInfoViewModel(client, navigationService) {
                 if (routeResponse.success) {
                     self.route = routeResponse.data;
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
-                    self.Trigger("ContentUpdated");
+                    self.trigger("ContentUpdated");
                 }
             });
     };

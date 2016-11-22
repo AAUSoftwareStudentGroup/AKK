@@ -36,8 +36,8 @@ function EditRouteViewModel(client)
                         if(self.selectedTapeColor != null)
                             self.hasTape = true;
                         self.changeAuthor(routeResponse.data.author);
-                        self.Trigger("OnGradeOrSectionChanged");
-                        self.Trigger("OnColorChanged");
+                        self.trigger("OnGradeOrSectionChanged");
+                        self.trigger("OnColorChanged");
                     }
                     else
                     {
@@ -138,7 +138,7 @@ function EditRouteViewModel(client)
             if(response.success)
             {
                 self.sections = response.data;
-                self.Trigger("OnGradeOrSectionChanged");
+                self.trigger("OnGradeOrSectionChanged");
             }
             else
             {
@@ -158,7 +158,7 @@ function EditRouteViewModel(client)
         }
         else
             self.hasTape = true;
-        self.Trigger("OnColorChanged");
+        self.trigger("OnColorChanged");
     },
     this.updateRoute = function()
     {

@@ -12,7 +12,7 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
 
     this.viewModel.HoldPositions = this.viewModel.HoldPositions || [];
 
-    this.viewModel.AddEventListener("HoldsUpdated", this.DrawCanvas);
+    this.viewModel.addEventListener("HoldsUpdated", this.DrawCanvas);
 
     this.DrawCanvas();
     if (editable) {

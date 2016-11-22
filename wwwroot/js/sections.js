@@ -5,14 +5,14 @@ $(document).ready(function () {
     var routeTemplate = Handlebars.compile($("#routes-template").html());
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
     viewModel = new SectionsViewModel(client);
-    viewModel.AddEventListener("DoneLoading", function changed() {
+    viewModel.addEventListener("DoneLoading", function changed() {
         $('#content').html(template(viewModel));
         $('#section-input-' + viewModel.selectedSection.name).prop("selected", true);
     });
-    viewModel.AddEventListener("SectionsUpdated", function changed2() {
+    viewModel.addEventListener("SectionsUpdated", function() {
         $('#sectionArea').html(sectionTemplate(viewModel));
     });
-    viewModel.AddEventListener("RoutesUpdated", function changed3() {
+    viewModel.addEventListener("RoutesUpdated", function() {
         $('#routeList').html(routeTemplate(viewModel));
     });
     viewModel.init();

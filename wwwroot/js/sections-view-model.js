@@ -18,9 +18,9 @@ function SectionsViewModel(client)
                 self.selectedGrade = null;
                 self.selectedSection = self.sections[0];
                 self.selectedSortBy = self.sortOptions[0];
-                self.Trigger("DoneLoading");
-                self.Trigger("RoutesUpdated");
-                self.Trigger("SectionsUpdated");
+                self.trigger("DoneLoading");
+                self.trigger("RoutesUpdated");
+                self.trigger("SectionsUpdated");
 
             }
         });
@@ -54,7 +54,7 @@ function SectionsViewModel(client)
                     self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
                     self.routes[i].selectedColor = self.routes[i].colorOfHolds;
                 }
-                self.Trigger("RoutesUpdated");
+                self.trigger("RoutesUpdated");
             }
         });
     };
@@ -64,7 +64,7 @@ function SectionsViewModel(client)
             if(response.success) {
                 self.sections = response.data;
 
-                self.Trigger("DoneLoading");
+                self.trigger("DoneLoading");
             }
         });
     };
@@ -86,7 +86,7 @@ function SectionsViewModel(client)
             if(response.success)
             {
                 self.grades = self.grades.concat(response.data);
-                self.Trigger("DoneLoading");
+                self.trigger("DoneLoading");
             }
         })
     };
@@ -94,7 +94,7 @@ function SectionsViewModel(client)
     {
         if (self.selectedGrade != null && self.selectedGrade.difficulty == gradeValue) {
             self.selectedGrade = null;
-            self.Trigger("DoneLoading");
+            self.trigger("DoneLoading");
         }
         else
             self.selectedGrade = self.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
@@ -150,7 +150,7 @@ function SectionsViewModel(client)
         newGrade.difficulty = self.grades.length + 1;
         self.client.grades.addGrade(newGrade, function(response) {
             if(response.success)                
-            self.Trigger("DoneLoading");
+            self.trigger("DoneLoading");
 
         });
     };
@@ -160,7 +160,7 @@ function SectionsViewModel(client)
         {
             self.client.grades.deleteGrade(self.selectedGrade.difficulty, function(response) {
                 if(response.success)
-                self.Trigger("DoneLoading");                
+                self.trigger("DoneLoading");                
             });
         }
     };

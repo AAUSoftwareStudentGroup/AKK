@@ -20,14 +20,14 @@ $(document)
         var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
         viewModel = new EditRouteViewModel(client);
         
-        viewModel.AddEventListener("OnGradeOrSectionChanged", function changed() {
+        viewModel.addEventListener("OnGradeOrSectionChanged", function changed() {
             $('#content').html(template(viewModel));
 
             $('#section-input-' + viewModel.selectedSection.name).prop("checked", true);
             $('#grade-input-' + viewModel.selectedGrade.difficulty).prop("checked", true);
         });
         
-        viewModel.AddEventListener("OnColorChanged", function() {
+        viewModel.addEventListener("OnColorChanged", function() {
             $('#holdColorContent').html(colortemplate(viewModel));
             if (viewModel.hasTape === false)
                 $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);

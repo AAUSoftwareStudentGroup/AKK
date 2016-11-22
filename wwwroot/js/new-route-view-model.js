@@ -9,7 +9,7 @@ function NewRouteViewModel(client) {
     this.init = function() {
         this.getSections();
         this.getGrades();
-        self.Trigger("HoldColorUpdated");
+        self.trigger("HoldColorUpdated");
     }
 
     var self = this;
@@ -61,7 +61,7 @@ function NewRouteViewModel(client) {
     this.getSections = function () {
         self.client.sections.getAllSections(function (response) {
             if (response.success) {
-                self.Trigger("DataLoaded");
+                self.trigger("DataLoaded");
                 self.sections = response.data;
             } else {
                 $("#error-message").html(response.message).show();
@@ -72,7 +72,7 @@ function NewRouteViewModel(client) {
         self.client.grades.getAllGrades(function (response) {
             if (response.success) {
                 self.grades = response.data;
-                self.Trigger("DataLoaded");
+                self.trigger("DataLoaded");
             }
         })
     };
@@ -82,7 +82,7 @@ function NewRouteViewModel(client) {
             self.selectedTapeColor = null;
         } else
             self.hasTape = true;
-        self.Trigger("HoldColorUpdated");
+        self.trigger("HoldColorUpdated");
     };
     this.addRoute = function() {
         if (self.selectedSection != null &&

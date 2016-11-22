@@ -12,7 +12,7 @@ $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
     
     viewModel = new RouteInfoViewModel(client, new NavigationService());
-    viewModel.AddEventListener("ContentUpdated", function() { 
+    viewModel.addEventListener("ContentUpdated", function() { 
         $('#content').html(template(viewModel)); 
         var rc = new RouteCanvas($("#routeimage")[0], viewModel.routeImage, viewModel, true);
         rc.DrawCanvas();
