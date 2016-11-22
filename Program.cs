@@ -21,7 +21,7 @@ namespace AKK
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                .UseUrls("http://0.0.0.0:"+PORT)
+                //.UseUrls("http://0.0.0.0:"+PORT)
                 .Build();
 
             host.Run();
