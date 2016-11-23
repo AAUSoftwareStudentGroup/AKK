@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AKK.Migrations
 {
-    public partial class NameToGrade : Migration
+    public partial class dbnuke : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,36 +12,36 @@ namespace AKK.Migrations
                 name: "Grades",
                 columns: table => new
                 {
-                    GradeId = table.Column<Guid>(nullable: false),
-                    ColorDB = table.Column<uint>(nullable: true),
+                    Id = table.Column<Guid>(nullable: false),
+                    ColorDb = table.Column<uint>(nullable: true),
                     Difficulty = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Grades", x => x.GradeId);
+                    table.PrimaryKey("PK_Grades", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Sections",
                 columns: table => new
                 {
-                    SectionId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sections", x => x.SectionId);
+                    table.PrimaryKey("PK_Sections", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Routes",
                 columns: table => new
                 {
-                    RouteId = table.Column<Guid>(nullable: false),
+                    Id = table.Column<Guid>(nullable: false),
                     Author = table.Column<string>(nullable: true),
-                    ColorOfHoldsDB = table.Column<uint>(nullable: true),
-                    ColorOfTapeDB = table.Column<uint>(nullable: true),
+                    ColorOfHoldsDb = table.Column<uint>(nullable: true),
+                    ColorOfTapeDb = table.Column<uint>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     GradeId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
@@ -50,18 +50,18 @@ namespace AKK.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Routes", x => x.RouteId);
+                    table.PrimaryKey("PK_Routes", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Routes_Grades_GradeId",
                         column: x => x.GradeId,
                         principalTable: "Grades",
-                        principalColumn: "GradeId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Routes_Sections_SectionId",
                         column: x => x.SectionId,
                         principalTable: "Sections",
-                        principalColumn: "SectionId",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -73,7 +73,7 @@ namespace AKK.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Routes_SectionId",
                 table: "Routes",
-                column: "SectionId");
+                column: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

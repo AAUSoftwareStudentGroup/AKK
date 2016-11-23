@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -7,38 +7,13 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <link rel="stylesheet" type="text/css" href="css/adminStyles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-latest.js"></script>
+        <script type="text/javascript" src="js/handlebars.min.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
         <script type="text/javascript" src="js/sections-view-model.js"></script>
     </head>
     <body>
-        <script type="text/javascript">
-            var viewModel;
-            $(document).ready(function () {
-                var template = Handlebars.compile($("#sections-template").html());
-                var sectionTemplate = Handlebars.compile($("#sectionsArea-template").html());
-                var routeTemplate = Handlebars.compile($("#routes-template").html());
-                var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
-                var changed = function changed() {
-                    $('#content').html(template(viewModel));
-                    $('#section-input-' + viewModel.selectedSection.name).prop("selected", true);
-                };
-                var changed2 = function changed2() {
-                    $('#sectionArea').html(sectionTemplate(viewModel));
-                };
-                var changed3 = function changed3() {
-                    $('#routeList').html(routeTemplate(viewModel));
-                };
-                viewModel = new SectionsViewModel(client, changed, changed2, changed3);
-            });
-            Handlebars.registerHelper('ifCond', function(v1, v2, options) {
-                if(v1.g <= v2) {
-                    return options.fn(this);
-                }
-                return options.inverse(this);
-            });
-        </script>
+        <script src="js/sections.js"></script>
         <script id="sections-template" type="text/x-handlebars-template">
             <div class="header">
                 <div class="header-content">
@@ -86,7 +61,7 @@
                 <h2>Section</h2>
                 <div class="radio-inputs">
                     {{#each sections}}
-                    <input id="section-input-{{name}}" onclick="viewModel.getSectionDetails('{{sectionId}}')" name="section" type="radio">
+                    <input id="section-input-{{name}}" onclick="viewModel.getSectionDetails('{{id}}')" name="section" type="radio">
                     <label for="section-input-{{name}}" class="section-box">
                         <span id="section-{{name}}">{{name}}</span>
                     </label>
@@ -116,7 +91,7 @@
                 <div class="routeOverview">
                     <div class="content-section route-list">
                         {{#each routes}}
-                        <a href="route-info.html?routeId={{routeId}}">
+                        <a href="route-info?routeId={{routeId}}">
                             <div class="route-card">
                                 <div class="route-card-top">
                                     <div class="route-grade-number grade-{{grade.difficulty}}">
