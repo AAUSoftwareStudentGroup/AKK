@@ -36,6 +36,7 @@ namespace AKK
             services.AddScoped<IRepository<Route>, RouteRepository>();
             services.AddScoped<IRepository<Section>, SectionRepository>();
             services.AddScoped<IRepository<Grade>, GradeRepository>();
+            services.AddScoped<IRepository<Image>, ImageRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
