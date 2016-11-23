@@ -21,7 +21,7 @@ namespace AKK.Controllers {
         
         [HttpGet]
         public string Index() {
-            Route r =  new Route {Name = "99", ColorOfHolds = new Color(255, 0, 0), Author = "Anton", Grade =_g.GetAll().FirstOrDefault(), CreatedDate = new DateTime(2016, 03, 24) };
+            Route r =  new Route {Name = "99", ColorOfHolds = new Color(255, 0, 0), Member = new Member {DisplayName = "Anton"}, Grade =_g.GetAll().FirstOrDefault(), CreatedDate = new DateTime(2016, 03, 24) };
             _s.GetAll().FirstOrDefault().Routes.Add(r);
             _s.Save();
             return db.Find(r.Id)?.Name;

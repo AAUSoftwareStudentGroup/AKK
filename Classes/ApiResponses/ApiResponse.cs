@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AKK.Classes.ApiResponses {
-    public class ApiResponse : IActionResult {
+    public class ApiResponse<T> : IActionResult {
 
-        public object Data {get; set;}
+        public T Data {get; set;}
         public bool Success {get; set;}
         public virtual object Value {
             get {
@@ -15,6 +15,7 @@ namespace AKK.Classes.ApiResponses {
         public ApiResponse (bool success)
         {
             Success = success;
+            Data = default(T);
         }
 
         public void ExecuteResult(ControllerContext context)

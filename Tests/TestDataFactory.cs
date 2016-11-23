@@ -1,24 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AKK.Classes.Models;
 
 namespace AKK.Tests
 {
     public class TestDataFactory
     {
+        private List<Member> _members;
         private List<Section> _sections;
         private List<Grade> _grades;
         private List<Route> _routes;
+
+        public List<Member> Members {
+            get { return _members; }
+            set { _members = value; }
+        }
 
         public List<Section> Sections {
             get { return _sections; }
             set { _sections = value; }
         }
 
-        public List<Grade> Grades
-        {
+        public List<Grade> Grades {
             get { return _grades; }
             set { _grades = value; }
         }
@@ -30,21 +33,41 @@ namespace AKK.Tests
 
         public TestDataFactory()
         {
+            _members = new List<Member>
+            {
+                new Member {DisplayName = "Anton"},
+                new Member {DisplayName = "Jakobsen"},
+                new Member {DisplayName = "Hornum"},
+                new Member {DisplayName = "Jakob"},
+                new Member {DisplayName = "TannerHelland"},
+                new Member {DisplayName = "Grunberg"},
+                new Member {DisplayName = "Ibsen"},
+                new Member {DisplayName = "Geo"},
+                new Member {DisplayName = "Bacci"},
+                new Member {DisplayName = "Geogebra"},
+                new Member {DisplayName = "Kurt"},
+                new Member {DisplayName = "Benja"},
+                new Member {DisplayName = "Manfred"},
+                new Member {DisplayName = "Betinna"},
+                new Member {DisplayName = "Kasper"},
+                new Member {DisplayName = "Rasmus"}
+            };
+
             _sections = new List<Section>
             {
-                new Section {Name = "A", Id = new Guid()},
-                new Section {Name = "B", Id = new Guid()},
-                new Section {Name = "C", Id = new Guid()},
-                new Section {Name = "D", Id = new Guid()},
+                new Section {Name = "A", Id = Guid.NewGuid()},
+                new Section {Name = "B", Id = Guid.NewGuid()},
+                new Section {Name = "C", Id = Guid.NewGuid()},
+                new Section {Name = "D", Id = Guid.NewGuid()},
             };
 
             _grades = new List<Grade>
             {
-                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = new Guid()},
-                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = new Guid()},
-                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = new Guid()},
-                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = new Guid()},
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = new Guid()},
+                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid()},
+                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid()},
+                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid()},
+                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid()},
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid()},
             };
 
             _routes = new List<Route>
@@ -54,7 +77,7 @@ namespace AKK.Tests
                     Name = "4",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 0),
-                    Author = "Anton",
+                    Member = _members[0],
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -63,7 +86,7 @@ namespace AKK.Tests
                     Name = "14",
                     Section = _sections[0],
                     ColorOfHolds = new Color(0, 255, 0),
-                    Author = "Jakobsen",
+                    Member = _members[1],
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 07, 12)
                 },
@@ -72,7 +95,7 @@ namespace AKK.Tests
                     Name = "43",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 255),
-                    Author = "Hornum",
+                    Member = _members[2],
                     Grade = _grades[2],
                     CreatedDate = new DateTime(2016, 11, 11)
                 },
@@ -81,7 +104,7 @@ namespace AKK.Tests
                     Name = "21",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 255, 0),
-                    Author = "Jakob",
+                    Member = _members[3],
                     Grade = _grades[3],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -90,7 +113,7 @@ namespace AKK.Tests
                     Name = "32",
                     Section = _sections[1],
                     ColorOfHolds = new Color(100, 100, 100),
-                    Author = "TannerHelland",
+                    Member = _members[4],
                     Grade = _grades[4],
                     CreatedDate = new DateTime(2014, 11, 24)
                 },
@@ -99,7 +122,7 @@ namespace AKK.Tests
                     Name = "99",
                     Section = _sections[1],
                     ColorOfHolds = new Color(170, 12, 54),
-                    Author = "Grunberg",
+                    Member = _members[5],
                     Grade = _grades[2],
                     CreatedDate = new DateTime(2016, 01, 02)
                 },
@@ -108,7 +131,7 @@ namespace AKK.Tests
                     Name = "3",
                     Section = _sections[1],
                     ColorOfHolds = new Color(255, 34, 89),
-                    Author = "Ibsen",
+                    Member = _members[6],
                     Grade = _grades[3],
                     CreatedDate = new DateTime(2016, 04, 11)
                 },
@@ -117,7 +140,7 @@ namespace AKK.Tests
                     Name = "7",
                     Section = _sections[1],
                     ColorOfHolds = new Color(232, 233, 5),
-                    Author = "Anton",
+                    Member = _members[0],
                     Grade = _grades[3],
                     CreatedDate = new DateTime(2016, 08, 10)
                 },
@@ -126,7 +149,7 @@ namespace AKK.Tests
                     Name = "66",
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 0, 0),
-                    Author = "Geo",
+                    Member = _members[7],
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -135,7 +158,7 @@ namespace AKK.Tests
                     Name = "33",
                     Section = _sections[2],
                     ColorOfHolds = new Color(0, 22, 123),
-                    Author = "Bacci",
+                    Member = _members[8],
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 07, 12)
                 },
@@ -144,7 +167,7 @@ namespace AKK.Tests
                     Name = "94",
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 123, 0),
-                    Author = "Geogebra",
+                    Member = _members[9],
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 11, 11)
                 },
@@ -153,7 +176,7 @@ namespace AKK.Tests
                     Name = "22",
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 123, 0),
-                    Author = "Kurt",
+                    Member = _members[10],
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 11, 11)
                 },
@@ -162,7 +185,7 @@ namespace AKK.Tests
                     Name = "44",
                     Section = _sections[2],
                     ColorOfHolds = new Color(123, 22, 22),
-                    Author = "Benja",
+                    Member = _members[11],
                     Grade = _grades[2],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -171,7 +194,7 @@ namespace AKK.Tests
                     Name = "20",
                     Section = _sections[3],
                     ColorOfHolds = new Color(35, 0, 22),
-                    Author = "Manfred",
+                    Member = _members[12],
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 03, 01),
                     ColorOfTape = new Color(123, 255, 22)
@@ -181,7 +204,7 @@ namespace AKK.Tests
                     Name = "9",
                     Section = _sections[3],
                     ColorOfHolds = new Color(123, 255, 22),
-                    Author = "Bettina",
+                    Member = _members[13],
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 10, 27)
                 },
@@ -190,7 +213,7 @@ namespace AKK.Tests
                     Name = "76",
                     Section = _sections[3],
                     ColorOfHolds = new Color(0, 22, 68),
-                    Author = "Kasper",
+                    Member = _members[14],
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 09, 04)
                 },
@@ -199,7 +222,7 @@ namespace AKK.Tests
                     Name = "54",
                     Section = _sections[3],
                     ColorOfHolds = new Color(123, 22, 123),
-                    Author = "Rasmus",
+                    Member = _members[15],
                     Grade = _grades[4],
                     CreatedDate = new DateTime(2016, 06, 22)
                 }

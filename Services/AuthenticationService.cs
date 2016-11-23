@@ -5,7 +5,7 @@ namespace AKK.Services
 {
     public class AuthenticationService : IAuthenticationService
     {
-        private 
+
         public string Login(string username, string password)
         {
             throw new NotImplementedException();
@@ -18,7 +18,7 @@ namespace AKK.Services
 
         public bool IsAuthenticated(string token)
         {
-            
+            throw new NotImplementedException();
         }
     }
 }

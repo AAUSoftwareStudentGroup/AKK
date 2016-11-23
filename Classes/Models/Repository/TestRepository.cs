@@ -13,6 +13,10 @@ namespace AKK.Classes.Models.Repository
             _entities = new List<TEntity>();
         }
 
+        public TestRepository(List<TEntity> entities) {
+            _entities = entities;
+        }
+
         public void Add(TEntity entity)
         {
             _entities.Add(entity);
