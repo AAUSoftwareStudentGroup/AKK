@@ -63,7 +63,7 @@ function EditRouteViewModel(client)
     this.hasTape = false;
     this.author = null;
     this.grades = [ ];
-    this.holds = [ ];
+    this.HoldPositions = [ ];
     this.holdColors = [
         { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
         { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1},
@@ -172,7 +172,7 @@ function EditRouteViewModel(client)
     },
     this.updateRoute = function()
     {
-        if(self.selectedSection != null && self.selectedGrade != null && self.selectedColor != null && !isNaN(viewModel.routeNumber))
+        if(self.selectedSection != null && self.selectedGrade != null && self.selectedColor != null && !isNaN(this.routeNumber))
         {
             var routeId = self.routeId;
             var sectionId = self.selectedSection.id;

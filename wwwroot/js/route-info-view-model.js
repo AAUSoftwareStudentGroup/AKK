@@ -16,11 +16,17 @@ function RouteInfoViewModel(client, navigationService) {
 
                     self.client.routes.getImage(self.route.id, function(imageResponse) {
                         if (imageResponse.success) {
+                            console.log(imageResponse);
                             self.hasImage = true;
-                            self.image = imageResponse.image;
-                            self.HoldPositions = imageResponse.holds;
+                            self.route.image = new Image();
+                            self.route.image.src = imageResponse.data.fileUrl;
+                            self.HoldPositions = imageResponse.data.holds;
+                            self.route.image.onload = function() {
+                                self.trigger("ContentUpdated");
+                            }
+                        } else {
+                            self.trigger("ContentUpdated");
                         }
-                        self.trigger("ContentUpdated");
                     });
                     
                 }

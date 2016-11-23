@@ -10,7 +10,7 @@ $(document).ready(function () {
     viewModel.addEventListener("ContentUpdated", function() { 
         $('#content').html(template(viewModel)); 
         if (viewModel.hasImage) {
-            rc = new RouteCanvas($("#routeimage")[0], viewModel.routeImage, viewModel, false);
+            rc = new RouteCanvas($("#routeimage")[0], viewModel.route.image, viewModel, false);
             rc.DrawCanvas();
         }
     });
