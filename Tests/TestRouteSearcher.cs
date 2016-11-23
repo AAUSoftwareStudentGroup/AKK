@@ -23,9 +23,9 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void Search_SearchFor10Red_RoutesWithGradeRed() {
+        public void Search_SearchFor3Red_RoutesWithGradeRed() {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searcher = new RouteSearcher(testRepo.Routes, 3);
             var searchResult = searcher.Search("red");
 
             foreach (var result in searchResult)
@@ -67,7 +67,7 @@ namespace AKK.Tests
             var searcher = new RouteSearcher(testRepo.Routes, 5);
             var searchResult = searcher.Search("g");
 
-            Assert.AreEqual(10, searchResult.Count());    
+            Assert.AreEqual(5, searchResult.Count());    
         }
 
         [Test]
@@ -116,5 +116,31 @@ namespace AKK.Tests
             var distance = searcher._computeLevenshtein("Geo", "94");
             Assert.AreEqual(12, distance);
         }
+
+        [Test]
+        public void _computeLevenshtein_SearchFor10Bl_8RoutesWithGradesBlueAndBlack() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("Blu");
+
+            foreach (var result in searchResult) {
+                if(result.Grade.Name == "Black" || result.Grade.Name == "Blue") {
+                } else {
+                    Assert.Fail($"  Expected: grade of Blue or Black\n  But grade was: {result.Grade.Name}.");
+                }
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_10SearchForHelland_ExpectRouteWithTannerHellandAsAuthor() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("Helland");
+            if (searchResult.ToArray().Length == 0) {
+                Assert.Fail($"  Expected occupied list\n  But was Empty");
+            }
+            Assert.AreEqual("TannerHelland", searchResult.ElementAt(0).Author);
+        }
+
     }
 }
