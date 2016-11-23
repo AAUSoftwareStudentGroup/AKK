@@ -4,12 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using System.IO;
-using Microsoft.Extensions.FileProviders;
 using AKK.Classes.Models;
+using AKK.Classes.Models.Repository;
 
 namespace AKK
 {
@@ -36,7 +32,10 @@ namespace AKK
 	        services.AddDbContext<MainDbContext>(options =>
 	        	options.UseSqlite(connection)
 	        );
-            
+
+            services.AddScoped<IRepository<Route>, RouteRepository>();
+            services.AddScoped<IRepository<Section>, SectionRepository>();
+            services.AddScoped<IRepository<Grade>, GradeRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
@@ -48,7 +47,11 @@ namespace AKK
 
             app.UseMvc();
 
-            app.ApplicationServices.GetRequiredService<MainDbContext>().Seed();
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var db = serviceScope.ServiceProvider.GetService<MainDbContext>();
+                db.Seed();
+            }
         }
     }
 }

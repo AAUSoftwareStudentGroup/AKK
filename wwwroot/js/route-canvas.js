@@ -111,8 +111,8 @@ RouteCanvas.prototype.DrawCircle = function(x, y, r) {
 } 
 
 
-RouteCanvas.prototype.Undo = function() {
+RouteCanvas.prototype.undo = function() {
     if (this.viewModel.HoldPositions.length)
-        this.HoldPositions.pop();
+        this.viewModel.HoldPositions.pop();
     this.DrawCanvas();
 }

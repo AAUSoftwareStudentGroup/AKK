@@ -6,9 +6,10 @@
     <title>AKK - Route Info</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-latest.js"></script>
+    <script type="text/javascript" src="js/handlebars.min.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/client.js"></script>
+    <script type="text/javascript" src="js/navigationService.js"></script>
     <script type="text/javascript" src="js/route-info-view-model.js"></script>
     <script type="text/javascript" src="js/route-canvas.js"></script>
 </head>
@@ -17,7 +18,7 @@
     <script id="route-info-template" type="text/x-handlebars-template">
         <div class="header">
             <div class="header-content">
-                <a class="header-button left" href="routes.html">
+                <a class="header-button left" href="/">
                     <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
                         <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
                     </svg>
@@ -30,10 +31,10 @@
                 <div class="route-card-top">
                     <div class="route-grade-number grade-{{route.grade.difficulty}}">
                         <span class="number"
-                              {{#ifCond route.grade.color 200}}
-                              style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}})">
+                            {{#ifCond route.grade.color 200}}
+                                style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}})">
                             {{else}}
-                            style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}}); color: black">
+                                style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}}); color: black">
                             {{/ifCond}}
                             {{route.name}}
                         </span>
@@ -66,15 +67,19 @@
                         </svg>
                     </div>
                 </div>
-                <canvas id="routeimage" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
+                {{#if_eq hasImage true}}
+                    <canvas id="routeimage" class="routeimagesmall routeimage" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
+                {{else}}
+                    <div class="routeimage routeimagesmall no-image-added" onclick="viewModel.editRoute()"><p class="no-image-text">This route has no image, click to add one</p></div>
+                {{/if_eq}}
                 <p>Note</p>
                 <div class="route-card-bottom" style="clear:both;">
                     <span class="route-author">Made by: {{route.author}}</span>
                     <span class="route-date">{{route.date}}</span>
                 </div>
             </div>
-            <input class="submit-button create-route-button left" type="button" onclick="viewModel.editRoute('{{viewModel.selectedSection.routeId}}')" value="Edit"></input>
-            <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute('{{route.routeId}}')" value="Delete"></input>
+            <input class="submit-button create-route-button left" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
+            <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute('{{route.id}}')" value="Delete"></input>
         </div>
     </script>
     <div id="content"></div>

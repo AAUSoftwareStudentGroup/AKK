@@ -38,6 +38,7 @@ function EditRouteViewModel(client)
                         self.changeAuthor(routeResponse.data.author);
                         self.trigger("OnGradeOrSectionChanged");
                         self.trigger("OnColorChanged");
+                        self.trigger("OnImageChanged");
                     }
                     else
                     {
@@ -51,7 +52,7 @@ function EditRouteViewModel(client)
             }
         });
     }
-    this.hasImage = true;
+    this.hasImage = false;
     this.routeId = null;
     this.sections = [];
     this.selectedSection = null;
@@ -80,9 +81,18 @@ function EditRouteViewModel(client)
         { value: 13, name: "Grey", color: "5c5959", r: 92, g: 89, b: 89, a: 1},
         { value: 14, name: "White", color: "D0D0D0", r: 208, g: 208, b: 208, a: 1},
     ];
+
+    this.setImage = function(img) {
+        this.image = img;
+        this.image.width = img.width;
+        this.image.height = img.height;
+        this.hasImage = true;
+        this.trigger("OnImageChanged");
+    };
+
     this.changeSection = function(sectionId)
     {
-        self.selectedSection = self.sections.filter(function(s) { return s.sectionId == sectionId; })[0];
+        self.selectedSection = self.sections.filter(function(s) { return s.id == sectionId; })[0];
     };
     this.changeGrade = function(gradeValue)
     {
@@ -165,13 +175,15 @@ function EditRouteViewModel(client)
         if(self.selectedSection != null && self.selectedGrade != null && self.selectedColor != null && !isNaN(viewModel.routeNumber))
         {
             var routeId = self.routeId;
-            var sectionId = self.selectedSection.sectionId;
+            var sectionId = self.selectedSection.id;
             var gradeValue = self.selectedGrade;
             var tapeColor = self.selectedTapeColor;
             var holdColor = self.selectedColor;
             var routeNumber = self.routeNumber;
             var author = self.author;
-            self.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, function(response) {
+            var image = this.image ? this.image.src : null;
+            var holds = this.HoldPositions || null;
+            self.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, image, holds, function(response) {
                 if(response.success)
                 {
                     window.history.back();

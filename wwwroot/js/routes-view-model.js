@@ -52,7 +52,7 @@ function RoutesViewModel(client) {
         });
     };
     this.changeSection = function (sectionId) {
-        self.selectedSection = self.sections.filter(function (section) { return section.sectionId == sectionId; })[0];
+        self.selectedSection = self.sections.filter(function (section) { return section.id == sectionId; })[0];
         self.refreshRoutes();
     };
     this.changeSortBy = function (sortByValue) {
@@ -61,7 +61,7 @@ function RoutesViewModel(client) {
     };
     this.refreshRoutes = function () {
         var gradeValue = self.selectedGrade.difficulty == -1 ? null : self.selectedGrade.difficulty;
-        var sectionId = self.selectedSection.sectionId == -1 ? null : self.selectedSection.sectionId;
+        var sectionId = self.selectedSection.id == -1 ? null : self.selectedSection.id;
         var sortByValue = self.selectedSortBy.value == -1 ? null : self.selectedSortBy.value;
         self.client.routes.getRoutes(gradeValue,
             sectionId,
@@ -71,7 +71,7 @@ function RoutesViewModel(client) {
                 self.routes = response.data;
                 for (var i = 0; i < self.routes.length; i++) {
                     self.routes[i].sectionName = self.sections.filter(function (s) {
-                        return s.sectionId == self.routes[i].sectionId;
+                        return s.id == self.routes[i].sectionId;
                     })[0].name;
                     self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-")
                         .reverse()

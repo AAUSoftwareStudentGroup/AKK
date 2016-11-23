@@ -1,12 +1,5 @@
 ﻿var viewModel;
 
-function NavigationService() {
-    this.back = function() { window.location.replace("routes.html"); };
-    this.location = function(routeId) {
-        window.location = "edit-route.html?routeId=" + routeId;
-    };
-}
-
 var rc;
 var fullwidth = false;
 $(document).ready(function () {
@@ -16,11 +9,19 @@ $(document).ready(function () {
     viewModel = new RouteInfoViewModel(client, new NavigationService());
     viewModel.addEventListener("ContentUpdated", function() { 
         $('#content').html(template(viewModel)); 
-        rc = new RouteCanvas($("#routeimage")[0], viewModel.routeImage, viewModel, false);
-        rc.DrawCanvas();
+        if (viewModel.hasImage) {
+            rc = new RouteCanvas($("#routeimage")[0], viewModel.routeImage, viewModel, false);
+            rc.DrawCanvas();
+        }
     });
     viewModel.init();
 });
+Handlebars.registerHelper('if_eq', function (a, b, opts) {
+        if (a == b) // Or === depending on your needs
+            return opts.fn(this);
+        else
+            return opts.inverse(this);
+    });
 Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     if (v1.g <= v2) {
         return options.fn(this);
@@ -30,7 +31,8 @@ Handlebars.registerHelper('ifCond', function (v1, v2, options) {
 
 $(document).on("click", "#routeimage", function() {
     var el = $("#routeimage");
-    el.css("width", fullwidth ? "50%" : "100%");
+    el.toggleClass("routeimagefullscreen");
+    el.toggleClass("routeimagesmall");
     fullwidth = !fullwidth;
     rc.resize();
     rc.DrawCanvas();
