@@ -18,6 +18,8 @@ namespace AKK.Classes
 
             _numRoutes = _allRoutes.Count();
             _maxResults = Math.Min(_maxResults, _numRoutes);
+
+            _computeLevenshtein("gebra", "Geogebra");
         }
 
         public IEnumerable<Route> Search(string searchStr)
@@ -93,8 +95,10 @@ namespace AKK.Classes
             pattern = pattern.ToLower();
             text = text.ToLower();
 
+            //Fill first column
             for (int i = 0; i <= m; d[i, 0] = cost * i++);
-            for (int j = 0; j <= n; d[0, j] = cost * j++);
+            //Fill first row
+            for (int j = 0; j <= n; d[0, j] = 1 * j++);
 
             for (int j = 1; j <= n; j++) {
                 for (int i = 1; i <= m; i++)

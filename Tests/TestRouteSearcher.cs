@@ -52,6 +52,14 @@ namespace AKK.Tests
             Assert.AreEqual("Geogebra", searchResult.ElementAt(1).Author);
         }
 
+        [Test]
+        public void Search_SearchFor10Gebra_RoutesWithAuthorGeogebraFirst() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("gebra");
+
+            Assert.AreEqual("Geogebra", searchResult?.FirstOrDefault().Author);
+        }
 
         [Test]
         public void Search_SearchFor5G_5RoutesWithG() {
