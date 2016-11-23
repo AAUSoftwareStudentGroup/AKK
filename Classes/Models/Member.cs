@@ -14,6 +14,8 @@ namespace AKK.Classes.Models
 
         public string Password { get; set; }
 
+        public string Token { get; set; }
+
         public bool IsAdmin { get; set; }
 
         public List<Route> Routes { get; set; }
