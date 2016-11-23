@@ -25,72 +25,29 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
 
 
     this.DrawCanvas();
-    if (editable) {
-        this.canvas.addEventListener("touchstart", function (e) {
-            mousePos = getTouchPos(canvas, e);
-            var touch = e.touches[0];
-            var mouseEvent = new MouseEvent("mousedown", {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            self.canvas.dispatchEvent(mouseEvent);
-        }, false);
-        
-        self.canvas.addEventListener("touchend", function (e) {
-            var mouseEvent = new MouseEvent("mouseup", {});
-            self.canvas.dispatchEvent(mouseEvent);
-        }, false);
-        
-        self.canvas.addEventListener("touchmove", function (e) {
-            var touch = e.touches[0];
-            var mouseEvent = new MouseEvent("mousemove", {
-                clientX: touch.clientX,
-                clientY: touch.clientY
-            });
-            self.canvas.dispatchEvent(mouseEvent);
-        }, false);
+    this.latestClick;
 
-        // Get the position of a touch relative to the canvas
-        function getTouchPos(canvasDom, touchEvent) {
-            var rect = canvasDom.getBoundingClientRect();
-            return {
-                x: touchEvent.touches[0].clientX - rect.left,
-                y: touchEvent.touches[0].clientY - rect.top
-            };
-        }
+    if (editable) {        
 
-
-        this.canvas.onmousedown = function(e) {
+        $(this.canvas).click(function(e) {
             var c = $(self.canvas);
             var position = c.offset();
-            self.isDrawing = true;
-            self.currentCircle = new Object();
-            self.currentCircle.x = (e.pageX-position.left) / c.width();
-            self.currentCircle.y = (e.pageY-position.top)  / c.height();
-        };
-
-        this.canvas.onmouseup = function(e) {
-            self.isDrawing = false;
-            self.viewModel.HoldPositions.push(self.currentCircle);
-        };
-
-        this.canvas.onmousemove = function(e) {
-            var c = $(self.canvas);
-            var position = c.offset();
-            if (!self.isDrawing) return;
-            
-            self.DrawCanvas();
-
             mmouseX = (e.pageX-position.left) /c.width();
             mmouseY = (e.pageY-position.top) / c.height();
-
-            var newRadius = Math.sqrt(Math.pow(self.currentCircle.x - mmouseX, 2)+Math.pow(self.currentCircle.y - mmouseY, 2))
-            self.currentCircle.radius = newRadius / 2;
-            self.DrawCircle(self.currentCircle.x * c.width(), self.currentCircle.y * c.height(), self.currentCircle.radius * c.width())
-        };
+            if (self.latestClick) {
+                var dist = Math.sqrt(Math.pow(self.latestClick.x - mmouseX, 2) + Math.pow(self.latestClick.y - mmouseY, 2));
+                var lastCircle = self.viewModel.HoldPositions.length - 1;
+                if (dist < viewModel.HoldPositions[lastCircle].radius) {
+                    self.viewModel.HoldPositions[lastCircle].radius *= 1.2;
+                    self.DrawCanvas();
+                    return;
+                }
+            }
+            self.viewModel.HoldPositions.push({x: mmouseX, y: mmouseY, radius: 0.08});
+            self.DrawCanvas();
+            self.latestClick = {x: mmouseX, y: mmouseY};
+        });
     }
-       
-
 }
 
 RouteCanvas.prototype.DrawCanvas = function() {
@@ -112,7 +69,9 @@ RouteCanvas.prototype.DrawCircle = function(x, y, r) {
 
 
 RouteCanvas.prototype.undo = function() {
-    if (this.viewModel.HoldPositions.length)
+    if (this.viewModel.HoldPositions.length){
         this.viewModel.HoldPositions.pop();
+    }
+    this.lastCircle = null;
     this.DrawCanvas();
 }
