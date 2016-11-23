@@ -134,5 +134,155 @@ namespace AKK.Tests
             Assert.AreEqual("TannerHelland", searchResult.ElementAt(0).Author);
         }
 
+        [Test]
+        public void _computeLevenshtein_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 3);
+            var searchResult = searcher.Search("A 4");
+
+            foreach (var result in searchResult)
+            {
+                Assert.AreEqual("A", result.Section.Name);
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_3SearchForA4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 3);
+            var searchResult = searcher.Search("A4");
+
+            foreach (var result in searchResult)
+            {
+                Assert.AreEqual("A", result.Section.Name);
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_3SearchForA4_ExpectedResultTheSameAsSearchForASPACE4() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResultWithSpace = searcher.Search("A 4");
+            var searchResultWithoutSpace = searcher.Search("A4");
+
+            int length = searchResultWithSpace.ToArray().Length;
+
+            if(searchResultWithoutSpace.ToArray().Length != length) {
+                Assert.Fail($"  Expected: List have the same amount of items\n  Was: WithSpace: {length}  noSpace: {searchResultWithoutSpace.ToArray().Length}");
+            }
+
+            for (int i = 0; i < length; i++)
+            {
+               if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true) {
+                   Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
+               }
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_10SearchForASPACE4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("A 4 Gr");
+
+            foreach (var result in searchResult)
+            {
+                if(result.Section.Name == "A" || result.Name.Contains("4") || result.Grade.Name == "Green") {
+
+                } else {
+                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Grade Green\n  Was: {result.Section.Name}  {result.Name}  {result.Grade.Name}");
+                }
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_10SearchForA4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("A4 Gr");
+
+            foreach (var result in searchResult)
+            {
+                if(result.Section.Name == "A" || result.Name.Contains("4") || result.Grade.Name == "Green") {
+
+                } else {
+                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Grade Green\n  Was: {result.Section.Name}  {result.Name}  {result.Grade.Name}");
+                }
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_10SearchForA4SPACEGr_ExpectedResultTheSameAsWithSpaceBetweenAAnd4() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResultWithoutSpace = searcher.Search("A4 Gr");
+            var searchResultWithSpace = searcher.Search("A 4 Gr");
+
+            int length = searchResultWithoutSpace.ToArray().Length;
+
+            if(searchResultWithSpace.ToArray().Length != length) {
+                Assert.Fail($"  Expected: List have the same amount of items\n  Was: WithSpace: {searchResultWithSpace.ToArray().Length}  noSpace: {length}");
+            }
+
+            for (int i = 0; i < length; i++)
+            {
+               if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true) {
+                   Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
+               }
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_10SearchForA4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("A4 Gru");
+
+            foreach (var result in searchResult)
+            {
+                if(result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru")) {
+
+                } else {
+                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Author containing Gru\n  Was: {result.Section.Name}  {result.Name}  {result.Author}");
+                }
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_10SearchForASPACE4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("A 4 Gru");
+
+            foreach (var result in searchResult)
+            {
+                if(result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru")) {
+
+                } else {
+                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Author containing Gru\n  Was: {result.Section.Name}  {result.Name}  {result.Author}");
+                }
+            }
+        }
+
+        [Test]
+        public void _computeLevenshtein_10SearchForA4SPACEGru_ExpectedResultTheSameAsWithSpaceBetweenAAnd4() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResultWithoutSpace = searcher.Search("A4 Gru");
+            var searchResultWithSpace = searcher.Search("A 4 Gru");
+
+            int length = searchResultWithoutSpace.ToArray().Length;
+
+            if(searchResultWithSpace.ToArray().Length != length) {
+                Assert.Fail($"  Expected: List have the same amount of items\n  Was: WithSpace: {searchResultWithSpace.ToArray().Length}  noSpace: {length}");
+            }
+
+            for (int i = 0; i < length; i++)
+            {
+               if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true) {
+                   Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
+               }
+            }
+        }
     }
 }
