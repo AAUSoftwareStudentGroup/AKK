@@ -26,16 +26,21 @@ namespace AKK.Classes.Models.Repository
     public class SectionRepository : DbSetRepository<Section>
     {
         public SectionRepository(MainDbContext dbContext) : base(dbContext.Sections, dbContext)
-        {
-            
+        {   
         }
     }
 
     public class GradeRepository : DbSetRepository<Grade>
     {
         public GradeRepository(MainDbContext dbContext) : base(dbContext.Grades, dbContext)
+        {    
+        }
+    }
+
+    public class ImageRepository : DbSetRepository<Image> 
+    {
+        public ImageRepository(MainDbContext dbContext) : base(dbContext.Images, dbContext) 
         {
-            
         }
     }
 }

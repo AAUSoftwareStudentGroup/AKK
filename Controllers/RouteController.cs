@@ -16,11 +16,13 @@ namespace AKK.Controllers {
         private readonly IRepository<Route> _routeRepository;
         private readonly IRepository<Section> _sectionRepository;
         private readonly IRepository<Grade> _gradeRepository;
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository ) 
+        private readonly IRepository<Image> _imageRepository;
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository) 
         {
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
+            _imageRepository = imageRepository;
         }
 
         // GET: /api/route
@@ -190,6 +192,28 @@ namespace AKK.Controllers {
             }
 
             return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(route));
+        }
+
+        // GET: /api/route/{id}/image
+        [HttpGet("{id}/image")]
+        public ApiResponse GetImage(Guid id)
+        {
+            var route = _routeRepository.Find(id);
+            if (route == null) {
+                return new ApiErrorResponse($"No route exists with id {id}");
+            }
+
+            var image = _imageRepository.GetAll().FirstOrDefault(x => x.RouteId == id);
+            if (image == null) {
+                return new ApiErrorResponse($"No image exists for route with id {id}");
+            }
+
+            image.Holds = new List<Hold>()
+            {
+                new Hold { X = 0.5, Y = 0.5, Radius = 0.1 }
+            };
+
+            return new ApiSuccessResponse(image);
         }
 
         // PATCH: /api/route/{routeId}

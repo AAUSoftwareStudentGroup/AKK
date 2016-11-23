@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using AKK.Classes.Models.Repository;
-using Newtonsoft.Json;
 
 namespace AKK.Classes.Models
 {
@@ -14,6 +14,7 @@ namespace AKK.Classes.Models
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
         
         public Guid RouteId { get; set; }
@@ -24,6 +25,6 @@ namespace AKK.Classes.Models
 
         public string FileUrl { get; set; }
 
-        public List<Hold> Holds { get; set; }
+        public virtual List<Hold> Holds { get; set; }
     }
 }

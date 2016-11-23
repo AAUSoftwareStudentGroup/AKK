@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace AKK.Classes.Models.Repository
 {
-    public class DbSetRepository<TEntity> :IRepository<TEntity> where TEntity : class, IIdentifyable
+    public class DbSetRepository<TEntity> : IRepository<TEntity> where TEntity : class, IIdentifyable
     {
         private MainDbContext _dbContext;
         private DbSet<TEntity> _dbset;

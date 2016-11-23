@@ -20,24 +20,27 @@ namespace AKK.Classes.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Route>().HasOne(r => r.Section)
-                                        .WithMany(s => s.Routes)
-                                        .HasForeignKey(r => r.SectionId)
-                                        .OnDelete(DeleteBehavior.Cascade);
-            
-            modelBuilder.Entity<Grade>().HasMany(g => g.Routes)
-                                        .WithOne(r => r.Grade)
-                                        .HasForeignKey(r => r.GradeId)
-                                        .OnDelete(DeleteBehavior.SetNull);
+            modelBuilder.Entity<Route>()
+                .HasOne(r => r.Section)
+                .WithMany(s => s.Routes)
+                .HasForeignKey(r => r.SectionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Grade>()
+                .HasMany(g => g.Routes)
+                .WithOne(r => r.Grade)
+                .HasForeignKey(r => r.GradeId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Grade>()
                 .Ignore(g => g.Color)
                 .Property(Grade.ColorPriv);
 
-            modelBuilder.Entity<Member>().HasMany(m => m.Routes)
-                                         .WithOne(r => r.Member)
-                                         .HasForeignKey(r => r.MemberId)
-                                         .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Member>()
+                .HasMany(m => m.Routes)
+                .WithOne(r => r.Member)
+                .HasForeignKey(r => r.MemberId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Route>()
                 .Ignore(r => r.ColorOfHolds)
@@ -52,10 +55,11 @@ namespace AKK.Classes.Models
                 .WithOne()
                 .HasForeignKey<Image>(i => i.RouteId);
 
-            modelBuilder.Entity<Image>().HasMany(m => m.Holds)
-                                         .WithOne(h => h.Image)
-                                         .HasForeignKey(h => h.ImageId)
-                                         .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Image>()
+                .HasMany(m => m.Holds)
+                .WithOne(h => h.Image)
+                .HasForeignKey(h => h.ImageId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
     public static class DbContextExtensions
@@ -69,8 +73,6 @@ namespace AKK.Classes.Models
             // Perform database delete and create
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
-
-            
 
             List<Image> images = new List<Image> {
                 new Image {Id = new Guid(), Width = 800, Height = 500, FileUrl = "https://placeholdit.imgix.net/~text?txtsize=28&txt=500%C3%97800&w=500&h=800"}
