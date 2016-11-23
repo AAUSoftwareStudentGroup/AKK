@@ -31,12 +31,28 @@ namespace AKK.Migrations
                     b.ToTable("Grades");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Member", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Author");
+                    b.Property<string>("DisplayName");
+
+                    b.Property<bool>("IsAdmin");
+
+                    b.Property<string>("Password");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<uint?>("ColorOfHoldsDb");
 
@@ -46,17 +62,21 @@ namespace AKK.Migrations
 
                     b.Property<Guid>("GradeId");
 
+                    b.Property<Guid>("MemberId");
+
                     b.Property<string>("Name");
 
                     b.Property<bool>("PendingDeletion");
 
-                    b.Property<Guid>("Id");
+                    b.Property<Guid>("SectionId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GradeId");
 
-                    b.HasIndex("Id");
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("SectionId");
 
                     b.ToTable("Routes");
                 });
@@ -80,9 +100,14 @@ namespace AKK.Migrations
                         .HasForeignKey("GradeId")
                         .OnDelete(DeleteBehavior.SetNull);
 
+                    b.HasOne("AKK.Classes.Models.Member", "Member")
+                        .WithMany("Routes")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("AKK.Classes.Models.Section", "Section")
                         .WithMany("Routes")
-                        .HasForeignKey("Id")
+                        .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

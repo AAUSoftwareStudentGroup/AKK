@@ -9,12 +9,11 @@ namespace AKK.Classes.Models {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid Id { get; set; }
 
+        public Guid MemberId { get; set; }
+
         public string Name { get; set; }
 
-        public string Author { get; set; }
-
         public DateTime CreatedDate { get; set; }
-
 
         public virtual Grade Grade { get; set; }
 
@@ -30,6 +29,8 @@ namespace AKK.Classes.Models {
 
         protected uint? ColorOfTapeDb { get; set; }
 
+        [NotMapped]
+        public virtual string Author { get; set; }
 
         [NotMapped]
         public Color ColorOfHolds

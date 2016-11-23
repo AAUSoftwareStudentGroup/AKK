@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AKK.Classes.Models.Repository;
 
 namespace AKK.Classes.Models
@@ -14,5 +15,7 @@ namespace AKK.Classes.Models
         public string Password { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public List<Route> Routes { get; set; }
     }
 }
