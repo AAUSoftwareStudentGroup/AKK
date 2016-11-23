@@ -18,13 +18,15 @@ namespace AKK.Controllers {
         private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Hold> _holdRepository;
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository) 
+        private readonly IRepository<Member> _memberRepository;
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IRepository<Member> memberRepository) 
         {
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
             _imageRepository = imageRepository;
             _holdRepository = holdRepository;
+            _memberRepository = memberRepository;
         }
 
         // GET: /api/route
@@ -77,8 +79,11 @@ namespace AKK.Controllers {
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse AddRoute(Route route, string sectionName) 
+        public ApiResponse AddRoute(string token, Route route, string sectionName) 
         {
+
+
+
             if (route.Author == null)
             {
                 return new ApiErrorResponse("An author must be specified");   
