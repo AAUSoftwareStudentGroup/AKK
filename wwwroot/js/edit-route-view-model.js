@@ -51,7 +51,7 @@ function EditRouteViewModel(client)
             }
         });
     }
-
+    this.hasImage = true;
     this.routeId = null;
     this.sections = [];
     this.selectedSection = null;

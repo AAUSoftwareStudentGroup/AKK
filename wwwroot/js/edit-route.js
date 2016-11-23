@@ -38,3 +38,18 @@ $(document)
 
         viewModel.init();
     });
+
+function readURL(input) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    var i = new Image();
+    reader.onload = function (e) {
+      i.src = e.target.result;
+    }
+    i.onload = function(e) {
+        alert("Image loaded");
+        return i;
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}

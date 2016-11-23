@@ -320,3 +320,9 @@ input {
     font-size: 14px;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
 }
+
+#routeimage {
+    width:50%;
+    float:right;
+    margin-top:5px;
+}

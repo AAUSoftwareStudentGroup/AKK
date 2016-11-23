@@ -12,6 +12,10 @@ function RouteInfoViewModel(client, navigationService) {
             function (routeResponse) {
                 if (routeResponse.success) {
                     self.route = routeResponse.data;
+                    self.route.image = {};
+                    self.route.image.width = 470;
+                    self.route.image.height = 627;
+                    
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
                     self.trigger("ContentUpdated");
                 }
@@ -21,13 +25,23 @@ function RouteInfoViewModel(client, navigationService) {
     this.grade = null;
         
     this.routeImage = new Image();
-    this.routeImage.src ="https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/leisa_christmas_false_color.png?itok=Jxf0IlS4";
+    this.routeImage.src ="vaeg.jpg";
     
     this.HoldPositions = [
         {
-            x: 0.5,
-            y: 0.5,
-            r: 0.25
+            x: 0.42,
+            y: 0.45,
+            r: 0.05
+        },
+        {
+            x: 0.65,
+            y: 0.455,
+            r: 0.05
+        },
+        {
+            x: 0.49,
+            y: 0.65,
+            r: 0.05
         }
     ];
 

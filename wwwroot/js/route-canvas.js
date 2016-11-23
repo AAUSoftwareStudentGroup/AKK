@@ -3,9 +3,6 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
     var self = this;
     this.canvas = canvas;
     this.image = image;
-    this.context = this.canvas.getContext("2d");
-    this.context.strokeStyle = "#FF0000";
-    this.context.lineWidth = 4;
 
     this.isDrawing = false;
     this.currentCircle;
@@ -13,6 +10,19 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
     this.viewModel.HoldPositions = this.viewModel.HoldPositions || [];
 
     this.viewModel.addEventListener("HoldsUpdated", this.DrawCanvas);
+
+    this.resize = function(){
+        var ratio = this.canvas.width / this.canvas.height;
+        var currentWidth = $(this.canvas).width();
+        var newHeight = currentWidth / ratio;
+        this.canvas.width = currentWidth;
+        this.canvas.height = newHeight;
+        this.context = this.canvas.getContext("2d");
+        this.context.strokeStyle = "#FF0000";
+        this.context.lineWidth = 4;
+    }
+    this.resize();
+
 
     this.DrawCanvas();
     if (editable) {

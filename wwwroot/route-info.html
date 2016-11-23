@@ -66,8 +66,9 @@
                         </svg>
                     </div>
                 </div>
-                <canvas id="routeimage" width="500" height="500">canvas not supported</canvas>
-                <div class="route-card-bottom">
+                <canvas id="routeimage" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
+                <p>Note</p>
+                <div class="route-card-bottom" style="clear:both;">
                     <span class="route-author">Made by: {{route.author}}</span>
                     <span class="route-date">{{route.date}}</span>
                 </div>

@@ -134,6 +134,12 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
+                {{#if_eq hasImage true}}
+                <label for="files" class="btn" style="background-color:red;">Replace route image</label>
+                {{else}}
+                <label for="files" class="btn" style="background-color:red;">Add route image</label>                
+                {{/if_eq}}
+                <input id="files" style="display:none;" type="file" accept="image/*" onchange="readURL(this);">
                 <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
                 <!--<input class="submit-button create-route-button section-button-clear left" type="checkbox" onclick="viewModel.gradesGotTape()" value="Has Tape"></input>-->
                 <label><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
