@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using AKK.Classes.Models;
 
 namespace AKK.Classes
@@ -25,12 +26,24 @@ namespace AKK.Classes
         public IEnumerable<Route> Search(string searchStr)
         {
             //var searchTerms = searchStr.Split(' ');
-            var searchTerms = System.Text.RegularExpressions.Regex.Split(searchStr, @"\s{1,}");
-            
+            var searchTerms = Regex.Split(searchStr, @"\s{1,}").ToList();
+            var numSearchTerms = searchTerms.Count;
+
+            //If a single letter is followed by a string of digits, split them into two searchterms.
+            for (int i = 0; i < numSearchTerms; i++)
+            {
+                if (Regex.IsMatch(searchTerms[i], @"^[a-zA-Z]{1}[0-9]+"))
+                {
+                    searchTerms.Add(searchTerms[i].Substring(0, 1));
+                    searchTerms.Add(searchTerms[i].Substring(1));
+                    searchTerms.RemoveAt(i);
+                }
+            }
 
             //Binds all routes together with an int value representing the Levenshtein distance.
             List<Tuple<Route, float>> routesWithDist = new List<Tuple<Route, float>>();
-            for (int i = 0; i < _numRoutes; i++) {
+            for (int i = 0; i < _numRoutes; i++) 
+            {
                 routesWithDist.Add(new Tuple<Route, float>(_allRoutes.ElementAt(i), 0));
             }
 
@@ -40,7 +53,7 @@ namespace AKK.Classes
 
                 for (int i = 0; i < _numRoutes; i++) {
                     var route = routesWithDist[i].Item1;
-                    float dist = routesWithDist[i].Item2 + getSmallestDistance(route, searchTerm) / (float)searchTermLength;
+                    float dist = routesWithDist[i].Item2 + _getSmallestDistance(route, searchTerm) / (float)searchTermLength;
 
                     routesWithDist[i] = new Tuple<Route, float>(route, dist);
                 }
@@ -62,14 +75,13 @@ namespace AKK.Classes
             return foundRoutes;
         }
 
-        internal int getSmallestDistance(Route route, string searchStr)
+        private int _getSmallestDistance(Route route, string searchStr)
         {
             int smallestDist = int.MaxValue;
             int[] distances =
             {
                 _computeLevenshtein(searchStr, route.Name),
                 _computeLevenshtein(searchStr, route.Section.Name),
-                _computeLevenshtein(searchStr, route.Section.Name + route.Name),
                 _computeLevenshtein(searchStr, route.Grade.Name),
                 _computeLevenshtein(searchStr, route.Author)
             };

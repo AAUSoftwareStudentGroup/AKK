@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using AKK.Classes;
-using AKK.Classes.Models;
 using NUnit.Framework;
 
 namespace AKK.Tests
@@ -11,6 +7,53 @@ namespace AKK.Tests
     [TestFixture]
     public class TestRouteSearcher
     {
+        [Test]
+        public void _computeLevenshtein_DistanceBetweenPatternAndTextAlwaysGreaterOrEqualThanPatternLength() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+
+            var pattern = "YYY";
+            var distance = searcher._computeLevenshtein(pattern, "A");
+            Assert.GreaterOrEqual(distance, pattern.Length);
+        }
+
+        [Test]
+        public void _computeLevenshtein_CalculateDistanceBetweeenGreenAndMorten_DistanceIs9() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+
+            var distance = searcher._computeLevenshtein("Green", "Morten");
+            Assert.AreEqual(9, distance);
+        }
+
+        [Test]
+        public void _computeLevenshtein_CalculateDistanceBetweeenGeoAndGeogebra_DistanceIs5() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+
+            var distance = searcher._computeLevenshtein("Geo", "Geogebra");
+            Assert.AreEqual(5, distance);
+        }
+
+        [Test]
+        public void _computeLevenshtein_CalculateDistanceBetweeenGebraAndGeo_DistanceIs3() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+
+            var distance = searcher._computeLevenshtein("Gebra", "Geogebra");
+            Assert.AreEqual(3, distance);
+        }
+
+        [Test]
+        public void _computeLevenshtein_CalculateDistanceBetweeenGeoAnd94_DistanceIs12() {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+
+            var distance = searcher._computeLevenshtein("Geo", "94");
+            Assert.AreEqual(12, distance);
+        }
+
+
         [Test]
         public void Search_SearchFor10Green_RoutesWithGradeGreen()
         {
@@ -65,54 +108,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_DistanceBetweenPatternAndTextAlwaysGreaterOrEqualThanPatternLength()
-        {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 10);
-
-            var pattern = "YYY";
-            var distance = searcher._computeLevenshtein(pattern, "A");
-            Assert.GreaterOrEqual(distance, pattern.Length);
-        }
-
-        [Test]
-        public void _computeLevenshtein_CalculateDistanceBetweeenGreenAndMorten_DistanceIs9() {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 10);
-
-            var distance = searcher._computeLevenshtein("Green", "Morten");
-            Assert.AreEqual(9, distance);
-        }
-
-        [Test]
-        public void _computeLevenshtein_CalculateDistanceBetweeenGeoAndGeogebra_DistanceIs5() {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 10);
-
-            var distance = searcher._computeLevenshtein("Geo", "Geogebra");
-            Assert.AreEqual(5, distance);
-        }
-
-        [Test]
-        public void _computeLevenshtein_CalculateDistanceBetweeenGebraAndGeo_DistanceIs3() {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 10);
-
-            var distance = searcher._computeLevenshtein("Gebra", "Geogebra");
-            Assert.AreEqual(3, distance);
-        }
-
-        [Test]
-        public void _computeLevenshtein_CalculateDistanceBetweeenGeoAnd94_DistanceIs12() {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 10);
-
-            var distance = searcher._computeLevenshtein("Geo", "94");
-            Assert.AreEqual(12, distance);
-        }
-
-        [Test]
-        public void _computeLevenshtein_SearchFor10Bl_8RoutesWithGradesBlueAndBlack() {
+        public void Search_SearchFor10Bl_8RoutesWithGradesBlueAndBlack() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("Blu");
@@ -126,7 +122,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_10SearchForHelland_ExpectRouteWithTannerHellandAsAuthor() {
+        public void Search_10SearchForHelland_ExpectRouteWithTannerHellandAsAuthor() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("Helland");
@@ -137,7 +133,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
+        public void Search_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 3);
             var searchResult = searcher.Search("A 4");
@@ -149,7 +145,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_3SearchForA4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
+        public void Search_3SearchForA4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 3);
             var searchResult = searcher.Search("A4");
@@ -161,7 +157,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_3SearchForA4_ExpectedResultTheSameAsSearchForASPACE4() {
+        public void Search_3SearchForA4_ExpectedResultTheSameAsSearchForASPACE4() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResultWithSpace = searcher.Search("A 4");
@@ -182,7 +178,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_10SearchForASPACE4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade() {
+        public void Search_10SearchForASPACE4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("A 4 Gr");
@@ -198,7 +194,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_10SearchForA4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade() {
+        public void Search_10SearchForA4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("A4 Gr");
@@ -214,7 +210,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_10SearchForA4SPACEGr_ExpectedResultTheSameAsWithSpaceBetweenAAnd4() {
+        public void Search_10SearchForA4SPACEGr_ExpectedResultTheSameAsWithSpaceBetweenAAnd4() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResultWithoutSpace = searcher.Search("A4 Gr");
@@ -228,14 +224,15 @@ namespace AKK.Tests
 
             for (int i = 0; i < length; i++)
             {
-               if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true) {
+               if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true) 
+               {
                    Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
                }
             }
         }
 
         [Test]
-        public void _computeLevenshtein_10SearchForA4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg() {
+        public void Search_10SearchForA4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("A4 Gru");
@@ -251,7 +248,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_10SearchForASPACE4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg() {
+        public void Search_10SearchForASPACE4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("A 4 Gru");
@@ -267,7 +264,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_10SearchForA4SPACEGru_ExpectedResultTheSameAsWithSpaceBetweenAAnd4() {
+        public void Search_10SearchForA4SPACEGru_ExpectedResultTheSameAsWithSpaceBetweenAAnd4() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResultWithoutSpace = searcher.Search("A4 Gru");
