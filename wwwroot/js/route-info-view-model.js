@@ -22,9 +22,10 @@ function RouteInfoViewModel(client, changed, navigationService) {
     this.client = client;
     this.changed = changed;
     this.grade = null;
+    this.route = null;
     this.editRoute = function () {
         if (self.route != null) {
-            navigationService.location(self.route.routeId);
+            navigationService.toEditRoute(self.route.id);
         }
     };
     this.deleteRoute = function () {

@@ -3,7 +3,8 @@ using System.Linq.Expressions;
 using Newtonsoft.Json;
 
 namespace AKK.Classes.Models
-    {
+{
+    public enum Grades { Green, Blue, Red, Black, White };
     public enum SortOrder { Newest, Oldest, Grading, Author };
 
     public class Route : RouteInformation
@@ -15,6 +16,14 @@ namespace AKK.Classes.Models
 
         [JsonIgnore]
         public virtual Section Section { get; set; }
+
+        [JsonIgnore]
+        public virtual Member Member { get; set; }
+
+        public override string Author 
+        {
+            get { return Member?.DisplayName; }
+        }
 
         public static readonly Expression<Func<Route, uint?>> ColorOfHoldsPriv = p => p.ColorOfHoldsDb;
         public static readonly Expression<Func<Route, uint?>> ColorOfTapePriv = p => p.ColorOfTapeDb;

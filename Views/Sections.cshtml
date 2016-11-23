@@ -61,7 +61,7 @@
                 <h2>Section</h2>
                 <div class="radio-inputs">
                     {{#each sections}}
-                    <input id="section-input-{{name}}" onclick="viewModel.getSectionDetails('{{sectionId}}')" name="section" type="radio">
+                    <input id="section-input-{{name}}" onclick="viewModel.getSectionDetails('{{id}}')" name="section" type="radio">
                     <label for="section-input-{{name}}" class="section-box">
                         <span id="section-{{name}}">{{name}}</span>
                     </label>

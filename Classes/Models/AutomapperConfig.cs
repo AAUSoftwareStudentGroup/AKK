@@ -4,7 +4,9 @@ namespace AKK.Classes.Models {
         private static MapperConfiguration config = new MapperConfiguration(cfg => {
             cfg.CreateMap<Route, RouteDataTransferObject>()
                 .ForMember(dest => dest.SectionName, 
-                           opts => opts.MapFrom(r => r.Section.Name));
+                           opts => opts.MapFrom(r => r.Section.Name))
+                .ForMember(dest => dest.Author, 
+                           opts => opts.MapFrom(r => r.Member.DisplayName));
             cfg.CreateMap<Section, SectionTransferObject>()
                 .ForMember(dest => dest.Id, opts => opts.MapFrom(s => s.Id));
             cfg.CreateMap<Grade, GradeTransferObject>();

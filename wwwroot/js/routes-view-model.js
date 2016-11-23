@@ -1,4 +1,3 @@
-
 function RoutesViewModel(client, changed) {
     var self = this;
     this.client = client;
