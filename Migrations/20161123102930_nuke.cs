@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AKK.Migrations
 {
-    public partial class dbnuke : Migration
+    public partial class nuke : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -20,6 +20,21 @@ namespace AKK.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Grades", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Members",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    DisplayName = table.Column<string>(nullable: true),
+                    IsAdmin = table.Column<bool>(nullable: false),
+                    Password = table.Column<string>(nullable: true),
+                    Username = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Members", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -39,11 +54,11 @@ namespace AKK.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Author = table.Column<string>(nullable: true),
                     ColorOfHoldsDb = table.Column<uint>(nullable: true),
                     ColorOfTapeDb = table.Column<uint>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     GradeId = table.Column<Guid>(nullable: false),
+                    MemberId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PendingDeletion = table.Column<bool>(nullable: false),
                     SectionId = table.Column<Guid>(nullable: false)
@@ -58,6 +73,12 @@ namespace AKK.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
+                        name: "FK_Routes_Members_MemberId",
+                        column: x => x.MemberId,
+                        principalTable: "Members",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FK_Routes_Sections_SectionId",
                         column: x => x.SectionId,
                         principalTable: "Sections",
@@ -71,9 +92,14 @@ namespace AKK.Migrations
                 column: "GradeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Routes_MemberId",
+                table: "Routes",
+                column: "MemberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Routes_SectionId",
                 table: "Routes",
-                column: "Id");
+                column: "SectionId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -83,6 +109,9 @@ namespace AKK.Migrations
 
             migrationBuilder.DropTable(
                 name: "Grades");
+
+            migrationBuilder.DropTable(
+                name: "Members");
 
             migrationBuilder.DropTable(
                 name: "Sections");

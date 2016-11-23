@@ -1,7 +1,12 @@
-function RoutesViewModel(client, changed) {
+$.ajax({
+  url: "js/eventnotifier.js",
+  dataType: "script",
+  async: false
+});
+
+function RoutesViewModel(client) {
     var self = this;
     this.client = client;
-    this.changed = changed;
     this.selectedGrade = null;
     this.selectedSection = null;
     this.selectedColor = null;
@@ -31,7 +36,7 @@ function RoutesViewModel(client, changed) {
                 self.selectedSection = self.sections[0];
                 self.selectedSortBy = self.sortOptions[0];
                 self.refreshRoutes();
-                self.changed();
+                self.trigger("RoutesChanged");
             }
         });
     };
@@ -62,23 +67,23 @@ function RoutesViewModel(client, changed) {
             sectionId,
             sortByValue,
             function (response) {
-                if (response.success) {
-                    self.routes = response.data;
-                    for (var i = 0; i < self.routes.length; i++) {
-                        self.routes[i].sectionName = self.sections.filter(function (s) {
-                            return s.id == self.routes[i].sectionId;
-                        })[0].name;
-                        self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-")
-                            .reverse()
-                            .join("/");
-                        self.routes[i].selectedColor = self.routes[i].colorOfHolds;
-                    }
-                    self.changed();
+            if (response.success) {
+                self.routes = response.data;
+                for (var i = 0; i < self.routes.length; i++) {
+                    self.routes[i].sectionName = self.sections.filter(function (s) {
+                        return s.id == self.routes[i].sectionId;
+                    })[0].name;
+                    self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-")
+                        .reverse()
+                        .join("/");
+                    self.routes[i].selectedColor = self.routes[i].colorOfHolds;
                 }
-            });
+                self.trigger("RoutesChanged");
+            }
+        });
     };
-    this.init();
 };
 
 
 
+RoutesViewModel.prototype = new EventNotifier();

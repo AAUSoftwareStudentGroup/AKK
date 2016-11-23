@@ -1,172 +1,62 @@
-function EditRouteViewModel(client, changed, changed2)
+$.ajax({
+  url: "js/eventnotifier.js",
+  dataType: "script",
+  async: false
+});
+
+function EditRouteViewModel(client)
 {
-    var viewModel = {
-        init: function()
+    var self = this;
+
+    this.init = function() {
+        self.routeId = window.location.search.split("routeId=")[1];
+        self.getGrades();
+        self.client.sections.getAllSections(function(response)
         {
-            viewModel.routeId = window.location.search.split("routeId=")[1];
-            viewModel.getGrades();
-            viewModel.client.sections.getAllSections(function(response)
+            if(response.success)
             {
-                if(response.success)
+                self.sections = response.data;
+                self.client.routes.getRoute(self.routeId, function(routeResponse)
                 {
-                    viewModel.sections = response.data;
-                    viewModel.client.routes.getRoute(viewModel.routeId, function(routeResponse)
+                    if(routeResponse.success)
                     {
-                        if(routeResponse.success)
-                        {
-                            viewModel.changeSection(routeResponse.data.sectionId);
-                            viewModel.changeGrade(routeResponse.data.grade.difficulty);
-                            viewModel.getHoldColor(routeResponse.data.colorOfHolds);
-                            viewModel.changeRouteNumber(routeResponse.data.name);
-                            var temp = routeResponse.data.colorOfTape;
-                            if(temp != null) {
-                                for(i = 0; i < viewModel.holdColors.length; i++) {
-                                    if(viewModel.holdColors[i].r == temp.r && viewModel.holdColors[i].g == temp.g && viewModel.holdColors[i].b == temp.b) {
-                                        viewModel.selectedTapeColor = viewModel.holdColors[i];
-                                        break;
-                                    }
+                        self.changeSection(routeResponse.data.sectionId);
+                        self.changeGrade(routeResponse.data.grade.difficulty);
+                        self.getHoldColor(routeResponse.data.colorOfHolds);
+                        self.changeRouteNumber(routeResponse.data.name);
+                        var temp = routeResponse.data.colorOfTape;
+                        if(temp != null) {
+                            for(i = 0; i < self.holdColors.length; i++) {
+                                if(self.holdColors[i].r == temp.r && self.holdColors[i].g == temp.g && self.holdColors[i].b == temp.b) {
+                                    self.selectedTapeColor = self.holdColors[i];
+                                    break;
                                 }
                             }
-                            if(viewModel.selectedTapeColor != null)
-                                viewModel.hasTape = true;
-                            viewModel.changeAuthor(routeResponse.data.author);
-                            viewModel.changed();
-                            viewModel.changed2();
                         }
-                        else
-                        {
-                            $("#error-message").html(response.message).show();
-                        }
-                    });
-                }
-                else
-                {
-                    $("#error-message").html(response.message).show();
-                }
-            });
-        },
-        routeId: null,
-        client: client,
-        changed: changed,
-        changed2: changed2,
-        sections: [],
-        selectedSection: null,
-        selectedGrade: null,
-        selectedColor: null,
-        routeNumber: null,
-        selectedTapeColor: null,
-        hasTape: false,
-        author: null,
-        grades: [ ],
-        holdColors: [
-            { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
-            { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1},
-            { value: 2, name: "Blue", color: "0000FF", r: 0, g: 0, b: 255, a: 1},
-            { value: 3, name: "Violet", color: "7F00FF", r: 127, g: 0, b: 255, a: 1},
-            { value: 4, name: "Magenta", color: "FF00FF", r: 255, g: 0, b: 255, a: 1},
-            { value: 5, name: "Rose", color: "FF017F", r: 255, g: 1, b: 127, a: 1},
-            { value: 6, name: "Red", color: "FF0000", r: 255, g: 0, b: 0, a: 1},
-            { value: 7, name: "Orange", color: "FF7F00", r: 255, g: 127, b: 0, a: 1},
-            { value: 8, name: "Yellow", color: "e4dc00", r: 228, g: 220, b: 0, a: 1},
-            { value: 9, name: "Chartreuse Green", color: "79FF00", r: 121, g: 255, b: 0, a: 1},
-            { value: 10, name: "Green", color: "00e900", r: 0, g: 233, b: 0, a: 1},
-            { value: 11, name: "Black", color: "000000", r: 0, g: 0, b: 0, a: 1},
-            { value: 12, name: "Brown", color: "7E360F", r: 127, g: 54, b: 15, a: 1},
-            { value: 13, name: "Grey", color: "5c5959", r: 92, g: 89, b: 89, a: 1},
-            { value: 14, name: "White", color: "D0D0D0", r: 208, g: 208, b: 208, a: 1},
-        ],
-        changeSection: function(sectionId)
-        {
-            viewModel.selectedSection = viewModel.sections.filter(function(s) { return s.id == sectionId; })[0];
-        },
-        changeGrade: function(gradeValue)
-        {
-            viewModel.selectedGrade = viewModel.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
-        },
-        getGrades: function()
-        {
-            viewModel.client.grades.getAllGrades(function(response) {
-                if(response.success)
-                {
-                    viewModel.grades = response.data;
-                  //  viewModel.changed();
-                }
-            })
-        },
-        getHoldColor: function(holdColor)
-        {
-            var temp = viewModel.holdColors;
-            viewModel.selectedColor = temp[0];
-            for(var i = 0; i < temp.length; i++) {
-                if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
-                    viewModel.selectedColor = temp[i];
-                    return;
-                }
-            }
-        },
-        changeHoldColor: function(holdColor)
-        {/*
-            var temp = viewModel.holdColors;
-            for(var i = 0; i < temp.length; i++) {
-                if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
-                    viewModel.selectedColor = holdColor;
-                    return;
-                }
-            }*/
-           viewModel.selectedColor = viewModel.holdColors.filter(function(g) {return g.value == holdColor; })[0];
-        },
-        changeTapeColor: function(tapeColor)
-        {
-            viewModel.selectedTapeColor = viewModel.holdColors.filter(function(g) {return g.value == tapeColor; })[0];
-        },
-        changeRouteNumber: function(routeNumber)
-        {
-            viewModel.routeNumber = routeNumber;
-        },
-        changeAuthor: function(author)
-        {
-            viewModel.author = author;
-        },
-        getSections: function()
-        {
-            viewModel.client.sections.getAllSections(function(response)
-            {
-                if(response.success)
-                {
-                    viewModel.sections = response.data;
-                    viewModel.changed();
-                }
-                else
-                {
-                    $("#error-message").html(response.message).show();
-                }
-            });
-        },
-        gradesGotTape: function()
-        {
-            if(viewModel.hasTape === true) {
-                viewModel.hasTape = false;
-                viewModel.selectedTapeColor = null;
-            }
-            else
-                viewModel.hasTape = true;
-            viewModel.changed2();
-        },
-        updateRoute: function()
-        {
-            if(viewModel.selectedSection != null && viewModel.selectedGrade != null && viewModel.selectedColor != null && !isNaN(viewModel.routeNumber))
-            {
-                var routeId = viewModel.routeId;
-                var sectionId = viewModel.selectedSection.sectionId;
-                var gradeValue = viewModel.selectedGrade;
-                var tapeColor = viewModel.selectedTapeColor;
-                var holdColor = viewModel.selectedColor;
-                var routeNumber = viewModel.routeNumber;
-                var author = viewModel.author;
-                viewModel.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, function(response) {
-                    if(response.success)
-                    {
-                        window.history.back();
+                        if(self.selectedTapeColor != null)
+                            self.hasTape = true;
+
+                        
+                        self.client.routes.getImage(self.routeId, function(imageResponse) {
+                            console.log(imageResponse);
+                            if (imageResponse.success) {
+                                self.hasImage = true;
+                                self.image = new Image();
+                                self.image.src = imageResponse.data.fileUrl;
+                                self.HoldPositions = imageResponse.data.holds;
+                                self.image.onload = function() {
+                                    self.changeAuthor(routeResponse.data.author);
+                                    self.trigger("OnGradeOrSectionChanged");
+                                    self.trigger("OnColorChanged");
+                                    self.trigger("OnImageChanged");
+                                }
+                            } else {
+                                self.changeAuthor(routeResponse.data.author);
+                                self.trigger("OnGradeOrSectionChanged");
+                                self.trigger("OnColorChanged");
+                                self.trigger("OnImageChanged");
+                            }
+                        });
                     }
                     else
                     {
@@ -174,8 +64,164 @@ function EditRouteViewModel(client, changed, changed2)
                     }
                 });
             }
+            else
+            {
+                $("#error-message").html(response.message).show();
+            }
+        });
+    }
+    this.hasImage = false;
+    this.routeId = null;
+    this.sections = [];
+    this.selectedSection = null;
+    this.selectedGrade = null;
+    this.selectedColor = null;
+    this.routeNumber = null;
+    this.selectedTapeColor = null;
+    this.hasTape = false;
+    this.author = null;
+    this.grades = [ ];
+    this.HoldPositions = [ ];
+    this.holdColors = [
+        { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
+        { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1},
+        { value: 2, name: "Blue", color: "0000FF", r: 0, g: 0, b: 255, a: 1},
+        { value: 3, name: "Violet", color: "7F00FF", r: 127, g: 0, b: 255, a: 1},
+        { value: 4, name: "Magenta", color: "FF00FF", r: 255, g: 0, b: 255, a: 1},
+        { value: 5, name: "Rose", color: "FF017F", r: 255, g: 1, b: 127, a: 1},
+        { value: 6, name: "Red", color: "FF0000", r: 255, g: 0, b: 0, a: 1},
+        { value: 7, name: "Orange", color: "FF7F00", r: 255, g: 127, b: 0, a: 1},
+        { value: 8, name: "Yellow", color: "e4dc00", r: 228, g: 220, b: 0, a: 1},
+        { value: 9, name: "Chartreuse Green", color: "79FF00", r: 121, g: 255, b: 0, a: 1},
+        { value: 10, name: "Green", color: "00e900", r: 0, g: 233, b: 0, a: 1},
+        { value: 11, name: "Black", color: "000000", r: 0, g: 0, b: 0, a: 1},
+        { value: 12, name: "Brown", color: "7E360F", r: 127, g: 54, b: 15, a: 1},
+        { value: 13, name: "Grey", color: "5c5959", r: 92, g: 89, b: 89, a: 1},
+        { value: 14, name: "White", color: "D0D0D0", r: 208, g: 208, b: 208, a: 1},
+    ];
+
+    this.setImage = function(img) {
+        this.image = img;
+        this.image.width = img.width;
+        this.image.height = img.height;
+        this.hasImage = true;
+        this.trigger("OnImageChanged");
+    };
+
+    this.changeSection = function(sectionId)
+    {
+        self.selectedSection = self.sections.filter(function(s) { return s.id == sectionId; })[0];
+    };
+    this.changeGrade = function(gradeValue)
+    {
+        self.selectedGrade = self.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
+    };
+    this.getGrades = function()
+    {
+        self.client.grades.getAllGrades(function(response) {
+            if(response.success)
+            {
+                self.grades = response.data;
+            }
+        })
+    };
+    this.getHoldColor = function(holdColor)
+    {
+        var temp = self.holdColors;
+        self.selectedColor = temp[0];
+        for(var i = 0; i < temp.length; i++) {
+            if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
+                self.selectedColor = temp[i];
+                return;
+            }
         }
     };
-    viewModel.init();
-    return viewModel;
+    this.changeHoldColor = function(holdColor)
+    {/*
+        var temp = viewModel.holdColors;
+        for(var i = 0; i < temp.length; i++) {
+            if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
+                viewModel.selectedColor = holdColor;
+                return;
+            }
+        }*/
+        self.selectedColor = self.holdColors.filter(function(g) {return g.value == holdColor; })[0];
+    };
+    this.changeTapeColor = function(tapeColor)
+    {
+        self.selectedTapeColor = self.holdColors.filter(function(g) {return g.value == tapeColor; })[0];
+    };
+    this.changeRouteNumber = function(routeNumber)
+    {
+        self.routeNumber = routeNumber;
+    };
+    this.changeAuthor = function(author)
+    {
+        self.author = author;
+    };
+    this.getSections = function()
+    {
+        self.client.sections.getAllSections(function(response)
+        {
+            if(response.success)
+            {
+                self.sections = response.data;
+                self.trigger("OnGradeOrSectionChanged");
+            }
+            else
+            {
+                $("#error-message").html(response.message).show();
+            }
+        });
+    };
+    this.addHold = function(hold) 
+    {
+        self.holds.push(hold);
+    },
+    this.gradesGotTape =  function()
+    {
+        if(self.hasTape === true) {
+            self.hasTape = false;
+            self.selectedTapeColor = null;
+        }
+        else
+            self.hasTape = true;
+        self.trigger("OnColorChanged");
+    },
+    this.updateRoute = function()
+    {
+        if(self.selectedSection != null && self.selectedGrade != null && self.selectedColor != null && !isNaN(this.routeNumber))
+        {
+            var routeId = self.routeId;
+            var sectionId = self.selectedSection.id;
+            var gradeValue = self.selectedGrade;
+            var tapeColor = self.selectedTapeColor;
+            var holdColor = self.selectedColor;
+            var routeNumber = self.routeNumber;
+            var author = self.author;
+            var image = this.image;
+            var imgObject = null;
+            if (image != null) {
+                imgObject = {
+                    fileUrl : image.src,
+                    width : image.width,
+                    height : image.height,
+                    holds : this.HoldPositions || []
+                }
+            }
+            self.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, imgObject, function(response) {
+                if(response.success)
+                {
+                    window.history.back();
+                }
+                else
+                {
+                    $("#error-message").html(response.message).show();
+                }
+            });
+        }
+    }
+    this.client = client;
 }
+
+EditRouteViewModel.prototype = new EventNotifier();

@@ -1,4 +1,10 @@
-function RouteInfoViewModel(client, changed, navigationService) {
+$.ajax({
+  url: "js/eventnotifier.js",
+  dataType: "script",
+  async: false
+});
+
+function RouteInfoViewModel(client, navigationService) {
     var self = this
     this.navigationService = navigationService;
     this.init = function () {
@@ -7,21 +13,31 @@ function RouteInfoViewModel(client, changed, navigationService) {
                 if (routeResponse.success) {
                     self.route = routeResponse.data;
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
-                    self.route.colorOfHolds = self.route.colorOfHolds;
-                    self.route.grade = self.route.grade;
-                    self.client.sections.getSection(self.route.sectionId,
-                        function (sectionResponse) {
-                            if (sectionResponse.success) {
-                                self.route.sectionName = sectionResponse.data.name;
-                                self.changed();
+
+                    self.client.routes.getImage(self.route.id, function(imageResponse) {
+                        if (imageResponse.success) {
+                            console.log(imageResponse);
+                            self.hasImage = true;
+                            self.route.image = new Image();
+                            self.route.image.src = imageResponse.data.fileUrl;
+                            self.HoldPositions = imageResponse.data.holds;
+                            self.route.image.onload = function() {
+                                self.trigger("ContentUpdated");
                             }
-                        });
+                        } else {
+                            self.trigger("ContentUpdated");
+                        }
+                    });
+                    
                 }
             });
     };
+    this.image = null;
+    this.hasImage = false;
+    this.HoldPositions = [];
     this.client = client;
-    this.changed = changed;
     this.grade = null;
+
     this.route = null;
     this.editRoute = function () {
         if (self.route != null) {
@@ -38,5 +54,5 @@ function RouteInfoViewModel(client, changed, navigationService) {
                 });
         }
     };
-    this.init();
 }
+RouteInfoViewModel.prototype = new EventNotifier();
