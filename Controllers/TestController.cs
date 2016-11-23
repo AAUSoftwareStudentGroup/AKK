@@ -5,14 +5,14 @@ using System.Linq;
 using AKK.Classes.Models.Repository;
 
 namespace AKK.Controllers {
-    [Route("")]
-    public class HomeController : Controller {
+    [Route("test")]
+    public class TestController : Controller {
         
         IRepository<Route> db;
         IRepository<Grade> _g;
         IRepository<Section> _s;
 
-        public HomeController (IRepository<Route> context, IRepository<Grade> grades, IRepository<Section> sections)
+        public TestController (IRepository<Route> context, IRepository<Grade> grades, IRepository<Section> sections)
         {
             db = context;
             _g = grades;
