@@ -18,6 +18,5 @@ namespace AKK.Classes.Models
 
         public static readonly Expression<Func<Route, uint?>> ColorOfHoldsPriv = p => p.ColorOfHoldsDb;
         public static readonly Expression<Func<Route, uint?>> ColorOfTapePriv = p => p.ColorOfTapeDb;
-
     }
 }

@@ -58,16 +58,10 @@ namespace AKK.Tests
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("gebra");
 
-            Assert.AreEqual("Geogebra", searchResult?.FirstOrDefault().Author);
-        }
-
-        [Test]
-        public void Search_SearchFor5G_5RoutesWithG() {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 5);
-            var searchResult = searcher.Search("g");
-
-            Assert.AreEqual(5, searchResult.Count());    
+            if (!searchResult.Any()) {
+                Assert.Fail($"  Expected occupied list\n  But was Empty");
+            }
+            Assert.AreEqual("Geogebra", searchResult.FirstOrDefault().Author);
         }
 
         [Test]
@@ -100,12 +94,12 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _computeLevenshtein_CalculateDistanceBetweeenGeoAndC_DistanceIs12() {
+        public void _computeLevenshtein_CalculateDistanceBetweeenGebraAndGeo_DistanceIs3() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
 
-            var distance = searcher._computeLevenshtein("Geo", "C");
-            Assert.AreEqual(12, distance);
+            var distance = searcher._computeLevenshtein("Gebra", "Geogebra");
+            Assert.AreEqual(3, distance);
         }
 
         [Test]
@@ -136,7 +130,7 @@ namespace AKK.Tests
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
             var searchResult = searcher.Search("Helland");
-            if (searchResult.ToArray().Length == 0) {
+            if (!searchResult.Any()) {
                 Assert.Fail($"  Expected occupied list\n  But was Empty");
             }
             Assert.AreEqual("TannerHelland", searchResult.ElementAt(0).Author);

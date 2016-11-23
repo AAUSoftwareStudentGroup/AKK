@@ -65,12 +65,13 @@ namespace AKK.Classes
         internal int getSmallestDistance(Route route, string searchStr)
         {
             int smallestDist = int.MaxValue;
-            int[] distances = 
+            int[] distances =
             {
-                _computeLevenshtein(searchStr, route.Author),
                 _computeLevenshtein(searchStr, route.Name),
-                _computeLevenshtein(searchStr, route.Grade.Name),
                 _computeLevenshtein(searchStr, route.Section.Name),
+                _computeLevenshtein(searchStr, route.Section.Name + route.Name),
+                _computeLevenshtein(searchStr, route.Grade.Name),
+                _computeLevenshtein(searchStr, route.Author)
             };
 
             foreach (int dist in distances)
