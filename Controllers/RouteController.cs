@@ -248,6 +248,11 @@ namespace AKK.Controllers {
             }
             if (route.Image != null)
             {
+                if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
+                    Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
+                    _imageRepository.Delete(img);
+                    _imageRepository.Save();
+                }
                 oldRoute.Image = route.Image;
             }
 
