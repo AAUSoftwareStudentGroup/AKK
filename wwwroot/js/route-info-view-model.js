@@ -26,6 +26,9 @@ function RouteInfoViewModel(client, navigationService) {
                 }
             });
     };
+    this.image = null;
+    this.hasImage = false;
+    this.HoldPositions = [];
     this.client = client;
     this.grade = null;
 

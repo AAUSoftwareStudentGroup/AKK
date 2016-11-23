@@ -57,8 +57,19 @@ function RouteClient(url)
             success: success
         });
     };
-    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, tape, image, holdpositions, success)
+    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, tape, image, success)
     {
+        console.log({
+                id: routeId,
+            //    sectionName: sectionName,
+                sectionId: sectionId,
+                name: name,
+                author: author,
+                colorOfHolds: holdColor,
+                grade: grade,
+                colorOfTape: tape,
+                image: image
+            });
         $.ajax({
             type: "PATCH",
             dataType: "json",
@@ -73,8 +84,7 @@ function RouteClient(url)
                 colorOfHolds: holdColor,
                 grade: grade,
                 colorOfTape: tape,
-                image: image,
-                holdpositions: holdpositions,
+                image: image
             },
             success: success
         });

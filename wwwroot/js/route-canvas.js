@@ -85,8 +85,8 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
             mmouseY = (e.pageY-position.top) / c.height();
 
             var newRadius = Math.sqrt(Math.pow(self.currentCircle.x - mmouseX, 2)+Math.pow(self.currentCircle.y - mmouseY, 2))
-            self.currentCircle.r = newRadius / 2;
-            self.DrawCircle(self.currentCircle.x * c.width(), self.currentCircle.y * c.height(), self.currentCircle.r * c.width())
+            self.currentCircle.radius = newRadius / 2;
+            self.DrawCircle(self.currentCircle.x * c.width(), self.currentCircle.y * c.height(), self.currentCircle.radius * c.width())
         };
     }
        
@@ -100,7 +100,7 @@ RouteCanvas.prototype.DrawCanvas = function() {
 
     for (var i = 0; i < this.viewModel.HoldPositions.length; i++) {
         var circle = this.viewModel.HoldPositions[i];
-        this.DrawCircle(circle.x * c.width(), circle.y * c.height(), circle.r * c.width())
+        this.DrawCircle(circle.x * c.width(), circle.y * c.height(), circle.radius * c.width())
     }
 }
 

@@ -181,9 +181,17 @@ function EditRouteViewModel(client)
             var holdColor = self.selectedColor;
             var routeNumber = self.routeNumber;
             var author = self.author;
-            var image = this.image ? this.image.src : null;
-            var holds = this.HoldPositions || null;
-            self.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, image, holds, function(response) {
+            var image = this.image;
+            var imgObject = null;
+            if (image != null) {
+                imgObject = {
+                    fileUrl : image.src,
+                    width : image.width,
+                    height : image.height,
+                    holds : this.HoldPositions || []
+                }
+            }
+            self.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, imgObject, function(response) {
                 if(response.success)
                 {
                     window.history.back();
