@@ -47,6 +47,11 @@ namespace AKK.Classes.Models
                 .Ignore(r => r.ColorOfTape)
                 .Property(Route.ColorOfTapePriv);
             
+            modelBuilder.Entity<Route>()
+                .HasOne(r => r.Image)
+                .WithOne()
+                .HasForeignKey<Image>(i => i.RouteId);
+
             modelBuilder.Entity<Image>().HasMany(m => m.Holds)
                                          .WithOne(h => h.Image)
                                          .HasForeignKey(h => h.ImageId)
@@ -65,6 +70,18 @@ namespace AKK.Classes.Models
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
+            
+
+            List<Image> images = new List<Image> {
+                new Image {Id = new Guid(), Width = 800, Height = 500, FileUrl = "https://placeholdit.imgix.net/~text?txtsize=28&txt=500%C3%97800&w=500&h=800"}
+            };
+
+            List<Hold> holds = new List<Hold> {
+                new Hold {Id = new Guid(), ImageId = images[0].Id, X = 0.5, Y = 0.5, Radius = 0.1}
+            };
+
+            images[0].Holds.AddRange(holds);
+
             List<Member> members = new List<Member> {
                 new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", IsAdmin = true}
             };
@@ -75,11 +92,12 @@ namespace AKK.Classes.Models
                 new Grade {Name = "Red", Difficulty = 2, Color = new Color(228,83,80), Id = new Guid()},
                 new Grade {Name = "Black", Difficulty = 3, Color = new Color(97,97,97), Id = new Guid()},
                 new Grade {Name = "White", Difficulty = 4, Color = new Color(251,251,251), Id = new Guid()},
+                new Grade {Name = "Magic", Difficulty = 5, Color = new Color(251,251,251), Id = new Guid()},
             };
 
             Section sectionA = new Section { Id = new Guid(), Name = "A" };
             List<Route> routesForA = new List<Route> {
-                new Route{Name = "4", ColorOfHolds = new Color(255, 0, 0), Member = members[0], Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
+                new Route{Name = "4", Image = images[0], ColorOfHolds = new Color(255, 0, 0), Member = members[0], Grade = grades[5], CreatedDate = new DateTime(2016, 03, 24)},
                 new Route{Name = "14", ColorOfHolds = new Color(0, 255, 0), Member = members[0], Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
                 new Route{Name = "43", ColorOfHolds = new Color(255, 0, 255), Member = members[0], Grade = grades[2], CreatedDate = new DateTime(2016, 11, 11)},
                 new Route{Name = "21", ColorOfHolds = new Color(255, 255, 0), Member = members[0], Grade = grades[3], CreatedDate = new DateTime(2016, 03, 24)} };

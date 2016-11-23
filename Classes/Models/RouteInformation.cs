@@ -24,6 +24,7 @@ namespace AKK.Classes.Models {
 
         public bool PendingDeletion { get; set; }
 
+        public Image Image { get; set; }
 
         protected uint? ColorOfHoldsDb { get; set; }
 
