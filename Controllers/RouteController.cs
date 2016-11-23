@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using AKK.Classes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
@@ -138,8 +138,7 @@ namespace AKK.Controllers {
 
         // GET: /api/route/{id}
         [HttpGet("{id}")]
-        public ApiResponse GetRoute(Guid id)
-        {
+        public ApiResponse GetRoute(Guid id) {
             var route = _routeRepository.Find(id);
             if(route == null)
                 return new ApiErrorResponse("No route exists with id "+id);
@@ -147,9 +146,31 @@ namespace AKK.Controllers {
             return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(route));
         }
 
+        // GET: /api/route/search
+        [HttpGet("search")]
+        public ApiResponse GetRoutesByString(string searchStr, int maxResults)
+        {
+            //If search string is empty or null 
+            if (string.IsNullOrEmpty(searchStr))
+                return new ApiErrorResponse("No routes matched your search");
+
+            //Initialize a RouteSearcher
+            var searcher = new RouteSearcher(_routeRepository.GetAll(), maxResults);
+
+            //Search for route
+            var foundRoutes = searcher.Search(searchStr);
+
+            //If no routes were found.
+            if (!foundRoutes.Any())
+                return new ApiErrorResponse("No routes matched your search");
+
+            return new ApiSuccessResponse(Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(foundRoutes));
+        }
+
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
-        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Route route) {
+        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Route route)
+        {
             Route oldRoute = null;
             bool changed = false;
             var routes = _routeRepository.GetAll();
