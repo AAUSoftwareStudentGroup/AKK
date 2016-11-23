@@ -35,10 +35,28 @@ function EditRouteViewModel(client)
                         }
                         if(self.selectedTapeColor != null)
                             self.hasTape = true;
-                        self.changeAuthor(routeResponse.data.author);
-                        self.trigger("OnGradeOrSectionChanged");
-                        self.trigger("OnColorChanged");
-                        self.trigger("OnImageChanged");
+
+                        
+                        self.client.routes.getImage(self.routeId, function(imageResponse) {
+                            console.log(imageResponse);
+                            if (imageResponse.success) {
+                                self.hasImage = true;
+                                self.image = new Image();
+                                self.image.src = imageResponse.data.fileUrl;
+                                self.HoldPositions = imageResponse.data.holds;
+                                self.image.onload = function() {
+                                    self.changeAuthor(routeResponse.data.author);
+                                    self.trigger("OnGradeOrSectionChanged");
+                                    self.trigger("OnColorChanged");
+                                    self.trigger("OnImageChanged");
+                                }
+                            } else {
+                                self.changeAuthor(routeResponse.data.author);
+                                self.trigger("OnGradeOrSectionChanged");
+                                self.trigger("OnColorChanged");
+                                self.trigger("OnImageChanged");
+                            }
+                        });
                     }
                     else
                     {
