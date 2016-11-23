@@ -228,6 +228,8 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse("Route does not exist");
             }
 
+            oldRoute = routes.Single(r => r.Id == routeId);
+
             if (route.Name != null && route.Name != oldRoute.Name)
             {
                 oldRoute.Name = route.Name; changed = true;
@@ -240,7 +242,15 @@ namespace AKK.Controllers {
             {
                 oldRoute.ColorOfHolds = route.ColorOfHolds;
             }
-            oldRoute.ColorOfTape = route.ColorOfTape;
+            if (route.ColorOfTape != null)
+            {
+                oldRoute.ColorOfTape = route.ColorOfTape;
+            }
+            if (route.Image != null)
+            {
+                oldRoute.Image = route.Image;
+            }
+
 
             if(route.Grade != null)
             {
