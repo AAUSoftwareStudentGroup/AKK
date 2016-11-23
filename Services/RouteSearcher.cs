@@ -15,12 +15,9 @@ namespace AKK.Classes
         public RouteSearcher(IEnumerable<Route> allRoutes, int maxResults)
         {
             _allRoutes = allRoutes;
-            _maxResults = maxResults;
 
             _numRoutes = _allRoutes.Count();
-            _maxResults = Math.Min(_maxResults, _numRoutes);
-
-            _computeLevenshtein("gebra", "Geogebra");
+            _maxResults = maxResults <= 0 ? _numRoutes : Math.Min(maxResults, _numRoutes);
         }
 
         public IEnumerable<Route> Search(string searchStr)

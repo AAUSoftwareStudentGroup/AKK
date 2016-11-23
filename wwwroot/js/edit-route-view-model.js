@@ -77,7 +77,7 @@ function EditRouteViewModel(client, changed, changed2)
         ],
         changeSection: function(sectionId)
         {
-            viewModel.selectedSection = viewModel.sections.filter(function(s) { return s.sectionId == sectionId; })[0];
+            viewModel.selectedSection = viewModel.sections.filter(function(s) { return s.id == sectionId; })[0];
         },
         changeGrade: function(gradeValue)
         {

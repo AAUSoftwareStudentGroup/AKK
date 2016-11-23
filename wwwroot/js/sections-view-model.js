@@ -38,7 +38,7 @@ function SectionsViewModel(client, changed, updateSection, updateRouteSection)
         refreshRoutes: function()
         {
             var gradeValue = viewModel.selectedGrade == null ? "all" : viewModel.selectedGrade.value;
-            var sectionId = viewModel.selectedSection.sectionId == -1 ? null : viewModel.selectedSection.sectionId;
+            var sectionId = viewModel.selectedSection.id == -1 ? null : viewModel.selectedSection.id;
             var sortByValue = viewModel.selectedSortBy.value == -1 ? null : viewModel.selectedSortBy.value;
             viewModel.client.routes.getRoutes(gradeValue, sectionId, sortByValue, function(response) {
                 if(response.success)
@@ -47,7 +47,7 @@ function SectionsViewModel(client, changed, updateSection, updateRouteSection)
                     for(var i = 0; i < viewModel.routes.length; i++)
                     {
                         viewModel.routes[i].sectionName = viewModel.sections.filter(function(s) { 
-                            return s.sectionId == viewModel.routes[i].sectionId; 
+                            return s.id == viewModel.routes[i].sectionId; 
                         })[0].name;
                         viewModel.routes[i].date = viewModel.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
                         viewModel.routes[i].selectedColor = viewModel.routes[i].colorOfHolds;
@@ -68,7 +68,7 @@ function SectionsViewModel(client, changed, updateSection, updateRouteSection)
         },
         getSectionDetails: function(sectionId)
         {
-            viewModel.selectedSection = viewModel.sections.filter(function(section){ return section.sectionId == sectionId; })[0];
+            viewModel.selectedSection = viewModel.sections.filter(function(section){ return section.id == sectionId; })[0];
           //  viewModel.selectedSection = viewModel.client.sections.getSection(viewModel.selectedSection.sectionId);
          /* var response;
             viewModel.client.routes.getRoutes(viewModel.grades[0], viewModel.selectedSection.sectionId, viewModel.sortOptions[0], function(response) {

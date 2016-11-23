@@ -1,10 +1,14 @@
 using System;
 using System.Linq.Expressions;
+using AKK.Classes.Models;
 using Newtonsoft.Json;
 
 namespace AKK.Classes.Models
+{
+    public enum SortOrder
     {
-    public enum SortOrder { Newest, Oldest, Grading, Author };
+        Newest, Oldest, Grading, Author
+    }
 
     public class Route : RouteInformation
     {
@@ -22,16 +26,8 @@ namespace AKK.Classes.Models
 
             Route input = (Route) obj;
 
-            if(Author == input.Author &&
-               Id == input.Id &&
-               Name == input.Name &&
-               CreatedDate == input.CreatedDate &&
-               Grade == input.Grade &&
-               SectionId == input.SectionId) {
-                return true;
-            } else {
-                return false;
-            }
+            return Author == input.Author && Id == input.Id && Name == input.Name 
+                && CreatedDate == input.CreatedDate && Grade == input.Grade && SectionId == input.SectionId;
         }
         
         public override int GetHashCode()
@@ -40,6 +36,11 @@ namespace AKK.Classes.Models
         }
         [JsonIgnore]
         public virtual Section Section { get; set; }
+
+        [JsonIgnore]
+        public virtual Member Member { get; set; }
+
+        public override string Author => Member?.DisplayName;
 
         public static readonly Expression<Func<Route, uint?>> ColorOfHoldsPriv = p => p.ColorOfHoldsDb;
         public static readonly Expression<Func<Route, uint?>> ColorOfTapePriv = p => p.ColorOfTapeDb;
