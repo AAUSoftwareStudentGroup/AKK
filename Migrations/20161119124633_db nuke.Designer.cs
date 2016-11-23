@@ -8,9 +8,10 @@ using AKK.Classes.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    partial class MainDbContextModelSnapshot : ModelSnapshot
+    [Migration("20161119124633_db nuke")]
+    partial class dbnuke
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
@@ -50,13 +51,13 @@ namespace AKK.Migrations
 
                     b.Property<bool>("PendingDeletion");
 
-                    b.Property<Guid>("SectionId");
+                    b.Property<Guid>("Id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GradeId");
 
-                    b.HasIndex("SectionId");
+                    b.HasIndex("Id");
 
                     b.ToTable("Routes");
                 });
@@ -82,7 +83,7 @@ namespace AKK.Migrations
 
                     b.HasOne("AKK.Classes.Models.Section", "Section")
                         .WithMany("Routes")
-                        .HasForeignKey("SectionId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

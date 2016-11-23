@@ -1,21 +1,30 @@
+using System;
 using Microsoft.AspNetCore.Mvc;
 using AKK.Classes.Models;
 using System.Linq;
+using AKK.Classes.Models.Repository;
 
 namespace AKK.Controllers {
     [Route("")]
     public class HomeController : Controller {
         
-        MainDbContext db;
+        IRepository<Route> db;
+        IRepository<Grade> _g;
+        IRepository<Section> _s;
 
-        public HomeController (MainDbContext context)
+        public HomeController (IRepository<Route> context, IRepository<Grade> grades, IRepository<Section> sections)
         {
-          db = context;
+            db = context;
+            _g = grades;
+            _s = sections;
         }
         
         [HttpGet]
         public string Index() {
-            return db.Sections.First(x => x.Name == "A").Routes.Count.ToString();
+            Route r =  new Route {Name = "99", ColorOfHolds = new Color(255, 0, 0), Author = "Anton", Grade =_g.GetAll().FirstOrDefault(), CreatedDate = new DateTime(2016, 03, 24) };
+            _s.GetAll().FirstOrDefault().Routes.Add(r);
+            _s.Save();
+            return db.Find(r.Id)?.Name;
         }
     }
 } 
