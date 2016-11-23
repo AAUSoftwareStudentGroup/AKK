@@ -17,12 +17,14 @@ namespace AKK.Controllers {
         private readonly IRepository<Section> _sectionRepository;
         private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Image> _imageRepository;
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository) 
+        private readonly IRepository<Hold> _holdRepository;
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository) 
         {
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
             _imageRepository = imageRepository;
+            _holdRepository = holdRepository;
         }
 
         // GET: /api/route
@@ -203,15 +205,12 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse($"No route exists with id {id}");
             }
 
-            var image = _imageRepository.GetAll().FirstOrDefault(x => x.RouteId == id);
+            var image = _imageRepository.GetAll().AsQueryable().FirstOrDefault(x => x.RouteId == id);
             if (image == null) {
                 return new ApiErrorResponse($"No image exists for route with id {id}");
             }
 
-            image.Holds = new List<Hold>()
-            {
-                new Hold { X = 0.5, Y = 0.5, Radius = 0.1 }
-            };
+            image.Holds = _holdRepository.GetAll().ToList();
 
             return new ApiSuccessResponse(image);
         }

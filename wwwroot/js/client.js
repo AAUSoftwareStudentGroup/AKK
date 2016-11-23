@@ -59,17 +59,6 @@ function RouteClient(url)
     };
     this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, tape, image, success)
     {
-        console.log({
-                id: routeId,
-            //    sectionName: sectionName,
-                sectionId: sectionId,
-                name: name,
-                author: author,
-                colorOfHolds: holdColor,
-                grade: grade,
-                colorOfTape: tape,
-                image: image
-            });
         $.ajax({
             type: "PATCH",
             dataType: "json",
