@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -20,47 +19,47 @@ namespace AKK.Controllers {
 
         // GET: /api/section
         [HttpGet]
-        public ApiResponse GetAllSections() {
+        public ApiResponse<IEnumerable<SectionTransferObject>> GetAllSections() {
             var sections = _sectionRepository.GetAll().OrderBy(s => s.Name);
 
-            return new ApiSuccessResponse(
+            return new ApiSuccessResponse<IEnumerable<SectionTransferObject>>(
                 Mappings.Mapper.Map<IEnumerable<Section>, IEnumerable<SectionTransferObject>>(sections)
             );
         }
 
         // POST: /api/section
         [HttpPost]
-        public ApiResponse AddSection(string name) {
+        public ApiResponse<SectionTransferObject> AddSection(string name) {
             var sectionExsits = _sectionRepository.GetAll().Where(s => s.Name == name);
             if(sectionExsits.Any()) {
-                return new ApiErrorResponse("A section with name "+name+" already exist");
+                return new ApiErrorResponse<SectionTransferObject>("A section with name "+name+" already exist");
             }
             if (name == null)
             {
-                return new ApiErrorResponse("Name must have a value");
+                return new ApiErrorResponse<SectionTransferObject>("Name must have a value");
             }
             Section section = new Section() {Name=name};
             _sectionRepository.Add(section);
             try
             {
                 _sectionRepository.Save();
-                return new ApiSuccessResponse(Mappings.Mapper.Map<Section, SectionTransferObject>(section));
+                return new ApiSuccessResponse<SectionTransferObject>(Mappings.Mapper.Map<Section, SectionTransferObject>(section));
             }
             catch
             {
-                return new ApiErrorResponse("Failed to create new section with name " + name);
+                return new ApiErrorResponse<SectionTransferObject>("Failed to create new section with name " + name);
             }
         }
 
         // DELETE: /api/section
         [HttpDelete]
-        public ApiResponse DeleteAllSections() {
+        public ApiResponse<IEnumerable<SectionTransferObject>> DeleteAllSections() {
             var sections = _sectionRepository.GetAll();
             if(!sections.Any())
-                return new ApiErrorResponse("No sections exist");
+                return new ApiErrorResponse<IEnumerable<SectionTransferObject>>("No sections exist");
             
             // create copy that can be sent as result
-            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections));
+            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections)) as IEnumerable<SectionTransferObject>;
 
             foreach (Section section in sections)
             {
@@ -70,17 +69,17 @@ namespace AKK.Controllers {
             try
             {
                 _sectionRepository.Save();
-                return new ApiSuccessResponse(resultCopy);
+                return new ApiSuccessResponse<IEnumerable<SectionTransferObject>>(resultCopy);
             }
             catch
             {
-                return new ApiErrorResponse("Failed to remove sections from database");
+                return new ApiErrorResponse<IEnumerable<SectionTransferObject>>("Failed to remove sections from database");
             }
         }
 
         // GET: /api/section/{name}
         [HttpGet("{name}")]
-        public ApiResponse GetSection(string name) {
+        public ApiResponse<SectionTransferObject> GetSection(string name) {
             var sections = _sectionRepository.GetAll();
             
             try {
@@ -91,14 +90,14 @@ namespace AKK.Controllers {
             }
 
             if(sections.Count() != 1)
-                return new ApiErrorResponse("No section with name/id " + name);
+                return new ApiErrorResponse<SectionTransferObject>("No section with name/id " + name);
 
-            return new ApiSuccessResponse(Mappings.Mapper.Map<Section, SectionTransferObject>(sections.First()));
+            return new ApiSuccessResponse<SectionTransferObject>(Mappings.Mapper.Map<Section, SectionTransferObject>(sections.First()));
         }
 
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
-        public ApiResponse DeleteSection(string name) {
+        public ApiResponse<SectionTransferObject> DeleteSection(string name) {
             Section section;
             
             try {
@@ -109,21 +108,21 @@ namespace AKK.Controllers {
             }
 
             if(section == null)
-                return new ApiErrorResponse("No section exists with name/id "+name);
+                return new ApiErrorResponse<SectionTransferObject>("No section exists with name/id "+name);
             else {
                 // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
-                var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section));
+                var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section)) as SectionTransferObject;
         
                 _sectionRepository.Delete(section);
 
                 try
                 {
                     _sectionRepository.Save();
-                    return new ApiSuccessResponse(resultCopy);
+                    return new ApiSuccessResponse<SectionTransferObject>(resultCopy);
                 }
                 catch
                 {
-                    return new ApiErrorResponse("Failed to delete section with name/id " + name);
+                    return new ApiErrorResponse<SectionTransferObject>("Failed to delete section with name/id " + name);
                 }
             }
 
@@ -131,7 +130,7 @@ namespace AKK.Controllers {
 
         // GET: /api/section/{name}/routes
         [HttpGet("{name}/routes")]
-        public ApiResponse GetSectionRoutes(string name)
+        public ApiResponse<IEnumerable<RouteDataTransferObject>> GetSectionRoutes(string name)
         {
             Section section;
 
@@ -143,8 +142,8 @@ namespace AKK.Controllers {
             }
 
             if(section == null)
-                return new ApiErrorResponse("No section with name/id "+name);
-            return new ApiSuccessResponse(
+                return new ApiErrorResponse<IEnumerable<RouteDataTransferObject>>("No section with name/id "+name);
+            return new ApiSuccessResponse<IEnumerable<RouteDataTransferObject>>(
                 Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(
                     section.Routes
                 )
@@ -153,7 +152,7 @@ namespace AKK.Controllers {
 
         // DELETE: /api/section/{name}/routes
         [HttpDelete("{name}/routes")]
-        public ApiResponse DeleteSectionRoutes(string name)
+        public ApiResponse<IEnumerable<RouteDataTransferObject>> DeleteSectionRoutes(string name)
         {
             Section section;
 
@@ -168,25 +167,25 @@ namespace AKK.Controllers {
             }
 
             if (section == null)
-                return new ApiErrorResponse("No section with name/id "+name);
+                return new ApiErrorResponse<IEnumerable<RouteDataTransferObject>>("No section with name/id "+name);
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(
                 JsonConvert.SerializeObject(
                     Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(section.Routes)
                 )
-            );
+            ) as IEnumerable<RouteDataTransferObject>;
             section.Routes.RemoveAll(r => true);
 
             try
             {
                 _sectionRepository.Save();
-                return new ApiSuccessResponse(resultCopy);
+                return new ApiSuccessResponse<IEnumerable<RouteDataTransferObject>>(resultCopy);
 
             }
             catch
             {
-                return new ApiErrorResponse("Failed to delete routes of section with name/id " + name);
+                return new ApiErrorResponse<IEnumerable<RouteDataTransferObject>>("Failed to delete routes of section with name/id " + name);
             }
         }
     }

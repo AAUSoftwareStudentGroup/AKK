@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AKK.Classes.Models;
 
 namespace AKK.Tests
@@ -17,8 +15,7 @@ namespace AKK.Tests
             set { _sections = value; }
         }
 
-        public List<Grade> Grades
-        {
+        public List<Grade> Grades {
             get { return _grades; }
             set { _grades = value; }
         }
@@ -32,19 +29,19 @@ namespace AKK.Tests
         {
             _sections = new List<Section>
             {
-                new Section {Name = "A", Id = new Guid()},
-                new Section {Name = "B", Id = new Guid()},
-                new Section {Name = "C", Id = new Guid()},
-                new Section {Name = "D", Id = new Guid()},
+                new Section {Name = "A", Id = Guid.NewGuid()},
+                new Section {Name = "B", Id = Guid.NewGuid()},
+                new Section {Name = "C", Id = Guid.NewGuid()},
+                new Section {Name = "D", Id = Guid.NewGuid()},
             };
 
             _grades = new List<Grade>
             {
-                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = new Guid()},
-                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = new Guid()},
-                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = new Guid()},
-                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = new Guid()},
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = new Guid()},
+                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid()},
+                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid()},
+                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid()},
+                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid()},
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid()},
             };
 
             _routes = new List<Route>
