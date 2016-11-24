@@ -66,10 +66,10 @@ namespace AKK.Controllers {
                 var searcher = new RouteSearcher(routes, maxResults);
 
                 //Search for route
-                var foundRoutes = searcher.Search(searchStr);
+                routes = searcher.Search(searchStr);
 
                 //If no routes were found.
-                if (!foundRoutes.Any()) {
+                if (!routes.Any()) {
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
@@ -271,7 +271,10 @@ namespace AKK.Controllers {
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(route)) as Route;
-
+            if (resultCopy == null)
+            {
+                Console.WriteLine("resultCopy is null");
+            }
             _routeRepository.Delete(route);
 
             try
