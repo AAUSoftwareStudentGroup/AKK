@@ -9,6 +9,7 @@
         <script type="text/javascript" src="js/handlebars.min.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
+        <script src="js/route-canvas.js"></script>
         <script type="text/javascript" src="js/edit-route-view-model.js"></script>
     </head>
     <body>
@@ -29,7 +30,7 @@
                     <h2 class="">Section</h2>
                     <div class="radio-inputs">
                         {{#each sections}}
-                        <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{sectionId}}')" name="section" type="radio">
+                        <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{id}}')" name="section" type="radio">
                         <label for="section-input-{{name}}" class="section-box">
                             <span>{{name}}</span>
                         </label>
@@ -134,11 +135,40 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-                <input class="submit-button create-route-button section-button-clear left" type="button" onclick="viewModel.gradesGotTape()" value="Has Tape"></input>
-                <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />
+                <label class="submit-button left" style="background-color:green;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
             </div>
         </script>
         <div id="holdColorContent"></div>
+
+        <script id="imagetemplate" type="text/x-handlebars-template">
+            <div class="content new-route" style="margin-top: 0px">
+                <div class="content-section">
+                    <h2>Route image</h2>
+                    <label for="files" class="submit-button left" style="background-color:yellow;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
+                    <input id="files" style="display:none;" type="file" accept="image/*" onchange="UpdateCanvas(this);">
+                    
+                    {{#if_eq hasImage true}}
+                    <div id="canvas-container">
+                        <canvas id="route-edit-image" width="{{image.width}}" height="{{image.height}}">canvas not supported</canvas>
+                        <a class="undo-button" onclick="rc.undo()">
+                            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="#000000" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z" />
+                            </svg>Undo
+                        </a>
+                    </div>
+                    {{/if_eq}}
+                </div>
+                
+                
+            </div>
+        </script>
+        <div id="imageContent"></div>
+
+        <div id="buttons">
+            <div class="content new-route">
+            <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+            <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />            
+            </div>
+        </div>
     </body>
 </html>

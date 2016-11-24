@@ -1,8 +1,19 @@
-function NewRouteViewModel(client, changed, changed2) {
+$.ajax({
+  url: "js/eventnotifier.js",
+  dataType: "script",
+  async: false
+});
+
+function NewRouteViewModel(client) {
+
+    this.init = function() {
+        this.getSections();
+        this.getGrades();
+        self.trigger("HoldColorUpdated");
+    }
+
     var self = this;
     this.client = client;
-    this.changed = changed;
-    this.changed2 = changed2;
     this.sections = [];
     this.selectedSection = null;
     this.selectedGrade = null;
@@ -50,6 +61,7 @@ function NewRouteViewModel(client, changed, changed2) {
     this.getSections = function () {
         self.client.sections.getAllSections(function (response) {
             if (response.success) {
+                self.trigger("DataLoaded");
                 self.sections = response.data;
             } else {
                 $("#error-message").html(response.message).show();
@@ -60,7 +72,7 @@ function NewRouteViewModel(client, changed, changed2) {
         self.client.grades.getAllGrades(function (response) {
             if (response.success) {
                 self.grades = response.data;
-                self.changed();
+                self.trigger("DataLoaded");
             }
         })
     };
@@ -70,7 +82,7 @@ function NewRouteViewModel(client, changed, changed2) {
             self.selectedTapeColor = null;
         } else
             self.hasTape = true;
-        self.changed2();
+        self.trigger("HoldColorUpdated");
     };
     this.addRoute = function() {
         if (self.selectedSection != null &&
@@ -98,11 +110,5 @@ function NewRouteViewModel(client, changed, changed2) {
                 });
         }
     };
-    this.getSections();
-    this.getGrades();
-    setTimeout(function () {
-        changed();
-        changed2();
-    },
-        10);
 }
+NewRouteViewModel.prototype = new EventNotifier();

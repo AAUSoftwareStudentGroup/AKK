@@ -216,7 +216,7 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse<Image>($"No image exists for route with id {id}");
             }
 
-            image.Holds = _holdRepository.GetAll().ToList();
+            image.Holds = _holdRepository.GetAll().Where(h => h.ImageId == image.Id).ToList();
 
             return new ApiSuccessResponse<Image>(image);
         }
@@ -234,6 +234,7 @@ namespace AKK.Controllers {
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             if(route.GradeId != default(Guid))
+
             {
                 routeToUpdate.GradeId = route.GradeId;
             }
