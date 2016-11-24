@@ -234,7 +234,12 @@ namespace AKK.Controllers {
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             if(route.Image != null)
             {
-                routeToUpdate.Image = new Image {FileUrl = route.Image.FileUrl};
+                if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
+                    Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
+                    _imageRepository.Delete(img);
+                }
+
+                routeToUpdate.Image = route.Image;
             }
             if(route.GradeId != default(Guid))
             {
