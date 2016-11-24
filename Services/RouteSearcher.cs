@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using AKK.Classes.Models;
+using AKK.Models;
 
-namespace AKK.Classes
+namespace AKK.Services
 {
     public class RouteSearcher
     {

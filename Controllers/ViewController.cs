@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace AKK.Controllers {
     [Route("")]
     public class ViewController : Controller {
@@ -22,5 +23,17 @@ namespace AKK.Controllers {
         // GET: /sections
         [HttpGet("sections")]
         public IActionResult Sections() { return View("Views/Sections.cshtml"); }
+
+        // GET: /login
+        [HttpGet("login")]
+        public IActionResult LogIn() { return View("Views/LogIn.cshtml"); }
+
+        // GET: /register
+        [HttpGet("register")]
+        public IActionResult Register() { return View("Views/Register.cshtml"); }
+
+        // GET: /route-info
+        [HttpGet("tests")]
+        public IActionResult Tests() { return View("Views/Tests/Tests.cshtml"); }
     }
 }

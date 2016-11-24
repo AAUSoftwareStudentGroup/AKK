@@ -1,5 +1,6 @@
 ﻿var viewModel;
 $(document).ready(function () {
+    <<<<<<< HEAD
     $.get("js/templates/header-template.handlebars",
         function(response) {
             var template = Handlebars.compile($("#new-route-template").html());
@@ -18,7 +19,7 @@ $(document).ready(function () {
                     $('#holdColorContent').html(colortemplate(viewModel));
                     if (viewModel.hasTape === false)
                         $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
-                    else
+                    else if(viewModel.selectedTapeColor)
                         $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
                 });
             viewModel.init();
