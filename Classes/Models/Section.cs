@@ -4,22 +4,22 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AKK.Classes.Models.Repository;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Newtonsoft.Json;
 
-namespace AKK.Classes.Models {
-    public class Section : IIdentifyable{
-
+namespace AKK.Classes.Models 
+{
+    public class Section : Model
+    {
         public Section()
         {
             Routes = new List<Route>();
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
+        public Guid SectionId => Id;
 
         public string Name { get; set; }    
-            
-        public virtual List<Route> Routes { get; set; }
-
+        
+        [InverseProperty("Section")]
+        public List<Route> Routes { get; set; }
     }
 }

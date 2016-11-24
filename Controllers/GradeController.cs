@@ -111,14 +111,14 @@ namespace AKK.Controllers {
 
         // GET: /api/grade/{id}/routes
         [HttpGet("{id}/routes")]
-        public ApiResponse<IEnumerable<RouteDataTransferObject>> GetGradeRoutes(string id) {
+        public ApiResponse<IEnumerable<Route>> GetGradeRoutes(string id) {
             Grade grade = FindGrade(id);
 
             if(grade == null)
-                return new ApiErrorResponse<IEnumerable<RouteDataTransferObject>>("No grades with given id exists");
+                return new ApiErrorResponse<IEnumerable<Route>>("No grades with given id exists");
 
 
-            return new ApiSuccessResponse<IEnumerable<RouteDataTransferObject>>(Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(grade.Routes));
+            return new ApiSuccessResponse<IEnumerable<Route>>(grade.Routes);
         }
 
         // returns grade on either guid or difficulty

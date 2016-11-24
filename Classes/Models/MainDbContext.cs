@@ -20,46 +20,6 @@ namespace AKK.Classes.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Route>()
-                .HasOne(r => r.Section)
-                .WithMany(s => s.Routes)
-                .HasForeignKey(r => r.SectionId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Grade>()
-                .HasMany(g => g.Routes)
-                .WithOne(r => r.Grade)
-                .HasForeignKey(r => r.GradeId)
-                .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<Grade>()
-                .Ignore(g => g.Color)
-                .Property(Grade.ColorPriv);
-
-            modelBuilder.Entity<Member>()
-                .HasMany(m => m.Routes)
-                .WithOne(r => r.Member)
-                .HasForeignKey(r => r.MemberId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Route>()
-                .Ignore(r => r.ColorOfHolds)
-                .Property(Route.ColorOfHoldsPriv);
-
-            modelBuilder.Entity<Route>()
-                .Ignore(r => r.ColorOfTape)
-                .Property(Route.ColorOfTapePriv);
-            
-            modelBuilder.Entity<Route>()
-                .HasOne(r => r.Image)
-                .WithOne()
-                .HasForeignKey<Image>(i => i.RouteId);
-
-            modelBuilder.Entity<Image>()
-                .HasMany(m => m.Holds)
-                .WithOne(h => h.Image)
-                .HasForeignKey(h => h.ImageId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
     public static class DbContextExtensions
