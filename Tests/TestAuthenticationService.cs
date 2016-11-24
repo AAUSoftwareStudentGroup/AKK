@@ -5,8 +5,12 @@ namespace AKK.Services
 {
     public class TestAuthenticationService : IAuthenticationService
     {
-        private List<string> _tokens = new List<string>();
+        public List<string> _tokens = new List<string>();
 
+        public TestAuthenticationService() {
+            _tokens.Add("123");
+            _tokens.Add("TannerHelland");
+        }
         public string Login(string username, string password)
         {
             var token = username + password;

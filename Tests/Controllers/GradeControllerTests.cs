@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using AKK.Classes.Services;
+using AKK.Services;
 
 namespace AKK.Tests.Controllers
 {
@@ -30,6 +31,7 @@ namespace AKK.Tests.Controllers
         { 
             _dataFactory = new TestDataFactory();
             _repo = new TestRepository<Grade>(_dataFactory.Grades);
+            _auth = new TestAuthenticationService();
             _controller = new GradeController(_repo, _auth);
         }
 
@@ -71,6 +73,18 @@ namespace AKK.Tests.Controllers
             Assert.IsTrue(grade.Name == data.Name);
             Assert.IsTrue(grade.Difficulty == data.Difficulty);
             Assert.IsTrue(grade.Color.ToUint() == data.Color.ToUint());
+        }
+
+        [Test]
+        public void AddGrade_NotPossibleIfNotAuthenticated() 
+        {
+            ApiResponse<Grade> result;
+            ApiResponse<Grade> message;
+
+            Grade grade = new Grade() {Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)};
+            message = _controller.AddGrade("noToken", grade);
+            Assert.AreEqual(false, message.Success);
+            
         }
 
         [Test] // A test
