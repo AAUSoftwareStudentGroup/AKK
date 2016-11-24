@@ -2,18 +2,20 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using AKK.Classes.Models;
-using AKK.Classes.ApiResponses;
-using AKK.Classes.Models.Repository;
-
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
 
 namespace AKK.Controllers {
     [Route("api/grade")]
     public class GradeController : Controller {
         IRepository<Grade> _gradeRepository;
-        public GradeController(IRepository<Grade> gradeRepository)
+        IAuthenticationService _authenticationService;
+        public GradeController(IRepository<Grade> gradeRepository, IAuthenticationService authenticationService)
         {
             _gradeRepository = gradeRepository;
+            _authenticationService = authenticationService;
         }
 
         // GET: /api/grade
@@ -26,7 +28,11 @@ namespace AKK.Controllers {
 
         // POST: /api/grade
         [HttpPost]
-        public ApiResponse<Grade> AddGrade(Grade grade) {
+        public ApiResponse<Grade> AddGrade(string token, Grade grade) {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to add a new grade");
+            }
             if(_gradeRepository.GetAll().Count(g => g.Difficulty == grade.Difficulty) != 0)
                 return new ApiErrorResponse<Grade>("A grade already exists with the given difficulty");
 
@@ -56,7 +62,11 @@ namespace AKK.Controllers {
 
         // PATCH: /api/grade/{id}
         [HttpPatch("{id}")]
-        public ApiResponse<Grade> UpdateGrade(string id, int? difficulty, Color color) {
+        public ApiResponse<Grade> UpdateGrade(string token, string id, int? difficulty, Color color) {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to change this grade");
+            }
             Grade oldGrade = FindGrade(id);
             if(oldGrade == null)
                 return new ApiErrorResponse<Grade>("No grade exists with difficulty/id " + id);
@@ -84,7 +94,11 @@ namespace AKK.Controllers {
 
         // DELETE: /api/grade/{id}
         [HttpDelete("{id}")]
-        public ApiResponse<Grade> DeleteGrade(string id) {
+        public ApiResponse<Grade> DeleteGrade(string token, string id) {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to delete this grade");
+            }
             Grade grade = FindGrade(id);
             if(grade == null)
                 return new ApiErrorResponse<Grade>("No grade exists with difficulty/id " + id);

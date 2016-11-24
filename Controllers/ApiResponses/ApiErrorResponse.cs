@@ -1,4 +1,4 @@
-namespace AKK.Classes.ApiResponses {
+namespace AKK.Controllers.ApiResponses {
     public class ApiErrorResponse<T> : ApiResponse<T> {
         
         public string ErrorMessage {get; set;}

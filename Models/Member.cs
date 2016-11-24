@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
-using AKK.Classes.Models.Repository;
 using Newtonsoft.Json;
 
-namespace AKK.Classes.Models
+namespace AKK.Models
 {
     public class Member : Model
     {

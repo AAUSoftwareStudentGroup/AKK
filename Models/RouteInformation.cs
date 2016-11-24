@@ -1,9 +1,9 @@
 using System;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
-using AKK.Classes.Models.Repository;
+using AKK.Models.Repositories;
 
-namespace AKK.Classes.Models {
+namespace AKK.Models {
     public abstract class RouteInformation : IIdentifyable{
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

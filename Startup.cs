@@ -4,8 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using AKK.Classes.Models;
-using AKK.Classes.Models.Repository;
+using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
 
 namespace AKK
 {
@@ -39,6 +40,7 @@ namespace AKK
             services.AddScoped<IRepository<Image>, ImageRepository>();
             services.AddScoped<IRepository<Hold>, HoldRepository>();
             services.AddScoped<IRepository<Member>, MemberRepository>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using AKK.Classes.Models;
-using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
+using AKK.Models;
+using AKK.Models.Repositories;
 
 namespace AKK.Services
 {
@@ -49,16 +48,21 @@ namespace AKK.Services
             }
         }
 
-        public bool IsAuthenticated(string token)
+        public bool HasRole(string token, Role role)
         {
-            if (string.IsNullOrEmpty(token))
-            {
-                return false;
-            }
-
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
 
-            return member != default(Member);
+            switch (role)
+            {
+                case Role.Unauthenticated:
+                    return member == default(Member);
+                case Role.Authenticated:
+                    return member != default(Member);
+                case Role.Admin:
+                    return member != default(Member) && member.IsAdmin;
+                default:
+                    return false;
+            }
         }
     }
 }

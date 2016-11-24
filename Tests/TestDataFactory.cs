@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using AKK.Classes.Models;
+using AKK.Models;
 
 namespace AKK.Tests
 {

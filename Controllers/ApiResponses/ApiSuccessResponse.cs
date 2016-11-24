@@ -1,4 +1,4 @@
-namespace AKK.Classes.ApiResponses {
+namespace AKK.Controllers.ApiResponses {
     public class ApiSuccessResponse<T> : ApiResponse<T> {
         
         public override object Value {
