@@ -13,14 +13,14 @@ namespace AKK.Controllers
     [Route("api/member")]
     public class MemberController : Controller
     {
-        private AuthenticationService _authenticator = new AuthenticationService();
-
+        private readonly AuthenticationService _authenticator;
         private readonly IRepository<Member> _memberRepository;
 
         public MemberController(IRepository<Member> memberRepository)
         {
             _memberRepository = memberRepository;
-        }
+            _authenticator = new AuthenticationService(_memberRepository);
+    }
 
         // POST: /api/member
         [HttpPost]
@@ -44,10 +44,5 @@ namespace AKK.Controllers
 
             return new ApiSuccessResponse<string>("Logout successful");
         }
-
-
-
-
-
     }
 }
