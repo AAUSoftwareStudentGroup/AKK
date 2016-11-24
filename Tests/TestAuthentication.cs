@@ -27,7 +27,7 @@ namespace AKK.Tests
             var token = Authenticator.Login("Tanner", "Helland");
             Authenticator.Logout(token);
 
-            Assert.AreEqual(false, Authenticator._tokens.Contains("TannerHelland"));
+            Assert.AreEqual(false, Authenticator.HasRole(token, Role.Authenticated));
         }
 
         [Test]

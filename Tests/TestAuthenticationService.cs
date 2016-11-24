@@ -1,32 +1,78 @@
 ﻿using System;
 using System.Collections.Generic;
+using AKK.Classes.Models;
 using AKK.Services;
 
 namespace AKK.Services
 {
     public class TestAuthenticationService : IAuthenticationService
     {
-        public List<string> _tokens = new List<string>();
+        public List<Member> _members = new List<Member>();
 
         public TestAuthenticationService() {
-            _tokens.Add("123");
-            _tokens.Add("TannerHelland");
+            _members.Add(new Member{Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = "Helland", IsAdmin = false, Token = "TannerHelland"});
+            _members.Add(new Member{Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = "Rask", IsAdmin = true, Token = "123"});
         }
         public string Login(string username, string password)
         {
-            var token = username + password;
-            _tokens.Add(token);
-            return token;
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
+            {
+                return null;
+            }
+
+            foreach (var member in _members)
+            {
+                if (member.Username == username && member.Password == password) {
+                    member.Token = member.Username + member.Password;
+                    return member.Token;
+                }
+            }
+            return null;
         }
 
         public void Logout(string token)
         {
-            _tokens.Remove(token);
+            foreach (var member in _members)
+            {
+                if (member.Token == token) {
+                    member.Token = null;
+                }
+            }
         }
 
         public bool HasRole(string token, Role role)
         {
-            throw new NotImplementedException();
+            Member member = null;
+            foreach (var memb in _members)
+            {
+                if (memb.Token == token) {
+                    member = memb;
+                }
+            }
+
+            if (member == null && role != Role.Unauthenticated) {
+                return false;
+            }
+
+            switch (role)
+            {
+                case Role.Unauthenticated:
+                    if (member.Token == token) {
+                        return false;
+                    } else {
+                        return true;
+                    }
+                case Role.Authenticated:
+                    return true;
+                case Role.Admin:
+                    if (member.IsAdmin) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                default:
+                    return false;
+            }
         }
     }
 }
