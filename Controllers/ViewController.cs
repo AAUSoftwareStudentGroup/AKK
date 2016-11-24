@@ -22,5 +22,13 @@ namespace AKK.Controllers {
         // GET: /sections
         [HttpGet("sections")]
         public IActionResult Sections() { return View("Views/Sections.cshtml"); }
+
+        // GET: /login
+        [HttpGet("login")]
+        public IActionResult LogIn() { return View("Views/LogIn.cshtml"); }
+
+        // GET: /register
+        [HttpGet("register")]
+        public IActionResult Register() { return View("Views/Register.cshtml"); }
     }
 }
