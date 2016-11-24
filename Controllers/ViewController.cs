@@ -30,5 +30,9 @@ namespace AKK.Controllers {
         // GET: /register
         [HttpGet("register")]
         public IActionResult Register() { return View("Views/Register.cshtml"); }
+
+        // GET: /route-info
+        [HttpGet("tests")]
+        public IActionResult Tests() { return View("Views/Tests/Tests.cshtml"); }
     }
 }
