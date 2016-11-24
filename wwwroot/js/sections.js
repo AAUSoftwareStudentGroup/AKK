@@ -4,17 +4,18 @@ $(document).ready(function () {
     var sectionTemplate = Handlebars.compile($("#sectionsArea-template").html());
     var routeTemplate = Handlebars.compile($("#routes-template").html());
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
-    var changed = function changed() {
+    viewModel = new SectionsViewModel(client);
+    viewModel.addEventListener("DoneLoading", function changed() {
         $('#content').html(template(viewModel));
         $('#section-input-' + viewModel.selectedSection.name).prop("selected", true);
-    };
-    var changed2 = function changed2() {
+    });
+    viewModel.addEventListener("SectionsUpdated", function() {
         $('#sectionArea').html(sectionTemplate(viewModel));
-    };
-    var changed3 = function changed3() {
+    });
+    viewModel.addEventListener("RoutesUpdated", function() {
         $('#routeList').html(routeTemplate(viewModel));
-    };
-    viewModel = new SectionsViewModel(client, changed, changed2, changed3);
+    });
+    viewModel.init();
 });
 Handlebars.registerHelper('ifCond', function (v1, v2, options) {
     if (v1.g <= v2) {

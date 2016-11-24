@@ -15,15 +15,17 @@ $(document).ready(function () {
     var template = Handlebars.compile($("#new-route-template").html());
     var colortemplate = Handlebars.compile($("#holdcolortemplate").html());
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
-    var changed = function changed() {
+    viewModel = new NewRouteViewModel(client);
+    
+    viewModel.addEventListener("DataLoaded", function() {
         $('#content').html(template(viewModel));
-    };
-    var changed2 = function changed2() {
+    });
+    viewModel.addEventListener("HoldColorUpdated", function() {
         $('#holdColorContent').html(colortemplate(viewModel));
         if (viewModel.hasTape === false)
             $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
         else
             $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
-    };
-    viewModel = new NewRouteViewModel(client, changed, changed2);
+    });
+    viewModel.init();
 });
