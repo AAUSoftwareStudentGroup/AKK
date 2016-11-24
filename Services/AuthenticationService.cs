@@ -48,21 +48,21 @@ namespace AKK.Services
             }
         }
 
-        public bool HasRole(string token, Role missing_name)
+        public bool HasRole(string token, Role role)
         {
-            throw new NotImplementedException();
-        }
-
-        public bool IsAuthenticated(string token)
-        {
-            if (string.IsNullOrEmpty(token))
-            {
-                return false;
-            }
-
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
 
-            return member != default(Member);
+            switch (role)
+            {
+                case Role.Unauthenticated:
+                    return member == default(Member);
+                case Role.Authenticated:
+                    return member != default(Member);
+                case Role.Admin:
+                    return member != default(Member) && member.IsAdmin;
+                default:
+                    return false;
+            }
         }
     }
 }
