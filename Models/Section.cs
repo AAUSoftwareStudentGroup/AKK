@@ -1,12 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AKK.Classes.Models.Repository;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Newtonsoft.Json;
 
-namespace AKK.Classes.Models 
+namespace AKK.Models 
 {
     public class Section : Model
     {

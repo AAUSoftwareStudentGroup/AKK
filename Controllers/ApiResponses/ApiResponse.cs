@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AKK.Classes.ApiResponses {
+namespace AKK.Controllers.ApiResponses {
     public class ApiResponse<T> : IActionResult {
 
         public T Data {get; set;}
