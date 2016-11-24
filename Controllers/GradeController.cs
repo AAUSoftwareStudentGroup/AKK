@@ -5,15 +5,18 @@ using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
 using AKK.Classes.Models.Repository;
+using AKK.Classes.Services;
 
 
 namespace AKK.Controllers {
     [Route("api/grade")]
     public class GradeController : Controller {
         IRepository<Grade> _gradeRepository;
-        public GradeController(IRepository<Grade> gradeRepository)
+        IAuthenticationService _authenticationService;
+        public GradeController(IRepository<Grade> gradeRepository, IAuthenticationService authenticationService)
         {
             _gradeRepository = gradeRepository;
+            _authenticationService = authenticationService;
         }
 
         // GET: /api/grade
@@ -26,7 +29,11 @@ namespace AKK.Controllers {
 
         // POST: /api/grade
         [HttpPost]
-        public ApiResponse<Grade> AddGrade(Grade grade) {
+        public ApiResponse<Grade> AddGrade(string token, Grade grade) {
+            if (!_authenticationService.IsAuthenticated(token))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to add a new grade");
+            }
             if(_gradeRepository.GetAll().Count(g => g.Difficulty == grade.Difficulty) != 0)
                 return new ApiErrorResponse<Grade>("A grade already exists with the given difficulty");
 
@@ -56,7 +63,11 @@ namespace AKK.Controllers {
 
         // PATCH: /api/grade/{id}
         [HttpPatch("{id}")]
-        public ApiResponse<Grade> UpdateGrade(string id, int? difficulty, Color color) {
+        public ApiResponse<Grade> UpdateGrade(string token, string id, int? difficulty, Color color) {
+            if (!_authenticationService.IsAuthenticated(token))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to change this grade");
+            }
             Grade oldGrade = FindGrade(id);
             if(oldGrade == null)
                 return new ApiErrorResponse<Grade>("No grade exists with difficulty/id " + id);
@@ -84,7 +95,11 @@ namespace AKK.Controllers {
 
         // DELETE: /api/grade/{id}
         [HttpDelete("{id}")]
-        public ApiResponse<Grade> DeleteGrade(string id) {
+        public ApiResponse<Grade> DeleteGrade(string token, string id) {
+            if (!_authenticationService.IsAuthenticated(token))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to delete this grade");
+            }
             Grade grade = FindGrade(id);
             if(grade == null)
                 return new ApiErrorResponse<Grade>("No grade exists with difficulty/id " + id);
@@ -111,14 +126,14 @@ namespace AKK.Controllers {
 
         // GET: /api/grade/{id}/routes
         [HttpGet("{id}/routes")]
-        public ApiResponse<IEnumerable<RouteDataTransferObject>> GetGradeRoutes(string id) {
+        public ApiResponse<IEnumerable<Route>> GetGradeRoutes(string id) {
             Grade grade = FindGrade(id);
 
             if(grade == null)
-                return new ApiErrorResponse<IEnumerable<RouteDataTransferObject>>("No grades with given id exists");
+                return new ApiErrorResponse<IEnumerable<Route>>("No grades with given id exists");
 
 
-            return new ApiSuccessResponse<IEnumerable<RouteDataTransferObject>>(Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(grade.Routes));
+            return new ApiSuccessResponse<IEnumerable<Route>>(grade.Routes);
         }
 
         // returns grade on either guid or difficulty

@@ -5,13 +5,12 @@ namespace AKK.Classes.Models
 {
     public class Color
     {
-
-        [JsonIgnore]
-        public Guid ColorId { get; set; }
-
         public byte R { get; set; }
+
         public byte G { get; set; }
+        
         public byte B { get; set; }
+
         public float A { get; set; } = 1f;
 
         public Color(byte r, byte g, byte b)
@@ -33,6 +32,7 @@ namespace AKK.Classes.Models
             col = (col << 8) + (byte)(A * 255);
             return col;
         }
+        
         public static Color FromUint(uint? col)
         {
             if (col == null) return null;

@@ -6,17 +6,13 @@ using AKK.Classes.Models.Repository;
 
 namespace AKK.Classes.Models
 {
-    public class Image : IIdentifyable
+    public class Image : Model
     {
         public Image()
         {
             Holds = new List<Hold>();
         }
 
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public Guid Id { get; set; }
-        
         public Guid RouteId { get; set; }
 
         public uint Width { get; set; }

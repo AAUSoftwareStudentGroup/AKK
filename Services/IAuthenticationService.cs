@@ -1,6 +1,6 @@
 ﻿namespace AKK.Classes.Services
 {
-    interface IAuthenticationService
+    public interface IAuthenticationService
     {
         string Login(string username, string password);
 

@@ -6,32 +6,30 @@ using System.Linq.Expressions;
 using AKK.Classes.Models.Repository;
 using Newtonsoft.Json;
 
-namespace AKK.Classes.Models {
-    public class Grade : IIdentifyable {
-        protected uint? ColorDb { get; set; }
-        [Key]
-        [JsonIgnore]
-        public Guid Id  { get; set; }
-
+namespace AKK.Classes.Models 
+{
+    public class Grade : Model 
+    {
         public string Name { get; set; }
 
         public int Difficulty { get; set; }
 
+        public uint? HexColor { get; set; }
+
         [NotMapped]
-        public Color Color {
+        public Color Color 
+        {
             get
             {
-                return Color.FromUint(ColorDb);        
+                return Color.FromUint(HexColor);        
             }
             set
             {
-                ColorDb = value.ToUint();
+                HexColor = value.ToUint();
             }
         }
 
         [JsonIgnore]
-        public virtual List<Route> Routes { get; set; }
-
-        public static readonly Expression<Func<Grade, uint?>> ColorPriv = p => p.ColorDb;
+        public List<Route> Routes { get; set; }
     }
 }
