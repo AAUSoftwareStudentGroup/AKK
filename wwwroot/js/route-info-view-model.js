@@ -8,7 +8,8 @@ function RouteInfoViewModel(client, navigationService) {
     var self = this
     this.navigationService = navigationService;
     this.init = function () {
-        self.client.routes.getRoute(window.location.search.split("routeId=")[1],
+        self.client.routes.getRoute(
+            window.location.search.split("routeId=")[1],
             function (routeResponse) {
                 if (routeResponse.success) {
                     self.route = routeResponse.data;
@@ -28,9 +29,9 @@ function RouteInfoViewModel(client, navigationService) {
                             self.trigger("ContentUpdated");
                         }
                     });
-                    
                 }
-            });
+            }
+        );
     };
     this.image = null;
     this.hasImage = false;

@@ -22,9 +22,9 @@ $(document).ready(function () {
     });
     viewModel.addEventListener("HoldColorUpdated", function() {
         $('#holdColorContent').html(colortemplate(viewModel));
-        if (viewModel.hasTape === false)
+        if (viewModel.hasTape === false && viewModel.selectedColor != null)
             $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
-        else
+        else if (viewModel.selectedTapeColor != null)
             $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
     });
     viewModel.init();

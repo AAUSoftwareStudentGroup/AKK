@@ -12,4 +12,10 @@ function NavigationService() {
     this.toRoutes = function() {
         window.location = "routes";
     };
+    this.toLogin = function() {
+        window.location = "login";
+    };
+    this.toRegister = function(target, username) {
+        window.location = "register?target=" + target + "&username=" + username;
+    };
 }
