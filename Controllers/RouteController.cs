@@ -210,7 +210,7 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse($"No image exists for route with id {id}");
             }
 
-            image.Holds = _holdRepository.GetAll().ToList();
+            image.Holds = _holdRepository.GetAll().Where(h => h.ImageId == image.Id).ToList();
 
             return new ApiSuccessResponse(image);
         }
