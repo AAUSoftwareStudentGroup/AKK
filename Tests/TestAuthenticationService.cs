@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using AKK.Classes.Services;
 
 namespace AKK.Services
@@ -23,9 +24,9 @@ namespace AKK.Services
             _tokens.Remove(token);
         }
 
-        public bool IsAuthenticated(string token)
+        public bool HasRole(string token, Role role)
         {
-            return _tokens.Contains(token);
+            throw new NotImplementedException();
         }
     }
 }

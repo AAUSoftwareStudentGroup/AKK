@@ -5,14 +5,14 @@ using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
 using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
-
+using AKK.Services;
 
 namespace AKK.Controllers {
     [Route("api/grade")]
     public class GradeController : Controller {
         IRepository<Grade> _gradeRepository;
         IAuthenticationService _authenticationService;
+        Roles _role = new Roles();
         public GradeController(IRepository<Grade> gradeRepository, IAuthenticationService authenticationService)
         {
             _gradeRepository = gradeRepository;
@@ -30,7 +30,7 @@ namespace AKK.Controllers {
         // POST: /api/grade
         [HttpPost]
         public ApiResponse<Grade> AddGrade(string token, Grade grade) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to add a new grade");
             }
