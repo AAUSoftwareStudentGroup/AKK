@@ -17,7 +17,7 @@ namespace AKK.Tests
             var Authenticator = new TestAuthenticationService();
             var token = Authenticator.Login("Tanner", "Helland");
 
-            Assert.AreEqual(true, Authenticator.hasRole(token, "setter"));
+            Assert.AreEqual(true, Authenticator.HasRole(token, Role.Authenticated));
         }
 
         [Test]
@@ -36,8 +36,8 @@ namespace AKK.Tests
             var Authenticator = new TestAuthenticationService();
             var token = Authenticator.Login("Tanner", "Helland");
 
-            Assert.AreEqual(true, Authenticator.hasRole(token, "setter"));
-            Assert.AreEqual(false, Authenticator.hasRole(token, "admin"));
+            Assert.AreEqual(true, Authenticator.HasRole(token, Role.Authenticated));
+            Assert.AreEqual(false, Authenticator.HasRole(token, Role.Admin));
         }
     }
 }

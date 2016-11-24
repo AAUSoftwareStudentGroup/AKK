@@ -7,7 +7,6 @@ using AKK.Classes.ApiResponses;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using AKK.Classes.Services;
 using AKK.Services;
 
 namespace AKK.Tests.Controllers

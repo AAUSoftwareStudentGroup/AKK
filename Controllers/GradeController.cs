@@ -12,7 +12,6 @@ namespace AKK.Controllers {
     public class GradeController : Controller {
         IRepository<Grade> _gradeRepository;
         IAuthenticationService _authenticationService;
-        Roles _role = new Roles();
         public GradeController(IRepository<Grade> gradeRepository, IAuthenticationService authenticationService)
         {
             _gradeRepository = gradeRepository;
@@ -64,7 +63,7 @@ namespace AKK.Controllers {
         // PATCH: /api/grade/{id}
         [HttpPatch("{id}")]
         public ApiResponse<Grade> UpdateGrade(string token, string id, int? difficulty, Color color) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to change this grade");
             }
@@ -96,7 +95,7 @@ namespace AKK.Controllers {
         // DELETE: /api/grade/{id}
         [HttpDelete("{id}")]
         public ApiResponse<Grade> DeleteGrade(string token, string id) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to delete this grade");
             }
