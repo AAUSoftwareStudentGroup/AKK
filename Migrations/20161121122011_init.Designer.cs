@@ -8,56 +8,40 @@ using AKK.Classes.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161101135725_AnotherStructure")]
-    partial class AnotherStructure
+    [Migration("20161121122011_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("AKK.Classes.Models.Color", b =>
-                {
-                    b.Property<Guid>("ColorId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<byte>("a");
-
-                    b.Property<byte>("b");
-
-                    b.Property<byte>("g");
-
-                    b.Property<byte>("r");
-
-                    b.HasKey("ColorId");
-
-                    b.ToTable("Color");
-                });
-
             modelBuilder.Entity("AKK.Classes.Models.Grade", b =>
                 {
-                    b.Property<Guid>("GradeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<Guid?>("ColorId");
+                    b.Property<uint?>("ColorDb");
 
                     b.Property<int>("Difficulty");
 
-                    b.HasKey("GradeId");
+                    b.Property<string>("Name");
 
-                    b.HasIndex("ColorId");
+                    b.HasKey("Id");
 
-                    b.ToTable("Grade");
+                    b.ToTable("Grades");
                 });
 
             modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
-                    b.Property<Guid>("RouteId")
-                        .ValueGeneratedOnAddOrUpdate();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
 
                     b.Property<string>("Author");
 
-                    b.Property<Guid?>("ColorOfHoldsColorId");
+                    b.Property<uint?>("ColorOfHoldsDb");
+
+                    b.Property<uint?>("ColorOfTapeDb");
 
                     b.Property<DateTime>("CreatedDate");
 
@@ -69,9 +53,7 @@ namespace AKK.Migrations
 
                     b.Property<Guid>("SectionId");
 
-                    b.HasKey("RouteId");
-
-                    b.HasIndex("ColorOfHoldsColorId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GradeId");
 
@@ -82,29 +64,18 @@ namespace AKK.Migrations
 
             modelBuilder.Entity("AKK.Classes.Models.Section", b =>
                 {
-                    b.Property<Guid>("SectionId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
-                    b.HasKey("SectionId");
+                    b.HasKey("Id");
 
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Grade", b =>
-                {
-                    b.HasOne("AKK.Classes.Models.Color", "Color")
-                        .WithMany()
-                        .HasForeignKey("ColorId");
-                });
-
             modelBuilder.Entity("AKK.Classes.Models.Route", b =>
                 {
-                    b.HasOne("AKK.Classes.Models.Color", "ColorOfHolds")
-                        .WithMany()
-                        .HasForeignKey("ColorOfHoldsColorId");
-
                     b.HasOne("AKK.Classes.Models.Grade", "Grade")
                         .WithMany("Routes")
                         .HasForeignKey("GradeId")

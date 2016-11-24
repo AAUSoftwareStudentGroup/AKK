@@ -8,8 +8,8 @@ using AKK.Classes.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161114124949_NameToGrade")]
-    partial class NameToGrade
+    [Migration("20161123102930_nuke")]
+    partial class nuke
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,34 +18,52 @@ namespace AKK.Migrations
 
             modelBuilder.Entity("AKK.Classes.Models.Grade", b =>
                 {
-                    b.Property<Guid>("GradeId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<uint?>("ColorDB");
+                    b.Property<uint?>("ColorDb");
 
                     b.Property<int>("Difficulty");
 
                     b.Property<string>("Name");
 
-                    b.HasKey("GradeId");
+                    b.HasKey("Id");
 
                     b.ToTable("Grades");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
+            modelBuilder.Entity("AKK.Classes.Models.Member", b =>
                 {
-                    b.Property<Guid>("RouteId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Author");
+                    b.Property<string>("DisplayName");
 
-                    b.Property<uint?>("ColorOfHoldsDB");
+                    b.Property<bool>("IsAdmin");
 
-                    b.Property<uint?>("ColorOfTapeDB");
+                    b.Property<string>("Password");
+
+                    b.Property<string>("Username");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<uint?>("ColorOfHoldsDb");
+
+                    b.Property<uint?>("ColorOfTapeDb");
 
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<Guid>("GradeId");
+
+                    b.Property<Guid>("MemberId");
 
                     b.Property<string>("Name");
 
@@ -53,9 +71,11 @@ namespace AKK.Migrations
 
                     b.Property<Guid>("SectionId");
 
-                    b.HasKey("RouteId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GradeId");
+
+                    b.HasIndex("MemberId");
 
                     b.HasIndex("SectionId");
 
@@ -64,12 +84,12 @@ namespace AKK.Migrations
 
             modelBuilder.Entity("AKK.Classes.Models.Section", b =>
                 {
-                    b.Property<Guid>("SectionId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Name");
 
-                    b.HasKey("SectionId");
+                    b.HasKey("Id");
 
                     b.ToTable("Sections");
                 });
@@ -80,6 +100,11 @@ namespace AKK.Migrations
                         .WithMany("Routes")
                         .HasForeignKey("GradeId")
                         .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("AKK.Classes.Models.Member", "Member")
+                        .WithMany("Routes")
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AKK.Classes.Models.Section", "Section")
                         .WithMany("Routes")
