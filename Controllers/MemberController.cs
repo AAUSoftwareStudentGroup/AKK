@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AKK.Classes.ApiResponses;
 using AKK.Classes.Models;
 using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
 using AKK.Services;
 using Microsoft.AspNetCore.Mvc;
 

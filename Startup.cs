@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using AKK.Classes.Models;
 using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
 using AKK.Services;
 
 namespace AKK
