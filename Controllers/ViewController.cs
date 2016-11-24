@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using AKK.Services;
 
 namespace AKK.Controllers {
     [Route("")]
@@ -21,6 +22,7 @@ namespace AKK.Controllers {
 
         // GET: /sections
         [HttpGet("sections")]
+        [RequiresAuthAttribute]
         public IActionResult Sections() { return View("Views/Sections.cshtml"); }
     }
 }

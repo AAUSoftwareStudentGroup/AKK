@@ -20,7 +20,7 @@ namespace AKK.Controllers
         {
             _memberRepository = memberRepository;
             _authenticator = new AuthenticationService(_memberRepository);
-    }
+        }
 
         // POST: /api/member
         [HttpPost]
