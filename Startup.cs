@@ -4,15 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-<<<<<<< HEAD
-using AKK.Classes.Models;
-using AKK.Classes.Models.Repository;
 using Microsoft.AspNetCore.StaticFiles;
-=======
 using AKK.Models;
 using AKK.Models.Repositories;
 using AKK.Services;
->>>>>>> origin/develop
 
 namespace AKK
 {
