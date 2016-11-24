@@ -66,7 +66,7 @@ function RouteClient(url)
                 author: author,
                 grade: grade,
                 colorOfHolds: holdColor,
-                ColorOfTape: tape
+                colorOfTape: tape
             },
             success: success
         });
