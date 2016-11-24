@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using AKK.Classes;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
 using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
+using AKK.Services;
 
 namespace AKK.Controllers {
     [Route("api/route")]
