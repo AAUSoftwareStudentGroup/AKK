@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
 using AKK.Classes.Models.Repository;
+using AKK.Classes.Services;
 
 namespace AKK.Controllers {
     [Route("api/route")]
@@ -18,15 +19,15 @@ namespace AKK.Controllers {
         private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Hold> _holdRepository;
-        private readonly IRepository<Member> _memberRepository;
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IRepository<Member> memberRepository) 
+        private readonly IAuthenticationService _authenticationService;
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IAuthenticationService authenticationService) 
         {
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
             _imageRepository = imageRepository;
             _holdRepository = holdRepository;
-            _memberRepository = memberRepository;
+            _authenticationService = authenticationService;
         }
 
         // GET: /api/route
@@ -80,6 +81,10 @@ namespace AKK.Controllers {
         [HttpPost]
         public ApiResponse<Route> AddRoute(string token, Route route, string sectionName) 
         {
+            if (!_authenticationService.IsAuthenticated(token))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
+            }
             if (route.Author == null)
             {
                 return new ApiErrorResponse<Route>("An author must be specified");   
@@ -153,8 +158,12 @@ namespace AKK.Controllers {
         
         // DELETE: /api/route
         [HttpDelete]
-        public ApiResponse<IEnumerable<Route>> DeleteAllRoutes()
+        public ApiResponse<IEnumerable<Route>> DeleteAllRoutes(string token)
         {
+            if (!_authenticationService.IsAuthenticated(token))
+            {
+                return new ApiErrorResponse<IEnumerable<Route>>("You need to be logged in as an administrator to delete all routes");
+            }
             var routes = _routeRepository.GetAll();
             if (!routes.Any())
             {
@@ -214,8 +223,12 @@ namespace AKK.Controllers {
 
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
-        public ApiResponse<Route> UpdateRoute(Guid routeId, Route route)
+        public ApiResponse<Route> UpdateRoute(string token, Guid routeId, Route route)
         {
+            if(!_authenticationService.IsAuthenticated(token))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to edit a route");
+            }
             Route routeToUpdate = _routeRepository.Find(routeId);
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
@@ -241,8 +254,12 @@ namespace AKK.Controllers {
 
         // DELETE: /api/route/{routeId}
         [HttpDelete("{routeId}")]
-        public ApiResponse<Route> DeleteRoute(Guid routeId)
+        public ApiResponse<Route> DeleteRoute(string token, Guid routeId)
         {
+            if (!_authenticationService.IsAuthenticated(token)) 
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to delete a route");
+            }
             var route = _routeRepository.Find(routeId);
             if(route == null) 
             {
