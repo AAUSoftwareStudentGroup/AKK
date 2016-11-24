@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace AKK.Services
+﻿namespace AKK.Services
 {
-    public enum Roles
+    public enum Role
     {
         Unauthenticated,
         Authenticated,
