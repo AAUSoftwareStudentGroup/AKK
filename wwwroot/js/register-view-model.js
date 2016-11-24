@@ -45,10 +45,17 @@ function RegisterViewModel(client, navigationService) {
     };
 
     this.register = function () {
-        console.log("GoGo Dr. Register!!");
-        if(false) { // on success
-            window.location = target;
-        }
+        client.register(self.fullName, self.username, self.password, function(response) {
+            if (response.success) {
+                if(response.data.token) {
+                    document.cookie = "token="+response.data.token+"; expires=Fri, 31 Dec 2035 23:59:59 GMT";
+                }
+
+                window.location = target;
+            } else {
+                $("#error-message").html(response.message).show();
+            }
+        });        
     };
 }
 RegisterViewModel.prototype = new EventNotifier();

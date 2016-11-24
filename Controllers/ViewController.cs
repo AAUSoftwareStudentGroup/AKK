@@ -1,9 +1,18 @@
 using Microsoft.AspNetCore.Mvc;
 using AKK.Services;
+using AKK.Classes.Models.Repository;
+using AKK.Classes.Models;
 
 namespace AKK.Controllers {
     [Route("")]
     public class ViewController : Controller {
+        public readonly IRepository<Member> _memberRepository;
+
+        public ViewController(IRepository<Member> memberRepository)
+        {
+            _memberRepository = memberRepository;
+        }
+
         // GET: /
         [HttpGet]
         public IActionResult Routes() { return View("Views/Routes.cshtml"); }

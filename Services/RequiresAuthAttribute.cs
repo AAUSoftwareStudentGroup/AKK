@@ -1,7 +1,5 @@
-using System;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.AspNetCore.Routing;
+using AKK.Controllers;
 
 namespace AKK.Services
 {
@@ -13,10 +11,11 @@ namespace AKK.Services
             if(filterContext.HttpContext.Request.Cookies.TryGetValue("token", out token))
             {
                 // check token
-                Console.WriteLine(token);
-                
-                // if valid
-                return;
+                if(filterContext.Controller is ViewController) {
+                    if(new AuthenticationService((filterContext.Controller as ViewController)._memberRepository).IsAuthenticated(token)) {
+                        return;
+                    }
+                }
             }
 
             // Console.WriteLine(filterContext.HttpContext.Request.Path);  // /sections

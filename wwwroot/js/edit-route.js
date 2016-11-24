@@ -19,7 +19,7 @@ $(document)
         var template = Handlebars.compile($("#edit-route-template").html());
         var colortemplate = Handlebars.compile($("#holdcolortemplate").html());
         var imagetemplate = Handlebars.compile($("#imagetemplate").html());
-        var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
+        var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL);
         viewModel = new EditRouteViewModel(client);
         
         viewModel.addEventListener("OnGradeOrSectionChanged", function() {

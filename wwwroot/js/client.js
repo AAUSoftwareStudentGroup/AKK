@@ -234,9 +234,59 @@ function GradeClient(url)
     };
 }
 
-function Client(routeUrl, sectionUrl, gradeUrl)
+
+function MemberClient(url)
+{
+    this.logIn = function(username, password, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "login",
+            data:
+            {
+                username: username,
+                password: password
+            },
+            success: success
+        });
+    };
+
+    this.logOut = function(token, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/logout",
+            data:
+            {
+                token: token
+            },
+            success: success
+        });
+    };
+
+    this.register = function(displayname, username, password, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                dislpayname: dislpayname,
+                username: username,
+                password: password
+            },
+            success: success
+        });
+    };
+}
+
+function Client(routeUrl, sectionUrl, gradeUrl, memberUrl)
 {
     this.routes = new RouteClient(routeUrl);
     this.sections = new SectionClient(sectionUrl);
     this.grades = new GradeClient(gradeUrl);
+    this.ḿembers = new MemberClient(memberUrl);
 }
