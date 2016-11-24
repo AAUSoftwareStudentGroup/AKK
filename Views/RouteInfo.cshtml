@@ -12,20 +12,11 @@
     <script type="text/javascript" src="js/navigationService.js"></script>
     <script type="text/javascript" src="js/route-info-view-model.js"></script>
     <script type="text/javascript" src="js/route-canvas.js"></script>
+    <script type="text/javascript" src="js/helpers.js"></script>
 </head>
 <body>
     <script src="js/route-info.js"></script>
-    <script id="route-info-template" type="text/x-handlebars-template">
-        <div class="header">
-            <div class="header-content">
-                <a class="header-button left" href="/">
-                    <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
-                        <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
-                    </svg>
-                </a>
-                <h1 class="page-title">Route Info</h1>
-            </div>
-        </div>
+<script id="route-info-template" type="text/x-handlebars-template">
         <div class="content single-route">
             <div class="route-card">
                 <div class="route-card-top">
@@ -82,6 +73,7 @@
             <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute('{{route.id}}')" value="Delete"></input>
         </div>
     </script>
+    <div id ="header"></div>
     <div id="content"></div>
 </body>
 </html>

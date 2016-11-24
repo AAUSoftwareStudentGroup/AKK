@@ -10,25 +10,11 @@
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/client.js"></script>
     <script type="text/javascript" src="js/routes-view-model.js"></script>
+    <script type="text/javascript" src="js/helpers.js"></script>
 </head>
 <body>
     <script src="js/routes.js"></script>
     <script id="routes-template" type="text/x-handlebars-template">
-        <div class="header">
-            <div class="header-content">
-                <a class="header-button left" href="sections" background-color="#ffffff">
-                    <svg height="36" width="36">
-                        <circle cx="14" cy="14" r="14" stroke="black" stroke-width="1" fill="red" />
-                    </svg>
-                </a>
-                <h1 class="page-title">Find Route</h1>
-                <a class="header-button right" href="new-route">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
-                        <polygon points="20 10.8571429 13.1428571 10.8571429 13.1428571 4 10.8571429 4 10.8571429 10.8571429 4 10.8571429 4 13.1428571 10.8571429 13.1428571 10.8571429 20 13.1428571 20 13.1428571 13.1428571 20 13.1428571" />
-                    </svg>
-                </a>
-            </div>
-        </div>
         <div class="content routes">
             <div class="content-section options">
                 <form>
@@ -110,6 +96,7 @@
             </div>
         </div>
     </script>
+    <div id="header"></div>
     <div id="content"></div>
 </body>
 </html>

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using AKK.Classes.Models;
 using AKK.Classes.Models.Repository;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace AKK
 {
@@ -46,7 +47,9 @@ namespace AKK
             
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 
-            app.UseStaticFiles();
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".handlebars"] = "text/x-handlebars-template";
+            app.UseStaticFiles(new StaticFileOptions() {ContentTypeProvider = provider});
 
             app.UseMvc();
 
