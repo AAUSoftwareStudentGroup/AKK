@@ -105,6 +105,7 @@ function EditRouteViewModel(client)
         this.image.width = img.width;
         this.image.height = img.height;
         this.hasImage = true;
+        this.HoldPositions = [];
         this.trigger("OnImageChanged");
     };
 

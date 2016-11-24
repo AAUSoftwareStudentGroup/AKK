@@ -58,10 +58,15 @@ namespace AKK.Classes.Models.Repository
         }
     }
 
-    public class HoldRepository:DbSetRepository<Hold> 
+    public class HoldRepository : DbSetRepository<Hold> 
     {
         public HoldRepository(MainDbContext dbContext) : base(dbContext.Holds, dbContext) 
         {
+        }
+    }
+
+    public class MemberRepository : DbSetRepository<Member> {
+        public MemberRepository(MainDbContext dbContext) : base(dbContext.Members, dbContext) {
         }
     }
 }

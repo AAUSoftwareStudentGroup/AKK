@@ -7,16 +7,24 @@ namespace AKK.Tests
     [TestFixture]
     public class TestRouteSearcher
     {
+        /*Since addition, deletion and substitution are all >1 when computing the Levenshtein distance, the length of
+         * the distance should be greater than or equal to the length of the pattern.
+         */
         [Test]
-        public void _computeLevenshtein_DistanceBetweenPatternAndTextAlwaysGreaterOrEqualThanPatternLength() {
+        public void _computeLevenshtein_DistanceBetweenPatternAndTextAlwaysGreaterOrEqualToPatternLength() {
             var testRepo = new TestDataFactory();
             var searcher = new RouteSearcher(testRepo.Routes, 10);
 
-            var pattern = "YYY";
-            var distance = searcher._computeLevenshtein(pattern, "A");
+            var pattern = "Tanner";
+            var text = "TannerHelland";
+            var distance = searcher._computeLevenshtein(pattern, text);
+            Assert.GreaterOrEqual(distance, pattern.Length);
+
+            distance = searcher._computeLevenshtein(text, pattern);
             Assert.GreaterOrEqual(distance, pattern.Length);
         }
 
+        //Asserts that the distance between certain words is correct according.
         [Test]
         public void _computeLevenshtein_CalculateDistanceBetweeenGreenAndMorten_DistanceIs9() {
             var testRepo = new TestDataFactory();
@@ -53,7 +61,9 @@ namespace AKK.Tests
             Assert.AreEqual(12, distance);
         }
 
-
+        /* The following tests will assert that searching for a specific term (difficulty, author, etc.) will only display 
+         * routes that match the search term.
+         */
         [Test]
         public void Search_SearchFor10Green_RoutesWithGradeGreen()
         {
@@ -85,6 +95,7 @@ namespace AKK.Tests
                 Assert.AreEqual("Anton", result.Author);
         }
 
+        //Asserts that by searching for 'Geo', the route made by Geo will show before the route made by Geogebra.
         [Test]
         public void Search_SearchFor10Geo_RoutesWithAuthorGeoAndGeogebraInOrder() {
             var testRepo = new TestDataFactory();
@@ -95,6 +106,9 @@ namespace AKK.Tests
             Assert.AreEqual("Geogebra", searchResult.ElementAt(1).Author);
         }
 
+        /*Asserts that searching for a substring of the original string will work - also in cases where the substring does not
+         * include the beginning of the original string
+         */
         [Test]
         public void Search_SearchFor10Gebra_RoutesWithAuthorGeogebraFirst() {
             var testRepo = new TestDataFactory();
@@ -107,6 +121,20 @@ namespace AKK.Tests
             Assert.AreEqual("Geogebra", searchResult.FirstOrDefault().Author);
         }
 
+        [Test]
+        public void Search_10SearchForHelland_ExpectRouteWithTannerHellandAsAuthor()
+        {
+            var testRepo = new TestDataFactory();
+            var searcher = new RouteSearcher(testRepo.Routes, 10);
+            var searchResult = searcher.Search("Helland");
+            if (!searchResult.Any())
+            {
+                Assert.Fail($"  Expected occupied list\n  But was Empty");
+            }
+            Assert.AreEqual("TannerHelland", searchResult.ElementAt(0).Author);
+        }
+
+        //Asserts that the calculation of Levenshtein works. The black route is meant to show up since it's threshold is 2.
         [Test]
         public void Search_SearchFor10Bl_8RoutesWithGradesBlueAndBlack() {
             var testRepo = new TestDataFactory();
@@ -121,17 +149,7 @@ namespace AKK.Tests
             }
         }
 
-        [Test]
-        public void Search_10SearchForHelland_ExpectRouteWithTannerHellandAsAuthor() {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearcher(testRepo.Routes, 10);
-            var searchResult = searcher.Search("Helland");
-            if (!searchResult.Any()) {
-                Assert.Fail($"  Expected occupied list\n  But was Empty");
-            }
-            Assert.AreEqual("TannerHelland", searchResult.ElementAt(0).Author);
-        }
-
+        //With one route in section A with the route name 4, it should show up first when searching for A 4.
         [Test]
         public void Search_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
             var testRepo = new TestDataFactory();
@@ -141,9 +159,13 @@ namespace AKK.Tests
             foreach (var result in searchResult)
             {
                 Assert.AreEqual("A", result.Section.Name);
+                Assert.AreEqual("4", searchResult.ElementAt(0).Name);
             }
         }
 
+        /*Tests if the regex split works as intended. Should identify A4 and split it to two search terms; A and 4.
+         * Hereafter, it should work as the Search_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4 test.
+         */
         [Test]
         public void Search_3SearchForA4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4() {
             var testRepo = new TestDataFactory();
@@ -153,9 +175,11 @@ namespace AKK.Tests
             foreach (var result in searchResult)
             {
                 Assert.AreEqual("A", result.Section.Name);
+                Assert.AreEqual("4", searchResult.ElementAt(0).Name);
             }
         }
 
+        //Again tests the regex split function.
         [Test]
         public void Search_3SearchForA4_ExpectedResultTheSameAsSearchForASPACE4() {
             var testRepo = new TestDataFactory();
@@ -166,7 +190,7 @@ namespace AKK.Tests
             int length = searchResultWithSpace.ToArray().Length;
 
             if(searchResultWithoutSpace.ToArray().Length != length) {
-                Assert.Fail($"  Expected: List have the same amount of items\n  Was: WithSpace: {length}  noSpace: {searchResultWithoutSpace.ToArray().Length}");
+                Assert.Fail($"  Expected: List have the same amount of items\n  Was: with space: {length}  without space: {searchResultWithoutSpace.ToArray().Length}");
             }
 
             for (int i = 0; i < length; i++)

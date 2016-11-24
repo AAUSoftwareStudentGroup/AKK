@@ -34,16 +34,18 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
             var position = c.offset();
             mmouseX = (e.pageX-position.left) /c.width();
             mmouseY = (e.pageY-position.top) / c.height();
+
             if (self.latestClick) {
-                var dist = Math.sqrt(Math.pow(self.latestClick.x - mmouseX, 2) + Math.pow(self.latestClick.y - mmouseY, 2));
+                var dist = Math.sqrt(Math.pow(self.latestClick.x * c.width()  - mmouseX * c.width(),  2) + 
+                                     Math.pow(self.latestClick.y * c.height() - mmouseY * c.height(), 2));
                 var lastCircle = self.viewModel.HoldPositions.length - 1;
-                if (dist < viewModel.HoldPositions[lastCircle].radius) {
+                if (dist < viewModel.HoldPositions[lastCircle].radius * c.width()) {
                     self.viewModel.HoldPositions[lastCircle].radius *= 1.2;
                     self.DrawCanvas();
                     return;
                 }
             }
-            self.viewModel.HoldPositions.push({x: mmouseX, y: mmouseY, radius: 0.08});
+            self.viewModel.HoldPositions.push({x: mmouseX, y: mmouseY, radius: 0.06});
             self.DrawCanvas();
             self.latestClick = {x: mmouseX, y: mmouseY};
         });
@@ -72,6 +74,6 @@ RouteCanvas.prototype.undo = function() {
     if (this.viewModel.HoldPositions.length){
         this.viewModel.HoldPositions.pop();
     }
-    this.lastCircle = null;
+    this.latestClick = null;
     this.DrawCanvas();
 }

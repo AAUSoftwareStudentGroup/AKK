@@ -73,7 +73,7 @@ namespace AKK.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GradeId");
-                    
+
                     b.HasIndex("MemberId");
 
                     b.HasIndex("SectionId");

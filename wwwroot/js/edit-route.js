@@ -41,7 +41,7 @@ $(document)
             if (viewModel.hasTape === false)
                 $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
 
-            else
+            else if (viewModel.selectedTapeColor)
                 $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
         });
 

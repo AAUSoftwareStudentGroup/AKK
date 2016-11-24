@@ -31,7 +31,7 @@ namespace AKK.Classes.Models {
         protected uint? ColorOfTapeDb { get; set; }
 
         [NotMapped]
-        public virtual string Author { get; set; }
+        public virtual string Author { get; }
 
         [NotMapped]
         public Color ColorOfHolds

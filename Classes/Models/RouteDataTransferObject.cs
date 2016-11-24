@@ -4,6 +4,6 @@ namespace AKK.Classes.Models
     {
         public string SectionName { get; set; }
 
-        public override string Author { get; set; }
+        public override string Author { get; }
     }
 }

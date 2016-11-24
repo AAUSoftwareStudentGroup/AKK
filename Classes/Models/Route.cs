@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq.Expressions;
 using AKK.Classes.Models;
 using Newtonsoft.Json;
@@ -10,7 +11,7 @@ namespace AKK.Classes.Models
         Newest, Oldest, Grading, Author
     }
 
-    public class Route : RouteInformation
+    public class Route : Model
     {
         public Route()
         {
@@ -34,15 +35,65 @@ namespace AKK.Classes.Models
         {
             return int.Parse(Name);
         }
-        [JsonIgnore]
-        public virtual Section Section { get; set; }
+
+        public Guid MemberId { get; set; }
 
         [JsonIgnore]
-        public virtual Member Member { get; set; }
+        public Member Member { get; set; }
 
-        public override string Author => Member?.DisplayName;
+        public Guid SectionId { get; set; }
 
-        public static readonly Expression<Func<Route, uint?>> ColorOfHoldsPriv = p => p.ColorOfHoldsDb;
-        public static readonly Expression<Func<Route, uint?>> ColorOfTapePriv = p => p.ColorOfTapeDb;
+        [JsonIgnore]
+        public Section Section { get; set; }
+
+        [NotMapped]
+        public string Author => Member?.DisplayName;
+
+        [NotMapped]
+        public string SectionName => Section?.Name;
+
+        public string Name { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public Grade Grade { get; set; }
+
+        public Guid GradeId { get; set; }
+
+        public bool PendingDeletion { get; set; }
+
+        public Image Image { get; set; }
+
+        [JsonIgnore]
+        public uint? HexColorOfHolds { get; set; }
+
+        [JsonIgnore]
+        public uint? HexColorOfTape { get; set; }
+
+        [NotMapped]
+        public Color ColorOfHolds
+        {
+            get
+            {
+                return Color.FromUint(HexColorOfHolds);
+            }
+            set
+            {
+                HexColorOfHolds = value?.ToUint();
+            }
+        }
+
+        [NotMapped]
+        public Color ColorOfTape
+        {
+            get
+            {
+                return Color.FromUint(HexColorOfTape);
+            }
+            set
+            {
+                HexColorOfTape = value?.ToUint();
+            }
+        }
     }
 }
