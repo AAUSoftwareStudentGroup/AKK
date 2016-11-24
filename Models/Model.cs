@@ -1,9 +1,9 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using AKK.Classes.Models.Repository;
+using AKK.Models.Repositories;
 
-namespace AKK.Classes.Models
+namespace AKK.Models
 {
     public class Model : IIdentifyable
     {

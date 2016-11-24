@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using AKK.Classes.Models.Repository;
 
-namespace AKK.Classes.Models
+namespace AKK.Models
 {
     public class Image : Model
     {

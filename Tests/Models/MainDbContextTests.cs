@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using AKK.Classes.Models;
+using AKK.Models;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 

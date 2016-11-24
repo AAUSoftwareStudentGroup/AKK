@@ -1,8 +1,5 @@
-using System;
 using Microsoft.AspNetCore.Mvc;
-using AKK.Classes.Models;
-using System.Linq;
-using AKK.Classes.Models.Repository;
+using AKK.Models;
 
 namespace AKK.Controllers {
     [Route("test")]
