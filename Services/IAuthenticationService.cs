@@ -1,4 +1,5 @@
-﻿namespace AKK.Classes.Services
+﻿
+namespace AKK.Services
 {
     public interface IAuthenticationService
     {
@@ -6,6 +7,6 @@
 
         void Logout(string token);
 
-        bool IsAuthenticated(string token);
+        bool HasRole(string token, Role role);
     }
 }

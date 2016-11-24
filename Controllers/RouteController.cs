@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using AKK.Classes;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using AKK.Classes.Models;
 using AKK.Classes.ApiResponses;
 using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
+using AKK.Services;
 
 namespace AKK.Controllers {
     [Route("api/route")]
@@ -233,8 +232,11 @@ namespace AKK.Controllers {
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
+            if(route.Image != null)
+            {
+                routeToUpdate.Image = new Image {FileUrl = route.Image.FileUrl};
+            }
             if(route.GradeId != default(Guid))
-
             {
                 routeToUpdate.GradeId = route.GradeId;
             }

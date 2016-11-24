@@ -2,7 +2,6 @@
 using System.Linq;
 using AKK.Classes.Models;
 using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
 
 namespace AKK.Services
 {
@@ -47,6 +46,11 @@ namespace AKK.Services
                 member.Token = null;
                 _memberRepository.Save();
             }
+        }
+
+        public bool HasRole(string token, Role missing_name)
+        {
+            throw new NotImplementedException();
         }
 
         public bool IsAuthenticated(string token)
