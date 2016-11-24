@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using AKK.Classes.Models;
-using AKK.Classes.Models.Repository;
+using AKK.Models;
+using AKK.Models.Repositories;
 
 namespace AKK.Services
 {

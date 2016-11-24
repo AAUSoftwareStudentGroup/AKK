@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace AKK.Controllers {
     [Route("")]
     public class ViewController : Controller {

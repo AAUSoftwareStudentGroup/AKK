@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace AKK.Classes.Models.Repository
+namespace AKK.Models.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class
     {

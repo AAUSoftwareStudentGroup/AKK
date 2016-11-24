@@ -1,7 +1,4 @@
-using System;
-using Newtonsoft.Json;
-
-namespace AKK.Classes.Models
+namespace AKK.Models
 {
     public class Color
     {

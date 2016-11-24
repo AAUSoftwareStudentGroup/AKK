@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using AKK.Classes.Models;
+using AKK.Models;
 using AKK.Services;
 
-namespace AKK.Services
+namespace AKK.Tests
 {
     public class TestAuthenticationService : IAuthenticationService
     {
