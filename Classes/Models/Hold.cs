@@ -5,11 +5,8 @@ using Newtonsoft.Json;
 
 namespace AKK.Classes.Models
 {
-    public class Hold : IIdentifyable
+    public class Hold : Model
     {
-        [Key]
-        public Guid Id { get; set; }
-
         public Guid ImageId { get; set; }
 
         [JsonIgnore]

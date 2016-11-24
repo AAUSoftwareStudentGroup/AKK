@@ -1,48 +1,51 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AKK.Classes.Models;
+using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
 
-namespace AKK.Tests
+namespace AKK.Tests.Models
 {
-    public class TestDataFactory
+    [TestFixture]
+    public class MainDbContextTests
     {
+        private MainDbContext _mainDbContext;
         private List<Member> _members;
         private List<Section> _sections;
         private List<Grade> _grades;
         private List<Route> _routes;
 
-        public List<Section> Sections {
-            get { return _sections; }
-            set { _sections = value; }
-        }
-
-        public List<Grade> Grades {
-            get { return _grades; }
-            set { _grades = value; }
-        }
-
-        public List<Route> Routes {
-            get { return _routes; }
-            set { _routes = value; }
-        }
-
-        public TestDataFactory()
+        [SetUp]
+        public void Setup()
         {
+            var optionsBuilder = new DbContextOptionsBuilder<MainDbContext>();
+            optionsBuilder.UseSqlite("Filename=./testdb.sqlite");
+            _mainDbContext = new MainDbContext(optionsBuilder.Options);
+            _mainDbContext.Database.EnsureDeleted();
+            _mainDbContext.Database.EnsureCreated();
+
+            _members = new List<Member>
+            {
+                new Member {DisplayName = "Morten", Username = "Morten123", Password = "adminadmin", IsAdmin = true}
+            };
+
             _sections = new List<Section>
             {
-                new Section {Name = "A", Id = Guid.NewGuid()},
-                new Section {Name = "B", Id = Guid.NewGuid()},
-                new Section {Name = "C", Id = Guid.NewGuid()},
-                new Section {Name = "D", Id = Guid.NewGuid()},
+                new Section {Name = "A"},
+                new Section {Name = "B"},
+                new Section {Name = "C"},
+                new Section {Name = "D"},
             };
 
             _grades = new List<Grade>
             {
-                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid()},
-                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid()},
-                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid()},
-                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid()},
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid()},
+                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71)},
+                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254)},
+                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80)},
+                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97)},
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251)},
             };
 
             _routes = new List<Route>
@@ -61,7 +64,7 @@ namespace AKK.Tests
                     Name = "14",
                     Section = _sections[0],
                     ColorOfHolds = new Color(0, 255, 0),
-                    Member = new Member {DisplayName = "Jakobsen", Username = "Jakobsen123", Password = "123", IsAdmin = false},
+                    Member = new Member {DisplayName = "Wagner", Username = "Jakobsen123", Password = "123", IsAdmin = false},
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 07, 12)
                 },
@@ -202,6 +205,70 @@ namespace AKK.Tests
                     CreatedDate = new DateTime(2016, 06, 22)
                 }
             };
+            _mainDbContext.Sections.AddRange(_sections);
+            _mainDbContext.Grades.AddRange(_grades);
+            _mainDbContext.Routes.AddRange(_routes);
+            _mainDbContext.SaveChanges();
+            _mainDbContext.Dispose();
+            _mainDbContext = new MainDbContext(optionsBuilder.Options);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _mainDbContext.Dispose();
+        }
+
+        [Test]
+        public void Sections_FirstOrderedByName_NameEqualsARoutesCountEqualsFour()
+        {
+            Section section = _mainDbContext.Sections.Include(s => s.Routes).OrderBy(s => s.Name).First();
+            Assert.AreEqual(section.Name, "A");
+            Assert.AreEqual(4, section.Routes.Count);
+        }
+
+        [Test]
+        public void Sections_SectionA_LastOrderedByRouteNameEqualsManfred()
+        {
+            Section section = _mainDbContext.Sections.Include(s => s.Routes).ThenInclude(r => r.Member).Single(s => s.Name == "A");
+            Assert.AreEqual("Wagner", section.Routes.OrderBy(r => r.Author).Last().Author);
+        }
+
+        [Test]
+        public void Sections_All_ABCDListContainsAllNames()
+        {
+            IEnumerable<Section> sections = _mainDbContext.Sections;
+
+            Assert.AreEqual(4, sections.Count());
+
+            List<string> names = new List<string> { "A", "B", "C", "D" };
+
+            foreach(Section section in sections)
+            {
+                Assert.IsTrue(names.Contains(section.Name));
+                int oldCount = names.Count;
+                names.Remove(section.Name);
+                Assert.Greater(oldCount, names.Count);
+            }
+
+            Assert.AreEqual(0, names.Count);
+        }
+
+        [Test] 
+        public void Sections_All_IdsAreNotEqual()
+        {
+            List<Section> sections = _mainDbContext.Sections.ToList();
+
+            for(int n = 0; n < sections.Count; n++)
+            {
+                for(int m = 0; m < sections.Count; m++)
+                {
+                    if(n != m)
+                    {
+                        Assert.AreNotEqual(sections[n].Id, sections[m].Id);
+                    }
+                }
+            }
         }
     }
 }

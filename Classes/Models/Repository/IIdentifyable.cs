@@ -7,6 +7,6 @@ namespace AKK.Classes.Models.Repository
 {
     public interface IIdentifyable
     {
-        Guid Id { get; set; }
+        Guid Id { get; }
     }
 }
