@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
 using AKK.Services;
-using AKK.Classes.Models.Repository;
-using AKK.Classes.Models;
+using AKK.Models.Repositories;
+using AKK.Models;
 
 
 namespace AKK.Controllers {
     [Route("")]
     public class ViewController : Controller {
-        public readonly IRepository<Member> _memberRepository;
+        public IAuthenticationService AuthenticationService;
 
         public ViewController(IRepository<Member> memberRepository)
         {
-            _memberRepository = memberRepository;
+            AuthenticationService = new AuthenticationService(memberRepository);
         }
 
         // GET: /
@@ -24,15 +24,17 @@ namespace AKK.Controllers {
 
         // GET: /new-route
         [HttpGet("new-route")]
+        [RequiresAuth(Role.Authenticated)]
         public IActionResult NewRoute() { return View("Views/NewRoute.cshtml"); }
 
         // GET: /edit-route
         [HttpGet("edit-route")]
+        [RequiresAuth(Role.Authenticated)]
         public IActionResult EditRoute() { return View("Views/EditRoute.cshtml"); }
 
         // GET: /sections
         [HttpGet("sections")]
-        [RequiresAuthAttribute]
+        [RequiresAuth(Role.Admin)]
         public IActionResult Sections() { return View("Views/Sections.cshtml"); }
 
         // GET: /login

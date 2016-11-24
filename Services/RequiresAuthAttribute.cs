@@ -5,6 +5,12 @@ namespace AKK.Services
 {
     public class RequiresAuthAttribute : ActionFilterAttribute 
     {
+        Role[] _roles;
+        public RequiresAuthAttribute(params Role[] roles)
+        {
+            _roles = roles;
+        }
+
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             string token = null;
@@ -12,8 +18,11 @@ namespace AKK.Services
             {
                 // check token
                 if(filterContext.Controller is ViewController) {
-                    if(new AuthenticationService((filterContext.Controller as ViewController)._memberRepository).IsAuthenticated(token)) {
-                        return;
+                    ViewController v = (filterContext.Controller as ViewController);
+                    foreach(Role r in _roles)
+                    {
+                        if(v.AuthenticationService.HasRole(token, r))
+                            return;
                     }
                 }
             }
