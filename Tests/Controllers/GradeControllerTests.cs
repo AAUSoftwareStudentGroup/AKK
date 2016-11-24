@@ -7,6 +7,7 @@ using AKK.Classes.ApiResponses;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using AKK.Classes.Services;
 
 namespace AKK.Tests.Controllers
 {
@@ -16,6 +17,7 @@ namespace AKK.Tests.Controllers
         private TestDataFactory _dataFactory;
         private GradeController _controller;
         private IRepository<Grade> _repo;
+        private IAuthenticationService _auth;
 
         [OneTimeSetUp] // Runs once before first test
         public void SetUpSuite() { }
@@ -28,7 +30,7 @@ namespace AKK.Tests.Controllers
         { 
             _dataFactory = new TestDataFactory();
             _repo = new TestRepository<Grade>(_dataFactory.Grades);
-            _controller = new GradeController(_repo);
+            _controller = new GradeController(_repo, _auth);
         }
 
         [TearDown] // Runs after each test
@@ -63,7 +65,7 @@ namespace AKK.Tests.Controllers
 
             Grade grade = new Grade() {Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)};
 
-            result = _controller.AddGrade(grade);
+            result = _controller.AddGrade("123", grade);
             data =  _repo.GetAll().Where(g => g.Difficulty == grade.Difficulty).FirstOrDefault();
 
             Assert.IsTrue(grade.Name == data.Name);
@@ -79,7 +81,7 @@ namespace AKK.Tests.Controllers
 
             Grade grade = new Grade() {Id = new Guid(), Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)};
 
-            result = _controller.AddGrade(grade);
+            result = _controller.AddGrade("123", grade);
             data = result.Data;
 
             Assert.IsTrue(result.Success);
@@ -119,7 +121,7 @@ namespace AKK.Tests.Controllers
             int newdifficulty = rnd.Next(15, 99);
             Color newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
 
-            result = _controller.UpdateGrade(grade.Difficulty.ToString(), newdifficulty, newColor);
+            result = _controller.UpdateGrade("123", grade.Difficulty.ToString(), newdifficulty, newColor);
             data = result.Data;
 
             Assert.IsTrue(grade.Difficulty == newdifficulty);
@@ -137,7 +139,7 @@ namespace AKK.Tests.Controllers
             int newdifficulty = rnd.Next(15, 99);
             Color newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
 
-            result = _controller.UpdateGrade(grade.Difficulty.ToString(), newdifficulty, newColor);
+            result = _controller.UpdateGrade("123", grade.Difficulty.ToString(), newdifficulty, newColor);
             data = result.Data;
 
             Assert.IsTrue(result.Success);

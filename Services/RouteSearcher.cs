@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using AKK.Classes.Models;
 
-namespace AKK.Classes
+namespace AKK.Services
 {
     public class RouteSearcher
     {

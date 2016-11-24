@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AKK.Classes.ApiResponses;
 using AKK.Classes.Models;
 using AKK.Classes.Models.Repository;
+using AKK.Classes.Services;
 using AKK.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +14,14 @@ namespace AKK.Controllers
     [Route("api/member")]
     public class MemberController : Controller
     {
-        private AuthenticationService _authenticator = new AuthenticationService();
-
+        private readonly IAuthenticationService _authenticator;
         private readonly IRepository<Member> _memberRepository;
 
         public MemberController(IRepository<Member> memberRepository)
         {
             _memberRepository = memberRepository;
-        }
+            _authenticator = new AuthenticationService(_memberRepository);
+    }
 
         // POST: /api/member
         [HttpPost]
@@ -44,10 +45,5 @@ namespace AKK.Controllers
 
             return new ApiSuccessResponse<string>("Logout successful");
         }
-
-
-
-
-
     }
 }
