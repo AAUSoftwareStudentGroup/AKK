@@ -48,7 +48,7 @@ function SectionsViewModel(client)
                 for(var i = 0; i < self.routes.length; i++)
                 {
                     self.routes[i].sectionName = self.sections.filter(function(s) { 
-                        return s.id == self.routes[i].id; 
+                        return s.id == self.routes[i].sectionId; 
                     })[0].name;
                     self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
                     self.routes[i].selectedColor = self.routes[i].colorOfHolds;
@@ -69,12 +69,6 @@ function SectionsViewModel(client)
     this.getSectionDetails = function(sectionId)
     {
         self.selectedSection = self.sections.filter(function(section){ return section.id == sectionId; })[0];
-        //  viewModel.selectedSection = viewModel.client.sections.getSection(viewModel.selectedSection.sectionId);
-        /* var response;
-        viewModel.client.routes.getRoutes(viewModel.grades[0], viewModel.selectedSection.sectionId, viewModel.sortOptions[0], function(response) {
-            if(response.success)
-                viewModel.refreshRoutes();
-        });*/
         self.refreshRoutes();
 
     };
@@ -142,9 +136,6 @@ function SectionsViewModel(client)
         var name = prompt("Enter name of new Difficulty", "");
         var newGrade = self.grades[0];
         newGrade.name = name;
-/*            newGrade.color.r = 128;
-        newGrade.color.g = 0;
-        newGrade.color.b = 128;*/
         newGrade.difficulty = self.grades.length + 1;
         self.client.grades.addGrade(newGrade, function(response) {
             if(response.success)                

@@ -243,7 +243,7 @@ namespace AKK.Controllers {
             }
             if(route.GradeId != default(Guid))
             {
-                routeToUpdate.GradeId = route.GradeId;
+                routeToUpdate.Grade = _gradeRepository.Find(route.GradeId);
             }
             if(route.SectionId != default(Guid))
             {
