@@ -328,6 +328,11 @@ input {
 }
 .routeimagesmall {
     width:50%;
+    margin-left: 20px;
+}
+.note {
+    margin:0;
+    text-align: justify;
 }
 .routeimagefullscreen {
     width:100%;
