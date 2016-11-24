@@ -1,9 +1,7 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using AKK.Classes.Models.Repository;
 using Newtonsoft.Json;
 
-namespace AKK.Classes.Models
+namespace AKK.Models
 {
     public class Hold : Model
     {

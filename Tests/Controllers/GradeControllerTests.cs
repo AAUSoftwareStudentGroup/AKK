@@ -1,13 +1,12 @@
-using AKK.Classes.Models.Repository;
-using AKK.Classes.Models;
 using AKK.Controllers;
 using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
-using AKK.Classes.ApiResponses;
 using System.Collections.Generic;
 using System.Linq;
 using System;
-using AKK.Classes.Services;
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
 
 namespace AKK.Tests.Controllers
 {
@@ -30,6 +29,7 @@ namespace AKK.Tests.Controllers
         { 
             _dataFactory = new TestDataFactory();
             _repo = new TestRepository<Grade>(_dataFactory.Grades);
+            _auth = new TestAuthenticationService();
             _controller = new GradeController(_repo, _auth);
         }
 
@@ -42,11 +42,8 @@ namespace AKK.Tests.Controllers
         [Test] // A test
         public void GetAllGrades_Result_ReturnsAll() 
         {
-            ApiResponse<IEnumerable<Grade>> result;
-            IEnumerable<Grade> data;
-
-            result = _controller.GetAllGrades();
-            data = result.Data;
+            var result = _controller.GetAllGrades();
+            var data = result.Data;
 
             Assert.IsTrue(result.Success);
             Assert.IsTrue(data.Count() == _repo.GetAll().Count());
@@ -60,17 +57,30 @@ namespace AKK.Tests.Controllers
         [Test] // A test
         public void AddGrade_Repo_ContainsNewRoute() 
         {
-            ApiResponse<Grade> result;
             Grade data;
 
             Grade grade = new Grade() {Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)};
 
-            result = _controller.AddGrade("123", grade);
-            data =  _repo.GetAll().Where(g => g.Difficulty == grade.Difficulty).FirstOrDefault();
+            _controller.AddGrade("123", grade);
+            data =  _repo.GetAll().FirstOrDefault(g => g.Difficulty == grade.Difficulty);
 
             Assert.IsTrue(grade.Name == data.Name);
             Assert.IsTrue(grade.Difficulty == data.Difficulty);
             Assert.IsTrue(grade.Color.ToUint() == data.Color.ToUint());
+        }
+
+        [Test]
+        public void AddGrade_NotPossibleIfNotAuthenticated() 
+        {
+            ApiResponse<Grade> message;
+
+            Grade grade = new Grade
+            {
+                Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)
+            };
+            message = _controller.AddGrade("noToken", grade);
+            Assert.AreEqual(false, message.Success);
+            
         }
 
         [Test] // A test
@@ -79,7 +89,10 @@ namespace AKK.Tests.Controllers
             ApiResponse<Grade> result;
             Grade data;
 
-            Grade grade = new Grade() {Id = new Guid(), Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)};
+            Grade grade = new Grade
+            {
+                Id = new Guid(), Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)
+            };
 
             result = _controller.AddGrade("123", grade);
             data = result.Data;
@@ -113,16 +126,13 @@ namespace AKK.Tests.Controllers
         [Test] // A test
         public void UpdateGrade_Repo_ContainsUpdatedGrade() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
             Random rnd = new Random();
 
             Grade grade = _repo.GetAll().First();
             int newdifficulty = rnd.Next(15, 99);
             Color newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
 
-            result = _controller.UpdateGrade("123", grade.Difficulty.ToString(), newdifficulty, newColor);
-            data = result.Data;
+            _controller.UpdateGrade("123", grade.Difficulty.ToString(), newdifficulty, newColor);
 
             Assert.IsTrue(grade.Difficulty == newdifficulty);
             Assert.IsTrue(grade.Color.ToUint() == newColor.ToUint());

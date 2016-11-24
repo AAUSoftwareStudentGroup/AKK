@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-namespace AKK.Classes.Models.Repository
+namespace AKK.Models.Repositories
 {
     public class DbSetRepository<TEntity> : IRepository<TEntity> where TEntity : class, IIdentifyable
     {

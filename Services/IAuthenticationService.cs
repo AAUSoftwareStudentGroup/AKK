@@ -1,5 +1,4 @@
-﻿
-namespace AKK.Services
+﻿namespace AKK.Services
 {
     public interface IAuthenticationService
     {

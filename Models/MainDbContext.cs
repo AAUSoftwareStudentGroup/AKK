@@ -1,9 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.Collections.Generic;
 using System;
 
-namespace AKK.Classes.Models
+namespace AKK.Models
 {
     public class MainDbContext : DbContext
     {

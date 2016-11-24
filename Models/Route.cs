@@ -1,10 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq.Expressions;
-using AKK.Classes.Models;
 using Newtonsoft.Json;
 
-namespace AKK.Classes.Models
+namespace AKK.Models
 {
     public enum SortOrder
     {

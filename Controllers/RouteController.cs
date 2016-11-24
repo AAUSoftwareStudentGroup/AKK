@@ -3,9 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using AKK.Classes.Models;
-using AKK.Classes.ApiResponses;
-using AKK.Classes.Models.Repository;
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
 using AKK.Services;
 
 namespace AKK.Controllers {
@@ -80,7 +80,7 @@ namespace AKK.Controllers {
         [HttpPost]
         public ApiResponse<Route> AddRoute(string token, Route route, string sectionName) 
         {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
             }
@@ -159,7 +159,7 @@ namespace AKK.Controllers {
         [HttpDelete]
         public ApiResponse<IEnumerable<Route>> DeleteAllRoutes(string token)
         {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<IEnumerable<Route>>("You need to be logged in as an administrator to delete all routes");
             }
@@ -224,7 +224,7 @@ namespace AKK.Controllers {
         [HttpPatch("{routeId}")]
         public ApiResponse<Route> UpdateRoute(string token, Guid routeId, Route route)
         {
-            if(!_authenticationService.IsAuthenticated(token))
+            if(!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to edit a route");
             }
@@ -259,7 +259,7 @@ namespace AKK.Controllers {
         [HttpDelete("{routeId}")]
         public ApiResponse<Route> DeleteRoute(string token, Guid routeId)
         {
-            if (!_authenticationService.IsAuthenticated(token)) 
+            if (!_authenticationService.HasRole(token, Role.Authenticated)) 
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to delete a route");
             }

@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq.Expressions;
-using AKK.Classes.Models.Repository;
 using Newtonsoft.Json;
 
-namespace AKK.Classes.Models 
+namespace AKK.Models 
 {
     public class Grade : Model 
     {

@@ -2,11 +2,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using AKK.Classes.Models;
-using AKK.Classes.ApiResponses;
-using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
-
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
 
 namespace AKK.Controllers {
     [Route("api/grade")]
@@ -30,7 +29,7 @@ namespace AKK.Controllers {
         // POST: /api/grade
         [HttpPost]
         public ApiResponse<Grade> AddGrade(string token, Grade grade) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to add a new grade");
             }
@@ -64,7 +63,7 @@ namespace AKK.Controllers {
         // PATCH: /api/grade/{id}
         [HttpPatch("{id}")]
         public ApiResponse<Grade> UpdateGrade(string token, string id, int? difficulty, Color color) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to change this grade");
             }
@@ -96,7 +95,7 @@ namespace AKK.Controllers {
         // DELETE: /api/grade/{id}
         [HttpDelete("{id}")]
         public ApiResponse<Grade> DeleteGrade(string token, string id) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to delete this grade");
             }

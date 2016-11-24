@@ -4,9 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using AKK.Classes.Models;
-using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
+using AKK.Models;
+using AKK.Models.Repositories;
 using AKK.Services;
 
 namespace AKK
