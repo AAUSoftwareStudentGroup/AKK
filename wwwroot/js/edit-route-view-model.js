@@ -38,7 +38,6 @@ function EditRouteViewModel(client)
 
                         
                         self.client.routes.getImage(self.routeId, function(imageResponse) {
-                            console.log(imageResponse);
                             if (imageResponse.success) {
                                 self.hasImage = true;
                                 self.image = new Image();
