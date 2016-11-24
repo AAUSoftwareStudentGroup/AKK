@@ -43,9 +43,31 @@ $(document).ready(function () {
 
 function UpdateCanvas(input) {
     readURL(input, function(i) {
-        viewModel.setImage(i);
-        viewModel.HoldPositions = [];
+        resizeImage(i, function(ni) {
+            console.log(ni.width + "," + ni.height);
+            viewModel.setImage(ni);
+            viewModel.HoldPositions = [];
+        });
     });
+}
+
+function resizeImage(image, callback) {
+    var maxWidth = 500;
+    if (image.width < maxWidth) return image;
+    var ratio = image.width / image.height;
+
+    var canvas =  document.createElement('canvas');
+    canvas.width = maxWidth;
+    canvas.height = maxWidth / ratio;
+    var context = canvas.getContext("2d");
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    var newImageData = canvas.toDataURL();
+
+    var newImage = new Image();
+    newImage.src = newImageData;
+    newImage.onload = function() {
+        callback(newImage);
+    }
 }
 
 function readURL(input, callback) {

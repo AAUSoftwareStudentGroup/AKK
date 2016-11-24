@@ -1,6 +1,5 @@
 ﻿var viewModel;
 $(document).ready(function () {
-    <<<<<<< HEAD
     $.get("js/templates/header-template.handlebars",
         function(response) {
             var template = Handlebars.compile($("#new-route-template").html());
