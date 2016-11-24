@@ -233,8 +233,11 @@ namespace AKK.Controllers {
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
+            if(route.Image != null)
+            {
+                routeToUpdate.Image = new Image {FileUrl = route.Image.FileUrl};
+            }
             if(route.GradeId != default(Guid))
-
             {
                 routeToUpdate.GradeId = route.GradeId;
             }
