@@ -18,18 +18,20 @@ namespace AKK.Controllers {
         private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Hold> _holdRepository;
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository) 
+        private readonly IRepository<Member> _memberRepository;
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IRepository<Member> memberRepository) 
         {
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
             _imageRepository = imageRepository;
             _holdRepository = holdRepository;
+            _memberRepository = memberRepository;
         }
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse GetRoutes(int? grade, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
+        public ApiResponse<IEnumerable<Route>> GetRoutes(int? grade, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
         {
             var routes = _routeRepository.GetAll();
 
@@ -68,32 +70,31 @@ namespace AKK.Controllers {
 
                 //If no routes were found.
                 if (!foundRoutes.Any()) {
-                    return new ApiErrorResponse("No routes matched your search");
+                    return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
-
-            return new ApiSuccessResponse(Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(routes));
+            return new ApiSuccessResponse<IEnumerable<Route>>(routes);
         }
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse AddRoute(Route route, string sectionName) 
+        public ApiResponse<Route> AddRoute(string token, Route route, string sectionName) 
         {
             if (route.Author == null)
             {
-                return new ApiErrorResponse("An author must be specified");   
+                return new ApiErrorResponse<Route>("An author must be specified");   
             }
             if (route.ColorOfHolds == null)
             {
-                return new ApiErrorResponse("A hold color must be specified");
+                return new ApiErrorResponse<Route>("A hold color must be specified");
             }
             if (route.Grade == null)
             {
-                return new ApiErrorResponse("A grade must be specified");
+                return new ApiErrorResponse<Route>("A grade must be specified");
             }
             if (route.Name == null)
             {
-                return new ApiErrorResponse("A route number must be specified");
+                return new ApiErrorResponse<Route>("A route number must be specified");
             }
 
             var sections = _sectionRepository.GetAll();
@@ -102,7 +103,7 @@ namespace AKK.Controllers {
                 sections = sections.Where(s => s.Id == route.SectionId);
                 if (!sections.Any())
                 {
-                    return new ApiErrorResponse($"No section with id {route.SectionId}");
+                    return new ApiErrorResponse<Route>($"No section with id {route.SectionId}");
                 }
             }
             else if (sectionName != null)
@@ -110,25 +111,25 @@ namespace AKK.Controllers {
                 sections = sections.Where(s => s.Name == sectionName);
                 if (!sections.Any())
                 {
-                    return new ApiErrorResponse($"No section with name {sectionName}");
+                    return new ApiErrorResponse<Route>($"No section with name {sectionName}");
                 }
             }
             else
             {
-                return new ApiErrorResponse("A section must be specified");
+                return new ApiErrorResponse<Route>("A section must be specified");
+
             }
                 
             var grades = _gradeRepository.GetAll().Where(g => g.Difficulty == route.Grade.Difficulty);
             if (!grades.Any())
             {
-                return new ApiErrorResponse("No grade with given difficulty");
+                return new ApiErrorResponse<Route>("No grade with given difficulty");
             }
-
             route.Grade = grades.First();
 
             if (_routeRepository.GetAll().Any(r => r.Grade.Difficulty == route.Grade.Difficulty && r.Name == route.Name))
             {
-                return new ApiErrorResponse("A route with this grade and number already exists");
+                return new ApiErrorResponse<Route>("A route with this grade and number already exists");
             }
 
             Section section = sections.First();
@@ -142,30 +143,27 @@ namespace AKK.Controllers {
             try
             {
                 _gradeRepository.Save();
-                return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(route));
+                return new ApiSuccessResponse<Route>(route);
             }
             catch
             {
-                return new ApiErrorResponse("Failed to update database");
+                return new ApiErrorResponse<Route>("Failed to update database");
             }
         }
         
         // DELETE: /api/route
         [HttpDelete]
-        public ApiResponse DeleteAllRoutes()
+        public ApiResponse<IEnumerable<Route>> DeleteAllRoutes()
         {
             var routes = _routeRepository.GetAll();
             if (!routes.Any())
             {
-                return new ApiErrorResponse("No routes exist");
+                return new ApiErrorResponse<IEnumerable<Route>>("No routes exist");
             }
                 
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(
-                JsonConvert.SerializeObject(
-                    Mappings.Mapper.Map<IEnumerable<Route>, IEnumerable<RouteDataTransferObject>>(routes)
-                )
-            );
+                JsonConvert.SerializeObject(routes)) as IEnumerable<Route>;
 
             foreach (var route in routes)
             {
@@ -175,173 +173,97 @@ namespace AKK.Controllers {
             try
             {
                 _routeRepository.Save();
-                return new ApiSuccessResponse(resultCopy);
+                return new ApiSuccessResponse<IEnumerable<Route>>(resultCopy);
             }
             catch
             {
-                return new ApiErrorResponse("Failed to remove routes from database");
+                return new ApiErrorResponse<IEnumerable<Route>>("Failed to remove routes from database");
             }
         }
 
         // GET: /api/route/{id}
         [HttpGet("{id}")]
-        public ApiResponse GetRoute(Guid id) 
+        public ApiResponse<Route> GetRoute(Guid id) 
         {
             var route = _routeRepository.Find(id);
             if (route == null)
             {
-                return new ApiErrorResponse($"No route exists with id {id}");
+                return new ApiErrorResponse<Route>($"No route exists with id {id}");
             }
 
-            return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(route));
+            return new ApiSuccessResponse<Route>(route);
         }
 
         // GET: /api/route/{id}/image
         [HttpGet("{id}/image")]
-        public ApiResponse GetImage(Guid id)
+        public ApiResponse<Image> GetImage(Guid id)
         {
             var route = _routeRepository.Find(id);
             if (route == null) {
-                return new ApiErrorResponse($"No route exists with id {id}");
+                return new ApiErrorResponse<Image>($"No route exists with id {id}");
             }
-
             var image = _imageRepository.GetAll().AsQueryable().FirstOrDefault(x => x.RouteId == id);
             if (image == null) {
-                return new ApiErrorResponse($"No image exists for route with id {id}");
+                return new ApiErrorResponse<Image>($"No image exists for route with id {id}");
             }
 
             image.Holds = _holdRepository.GetAll().Where(h => h.ImageId == image.Id).ToList();
 
-            return new ApiSuccessResponse(image);
+            return new ApiSuccessResponse<Image>(image);
         }
 
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
-        public ApiResponse UpdateRoute(Guid routeId, string sectionName, Route route) {
-            Route oldRoute = null;
-            bool changed = false;
-            var routes = _routeRepository.GetAll().Where(r => r.Id == routeId);
+        public ApiResponse<Route> UpdateRoute(Guid routeId, Route route)
+        {
+            Route routeToUpdate = _routeRepository.Find(routeId);
+            routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
+            routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
+            routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
+            if(route.GradeId != default(Guid))
 
-            if (!routes.Any())
             {
-                return new ApiErrorResponse("Route does not exist");
+                routeToUpdate.GradeId = route.GradeId;
             }
-
-            oldRoute = routes.Single(r => r.Id == routeId);
-
-            if (route.Name != null && route.Name != oldRoute.Name)
+            if(route.SectionId != default(Guid))
             {
-                oldRoute.Name = route.Name; changed = true;
-            }
-            if (route.Author != null)
-            {
-                oldRoute.Author = route.Author;
-            }
-            if (route.ColorOfHolds != null)
-            {
-                oldRoute.ColorOfHolds = route.ColorOfHolds;
-            }
-            if (route.ColorOfTape != null)
-            {
-                oldRoute.ColorOfTape = route.ColorOfTape;
-            }
-            if (route.Image != null)
-            {
-                if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
-                    Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
-                    _imageRepository.Delete(img);
-                    _imageRepository.Save();
-                }
-                oldRoute.Image = route.Image;
-            }
-
-
-            if(route.Grade != null)
-            {
-                var grades = _gradeRepository.GetAll().Where(g => g.Difficulty == route.Grade.Difficulty);
-                if (grades.Count() != 1)
-                {
-                    return new ApiErrorResponse("No grade with given difficulty");
-                }
-
-                if (route.Grade.Difficulty != oldRoute.Grade.Difficulty)
-                {
-                    changed = true;
-                }
-                oldRoute.Grade = grades.First();
-            }
-
-            if (changed)
-            {
-                var routesWithGradeAndName =
-                    _routeRepository.GetAll()
-                        .Where(r => r.Grade.Difficulty == oldRoute.Grade.Difficulty && r.Name == oldRoute.Name);
-
-
-                if (routesWithGradeAndName.Any())
-                {
-                    return new ApiErrorResponse("A route with that grade and name already exists");
-                }
-
-                if (route.SectionId != default(Guid))
-                {
-                    var section = _sectionRepository.GetAll().Where(s => s.Id == route.SectionId);
-                    if (section.Count() != 1)
-                    {
-                        return new ApiErrorResponse($"No section with id {route.Id}");
-                    }
-
-                    oldRoute.Section = section.First();
-                }
-                else if (sectionName != null)
-                {
-                    var section = _sectionRepository.GetAll().Where(s => s.Name == sectionName);
-                    if (section.Count() != 1)
-                    {
-                        return new ApiErrorResponse($"No section with name {sectionName}");
-                    }
-                    oldRoute.Section = section.First();
-                }
+                routeToUpdate.SectionId = route.SectionId;
             }
             try
             {
-                _sectionRepository.Save();
-                return new ApiSuccessResponse(Mappings.Mapper.Map<Route, RouteDataTransferObject>(oldRoute));
+                _routeRepository.Save();
+                return new ApiSuccessResponse<Route>(_routeRepository.Find(routeId));
             }
             catch
             {
-                return new ApiErrorResponse("Failed to update database");
+                return new ApiErrorResponse<Route>("Could not update route");    
             }
         }
 
         // DELETE: /api/route/{routeId}
         [HttpDelete("{routeId}")]
-        public ApiResponse DeleteRoute(Guid routeId)
+        public ApiResponse<Route> DeleteRoute(Guid routeId)
         {
             var route = _routeRepository.Find(routeId);
             if(route == null) 
             {
-                return new ApiErrorResponse($"No route exists with id {routeId}");
+                return new ApiErrorResponse<Route>($"No route exists with id {routeId}");
             }
             
             // create copy that can be sent as result
-            var resultCopy = JsonConvert.DeserializeObject(
-                JsonConvert.SerializeObject(
-                    Mappings.Mapper.Map<Route, RouteDataTransferObject>(route)
-                )
-            );
+            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(route)) as Route;
 
             _routeRepository.Delete(route);
 
             try
             {
                 _routeRepository.Save();
-                return new ApiSuccessResponse(resultCopy);
+                return new ApiSuccessResponse<Route>(resultCopy);
 
             }
             catch
             {
-                return new ApiErrorResponse($"Failed to remove routes with id {routeId}");
+                return new ApiErrorResponse<Route>($"Failed to remove routes with id {routeId}");
             }
         }
     }

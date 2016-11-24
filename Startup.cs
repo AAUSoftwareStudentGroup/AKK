@@ -38,6 +38,7 @@ namespace AKK
             services.AddScoped<IRepository<Grade>, GradeRepository>();
             services.AddScoped<IRepository<Image>, ImageRepository>();
             services.AddScoped<IRepository<Hold>, HoldRepository>();
+            services.AddScoped<IRepository<Member>, MemberRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
