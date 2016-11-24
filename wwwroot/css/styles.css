@@ -45,6 +45,10 @@ input {
     float: right !important;
 }
 
+.text-right {
+    text-align: right;
+}
+
 .header {
     width: 100%;
     height: 64px;
@@ -272,8 +276,7 @@ input {
 }
 
 /* Route number and creator*/
-.number-picker input,
-.author-picker input {
+.string-input input {
     width: 100%;
     margin-bottom: 32px;
     border: none;
@@ -285,8 +288,11 @@ input {
     -webkit-box-sizing: border-box;
 }
 
-.number-picker input:focus,
-.author-picker input:focus {
+.string-input input.invalid {
+    border-bottom: 2px solid #EF5350;
+}
+
+.string-input input:focus {
     outline: none;
 }
 
