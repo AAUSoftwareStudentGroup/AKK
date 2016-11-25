@@ -79,6 +79,7 @@ namespace AKK.Tests
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 0),
                     Member = new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = false},
+                    Author = "Anton", 
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -88,6 +89,7 @@ namespace AKK.Tests
                     Section = _sections[0],
                     ColorOfHolds = new Color(0, 255, 0),
                     Member = new Member {DisplayName = "Jakobsen", Username = "Jakobsen123", Password = "123", IsAdmin = false},
+                    Author = "Jakobsen",
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 07, 12)
                 },
@@ -97,6 +99,7 @@ namespace AKK.Tests
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 255),
                     Member = new Member {DisplayName = "Hornum", Username = "Hornum123", Password = "123", IsAdmin = false},
+                    Author = "Hornum",
                     Grade = _grades[2],
                     CreatedDate = new DateTime(2016, 11, 11)
                 },
@@ -106,6 +109,7 @@ namespace AKK.Tests
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 255, 0),
                     Member = new Member {DisplayName = "Jakob", Username = "Jakob123", Password = "123", IsAdmin = false},
+                    Author = "Jakob",
                     Grade = _grades[3],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -115,6 +119,7 @@ namespace AKK.Tests
                     Section = _sections[1],
                     ColorOfHolds = new Color(100, 100, 100),
                     Member = new Member {DisplayName = "TannerHelland", Username = "TannerHelland123", Password = "123", IsAdmin = false},
+                    Author = "TannerHelland",
                     Grade = _grades[4],
                     CreatedDate = new DateTime(2014, 11, 24)
                 },
@@ -124,6 +129,7 @@ namespace AKK.Tests
                     Section = _sections[1],
                     ColorOfHolds = new Color(170, 12, 54),
                     Member = new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = false},
+                    Author = "Grunberg",
                     Grade = _grades[2],
                     CreatedDate = new DateTime(2016, 01, 02)
                 },
@@ -133,6 +139,7 @@ namespace AKK.Tests
                     Section = _sections[1],
                     ColorOfHolds = new Color(255, 34, 89),
                     Member = new Member {DisplayName = "Ibsen", Username = "Ibsen123", Password = "123", IsAdmin = false},
+                    Author = "Ibsen",
                     Grade = _grades[3],
                     CreatedDate = new DateTime(2016, 04, 11)
                 },
@@ -142,6 +149,7 @@ namespace AKK.Tests
                     Section = _sections[1],
                     ColorOfHolds = new Color(232, 233, 5),
                     Member = new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = false},
+                    Author = "Anton",
                     Grade = _grades[3],
                     CreatedDate = new DateTime(2016, 08, 10)
                 },
@@ -151,6 +159,7 @@ namespace AKK.Tests
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 0, 0),
                     Member = new Member {DisplayName = "Geo", Username = "Geo123", Password = "123", IsAdmin = false},
+                    Author = "Geo",
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -160,6 +169,7 @@ namespace AKK.Tests
                     Section = _sections[2],
                     ColorOfHolds = new Color(0, 22, 123),
                     Member = new Member {DisplayName = "Bacci", Username = "Bacci123", Password = "123", IsAdmin = false},
+                    Author = "Bacci",
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 07, 12)
                 },
@@ -169,6 +179,7 @@ namespace AKK.Tests
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 123, 0),
                     Member = new Member {DisplayName = "Geogebra", Username = "Geogebra123", Password = "123", IsAdmin = false},
+                    Author = "Geogebra",
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 11, 11)
                 },
@@ -178,6 +189,7 @@ namespace AKK.Tests
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 123, 0),
                     Member = new Member {DisplayName = "Kurt", Username = "Kurt123", Password = "123", IsAdmin = false},
+                    Author = "Kurt",
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 11, 11)
                 },
@@ -187,6 +199,7 @@ namespace AKK.Tests
                     Section = _sections[2],
                     ColorOfHolds = new Color(123, 22, 22),
                     Member = new Member {DisplayName = "Benja", Username = "Benja123", Password = "123", IsAdmin = false},
+                    Author = "Benja",
                     Grade = _grades[2],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -196,6 +209,7 @@ namespace AKK.Tests
                     Section = _sections[3],
                     ColorOfHolds = new Color(35, 0, 22),
                     Member = new Member {DisplayName = "Manfred", Username = "Manfred123", Password = "123", IsAdmin = false},
+                    Author = "Manfred",
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 03, 01),
                     ColorOfTape = new Color(123, 255, 22)
@@ -206,6 +220,7 @@ namespace AKK.Tests
                     Section = _sections[3],
                     ColorOfHolds = new Color(123, 255, 22),
                     Member = new Member {DisplayName = "Bettina", Username = "Bettina123", Password = "123", IsAdmin = false},
+                    Author = "Bettina",
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 10, 27)
                 },
@@ -215,6 +230,7 @@ namespace AKK.Tests
                     Section = _sections[3],
                     ColorOfHolds = new Color(0, 22, 68),
                     Member = new Member {DisplayName = "Kasper", Username = "Kasper123", Password = "123", IsAdmin = false},
+                    Author = "Kasper",
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 09, 04)
                 },
@@ -224,6 +240,7 @@ namespace AKK.Tests
                     Section = _sections[3],
                     ColorOfHolds = new Color(123, 22, 123),
                     Member = new Member {DisplayName = "Rasmus", Username = "Rasmus123", Password = "123", IsAdmin = false},
+                    Author = "Rasmus",
                     Grade = _grades[4],
                     CreatedDate = new DateTime(2016, 06, 22)
                 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AKK.Migrations
 {
-    public partial class nuke : Migration
+    public partial class dbinit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,8 +13,8 @@ namespace AKK.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    ColorDb = table.Column<uint>(nullable: true),
                     Difficulty = table.Column<int>(nullable: false),
+                    HexColor = table.Column<uint>(nullable: true),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -29,6 +30,7 @@ namespace AKK.Migrations
                     DisplayName = table.Column<string>(nullable: true),
                     IsAdmin = table.Column<bool>(nullable: false),
                     Password = table.Column<string>(nullable: true),
+                    Token = table.Column<string>(nullable: true),
                     Username = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -53,10 +55,11 @@ namespace AKK.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    ColorOfHoldsDb = table.Column<uint>(nullable: true),
-                    ColorOfTapeDb = table.Column<uint>(nullable: true),
+                    Author = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: false),
                     GradeId = table.Column<Guid>(nullable: false),
+                    HexColorOfHolds = table.Column<uint>(nullable: true),
+                    HexColorOfTape = table.Column<uint>(nullable: true),
                     MemberId = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PendingDeletion = table.Column<bool>(nullable: false),
@@ -70,7 +73,7 @@ namespace AKK.Migrations
                         column: x => x.GradeId,
                         principalTable: "Grades",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Routes_Members_MemberId",
                         column: x => x.MemberId,
@@ -84,6 +87,59 @@ namespace AKK.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    FileUrl = table.Column<string>(nullable: true),
+                    Height = table.Column<uint>(nullable: false),
+                    RouteId = table.Column<Guid>(nullable: false),
+                    Width = table.Column<uint>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Images_Routes_RouteId",
+                        column: x => x.RouteId,
+                        principalTable: "Routes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Holds",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    ImageId = table.Column<Guid>(nullable: false),
+                    Radius = table.Column<double>(nullable: false),
+                    X = table.Column<double>(nullable: false),
+                    Y = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Holds", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Holds_Images_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Images",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Holds_ImageId",
+                table: "Holds",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_RouteId",
+                table: "Images",
+                column: "RouteId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Routes_GradeId",
@@ -103,6 +159,12 @@ namespace AKK.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Holds");
+
+            migrationBuilder.DropTable(
+                name: "Images");
+
             migrationBuilder.DropTable(
                 name: "Routes");
 

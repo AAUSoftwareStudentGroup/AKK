@@ -33,7 +33,7 @@ namespace AKK.Tests
             _repo = null;
         }
         [Test]
-        public void _MemberWithUsernameTannerPasswordHelland_IsAuthenticated()
+        public void _Login_MemberWithUsernameTannerPasswordHelland_IsAuthenticated()
         {
             var token = _auth.Login("Tanner", "Helland");
 
@@ -41,7 +41,7 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void _LoggingOutRemovesToken_TokenIsRemoved()
+        public void _Logout_LoggingOutRemovesToken_TokenIsRemoved()
         {
             var token = _auth.Login("Tanner", "Helland");
             _auth.Logout(token);
@@ -111,7 +111,6 @@ namespace AKK.Tests
         public void _GetRoles_UnauthenticatedUser_IsUnauthenticated()
         {
             var roles = _auth.GetRoles("13456789");
-            int i = 0;
 
             foreach (var role in roles)
             {
