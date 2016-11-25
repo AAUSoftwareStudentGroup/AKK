@@ -39,6 +39,7 @@ $(document).ready(function () {
 
             viewModel.init();
         });
+
 });
 
 function UpdateCanvas(input) {
