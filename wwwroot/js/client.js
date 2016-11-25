@@ -242,7 +242,7 @@ function MemberClient(url)
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: url + "login",
+            url: url + "/login",
             data:
             {
                 username: username,
@@ -274,7 +274,7 @@ function MemberClient(url)
             url: url,
             data:
             {
-                dislpayname: dislpayname,
+                displayname: displayname,
                 username: username,
                 password: password
             },
@@ -288,5 +288,5 @@ function Client(routeUrl, sectionUrl, gradeUrl, memberUrl)
     this.routes = new RouteClient(routeUrl);
     this.sections = new SectionClient(sectionUrl);
     this.grades = new GradeClient(gradeUrl);
-    this.ḿembers = new MemberClient(memberUrl);
+    this.members = new MemberClient(memberUrl);
 }
