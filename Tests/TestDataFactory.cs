@@ -11,7 +11,8 @@ namespace AKK.Tests
         private List<Section> _sections;
         private List<Grade> _grades;
         private List<Route> _routes;
-
+        public List<Image> _images;
+        public List<Hold> _holds;
         public List<Member> Members {
             get { return _members; }
             set { _members = value; }
@@ -30,6 +31,16 @@ namespace AKK.Tests
         public List<Route> Routes {
             get { return _routes; }
             set { _routes = value; }
+        }
+
+        public List<Image> Images {
+            get { return _images; }
+            set { _images = value; }
+        }
+
+        public List<Hold> Holds {
+            get { return _holds; }
+            set { _holds = value; }
         }
 
         public TestDataFactory()
@@ -254,6 +265,16 @@ namespace AKK.Tests
             foreach (var grade in _grades) {
                 grade.Routes.AddRange(_routes.Where(r => r.Grade.Id == grade.Id));
             }
+
+            _images = new List<Image>();
+            _images.AddRange(new List<Image> {
+                new Image {Id = new Guid(), Width = 800, Height = 500, FileUrl = "https://placeholdit.imgix.net/~text?txtsize=28&txt=500%C3%97800&w=500&h=800"}
+            });
+
+            _holds = new List<Hold>();
+            _holds.AddRange(new List<Hold> {
+                new Hold {Id = new Guid(), ImageId = _images[0].Id, X = 0.5, Y = 0.5, Radius = 0.1}
+            });
         }
     }
 }

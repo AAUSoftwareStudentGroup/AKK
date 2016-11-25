@@ -175,6 +175,7 @@ namespace AKK.Tests.Controllers
             var result = _controller.DeleteGrade("AdminTestToken", grade.Id);
             var data = result.Data;
 
+            Assert.AreEqual(true, result.Success);
             var grades = _controller.GetAllGrades().Data;
 
             foreach (Grade grad in grades)
