@@ -55,19 +55,20 @@ namespace AKK.Tests.Controllers
             testRoute.Author = "TannerHelland";
             testRoute.ColorOfHolds = _routeRepo.GetAll().First().ColorOfHolds;
 
-            token = _auth.Login("Tanner", "Helland");
+            token = _auth.Login("Morten", "Rask");
         }
 
         [TearDown] // Runs after each test
         public void TearDownTest() 
         {
-            _controller?.Dispose();
             _dataFactory = null;
             _sectionRepo = null;
             _gradeRepo = null;
             _routeRepo = null;
             _imageRepo = null;
             _holdRepo = null;
+            _auth = null;
+            _controller = null;
             testRoute = null;
             token = null;
         }
@@ -128,7 +129,6 @@ namespace AKK.Tests.Controllers
         public void _AddRoute_NewRouteGetsAdded_RouteGetsAdded()
         {
             var response = _controller.AddRoute(token, testRoute, testRoute.Section.Name);
-            var message = response as ApiErrorResponse<Route>;
 
             Assert.AreEqual(true, response.Success);
 
@@ -191,7 +191,6 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _DeleteAllRoutes_AdminDeletesAllRoutes_AllRoutesGetDeleted()
         {
-            var token = _auth.Login("Morten", "Rask");
             var response = _controller.DeleteAllRoutes(token);
 
             Assert.AreEqual(true, response.Success);
@@ -201,6 +200,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _DeleteAllRoutes_MemberDeletesAllRoutes_NoRoutesGetDeleted()
         {
+            var token = _auth.Login("Tanner", "Helland");
             var response = _controller.DeleteAllRoutes(token);
 
             Assert.AreEqual(false, response.Success);
@@ -249,6 +249,198 @@ namespace AKK.Tests.Controllers
             Image test = new Image();
 
             var response = _controller.GetImage(test.Id);
+
+            Assert.AreEqual(false, response.Success);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateNameOnRoute_NameGetsUpdated()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.Author = Origroute.Author;
+            testRoute.Name = "40";
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(true, response.Success);
+
+            Assert.AreEqual("40", Origroute.Name);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateGradeOnRouteWithChangedGrade_GradeGetsUpdated()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.Author = Origroute.Author;
+            testRoute.Grade = _gradeRepo.GetAll().First(g => g.Difficulty == 3);
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(true, response.Success);
+            Assert.AreEqual(testRoute.Grade.Name, Origroute.Grade.Name);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateGradeOnRouteWithChangedID_GradeGetsUpdated() 
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.Author = Origroute.Author;
+            testRoute.Grade = _gradeRepo.GetAll().First(g => g.Difficulty == 3);
+            testRoute.GradeId = testRoute.Grade.Id;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(true, response.Success);
+            Assert.AreEqual(testRoute.Grade.Name, Origroute.Grade.Name);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateSectionOnRouteWithChangedSectionName_SectionGetsUpdated() 
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.Author = Origroute.Author;
+            testRoute.Section = _routeRepo.GetAll().First(s => s.Section.Name == "C").Section;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(true, response.Success);
+            Assert.AreEqual(testRoute.Section.Name, Origroute.Section.Name);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateSectionOnRouteWithChangedSectionID_SectionGetsUpdated() 
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.Author = Origroute.Author;
+            testRoute.SectionId = _routeRepo.GetAll().First(s => s.Section.Name == "C").SectionId;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(true, response.Success);
+            Assert.AreEqual(testRoute.Section.Name, Origroute.SectionName);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateSectionOnRouteWithChangedSectionIDSectionNameAndSection_SectionGetsUpdated() 
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.Author = Origroute.Author;
+            Route temp = _routeRepo.GetAll().First(s => s.Section.Name == "C");
+            testRoute.SectionId = temp.SectionId;
+            testRoute.Section = temp.Section;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(true, response.Success);
+            Assert.AreEqual(testRoute.Section.Name, Origroute.SectionName);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateAuthorOnRoute_AuthorGetsUpdated()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            if(Origroute.Author != "TannerHelland")
+            {
+                testRoute.Author = "TannerHelland";
+            }
+            else
+            {
+                testRoute.Author = "AdminAdmin";
+            }
+            
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(testRoute.Author, Origroute.Author);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateHoldOnRoute_HoldGetsUpdated()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.ColorOfHolds = _routeRepo.GetAll().First(s => s.Section.Name == "C").ColorOfHolds;
+            
+            if(Origroute.ColorOfHolds == testRoute.ColorOfHolds)
+            {
+                if(testRoute.ColorOfHolds.R < 255)
+                    testRoute.ColorOfHolds.R++;
+                else
+                    testRoute.ColorOfHolds.R--;
+            }
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(testRoute.ColorOfHolds.R, Origroute.ColorOfHolds.R);
+        }
+
+        [Test]
+        public void _UpdateRoute_AddTapeOnRouteWithNoTape_TapeGetsAdded()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            testRoute.ColorOfTape = _routeRepo.GetAll().First(t => t.Author == "Manfred").ColorOfTape;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(testRoute.ColorOfTape.G, Origroute.ColorOfTape.G);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateTapeOnRouteWithTape_TapeGetsUpdated()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            Color temp = _routeRepo.GetAll().First(t => t.Author == "Manfred").ColorOfTape;
+
+            Origroute.ColorOfTape = temp;
+            testRoute.ColorOfTape = temp;
+            testRoute.ColorOfTape.R += 1;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.AreEqual(testRoute.ColorOfTape.R, Origroute.ColorOfTape.R);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateUserWhileNotAuthenticated_ErrorResponseAndRouteNotUpdated()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            
+            var response = _controller.UpdateRoute("123", Origroute.Id, testRoute);
+
+            Assert.AreEqual(false, response.Success);
+            Assert.AreNotEqual(testRoute, Origroute);
+        }
+
+        [Test]
+        public void _DeleteRoute_DeleteExistingRoute_RouteGetsDeleted()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            int numberOfRoutes = _routeRepo.GetAll().Count();
+            var response = _controller.DeleteRoute(token, Origroute.Id);
+
+            Assert.AreEqual(true, response.Success);
+            Assert.AreEqual(numberOfRoutes-1, _routeRepo.GetAll().Count());
+            Assert.AreNotEqual(Origroute.Author, _routeRepo.GetAll().First().Author);
+        }
+
+        [Test]
+        public void _DeleteRoute_DeleteRouteThatDoesntExist_Error()
+        {
+            var response = _controller.DeleteRoute(token, testRoute.Id);
+
+            Assert.AreEqual(false, response.Success);
+        }
+
+        [Test]
+        public void _DeleteRoute_DeleteRouteAsGuest_Error()
+        {
+            Route Origroute = _routeRepo.GetAll().First();
+            var response = _controller.DeleteRoute("123", Origroute.Id);
+
+            Assert.AreEqual(false, response.Success);
+        }
+
+        [Test]
+        public void _DeleteRoute_DeleteRouteWithIdOfSection_Error()
+        {
+            var response = _controller.DeleteRoute(token, _sectionRepo.GetAll().First().Id);
 
             Assert.AreEqual(false, response.Success);
         }
