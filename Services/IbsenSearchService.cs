@@ -34,12 +34,27 @@ namespace AKK.Services
             }
 
             //Calculates the Levenshtein distance for each search term and adds it to each route's specific Levenshtein distance value.
+            string specialization = null;
+            var specializationAge = 0;
             foreach (var searchTerm in searchTerms)
             {
+                if (++specializationAge > 1)
+                {
+                    specialization = null;
+                }
+                switch (searchTerm.ToLower())
+                {
+                    case "author":
+                    case "section":
+                    case "grade":
+                        specialization = searchTerm;
+                        specializationAge = 0;
+                        continue;
+                }
                 for (int i = 0; i < _numRoutes; i++)
                 {
                     var route = routesWithDist[i].Item1;
-                    float dist = routesWithDist[i].Item2 + _getSmallestDistance(route, searchTerm);
+                    float dist = routesWithDist[i].Item2 + _getSmallestDistance(route, searchTerm, specialization);
 
                     routesWithDist[i] = new Tuple<Route, float>(route, dist);
                 }
@@ -78,8 +93,22 @@ namespace AKK.Services
             return searchTerms;
         }
 
-        private int _getSmallestDistance(Route route, string searchStr)
+        private int _getSmallestDistance(Route route, string searchStr, string specialization)
         {
+            if (!string.IsNullOrEmpty(specialization))
+            {
+                specialization = specialization.ToLower();
+                switch (specialization)
+                {
+                    case "section":
+                        return _computeLevenshtein(searchStr, route.SectionName);
+                    case "author":
+                        return _computeLevenshtein(searchStr, route.Author);
+                    case "difficulty": case "grade":
+                        return _computeLevenshtein(searchStr, route.Grade.Name);
+                }
+            }
+
             int smallestDist = int.MaxValue;
             int[] distances =
             {
@@ -101,7 +130,7 @@ namespace AKK.Services
 
         // Based on http://compbio.cs.uic.edu/~tanya/teaching/CompBio/scribe/TimLuciani_scribing-0119.v3.pdf and 
         // https://en.wikipedia.org/wiki/Wagner%E2%80%93Fischer_algorithm
-        private static int _computeLevenshtein(string pattern, string text)
+        public static int _computeLevenshtein(string pattern, string text)
         {
             if (string.IsNullOrEmpty(pattern) || string.IsNullOrEmpty(text))
             {

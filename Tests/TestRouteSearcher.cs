@@ -15,10 +15,10 @@ namespace AKK.Tests
         {
             var pattern = "Tanner";
             var text = "TannerHelland";
-            var distance = RouteSearchService._computeLevenshtein(pattern, text);
+            var distance = IbsenSearchService._computeLevenshtein(pattern, text);
             Assert.GreaterOrEqual(distance, pattern.Length);
 
-            distance = RouteSearchService._computeLevenshtein(text, pattern);
+            distance = IbsenSearchService._computeLevenshtein(text, pattern);
             Assert.GreaterOrEqual(distance, pattern.Length);
         }
 
@@ -26,28 +26,28 @@ namespace AKK.Tests
         [Test]
         public void _computeLevenshtein_CalculateDistanceBetweeenGreenAndMorten_DistanceIs9()
         {
-            var distance = RouteSearchService._computeLevenshtein("Green", "Morten");
+            var distance = IbsenSearchService._computeLevenshtein("Green", "Morten");
             Assert.AreEqual(9, distance);
         }
 
         [Test]
         public void _computeLevenshtein_CalculateDistanceBetweeenGeoAndGeogebra_DistanceIs5()
         { 
-            var distance = RouteSearchService._computeLevenshtein("Geo", "Geogebra");
+            var distance = IbsenSearchService._computeLevenshtein("Geo", "Geogebra");
             Assert.AreEqual(5, distance);
         }
 
         [Test]
         public void _computeLevenshtein_CalculateDistanceBetweeenGebraAndGeo_DistanceIs3()
         {
-            var distance = RouteSearchService._computeLevenshtein("Gebra", "Geogebra");
+            var distance = IbsenSearchService._computeLevenshtein("Gebra", "Geogebra");
             Assert.AreEqual(3, distance);
         }
 
         [Test]
         public void _computeLevenshtein_CalculateDistanceBetweeenGeoAnd94_DistanceIs12()
         { 
-            var distance = RouteSearchService._computeLevenshtein("Geo", "94");
+            var distance = IbsenSearchService._computeLevenshtein("Geo", "94");
             Assert.AreEqual(12, distance);
         }
 
@@ -58,7 +58,7 @@ namespace AKK.Tests
         public void Search_SearchFor10Green_RoutesWithGradeGreen()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("green");
 
             foreach (var result in searchResult)
@@ -69,7 +69,7 @@ namespace AKK.Tests
         public void Search_SearchFor3Red_RoutesWithGradeRed()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 3);
+            var searcher = new IbsenSearchService(testRepo.Routes, 3);
             var searchResult = searcher.Search("red");
 
             foreach (var result in searchResult)
@@ -80,7 +80,7 @@ namespace AKK.Tests
         public void Search_SearchFor10Anto_RoutesWithAuthorAnton()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("anto");
 
             foreach (var result in searchResult)
@@ -92,7 +92,7 @@ namespace AKK.Tests
         public void Search_SearchFor10Geo_RoutesWithAuthorGeoAndGeogebraInOrder()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("geo");
 
             Assert.AreEqual("Geo", searchResult.ElementAt(0).Author);
@@ -106,7 +106,7 @@ namespace AKK.Tests
         public void Search_SearchFor10Gebra_RoutesWithAuthorGeogebraFirst()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("gebra");
 
             if (!searchResult.Any())
@@ -120,7 +120,7 @@ namespace AKK.Tests
         public void Search_10SearchForHelland_ExpectRouteWithTannerHellandAsAuthor()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("Helland");
             if (!searchResult.Any())
             {
@@ -134,7 +134,7 @@ namespace AKK.Tests
         public void Search_SearchFor10Bl_8RoutesWithGradesBlueAndBlack()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("Blu");
 
             foreach (var result in searchResult)
@@ -154,7 +154,7 @@ namespace AKK.Tests
         public void Search_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 3);
+            var searcher = new IbsenSearchService(testRepo.Routes, 3);
             var searchResult = searcher.Search("A 4");
 
             foreach (var result in searchResult)
@@ -171,7 +171,7 @@ namespace AKK.Tests
         public void Search_3SearchForA4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 3);
+            var searcher = new IbsenSearchService(testRepo.Routes, 3);
             var searchResult = searcher.Search("A4");
 
             foreach (var result in searchResult)
@@ -186,7 +186,7 @@ namespace AKK.Tests
         public void Search_3SearchForA4_ExpectedResultTheSameAsSearchForASPACE4()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResultWithSpace = searcher.Search("A 4");
             var searchResultWithoutSpace = searcher.Search("A4");
 
@@ -210,7 +210,7 @@ namespace AKK.Tests
         public void Search_10SearchForASPACE4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("A 4 Gr");
 
             foreach (var result in searchResult)
@@ -230,7 +230,7 @@ namespace AKK.Tests
         public void Search_10SearchForA4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("A4 Gr");
 
             foreach (var result in searchResult)
@@ -250,7 +250,7 @@ namespace AKK.Tests
         public void Search_10SearchForA4SPACEGr_ExpectedResultTheSameAsWithSpaceBetweenAAnd4()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResultWithoutSpace = searcher.Search("A4 Gr");
             var searchResultWithSpace = searcher.Search("A 4 Gr");
 
@@ -271,10 +271,10 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void Search_10SearchForA4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg()
+        public void Search_2SearchForA4SPACEGru_Expected2RoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 2);
             var searchResult = searcher.Search("A4 Gru");
 
             foreach (var result in searchResult)
@@ -294,7 +294,7 @@ namespace AKK.Tests
         public void Search_10SearchForASPACE4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResult = searcher.Search("A 4 Gru");
 
             foreach (var result in searchResult)
@@ -314,7 +314,7 @@ namespace AKK.Tests
         public void Search_10SearchForA4SPACEGru_ExpectedResultTheSameAsWithSpaceBetweenAAnd4()
         {
             var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes, 10);
+            var searcher = new IbsenSearchService(testRepo.Routes, 10);
             var searchResultWithoutSpace = searcher.Search("A4 Gru");
             var searchResultWithSpace = searcher.Search("A 4 Gru");
 

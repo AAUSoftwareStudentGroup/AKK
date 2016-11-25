@@ -14,10 +14,7 @@ namespace AKK.Services
 
         public RouteSearchService(IEnumerable<Route> allRoutes, int maxResults)
         {
-            _allRoutes = allRoutes;
-
-            _numRoutes = _allRoutes.Count();
-            _maxResults = maxResults <= 0 ? _numRoutes : Math.Min(maxResults, _numRoutes);
+            _allRoutes = allRoutes
         }
 
         public IEnumerable<Route> Search(string searchStr)
