@@ -173,9 +173,6 @@ namespace AKK.Tests.Controllers
 
             _controller.AddGrade("AdminTestToken", grade);
             var result = _controller.DeleteGrade("AdminTestToken", grade.Id);
-            Console.WriteLine(result.Success);
-            Console.WriteLine(result.Value);
-            Console.WriteLine(result);
             var data = result.Data;
 
             var grades = _controller.GetAllGrades().Data;
@@ -187,23 +184,21 @@ namespace AKK.Tests.Controllers
                     Assert.Fail($"  Expected: Grade with Difficulty {grade.Difficulty} removed\n  Was: Grade still exists");
                 }
             }
-            /*
-            
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(grade.Name == data.Name);
-            Assert.IsTrue(grade.Difficulty == data.Difficulty);
-            Assert.IsTrue(grade.Color.ToUint() == data.Color.ToUint());*/
         }
 
         [Test]
         public void DeleteGrade_Repo_DoesNotContainGrade() 
         {
-            var grade = _repo.GetAll().First();
-            var difficulty = grade.Difficulty;
+            var grade = new Grade {
+                Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255), Routes = new List<Route>()
+            };
 
-            _controller.DeleteGrade("AdminTestToken", grade.Id);
+            _controller.AddGrade("AdminTestToken", grade);
+            var id = grade.Id;
 
-            Assert.False(_repo.GetAll().Any(g => g.Difficulty == difficulty));            
+            _controller.DeleteGrade("AdminTestToken", id);
+
+            Assert.False(_repo.GetAll().Any(g => g.Id == id));            
         }
     }
 }
