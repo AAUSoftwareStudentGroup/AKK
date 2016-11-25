@@ -322,6 +322,22 @@ function MemberClient(url, cookieService)
             }
         });
     };
+    this.getMemberInfo = function(success) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                token: self.cookieService.getToken()
+            },
+            success: function(response) {
+                if(response.success)
+                    self.cookieService.setToken(response.data);
+                success(response);
+            }
+        });
+    }
 }
 
 function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)
