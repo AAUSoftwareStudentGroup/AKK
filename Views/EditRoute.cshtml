@@ -11,20 +11,11 @@
         <script type="text/javascript" src="js/client.js"></script>
         <script src="js/route-canvas.js"></script>
         <script type="text/javascript" src="js/edit-route-view-model.js"></script>
+        <script type="text/javascript" src="js/helpers.js"></script>
     </head>
     <body>
         <script src="js/edit-route.js"></script>
-        <script id="edit-route-template" type="text/x-handlebars-template">
-            <div class="header">
-                <div class="header-content">
-                    <a class="header-button left" onclick="window.history.back();">
-                        <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
-                            <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
-                        </svg>
-                    </a>
-                    <h1 class="page-title">Edit Route</h1>
-                </div>
-            </div>
+    <script id="edit-route-template" type="text/x-handlebars-template">
             <div class="content new-route">
                 <div class="content-section section-picker">
                     <h2 class="">Section</h2>
@@ -58,16 +49,17 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <div class="content-section number-picker">
+                <div class="content-section string-input">
                     <h2>Route number</h2>
                     <input id="route-number" class="number-input" type="number" onchange="viewModel.changeRouteNumber(this.value)" value="{{routeNumber}}" placeholder="Number" pattern="[0-9]*" inputmode="numeric" min="0" max="50">
                 </div>
-                <div class="content-section author-picker">
+                <div class="content-section string-input">
                     <h2>Route creator</h2>
                     <input id="author" class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Author">
                 </div>
             </div>
         </script>
+        <div id="header"></div>
         <div id="content"></div>
         
         <script id="holdcolortemplate" type="text/x-handlebars-template">
@@ -135,7 +127,7 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <label class="submit-button left" style="background-color:green;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
+                <label class="submit-button left" style="background-color:#448AFF;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
             </div>
         </script>
         <div id="holdColorContent"></div>
@@ -144,7 +136,7 @@
             <div class="content new-route" style="margin-top: 0px">
                 <div class="content-section">
                     <h2>Route image</h2>
-                    <label for="files" class="submit-button left" style="background-color:yellow;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
+                    <label for="files" class="submit-button left" style="background-color:#448AFF;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
                     <input id="files" style="display:none;" type="file" accept="image/*" onchange="UpdateCanvas(this);">
                     
                     {{#if_eq hasImage true}}
@@ -165,7 +157,7 @@
         <div id="imageContent"></div>
 
         <div id="buttons">
-            <div class="content new-route">
+            <div class="content new-route" id ="newroute_savebutton">
             <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
             <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />            
             </div>
