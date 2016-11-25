@@ -9,16 +9,13 @@ namespace AKK.Services
 {
     public class IbsenSearchService:ISearchService<Route>
     {
-        private readonly int _maxResults;
         private readonly int _numRoutes;
         private readonly IEnumerable<Route> _allRoutes;
 
         public IbsenSearchService(IEnumerable<Route> allRoutes, int maxResults)
         {
             _allRoutes = allRoutes;
-
             _numRoutes = _allRoutes.Count();
-            _maxResults = maxResults <= 0 ? _numRoutes : Math.Min(maxResults, _numRoutes);
         }
 
         public IEnumerable<Route> Search(string searchStr)
@@ -65,11 +62,9 @@ namespace AKK.Services
 
             //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
             var foundRoutes = new List<Route>();
-            for (int i = 0; i < _maxResults; i++)
+            for (int i = 0; i < _numRoutes; i++)
             {
-                var el = sortedRoutes.ElementAt(i);
-
-                foundRoutes.Add(el.Item1);
+                foundRoutes.Add(sortedRoutes.ElementAt(i).Item1);
             }
 
             return foundRoutes;
@@ -162,9 +157,9 @@ namespace AKK.Services
                     {
                         d[i, j] = Math.Min(
                             Math.Min(
-                                d[i - 1, j] + cost, //Deletion
-                                d[i, j - 1] + 1), //Insertion
-                            d[i - 1, j - 1] + cost); //Substitution
+                                d[i - 1, j] + cost,     //Deletion
+                                d[i, j - 1] + 1),       //Insertion
+                            d[i - 1, j - 1] + cost);    //Substitution
                     }
                 }
             }

@@ -11,7 +11,7 @@ namespace AKK.Services
         private readonly int _numRoutes;
         private readonly IEnumerable<Route> _allRoutes;
 
-        public RouteSearchService(IEnumerable<Route> allRoutes, int maxResults)
+        public RouteSearchService(IEnumerable<Route> allRoutes)
         {
             _allRoutes = allRoutes;
             _numRoutes = allRoutes.Count();
