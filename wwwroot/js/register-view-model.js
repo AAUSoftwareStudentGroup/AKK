@@ -1,9 +1,3 @@
-$.ajax({
-  url: "js/eventnotifier.js",
-  dataType: "script",
-  async: false
-});
-
 function FindGetParam(param) {
     var result = null,
         tmp = [];

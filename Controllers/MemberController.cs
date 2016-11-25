@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+﻿using System.Collections;
 using System.Linq;
 using AKK.Controllers.ApiResponses;
 using AKK.Models;
@@ -76,6 +77,20 @@ namespace AKK.Controllers
             _memberRepository.Save();
 
             return Login(username, password);
+        }
+        // GET: /api/member/role
+        [HttpGet("role")]
+        public ApiResponse<IEnumerable> GetRole(string token)
+        {    
+            var role = _authenticator.GetRoles(token);
+            if (role.Any())
+            {
+                return new ApiSuccessResponse<IEnumerable>(role);
+            }
+            else
+            {
+                return new ApiErrorResponse<IEnumerable>("The member has no role");
+            }
         }
     }
 }

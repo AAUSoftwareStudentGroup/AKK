@@ -454,5 +454,5 @@ input[type=checkbox] {
 
 #canvas-container {
     padding-top:20px;
-    outline: 0;
+    outline: none;
 }

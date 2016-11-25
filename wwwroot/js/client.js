@@ -322,6 +322,7 @@ function MemberClient(url, cookieService)
             }
         });
     };
+
     this.getMemberInfo = function(success) {
         $.ajax({
             type: "GET",
