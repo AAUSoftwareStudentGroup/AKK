@@ -10,7 +10,7 @@ $(document).ready(function () {
             var templatefiltersection = Handlebars.compile($("#filter-section-template").html());
             var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
             viewModel = new RoutesViewModel(client);
-            headerViewModel = new HeaderViewModel(client);
+            headerViewModel = new HeaderViewModel(client, new CookieService());
             viewModel.addEventListener("RoutesChanged", function () {
                 $('#content').html(template(viewModel));
                 $('#grade-' + viewModel.selectedGrade.difficulty).prop("selected", true);
