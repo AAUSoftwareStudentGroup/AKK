@@ -25,8 +25,8 @@ $(document).ready(function () {
             viewModel.init();
             
         });
-        $(document).on("input", "#search-field", function() {
-            var searchstring = $("#search-field").val();
-            viewModel.search(searchstring);
-        });
+    $(document).on("input", "#search-field", function() {
+        var searchstring = $("#search-field").val();
+        viewModel.search(searchstring);
+    });
 });
