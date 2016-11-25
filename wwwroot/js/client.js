@@ -16,6 +16,20 @@ function RouteClient(url)
         });
     };
 
+    this.searchRoutes = function(searchstring, success) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            data: 
+            {
+                searchstr: searchstring,
+                maxresults: 10
+            },
+            success : success
+        });
+    }
+
     this.getRoute = function(id, success)
     {
         $.ajax({
@@ -52,7 +66,7 @@ function RouteClient(url)
                 author: author,
                 grade: grade,
                 colorOfHolds: holdColor,
-                ColorOfTape: tape
+                colorOfTape: tape
             },
             success: success
         });

@@ -85,11 +85,8 @@ function NewRouteViewModel(client) {
         self.trigger("HoldColorUpdated");
     };
     this.addRoute = function() {
-        if (self.selectedSection != null &&
-            self.selectedGrade != null &&
-            self.selectedColor != null &&
-            !isNaN(self.routeNumber)) {
-            var sectionId = self.selectedSection.sectionId;
+        if (!isNaN(self.routeNumber)) {
+            var sectionId = (self.selectedSection == null ? null : self.selectedSection.sectionId);
             var gradeValue = self.selectedGrade;
             var holdColor = self.selectedColor;
             var tapeColor = self.selectedTapeColor;

@@ -72,6 +72,7 @@ namespace AKK.Controllers {
                 if (!routes.Any()) {
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
+                return new ApiSuccessResponse<IEnumerable<Route>>(foundRoutes);
             }
             return new ApiSuccessResponse<IEnumerable<Route>>(routes);
         }
@@ -234,11 +235,16 @@ namespace AKK.Controllers {
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             if(route.Image != null)
             {
-                routeToUpdate.Image = new Image {FileUrl = route.Image.FileUrl};
+                if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
+                    Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
+                    _imageRepository.Delete(img);
+                }
+
+                routeToUpdate.Image = route.Image;
             }
             if(route.GradeId != default(Guid))
             {
-                routeToUpdate.GradeId = route.GradeId;
+                routeToUpdate.Grade = _gradeRepository.Find(route.GradeId);
             }
             if(route.SectionId != default(Guid))
             {

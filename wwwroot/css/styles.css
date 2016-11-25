@@ -37,12 +37,41 @@ a {
 input {
 }
 
+.navigation {
+    left: 0;
+    width: 75%;
+    height: 100%;
+    position: fixed;
+    z-index: 1;
+    -o-transition: 2s;
+    -webkit-transition: 2s;
+    transition: 2s;
+    background-color: #424242;
+    display: none;
+    box-shadow: 4px 10px 12px black;
+}
+
+    .navigation a {
+        display: block;
+        padding: 20px;
+        -ms-transition: 1s;
+        -o-transition: 1s;
+        -webkit-transition: 1s;
+        transition: 1s;
+        font-size: 18px;
+        color: white;
+    }
+
 .left {
     float: left !important;
 }
 
 .right {
     float: right !important;
+}
+
+.text-right {
+    text-align: right;
 }
 
 .header {
@@ -75,7 +104,7 @@ input {
 .content {
     width: 100%;
     max-width: 304px;
-    margin: 64px auto 0px auto; 
+    margin: 64px auto 0px auto;
     padding: 8px;
     overflow: hidden;
 }
@@ -95,7 +124,7 @@ input {
 /** ROUTE LIST **/
 .routes .content-section {
     width: 100%;
-  /*  margin-bottom: 32px;*/
+    /*  margin-bottom: 32px;*/
     display: block;
 }
 
@@ -110,9 +139,9 @@ input {
     margin-right: 16px;
 }
 
-.drop-down-container:last-child {
-    margin-right: 0px;
-}
+    .drop-down-container:last-child {
+        margin-right: 0px;
+    }
 
 .drop-down {
     width: 100%;
@@ -120,7 +149,6 @@ input {
     border: none;
     outline: none;
     color: #555555;
-
 }
 
 /** SINGLE ROUTE **/
@@ -132,9 +160,9 @@ input {
     background-color: #EF5350;
 }
 
-.delete-route-button:active {
-    background-color: #ED6F6D;
-}
+    .delete-route-button:active {
+        background-color: #ED6F6D;
+    }
 
 /* Route cards */
 .route-card {
@@ -158,12 +186,12 @@ input {
     font-weight: bold;
 }
 
-.route-grade-number span {
-    width: 42px;
-    display: inline-block;
-    text-align: center;
-    line-height: 42px;
-}
+    .route-grade-number span {
+        width: 42px;
+        display: inline-block;
+        text-align: center;
+        line-height: 42px;
+    }
 
 .route-section {
     margin-left: 8px;
@@ -193,7 +221,7 @@ input {
 
 
 /** NEW ROUTE **/
-.new-route .content-section  {
+.new-route .content-section {
     width: 100%;
     display: block;
 }
@@ -203,30 +231,30 @@ input {
     text-align: justify;
 }
 
-.radio-inputs input {
-    display: none;
-}
+    .radio-inputs input {
+        display: none;
+    }
 
-.radio-inputs label {
-    width: 48px;
-    height: 48px;
-    vertical-align: top;
-    display: inline-block;
-}
+    .radio-inputs label {
+        width: 48px;
+        height: 48px;
+        vertical-align: top;
+        display: inline-block;
+    }
 
-.radio-inputs label.shadow {
-    box-sizing: content-box;
-    -moz-box-sizing: content-box;
-    -webkit-box-sizing: content-box;
-    border: 0;
-    background-color: #FFF;
-}
+        .radio-inputs label.shadow {
+            box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            -webkit-box-sizing: content-box;
+            border: 0;
+            background-color: #FFF;
+        }
 
 .stretch {
     width: 100%;
     display: inline-block;
     font-size: 0;
-    line-height: 0
+    line-height: 0;
 }
 
 /* Section */
@@ -239,30 +267,30 @@ input {
     background-color: #F5F5F5;
 }
 
-.section-picker label span,
-.color-picker label svg {
-    width: 46px;
-    color: #222222;
-    font-size: 18px;
-    display: inline-block;
-    text-align: center;
-    line-height: 49px;
-}
+    .section-picker label span,
+    .color-picker label svg {
+        width: 46px;
+        color: #222222;
+        font-size: 18px;
+        display: inline-block;
+        text-align: center;
+        line-height: 49px;
+    }
 
 .section-picker input:checked + label,
-.color-picker  input:checked + label {
+.color-picker input:checked + label {
     background-color: #CCCCCC;
     border-color: #222222;
 }
 
 .color-picker svg {
-    margin-left:3px;
-    margin-top:3px;
+    margin-left: 3px;
+    margin-top: 3px;
 }
 
 /* Grade */
 .grade-picker label {
-    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30)
+    box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30);
 }
 
 .grade-checkmark {
@@ -273,8 +301,7 @@ input {
 }
 
 /* Route number and creator*/
-.number-picker input,
-.author-picker input {
+.string-input input {
     width: 100%;
     margin-bottom: 32px;
     border: none;
@@ -288,6 +315,14 @@ input {
 
 .number-picker input:focus,
 .author-picker input:focus {
+    outline: none;
+}
+
+.string-input input.invalid {
+    border-bottom: 2px solid #EF5350;
+}
+
+.string-input input:focus {
     outline: none;
 }
 
@@ -305,9 +340,9 @@ input {
     background-color: #448AFF;
 }
 
-.create-route-button:active {
-    background-color: #539FFF;
-}
+    .create-route-button:active {
+        background-color: #539FFF;
+    }
 
 #error-message {
     display: none;
@@ -323,43 +358,50 @@ input {
 }
 
 .routeimage {
-    float:right;
-    margin-top:5px;
+    float: right;
+    margin-top: 5px;
 }
+
 .routeimagesmall {
-    width:50%;
+    width: 50%;
+    margin-left: 20px;
 }
+
+.note {
+    margin: 0;
+    text-align: justify;
+}
+
 .routeimagefullscreen {
-    width:100%;
+    width: 100%;
 }
+
 #route-edit-image {
     width: 100%;
 }
 
-input[type=checkbox]
-{
-  /* Double-sized Checkboxes */
-  -ms-transform: scale(1.5); /* IE */
-  -moz-transform: scale(1.5); /* FF */
-  -webkit-transform: scale(1.5); /* Safari and Chrome */
-  -o-transform: scale(1.5); /* Opera */
-  padding: 10px;
-  z-index: 1;
+input[type=checkbox] {
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(1.5); /* IE */
+    -moz-transform: scale(1.5); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(1.5); /* Opera */
+    padding: 10px;
+    z-index: 1;
 }
 
 #canvas-container {
-    width:100%;
-    clear:both;
+    width: 100%;
+    clear: both;
     position: relative;
 }
 
 .undo-button {
     line-height: 24px;
     position: absolute;
-    right:10px;
-    top:10px;
-    background-color:rgba(255,255,255,.7);
-
+    right: 10px;
+    top: 10px;
+    background-color: rgba(255,255,255,.7);
     padding: 0;
     margin: 0;
 }
@@ -372,10 +414,20 @@ input[type=checkbox]
     position: relative;
 }
 
-.no-image-text{
+.no-image-text {
     position: absolute;
-    width:80%;
+    width: 80%;
     top: 12px;
     height: 52px;
-    left:10%;
+    left: 10%;
+}
+
+#search-field {
+    width: calc(100% - 50px);
+    padding: 0 10px;
+    border-style: solid;
+    border-color: rgba(0,0,0,.4);
+    border-radius: 10px;
+    height: 30px;
+    margin-top: -6px;
 }
