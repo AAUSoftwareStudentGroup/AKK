@@ -322,6 +322,19 @@ function MemberClient(url, cookieService)
             }
         });
     };
+
+    this.getRoles = function (token, success) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/role",
+            data:
+            {
+                token: token
+            },
+            success: success
+        });
+    };
 }
 
 function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)

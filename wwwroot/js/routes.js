@@ -3,14 +3,16 @@ var navbarbutton;
 var navigation;
 $(document).ready(function () {
     $.get("js/templates/header-template.handlebars",
-        function(response) {
+        function (response) {
             var template = Handlebars.compile($("#routes-template").html());
             var templateheader = Handlebars.compile(response);
             var templatefiltersection = Handlebars.compile($("#filter-section-template").html());
-            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL);
             viewModel = new RoutesViewModel(client);
+            var headerViewModel = new HeaderViewModel(client, new CookieService());
             viewModel.addEventListener("RoutesChanged", function () {
-                $("#header").html(templateheader({ viewModel: viewModel, title: "Find Route"}));
+                console.log({ viewModel: viewModel, title: "Find Route" });
+                $("#header").html(templateheader({ viewModel: HeaderViewModel, title: "Find Route" }));
                 $('#content').html(template(viewModel));
                 $('#grade-' + viewModel.selectedGrade.difficulty).prop("selected", true);
                 $('#section-' + viewModel.selectedSection.name).prop("selected", true);
@@ -22,8 +24,7 @@ $(document).ready(function () {
                     $("#search-field").focus();
                 }
             });
-            viewModel.init();
-            
+            viewModel.init();          
         });
         $(document).on("input", "#search-field", function() {
             var searchstring = $("#search-field").val();
