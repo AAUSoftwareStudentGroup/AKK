@@ -37,7 +37,6 @@ namespace AKK.Controllers
         // GET: /api/member/
         [HttpGet]
         public ApiResponse<Member> GetMemberInfo(string token) {
-            System.Console.WriteLine(token);
             var member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
 
             if (member == null || token == null) {

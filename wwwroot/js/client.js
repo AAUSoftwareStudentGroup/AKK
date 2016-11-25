@@ -331,11 +331,7 @@ function MemberClient(url, cookieService)
             {
                 token: self.cookieService.getToken()
             },
-            success: function(response) {
-                if(response.success)
-                    self.cookieService.setToken(response.data);
-                success(response);
-            }
+            success: success
         });
     }
 }
