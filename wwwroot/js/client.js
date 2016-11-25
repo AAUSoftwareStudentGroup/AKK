@@ -16,6 +16,20 @@ function RouteClient(url)
         });
     };
 
+    this.searchRoutes = function(searchstring, success) {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            data: 
+            {
+                searchstr: searchstring,
+                maxresults: 10
+            },
+            success : success
+        });
+    }
+
     this.getRoute = function(id, success)
     {
         $.ajax({
@@ -52,7 +66,7 @@ function RouteClient(url)
                 author: author,
                 grade: grade,
                 colorOfHolds: holdColor,
-                ColorOfTape: tape
+                colorOfTape: tape
             },
             success: success
         });
@@ -234,9 +248,59 @@ function GradeClient(url)
     };
 }
 
-function Client(routeUrl, sectionUrl, gradeUrl)
+
+function MemberClient(url)
+{
+    this.logIn = function(username, password, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/login",
+            data:
+            {
+                username: username,
+                password: password
+            },
+            success: success
+        });
+    };
+
+    this.logOut = function(token, success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/logout",
+            data:
+            {
+                token: token
+            },
+            success: success
+        });
+    };
+
+    this.register = function(displayname, username, password, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                displayname: displayname,
+                username: username,
+                password: password
+            },
+            success: success
+        });
+    };
+}
+
+function Client(routeUrl, sectionUrl, gradeUrl, memberUrl)
 {
     this.routes = new RouteClient(routeUrl);
     this.sections = new SectionClient(sectionUrl);
     this.grades = new GradeClient(gradeUrl);
+    this.members = new MemberClient(memberUrl);
 }
