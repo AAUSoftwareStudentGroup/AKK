@@ -16,7 +16,7 @@ $(document).ready(function () {
             viewModel.addEventListener("HoldColorUpdated",
                 function() {
                     $('#holdColorContent').html(colortemplate(viewModel));
-                    if (viewModel.hasTape === false)
+                    if (viewModel.hasTape === false && viewModel.selectedColor)
                         $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
                     else if(viewModel.selectedTapeColor)
                         $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);

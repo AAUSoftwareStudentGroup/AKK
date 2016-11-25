@@ -4,6 +4,13 @@ function NewRouteViewModel(client) {
         this.getSections();
         this.getGrades();
         self.trigger("HoldColorUpdated");
+        self.client.members.getMemberInfo(function(response) {
+            console.log(response);
+            if (response.success) {
+                self.changeAuthor(response.data.displayName);
+                self.trigger("DataLoaded");
+            }
+        });
     }
 
     var self = this;
