@@ -127,7 +127,7 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <label class="submit-button left" style="background-color:green;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
+                <label class="submit-button left" style="background-color:#448AFF;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
             </div>
         </script>
         <div id="holdColorContent"></div>
@@ -136,7 +136,7 @@
             <div class="content new-route" style="margin-top: 0px">
                 <div class="content-section">
                     <h2>Route image</h2>
-                    <label for="files" class="submit-button left" style="background-color:yellow;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
+                    <label for="files" class="submit-button left" style="background-color:#448AFF;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
                     <input id="files" style="display:none;" type="file" accept="image/*" onchange="UpdateCanvas(this);">
                     
                     {{#if_eq hasImage true}}
@@ -157,7 +157,7 @@
         <div id="imageContent"></div>
 
         <div id="buttons">
-            <div class="content new-route">
+            <div class="content new-route" id ="newroute_savebutton">
             <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
             <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />            
             </div>
