@@ -16,6 +16,7 @@ namespace AKK.Models
 
         public bool IsAdmin { get; set; }
 
+        [JsonIgnore]
         public List<Route> Routes { get; set; }
     }
 }
