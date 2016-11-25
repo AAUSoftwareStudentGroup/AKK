@@ -7,7 +7,7 @@ $(document).ready(function () {
             var template = Handlebars.compile($("#routes-template").html());
             var templateheader = Handlebars.compile(response);
             var templatefiltersection = Handlebars.compile($("#filter-section-template").html());
-            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL);
+            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
             viewModel = new RoutesViewModel(client);
             viewModel.addEventListener("RoutesChanged", function () {
                 $("#header").html(templateheader({ viewModel: viewModel, title: "Find Route"}));
