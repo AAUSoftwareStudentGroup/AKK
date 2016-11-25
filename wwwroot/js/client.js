@@ -74,7 +74,7 @@ function RouteClient(url, cookieService)
             success: success
         });
     };
-    this.updateRoute = function(routeId, sectionId, name, holdColor, grade, tape, image, success)
+    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, tape, image, success)
     {
         $.ajax({
             type: "PATCH",
