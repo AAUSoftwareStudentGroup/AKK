@@ -4,10 +4,9 @@
     async: false
 });
 
-function HeaderViewModel(client, cookieService) {
+function HeaderViewModel(client) {
     var self = this;
     this.client = client;
-    this.cookieService = cookieService;
     this.isAuthenticated = false;
     this.isAdmin = false;
 
@@ -17,22 +16,16 @@ function HeaderViewModel(client, cookieService) {
     }
 
     this.getRoles = function () {
-        self.client.members.getRoles(self.cookieService.getToken(), function (response) {
+        client.members.getMemberInfo(function(response) {
             console.log(response);
-            console.log(response.data.indexOf(1));
             if (response.success) {
-                if (response.data && response.data.length > 0) {
-                    if (response.data.indexOf(1) != -1) {
-                        self.isAuthentication = true;
-                    }
-                    if (response.data.indexOf(2) != -1) {
-                        self.isAdmin = true;
-                    }
-                }
-            } else {
-                $("#error-message").html(response.message).show();
+                self.isAdmin = response.data.isAdmin;
+                self.isAuthenticated = true;
             }
+            self.trigger("headerUpdated");
         });
     };
     this.init();
 };
+
+HeaderViewModel.prototype = new EventNotifier();
