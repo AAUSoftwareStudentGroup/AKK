@@ -8,13 +8,13 @@ namespace AKK.Services
 {
     public class RouteSearchService:ISearchService<Route>
     {
-        private readonly int _maxResults;
         private readonly int _numRoutes;
         private readonly IEnumerable<Route> _allRoutes;
 
         public RouteSearchService(IEnumerable<Route> allRoutes, int maxResults)
         {
             _allRoutes = allRoutes;
+            _numRoutes = allRoutes.Count();
         }
 
         public IEnumerable<Route> Search(string searchStr)
@@ -49,7 +49,7 @@ namespace AKK.Services
             //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
             var threshold = 2;
             var foundRoutes = new List<Route>();
-            for (int i = 0; i < _maxResults; i++)
+            for (int i = 0; i < _numRoutes; i++)
             {
                 var el = sortedRoutes.ElementAt(i);
                 if (el.Item2 > threshold)
