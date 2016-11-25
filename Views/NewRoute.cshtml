@@ -64,13 +64,14 @@
     <div id="header"></div>
     <div id="content"></div>
 
-    <script id="holdcolortemplate" type="text/x-handlebars-template">
+<script id="holdcolortemplate" type="text/x-handlebars-template">
         <div class="content new-route" style="margin-top: 0px">
             <div class="content-section color-picker">
                 <h2>Colour of holds</h2>
                 <div class="radio-inputs holdcolors">
                     {{#if_eq hasTape false}}
                     {{#each holdColors}}
+
                     <input id="holdColor-input-{{value}}" onclick="viewModel.changeHoldColor({{value}})" name="hold" type="radio">
                     <label class="hold-box holdColor-{{value}}" for="holdColor-input-{{value}}">
                         <div class="route-grip">
@@ -128,7 +129,7 @@
             </div>
             <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
             <!--<input class="submit-button create-route-button section-button-clear left" type="button" onclick="viewModel.gradesGotTape()" value="Has Tape"></input>-->
-            <label><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
+            <label class="submit-button left" style="background-color:#448AFF;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
             <input class="submit-button create-route-button" type="button" onclick="viewModel.addRoute()" value="Create"></input>
         </div>
     </script>

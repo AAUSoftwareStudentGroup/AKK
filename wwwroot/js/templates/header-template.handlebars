@@ -22,7 +22,7 @@
     {{/if}}
     <a href="new-route">Add route</a>
     {{#if viewModel.isAuthenticated}}
-       <span onclick="viewModel.CookieService.expireToken()"> <a href="#">Logout</a></span>
+       <span onclick="headerViewModel.CookieService.expireToken()"> <a href="/">Logout</a></span>
     {{else}}
         <a href="/login">Login</a>
     {{/if}}
