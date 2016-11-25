@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AKK.Models;
 
 namespace AKK.Tests
@@ -63,11 +64,11 @@ namespace AKK.Tests
 
             _grades = new List<Grade>
             {
-                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid()},
-                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid()},
-                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid()},
-                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid()},
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid()},
+                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid(), Routes = new List<Route>() },
+                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() },
+                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid(), Routes = new List<Route>() },
+                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid(), Routes = new List<Route>() },
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }
             };
 
             _routes = new List<Route>
@@ -227,6 +228,15 @@ namespace AKK.Tests
                     CreatedDate = new DateTime(2016, 06, 22)
                 }
             };
+
+            foreach (var section in _sections)
+            {
+                section.Routes.AddRange(_routes.Where(r => r.Section.Id == section.Id));
+            }
+
+            foreach (var grade in _grades) {
+                grade.Routes.AddRange(_routes.Where(r => r.Grade.Id == grade.Id));
+            }
         }
     }
 }

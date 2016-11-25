@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -11,6 +11,7 @@
     <script type="text/javascript" src="js/client.js"></script>
     <script type="text/javascript" src="js/navigation-service.js"></script>
     <script type="text/javascript" src="js/log-in-view-model.js"></script>
+    <script type="text/javascript" src="js/helpers.js"></script>
 </head>
 <body>
     <script src="js/log-in.js"></script>
@@ -34,8 +35,11 @@
                 <h2>Route creator</h2>
                 <input id="password" class="password-input" type="password" onchange="viewModel.changePassword(this.value)" placeholder="Password">
             </div>
+
+            <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+
             <h2 class="text-right">Dont have an account yet?!</h2 class="text-right">
-            <input class="submit-button create-route-button left" type="button" onclick="viewModel.login()" value="Log In"></input>
+            <input class="submit-button create-route-button left" type="button" onclick="viewModel.logIn()" value="Log In"></input>
             <input class="submit-button delete-route-button right" type="button" onclick="viewModel.register()" value="Register"></input>
         </div>
     </script>

@@ -16,13 +16,13 @@ function FindGetParam(param) {
 }
 
 function LogInViewModel(client, navigationService) {
-    var self = this
+    var self = this;
+    this.client = client;
     this.navigationService = navigationService;
     
     this.init = function () {
         var getTarget = FindGetParam("target");
         self.target = (getTarget == null ? self.target : getTarget);
-        self.trigger("ContentUpdated");
     };
     
     this.target = "/";
@@ -39,14 +39,23 @@ function LogInViewModel(client, navigationService) {
 
 
     this.register = function () {
-        navigationService.toRegister(self.target, self.username);
+        self.navigationService.toRegister(self.target, self.username);
     };
     
     this.logIn = function () {
-        console.log("GoGo Dr. LOGIN!!");
-        if(false) { // on success
-            window.location = target;
-        }
+        self.client.members.logIn
+        self.client.members.logIn(self.username, self.password, function(response) {
+            console.log(response);
+            if (response.success) {
+                if(response.data) {
+                    document.cookie = "token="+response.data+"; expires=Fri, 31 Dec 2035 23:59:59 GMT";
+                }
+
+                self.navigationService.to(self.target);
+            } else {
+                $("#error-message").html(response.message).show();
+            }
+        });
     };
 }
 LogInViewModel.prototype = new EventNotifier();

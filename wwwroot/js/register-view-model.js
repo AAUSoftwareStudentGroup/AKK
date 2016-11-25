@@ -24,13 +24,13 @@ function RegisterViewModel(client, navigationService) {
         var getUsername = FindGetParam("username");
         self.target = (getTarget == null ? self.target : getTarget);
         self.username = (getUsername == null ? self.username : getUsername);
-        self.trigger("ContentUpdated");
     };
     
     this.target = "/";
     this.fullName = "";
     this.username = "";
     this.password = "";
+    this.passwordConfirm = "";
 
     this.changeFullName = function (fullName) {
         self.fullName = fullName;
@@ -44,11 +44,28 @@ function RegisterViewModel(client, navigationService) {
         self.password = password;
     };
 
+    this.changePasswordconfirm = function (password) {
+        self.passwordConfirm = password;
+    }
+
     this.register = function () {
-        console.log("GoGo Dr. Register!!");
-        if(false) { // on success
-            window.location = target;
+        if(self.password != self.passwordConfirm) {
+            console.log("invalid password match")
+            $("#error-message").html("The passwords you entered are not the same!").show();
+            return;
         }
+        client.members.register(self.fullName, self.username, self.password, function(response) {
+            console.log(response);
+            if (response.success) {
+                if(response.data) {
+                    document.cookie = "token="+response.data+"; expires=Fri, 31 Dec 2035 23:59:59 GMT";
+                }
+
+                self.navigationService.to(self.target);
+            } else {
+                $("#error-message").html(response.message).show();
+            }
+        });        
     };
 }
 RegisterViewModel.prototype = new EventNotifier();

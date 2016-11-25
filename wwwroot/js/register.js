@@ -4,12 +4,11 @@ var rc;
 var fullwidth = false;
 $(document).ready(function () {
     var template = Handlebars.compile($("#register-template").html());
-    var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
+    var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL);
     
     viewModel = new RegisterViewModel(client, new NavigationService());
-    viewModel.addEventListener("ContentUpdated", function() { 
-        $('#content').html(template(viewModel)); 
-    });
+    $('#content').html(template(viewModel)); 
+
     viewModel.init();
 });
 Handlebars.registerHelper('if_eq', function (a, b, opts) {
