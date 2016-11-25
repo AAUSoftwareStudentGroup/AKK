@@ -6,8 +6,7 @@ $(document).ready(function () {
             var colortemplate = Handlebars.compile($("#holdcolortemplate").html());
             var templateheader = Handlebars.compile(response);
             var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
-            viewModel = new NewRouteViewModel(client);
-
+            viewModel = new NewRouteViewModel(client, new NavigationService());
             viewModel.addEventListener("DataLoaded",
                 function() {
                     $("#header").html(templateheader({ viewModel: viewModel, title: "New Route", location: "/" }));

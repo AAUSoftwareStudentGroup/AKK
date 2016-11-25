@@ -1,4 +1,4 @@
-function NewRouteViewModel(client) {
+function NewRouteViewModel(client, navigationService) {
 
     this.init = function() {
         this.getSections();
@@ -7,6 +7,7 @@ function NewRouteViewModel(client) {
     }
 
     var self = this;
+    this.navigationService = navigationService;
     this.client = client;
     this.sections = [];
     this.selectedSection = null;
@@ -94,7 +95,7 @@ function NewRouteViewModel(client) {
                 tapeColor,
                 function(response) {
                     if (response.success) {
-                        window.history.back();
+                        self.navigationService.toRoutes();
                     } else {
                         $("#error-message").html(response.message).show();
                     }
