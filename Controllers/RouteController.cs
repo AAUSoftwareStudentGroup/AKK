@@ -72,7 +72,6 @@ namespace AKK.Controllers {
                 if (!routes.Any()) {
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
-                return new ApiSuccessResponse<IEnumerable<Route>>(foundRoutes);
             }
             return new ApiSuccessResponse<IEnumerable<Route>>(routes);
         }
