@@ -14,7 +14,7 @@ namespace AKK.Services
 
         public RouteSearchService(IEnumerable<Route> allRoutes, int maxResults)
         {
-            _allRoutes = allRoutes
+            _allRoutes = allRoutes;
         }
 
         public IEnumerable<Route> Search(string searchStr)
