@@ -16,6 +16,9 @@ function NavigationService() {
         window.location = "login";
     };
     this.toRegister = function(target, username) {
-        window.location = "register?target=" + target + "&username=" + username;
+        window.location = "register?target=" + encodeURIComponent(target) + "&username=" + username;
     };
+    this.to = function(target) {
+        window.location = target;
+    }
 }

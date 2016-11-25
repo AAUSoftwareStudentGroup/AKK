@@ -50,8 +50,12 @@ namespace AKK.Services
 
         public bool HasRole(string token, Role role)
         {
-            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            if (string.IsNullOrEmpty(token)) 
+            {
+                return false;
+            }
 
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
             switch (role)
             {
                 case Role.Unauthenticated:

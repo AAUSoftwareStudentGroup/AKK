@@ -35,10 +35,15 @@
                 <input id="username" class="username-input" type="text" onchange="viewModel.changeUsername(this.value)" value="{{username}}" placeholder="Username">
             </div>
             <div class="content-section string-input">
-                <h2>Route creator</h2>
+                <h2>Password</h2>
                 <input id="password" class="password-input" type="password" onchange="viewModel.changePassword(this.value)" placeholder="Password">
             </div>
-
+            <div class="content-section string-input">
+                <h2>Confirm password</h2>
+                <input id="passwordconfirm" class="passwordconfirm-input" type="password" onchange="viewModel.changePasswordconfirm(this.value)" placeholder="Confirm password">
+            </div>
+            
+            <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
             <input class="submit-button create-route-button left" type="button" onclick="viewModel.register()" value="Register"></input>
         </div>
     </script>

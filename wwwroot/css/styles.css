@@ -433,4 +433,5 @@ input[type=checkbox] {
     border-radius: 10px;
     height: 30px;
     margin-top: -6px;
+    outline: 0;
 }

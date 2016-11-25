@@ -5,7 +5,7 @@ $(document).ready(function () {
         function(response) {
             var template = Handlebars.compile($("#route-info-template").html());
             var templateheader = Handlebars.compile(response);
-            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL);
+            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL);
 
             viewModel = new RouteInfoViewModel(client, new NavigationService());
             viewModel.addEventListener("ContentUpdated",

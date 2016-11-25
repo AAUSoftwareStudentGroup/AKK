@@ -66,13 +66,12 @@ namespace AKK.Controllers {
                 var searcher = new RouteSearcher(routes, maxResults);
 
                 //Search for route
-                var foundRoutes = searcher.Search(searchStr);
+                routes = searcher.Search(searchStr);
 
                 //If no routes were found.
-                if (!foundRoutes.Any()) {
+                if (!routes.Any()) {
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
-                return new ApiSuccessResponse<IEnumerable<Route>>(foundRoutes);
             }
             return new ApiSuccessResponse<IEnumerable<Route>>(routes);
         }
@@ -269,15 +268,15 @@ namespace AKK.Controllers {
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to delete a route");
             }
+
             var route = _routeRepository.Find(routeId);
             if(route == null) 
             {
                 return new ApiErrorResponse<Route>($"No route exists with id {routeId}");
             }
             
-            // create copy that can be sent as result
+            // Create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(route)) as Route;
-
             _routeRepository.Delete(route);
 
             try
