@@ -18,14 +18,16 @@ namespace AKK.Controllers {
         private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Hold> _holdRepository;
+        private readonly IRepository<Member> _memberRepository;
         private readonly IAuthenticationService _authenticationService;
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IAuthenticationService authenticationService) 
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IRepository<Member> memberRepository, IAuthenticationService authenticationService) 
         {
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
             _imageRepository = imageRepository;
             _holdRepository = holdRepository;
+            _memberRepository = memberRepository;
             _authenticationService = authenticationService;
         }
 
@@ -80,6 +82,7 @@ namespace AKK.Controllers {
         [HttpPost]
         public ApiResponse<Route> AddRoute(string token, Route route, string sectionName) 
         {
+            route.Member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to create a new route");

@@ -5,7 +5,6 @@ function NewRouteViewModel(client) {
         this.getGrades();
         self.trigger("HoldColorUpdated");
         self.client.members.getMemberInfo(function(response) {
-            console.log(response);
             if (response.success) {
                 self.changeAuthor(response.data.displayName);
                 self.trigger("DataLoaded");
@@ -93,10 +92,11 @@ function NewRouteViewModel(client) {
             var tapeColor = self.selectedTapeColor;
             var routeNumber = self.routeNumber;
             var author = self.author;
-            self.client.routes.addRoute(sectionId,
+            self.client.routes.addRoute(
+                sectionId,
                 routeNumber,
-                author,
                 holdColor,
+                author,
                 gradeValue,
                 tapeColor,
                 function(response) {
