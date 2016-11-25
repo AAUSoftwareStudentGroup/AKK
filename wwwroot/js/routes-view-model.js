@@ -1,9 +1,3 @@
-$.ajax({
-  url: "js/eventnotifier.js",
-  dataType: "script",
-  async: false
-});
-
 function RoutesViewModel(client) {
     var self = this;
     this.client = client;
