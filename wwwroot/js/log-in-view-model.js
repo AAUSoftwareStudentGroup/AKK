@@ -15,10 +15,11 @@ function FindGetParam(param) {
     return result;
 }
 
-function LogInViewModel(client, navigationService) {
+function LogInViewModel(client, navigationService, cookieService) {
     var self = this;
     this.client = client;
     this.navigationService = navigationService;
+    this.cookieService = cookieService;
     
     this.init = function () {
         var getTarget = FindGetParam("target");
@@ -48,9 +49,8 @@ function LogInViewModel(client, navigationService) {
             console.log(response);
             if (response.success) {
                 if(response.data) {
-                    document.cookie = "token="+response.data+"; expires=Fri, 31 Dec 2035 23:59:59 GMT";
+                    self.cookieService.setToken(response.data);
                 }
-
                 self.navigationService.to(self.target);
             } else {
                 $("#error-message").html(response.message).show();

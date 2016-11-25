@@ -84,10 +84,6 @@ namespace AKK.Controllers {
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
             }
-            if (route.Author == null)
-            {
-                return new ApiErrorResponse<Route>("An author must be specified");   
-            }
             if (route.ColorOfHolds == null)
             {
                 return new ApiErrorResponse<Route>("A hold color must be specified");
@@ -121,7 +117,6 @@ namespace AKK.Controllers {
             else
             {
                 return new ApiErrorResponse<Route>("A section must be specified");
-
             }
                 
             var grades = _gradeRepository.GetAll().Where(g => g.Difficulty == route.Grade.Difficulty);
