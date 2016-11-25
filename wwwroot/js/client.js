@@ -323,18 +323,18 @@ function MemberClient(url, cookieService)
         });
     };
 
-    this.getRoles = function (token, success) {
+    this.getMemberInfo = function(success) {
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: url + "/role",
+            url: url,
             data:
             {
-                token: token
+                token: self.cookieService.getToken()
             },
             success: success
         });
-    };
+    }
 }
 
 function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)

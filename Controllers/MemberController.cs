@@ -1,3 +1,4 @@
+﻿
 ﻿using System.Collections;
 using System.Linq;
 using AKK.Controllers.ApiResponses;
@@ -32,6 +33,18 @@ namespace AKK.Controllers
             }
             
             return new ApiSuccessResponse<string>(token);
+        }
+
+        // GET: /api/member/
+        [HttpGet]
+        public ApiResponse<Member> GetMemberInfo(string token) {
+            var member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
+
+            if (member == null || token == null) {
+                return new ApiErrorResponse<Member>("Invalid token");
+            }
+
+            return new ApiSuccessResponse<Member>(member);
         }
 
         // GET: /api/member/logout
