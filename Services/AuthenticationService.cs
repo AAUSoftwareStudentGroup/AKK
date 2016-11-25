@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AKK.Models;
 using AKK.Models.Repositories;
@@ -8,6 +9,7 @@ namespace AKK.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IRepository<Member> _memberRepository;
+        private readonly List<Role> _roles;
 
         public AuthenticationService(IRepository<Member> memberRepository)
         {
@@ -66,6 +68,17 @@ namespace AKK.Services
                     return member != default(Member) && member.IsAdmin;
                 default:
                     return false;
+            }
+        }
+
+        public IEnumerable<Role> GetRoles(string token)
+        {
+            foreach (Role role in Enum.GetValues(typeof(Role)))
+            {
+                if (HasRole(token, role))
+                {
+                    yield return role;
+                }
             }
         }
     }
