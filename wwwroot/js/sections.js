@@ -6,7 +6,7 @@ $(document).ready(function () {
             var templateheader = Handlebars.compile(response);
             var sectionTemplate = Handlebars.compile($("#sectionsArea-template").html());
             var routeTemplate = Handlebars.compile($("#routes-template").html());
-            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL);
+            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
             viewModel = new SectionsViewModel(client);
             viewModel.addEventListener("DoneLoading", function changed() {
                 $("#header").html(templateheader({ viewModel: viewModel, title: "Sections-panel", location: "/"}));

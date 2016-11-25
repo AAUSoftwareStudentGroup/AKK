@@ -1,5 +1,7 @@
-function RouteClient(url)
+function RouteClient(url, cookieService)
 {
+    var self = this;
+    this.cookieService = cookieService;
     this.getRoutes = function(grade, sectionId, sortBy, success)
     {
         $.ajax({
@@ -7,7 +9,7 @@ function RouteClient(url)
             dataType: "json",
             url: url,
             data: 
-            {  
+            {
                 grade: grade,
                 sectionId: sectionId,
                 sortBy: sortBy
@@ -53,7 +55,7 @@ function RouteClient(url)
         });
     }
 
-    this.addRoute = function(sectionId, name, author, holdColor, grade, tape, success)
+    this.addRoute = function(sectionId, name, holdColor, grade, tape, success)
     {
         $.ajax({
             type: "POST",
@@ -61,9 +63,9 @@ function RouteClient(url)
             url: url,
             data:
             {
+                token: self.cookieService.getToken(),
                 sectionId: sectionId,
                 name: name,
-                author: author,
                 grade: grade,
                 colorOfHolds: holdColor,
                 colorOfTape: tape
@@ -71,7 +73,7 @@ function RouteClient(url)
             success: success
         });
     };
-    this.updateRoute = function(routeId, sectionId, name, author, holdColor, grade, tape, image, success)
+    this.updateRoute = function(routeId, sectionId, name, holdColor, grade, tape, image, success)
     {
         $.ajax({
             type: "PATCH",
@@ -79,8 +81,8 @@ function RouteClient(url)
             url: url + "/" + routeId,
             data:
             {
+                token: self.cookieService.getToken(),
                 id: routeId,
-            //    sectionName: sectionName,
                 sectionId: sectionId,
                 name: name,
                 author: author,
@@ -101,6 +103,7 @@ function RouteClient(url)
             url: url + "/" + id,
             data:
             {
+                token: self.cookieService.getToken(),
                 id: id
             },
             success: success
@@ -108,8 +111,10 @@ function RouteClient(url)
     };
 }
 
-function SectionClient(url)
+function SectionClient(url, cookieService)
 {
+    var self = this;
+    this.cookieService = cookieService;
     this.getAllSections = function(success)
     {
         $.ajax({
@@ -143,6 +148,7 @@ function SectionClient(url)
             url: url,
             data:
             {
+                token: self.cookieService.getToken(),
                 name: name
             },
             success: success
@@ -157,6 +163,7 @@ function SectionClient(url)
             url: url + "/" + name,
             data:
             {
+                token: self.cookieService.getToken(),
                 name: name
             },
             success: success
@@ -171,6 +178,7 @@ function SectionClient(url)
             url: url + "/" + name + "/routes",
             data:
             {
+                token: self.cookieService.getToken(),
                 name: name
             },
             success: success
@@ -185,6 +193,7 @@ function SectionClient(url)
             url: url,
             data:
             {
+                token: self.cookieService.getToken(),
                 sectionId: sectionId,
                 newName: newName
             },
@@ -193,8 +202,10 @@ function SectionClient(url)
     };
 }
 
-function GradeClient(url)
+function GradeClient(url, cookieService)
 {
+    var self = this;
+    this.cookieService = cookieService;
     this.getAllGrades = function(success)
     {
         $.ajax({
@@ -213,6 +224,7 @@ function GradeClient(url)
             url: url,
             data:
             {
+                token: self.cookieService.getToken(),
                 grade: grade
             },
             success: success
@@ -241,6 +253,7 @@ function GradeClient(url)
             url: url + "/" + gradeId,
             data:
             {
+                token: self.cookieService.getToken(),
                 id: gradeId
             },
             success: success
@@ -249,8 +262,10 @@ function GradeClient(url)
 }
 
 
-function MemberClient(url)
+function MemberClient(url, cookieService)
 {
+    var self = this;
+    this.cookieService = cookieService;
     this.logIn = function(username, password, success)
     {
         $.ajax({
@@ -262,11 +277,15 @@ function MemberClient(url)
                 username: username,
                 password: password
             },
-            success: success
+            success: function(response) {
+                if(response.success)
+                    self.cookieService.setToken(response.data);
+                success(response);
+            }
         });
     };
 
-    this.logOut = function(token, success)
+    this.logOut = function(success)
     {
         $.ajax({
             type: "GET",
@@ -274,9 +293,13 @@ function MemberClient(url)
             url: url + "/logout",
             data:
             {
-                token: token
+                token: self.cookieService.getToken()
             },
-            success: success
+            success: function(response) {
+                if(response.success)
+                    self.cookieService.expireToken();
+                success(response);
+            }
         });
     };
 
@@ -292,15 +315,19 @@ function MemberClient(url)
                 username: username,
                 password: password
             },
-            success: success
+            success: function(response) {
+                if(response.success)
+                    self.cookieService.setToken(response.data);
+                success(response);
+            }
         });
     };
 }
 
-function Client(routeUrl, sectionUrl, gradeUrl, memberUrl)
+function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)
 {
-    this.routes = new RouteClient(routeUrl);
-    this.sections = new SectionClient(sectionUrl);
-    this.grades = new GradeClient(gradeUrl);
-    this.members = new MemberClient(memberUrl);
+    this.routes = new RouteClient(routeUrl, cookieService);
+    this.sections = new SectionClient(sectionUrl, cookieService);
+    this.grades = new GradeClient(gradeUrl, cookieService);
+    this.members = new MemberClient(memberUrl, cookieService);
 }
