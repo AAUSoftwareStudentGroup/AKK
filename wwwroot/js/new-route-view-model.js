@@ -4,6 +4,12 @@ function NewRouteViewModel(client, navigationService) {
         this.getSections();
         this.getGrades();
         self.trigger("HoldColorUpdated");
+        self.client.members.getMemberInfo(function(response) {
+            if (response.success) {
+                self.changeAuthor(response.data.displayName);
+                self.trigger("DataLoaded");
+            }
+        });
     }
 
     var self = this;
@@ -87,10 +93,11 @@ function NewRouteViewModel(client, navigationService) {
             var tapeColor = self.selectedTapeColor;
             var routeNumber = self.routeNumber;
             var author = self.author;
-            self.client.routes.addRoute(sectionId,
+            self.client.routes.addRoute(
+                sectionId,
                 routeNumber,
-                author,
                 holdColor,
+                author,
                 gradeValue,
                 tapeColor,
                 function(response) {

@@ -55,7 +55,7 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addRoute = function(sectionId, name, holdColor, grade, tape, success)
+    this.addRoute = function(sectionId, name, holdColor, author, grade, tape, success)
     {
         $.ajax({
             type: "POST",
@@ -66,6 +66,7 @@ function RouteClient(url, cookieService)
                 token: self.cookieService.getToken(),
                 sectionId: sectionId,
                 name: name,
+                author: author,
                 grade: grade,
                 colorOfHolds: holdColor,
                 colorOfTape: tape
