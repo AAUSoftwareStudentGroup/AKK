@@ -44,7 +44,7 @@ namespace AKK.Controllers
 
         // POST: /api/member
         [HttpPost]
-        public ApiResponse<string> CreateMember(string username, string password, string displayName)
+        public ApiResponse<string> AddMember(string username, string password, string displayName)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(displayName)) {
                 return new ApiErrorResponse<string>("Failed to create user. Missing username, password or display name");
@@ -54,11 +54,6 @@ namespace AKK.Controllers
             if (member != default(Member))
             {
                 return new ApiErrorResponse<string>("Username is already in use");
-            }
-
-            member = _memberRepository.GetAll().FirstOrDefault(m => m.DisplayName == displayName);
-            if (member != default(Member)) {
-                return new ApiErrorResponse<string>("Display name is already in use");
             }
 
             _memberRepository.Add(new Member 
