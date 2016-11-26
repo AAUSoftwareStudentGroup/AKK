@@ -219,6 +219,7 @@ namespace AKK.Controllers {
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
+            routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
             if(route.Image != null)
             {
                 if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {

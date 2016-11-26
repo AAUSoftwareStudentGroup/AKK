@@ -8,22 +8,22 @@ using AKK.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161123102930_nuke")]
-    partial class nuke
+    [Migration("20161125111658_dbinit")]
+    partial class dbinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
 
-            modelBuilder.Entity("AKK.Classes.Models.Grade", b =>
+            modelBuilder.Entity("AKK.Models.Grade", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<uint?>("ColorDb");
-
                     b.Property<int>("Difficulty");
+
+                    b.Property<uint?>("HexColor");
 
                     b.Property<string>("Name");
 
@@ -32,7 +32,48 @@ namespace AKK.Migrations
                     b.ToTable("Grades");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Member", b =>
+            modelBuilder.Entity("AKK.Models.Hold", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("ImageId");
+
+                    b.Property<double>("Radius");
+
+                    b.Property<double>("X");
+
+                    b.Property<double>("Y");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("Holds");
+                });
+
+            modelBuilder.Entity("AKK.Models.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileUrl");
+
+                    b.Property<uint>("Height");
+
+                    b.Property<Guid>("RouteId");
+
+                    b.Property<uint>("Width");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RouteId")
+                        .IsUnique();
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("AKK.Models.Member", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -43,6 +84,8 @@ namespace AKK.Migrations
 
                     b.Property<string>("Password");
 
+                    b.Property<string>("Token");
+
                     b.Property<string>("Username");
 
                     b.HasKey("Id");
@@ -50,18 +93,20 @@ namespace AKK.Migrations
                     b.ToTable("Members");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
+            modelBuilder.Entity("AKK.Models.Route", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<uint?>("ColorOfHoldsDb");
-
-                    b.Property<uint?>("ColorOfTapeDb");
+                    b.Property<string>("Author");
 
                     b.Property<DateTime>("CreatedDate");
 
                     b.Property<Guid>("GradeId");
+
+                    b.Property<uint?>("HexColorOfHolds");
+
+                    b.Property<uint?>("HexColorOfTape");
 
                     b.Property<Guid>("MemberId");
 
@@ -82,7 +127,7 @@ namespace AKK.Migrations
                     b.ToTable("Routes");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Section", b =>
+            modelBuilder.Entity("AKK.Models.Section", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
@@ -94,19 +139,35 @@ namespace AKK.Migrations
                     b.ToTable("Sections");
                 });
 
-            modelBuilder.Entity("AKK.Classes.Models.Route", b =>
+            modelBuilder.Entity("AKK.Models.Hold", b =>
                 {
-                    b.HasOne("AKK.Classes.Models.Grade", "Grade")
+                    b.HasOne("AKK.Models.Image", "Image")
+                        .WithMany("Holds")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AKK.Models.Image", b =>
+                {
+                    b.HasOne("AKK.Models.Route")
+                        .WithOne("Image")
+                        .HasForeignKey("AKK.Models.Image", "RouteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AKK.Models.Route", b =>
+                {
+                    b.HasOne("AKK.Models.Grade", "Grade")
                         .WithMany("Routes")
                         .HasForeignKey("GradeId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AKK.Classes.Models.Member", "Member")
+                    b.HasOne("AKK.Models.Member", "Member")
                         .WithMany("Routes")
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AKK.Classes.Models.Section", "Section")
+                    b.HasOne("AKK.Models.Section", "Section")
                         .WithMany("Routes")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade);
