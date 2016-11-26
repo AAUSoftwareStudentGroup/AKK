@@ -45,7 +45,7 @@ function LogInViewModel(client, navigationService, cookieService) {
                 if(response.data) {
                     self.cookieService.setToken(response.data);
                 }
-                self.navigationService.to(self.target);
+                window.history.back();
             } else {
                 $("#error-message").html(response.message).show();
             }

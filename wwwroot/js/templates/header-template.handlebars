@@ -1,13 +1,11 @@
 ﻿<script src="js/templates/header-template.js"></script>
 <div class="header">
     <div class="header-content">
-        {{#if location}}
-        <a class="header-button left" href="{{location}}">
+        <a class="header-button left" onclick="window.history.back();">
             <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
                 <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
             </svg>
         </a>
-        {{/if}}
         <h1 class="page-title">{{title}}</h1>
         <span class="header-button right" id="navbar">
             <svg width="20" height="20" viewBox="0 0 1792 1792" fill="white" xmlns="http://www.w3.org/2000/svg">

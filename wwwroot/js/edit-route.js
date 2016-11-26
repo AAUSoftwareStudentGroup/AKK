@@ -15,7 +15,7 @@ $(document).ready(function () {
                     $("#header").html(templateheader({ viewModel: viewModel, title: "Edit Route", location: "route-info?routeId=" + viewModel.routeId}));
                     $('#content').html(template(viewModel));
                     $('#section-input-' + viewModel.selectedSection.name).prop("checked", true);
-                    $('#grade-input-' + viewModel.selectedGrade.difficulty).prop("checked", true);
+                    $('#grade-input-' + viewModel.selectedGrade.id).prop("checked", true);
                 });
 
             viewModel.addEventListener("OnImageChanged",

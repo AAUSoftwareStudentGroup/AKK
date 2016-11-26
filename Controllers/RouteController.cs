@@ -33,13 +33,13 @@ namespace AKK.Controllers {
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse<IEnumerable<Route>> GetRoutes(int? grade, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
+        public ApiResponse<IEnumerable<Route>> GetRoutes(Guid? gradeId, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
         {
             var routes = _routeRepository.GetAll();
 
-            if (grade != null)
+            if (gradeId != null)
             {
-                routes = routes.Where(r => r.Grade.Difficulty == grade);
+                routes = routes.Where(r => r.GradeId == gradeId);
             }
             if (sectionId != null)
             {
@@ -80,41 +80,30 @@ namespace AKK.Controllers {
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse<Route> AddRoute(string token, Route route, string sectionName) 
+        public ApiResponse<Route> AddRoute(string token, Route route) 
         {
             route.Member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
+
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
             }
+
             if (route.ColorOfHolds == null)
             {
                 return new ApiErrorResponse<Route>("A hold color must be specified");
             }
-            if (route.Grade == null)
-            {
-                return new ApiErrorResponse<Route>("A grade must be specified");
-            }
+
             if (route.Name == null)
             {
                 return new ApiErrorResponse<Route>("A route number must be specified");
             }
 
-            var sections = _sectionRepository.GetAll();
             if(route.SectionId != default(Guid))     
             {
-                sections = sections.Where(s => s.Id == route.SectionId);
-                if (!sections.Any())
+                if (_sectionRepository.Find(route.SectionId) == null)
                 {
                     return new ApiErrorResponse<Route>($"No section with id {route.SectionId}");
-                }
-            }
-            else if (sectionName != null)
-            {
-                sections = sections.Where(s => s.Name == sectionName);
-                if (!sections.Any())
-                {
-                    return new ApiErrorResponse<Route>($"No section with name {sectionName}");
                 }
             }
             else
@@ -122,29 +111,29 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse<Route>("A section must be specified");
             }
                 
-            var grades = _gradeRepository.GetAll().Where(g => g.Difficulty == route.Grade.Difficulty);
-            if (!grades.Any())
+            if(route.GradeId != default(Guid))     
             {
-                return new ApiErrorResponse<Route>("No grade with given difficulty");
+                if (_gradeRepository.Find(route.GradeId) == null)
+                {
+                    return new ApiErrorResponse<Route>($"No grade with id {route.GradeId}");
+                }
             }
-            route.Grade = grades.First();
+            else
+            {
+                return new ApiErrorResponse<Route>("A grade must be specified");
+            }
 
-            if (_routeRepository.GetAll().Any(r => r.Grade.Difficulty == route.Grade.Difficulty && r.Name == route.Name))
+            if (_routeRepository.GetAll().Any(r => r.GradeId == route.GradeId && r.Name == route.Name))
             {
                 return new ApiErrorResponse<Route>("A route with this grade and number already exists");
             }
 
-            Section section = sections.First();
             route.CreatedDate = DateTime.Now; 
-            route.Section = section; 
-            route.SectionId = section.Id;
-            
-            section.Routes.Add(route);
             _routeRepository.Add(route);
 
             try
             {
-                _gradeRepository.Save();
+                _routeRepository.Save();
                 return new ApiSuccessResponse<Route>(route);
             }
             catch

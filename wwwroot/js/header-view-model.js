@@ -4,8 +4,9 @@
     async: false
 });
 
-function HeaderViewModel(client, cookieService) {
+function HeaderViewModel(title, client, cookieService) {
     var self = this;
+    this.title = title;
     this.client = client;
     this.isAuthenticated = false;
     this.isAdmin = false;

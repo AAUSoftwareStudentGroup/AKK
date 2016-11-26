@@ -10,7 +10,7 @@ $(document).ready(function () {
             var templatefiltersection = Handlebars.compile($("#filter-section-template").html());
             var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
             viewModel = new RoutesViewModel(client);
-            headerViewModel = new HeaderViewModel(client, new CookieService());
+            headerViewModel = new HeaderViewModel("Find Route", client, new CookieService());
             viewModel.addEventListener("RoutesChanged", function () {
                 $('#content').html(template(viewModel));
                 $('#grade-' + viewModel.selectedGrade.difficulty).prop("selected", true);
@@ -23,12 +23,7 @@ $(document).ready(function () {
                     $("#search-field").focus();
                 }
             });
-
-            headerViewModel.addEventListener("headerUpdated",
-                function () {
-                    console.log(headerViewModel);
-                    $("#header").html(templateheader({ viewModel: headerViewModel, title: "Find Route" }));
-                });
+            
             viewModel.init();          
         });
     $(document).on("input", "#search-field", function() {
