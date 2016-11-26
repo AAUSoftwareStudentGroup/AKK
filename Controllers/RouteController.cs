@@ -33,7 +33,7 @@ namespace AKK.Controllers {
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse<IEnumerable<Route>> GetRoutes(Guid? gradeId, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
+        public ApiResponse<IEnumerable<Route>> GetRoutes(Guid? gradeId, Guid? sectionId, string searchStr, int? maxResults, SortOrder sortBy)
         {
             var routes = _routeRepository.GetAll();
 
@@ -75,6 +75,12 @@ namespace AKK.Controllers {
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
+
+            if(maxResults != null && routes.Count() > maxResults)
+            {
+                routes = routes.Take(maxResults.Value);
+            }
+
             return new ApiSuccessResponse<IEnumerable<Route>>(routes);
         }
 
@@ -150,7 +156,9 @@ namespace AKK.Controllers {
             {
                 return new ApiErrorResponse<IEnumerable<Route>>("You need to be logged in as an administrator to delete all routes");
             }
-            var routes = _routeRepository.GetAll();
+
+            var routes = _routeRepository.GetAll().ToList();
+
             if (!routes.Any())
             {
                 return new ApiErrorResponse<IEnumerable<Route>>("No routes exist");
@@ -160,9 +168,9 @@ namespace AKK.Controllers {
             var resultCopy = JsonConvert.DeserializeObject(
                 JsonConvert.SerializeObject(routes)) as IEnumerable<Route>;
 
-            foreach (var route in routes)
+            for(int index = 0; index < routes.Count; index++)
             {
-                _routeRepository.Delete(route);
+                _routeRepository.Delete(routes[index].Id);
             }
 
             try
@@ -215,28 +223,44 @@ namespace AKK.Controllers {
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to edit a route");
             }
+
             Route routeToUpdate = _routeRepository.Find(routeId);
+
+            if(routeToUpdate == null)
+            {
+                return new ApiErrorResponse<Route>($"Could not find route with id {routeId}");
+            }
+                
+            if(route == null)
+            {
+                return new ApiSuccessResponse<Route>(routeToUpdate);
+            }
+            
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
-            routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
+            
             if(route.Image != null)
             {
                 if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
                     Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
-                    _imageRepository.Delete(img);
+                    _imageRepository.Delete(img.Id);
                 }
 
                 routeToUpdate.Image = route.Image;
             }
+
             if(route.GradeId != default(Guid))
             {
                 routeToUpdate.Grade = _gradeRepository.Find(route.GradeId);
+                routeToUpdate.GradeId = routeToUpdate.Grade.Id;
             }
+
             if(route.SectionId != default(Guid))
             {
                 routeToUpdate.SectionId = route.SectionId;
             }
+
             try
             {
                 _routeRepository.Save();
@@ -265,13 +289,12 @@ namespace AKK.Controllers {
             
             // Create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(route)) as Route;
-            _routeRepository.Delete(route);
+            _routeRepository.Delete(route.Id);
 
             try
             {
                 _routeRepository.Save();
                 return new ApiSuccessResponse<Route>(resultCopy);
-
             }
             catch
             {

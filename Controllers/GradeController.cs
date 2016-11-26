@@ -130,7 +130,7 @@ namespace AKK.Controllers
             Grade resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade)) as Grade;
             //resultCopy = new Grade();
             //System.Console.WriteLine(resultCopy.Color.R);
-            _gradeRepository.Delete(grade);
+            _gradeRepository.Delete(grade.Id);
 
             try
             {

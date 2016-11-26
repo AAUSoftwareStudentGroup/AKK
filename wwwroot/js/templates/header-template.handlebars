@@ -15,11 +15,11 @@
     </div>
 </div>
 <span class="navigation" id="navigationid" style="display:none;">
-    {{#if viewModel.isAdmin}}
+    {{#if isAdmin}}
     <a href="sections">Admin-panel</a>
     {{/if}}
     <a href="new-route">Add route</a>
-    {{#if viewModel.isAuthenticated}}
+    {{#if isAuthenticated}}
        <span onclick="headerViewModel.CookieService.expireToken()"> <a href="/">Logout</a></span>
     {{else}}
         <a href="/login">Login</a>

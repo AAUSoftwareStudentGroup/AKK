@@ -26,7 +26,6 @@ function HeaderViewModel(title, client, cookieService) {
             self.trigger("headerUpdated");
         });
     };
-    this.init();
 };
 
 HeaderViewModel.prototype = new EventNotifier();

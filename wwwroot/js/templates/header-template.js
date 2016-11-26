@@ -9,8 +9,4 @@
             navigationContent.style.display = "none";
         }
     }
-
-    headerViewModel.addEventListener("headerUpdated", function () {
-        $("#header").html(templateheader({ viewModel: headerViewModel, title: "Find Route" }));
-    });
 });
