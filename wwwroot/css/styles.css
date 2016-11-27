@@ -244,8 +244,9 @@ input[type="checkbox"] {
 .content {
     width: 100%;
     max-width: 304px;
-    margin: 64px auto 0px auto;
     padding: 8px;
+    padding-top: 72px;
+    margin: 0px auto 0px auto;
     overflow: hidden;
 }
 
@@ -391,7 +392,6 @@ input[type="checkbox"] {
     .radio-inputs input {
         display: none;
     }
-
     .radio-inputs label {
         width: 48px;
         height: 48px;
@@ -522,6 +522,7 @@ input[type="checkbox"] {
 }
 
 #search-field {
+    outline: none;
     width: calc(100% - 50px);
     padding: 0 10px;
     border-style: solid;
@@ -557,4 +558,3 @@ input[type="checkbox"] {
     .button-group input:last-of-type {
         float: right;
     }
-

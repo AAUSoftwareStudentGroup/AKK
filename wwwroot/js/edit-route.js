@@ -15,7 +15,7 @@ $(document).ready(function () {
             var contentTemplate = Handlebars.compile($("#edit-route-template").html());
             var holdsTemplate = Handlebars.compile($("#edit-route-holds-template").html());
 
-            viewModel = new EditRouteViewModel(client);
+            viewModel = new EditRouteViewModel(client, new NavigationService());
             viewModel.addEventListener("OnGradeOrSectionChanged", function () {
                 $('#content').html(contentTemplate(viewModel));
                 $('#section-input-' + viewModel.selectedSection.name).prop("checked", true);
