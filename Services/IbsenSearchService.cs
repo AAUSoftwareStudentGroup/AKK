@@ -12,7 +12,7 @@ namespace AKK.Services
         private readonly int _numRoutes;
         private readonly IEnumerable<Route> _allRoutes;
 
-        public IbsenSearchService(IEnumerable<Route> allRoutes, int maxResults)
+        public IbsenSearchService(IEnumerable<Route> allRoutes)
         {
             _allRoutes = allRoutes;
             _numRoutes = _allRoutes.Count();
@@ -72,7 +72,7 @@ namespace AKK.Services
 
         private IEnumerable<string> _splitSearchStr(string searchStr)
         {
-            var searchTerms = Regex.Split(searchStr, @"\s{1,}").ToList();
+            var searchTerms = Regex.Split(searchStr.Trim(), @"\s+").ToList();
             var numSearchTerms = searchTerms.Count;
 
             //If a single letter is followed by a string of digits, split them into two searchterms.

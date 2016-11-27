@@ -69,7 +69,7 @@ namespace AKK.Controllers
             if (!string.IsNullOrEmpty(searchStr))
             {
                 //Initialize a RouteSearcher
-                ISearchService<Route> searcher = new IbsenSearchService(routes, maxResults);
+                ISearchService<Route> searcher = new RouteSearchService(routes);
 
                 //Search for route
                 routes = searcher.Search(searchStr);

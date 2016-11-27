@@ -22,6 +22,12 @@ namespace AKK.Services
             //Split search string into searchterms
             var searchTerms = _splitSearchStr(searchStr);
 
+            Console.WriteLine();
+            Console.WriteLine("New search:");
+            foreach (var searchTerm in searchTerms) {
+                Console.WriteLine($"Searchterm: {searchTerm}");   
+            }
+
             //Binds all routes together with an int value representing the Levenshtein distance.
             List<Tuple<Route, float>> routesWithDist = new List<Tuple<Route, float>>();
             for (int i = 0; i < _numRoutes; i++)
@@ -65,7 +71,7 @@ namespace AKK.Services
 
         private IEnumerable<string> _splitSearchStr(string searchStr)
         {
-            var searchTerms = Regex.Split(searchStr, @"\s{1,}").ToList();
+            var searchTerms = Regex.Split(searchStr.Trim(), @"\s+").ToList();
             var numSearchTerms = searchTerms.Count;
 
             //If a single letter is followed by a string of digits, split them into two searchterms.

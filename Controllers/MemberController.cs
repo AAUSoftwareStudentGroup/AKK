@@ -78,6 +78,7 @@ namespace AKK.Controllers
 
             return Login(username, password);
         }
+
         // GET: /api/member/role
         [HttpGet("role")]
         public ApiResponse<IEnumerable> GetRole(string token)
