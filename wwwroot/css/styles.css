@@ -136,8 +136,9 @@ input {
 .content {
     width: 100%;
     max-width: 304px;
-    margin: 64px auto 0px auto;
     padding: 8px;
+    padding-top: 72px;
+    margin: 0px auto 0px auto;
     overflow: hidden;
 }
 
@@ -147,6 +148,7 @@ input {
 
 .submit-button {
     padding: 11px 18px 10px 18px;
+    margin-bottom: 18px;
     float: right;
     border: none;
     border-radius: 2px;
@@ -263,17 +265,16 @@ input {
 }
 
 .radio-inputs {
-    text-align: justify;
+    word-spacing: 10px;
 }
 
     .radio-inputs input {
         display: none;
     }
-
     .radio-inputs label {
         margin-bottom: 15px;
-        width: 48px;
-        height: 48px;
+        width: 49.5px;
+        height: 50px;
         vertical-align: top;
         display: inline-block;
     }
@@ -304,8 +305,9 @@ input {
 }
 
     .section-picker label span,
+    .grade-picker label span,
     .color-picker label svg {
-        width: 46px;
+        width: 50px;
         color: #222222;
         font-size: 18px;
         display: inline-block;

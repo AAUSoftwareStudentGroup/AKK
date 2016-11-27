@@ -1,6 +1,8 @@
-function SectionsViewModel(client)
+function SectionsViewModel(client, dialogService)
 {
     var self = this;
+    this.client = client;
+    this.dialogService = dialogService;
     this.init = function()
     {
         self.getGrades();
@@ -18,7 +20,6 @@ function SectionsViewModel(client)
             }
         });
     };
-    this.client = client;
     this.selectedSection = null;
     this.selectedGrade = null;
     this.routes = [];
@@ -87,7 +88,7 @@ function SectionsViewModel(client)
     };
     this.addNewSection = function()
     {
-        var name = prompt("Enter name of new Section","");
+        var name = self.dialogService.prompt("Enter name of new Section","");
         var response;
         self.client.sections.addSection(name, function(response) {
             if(response.success)
@@ -116,7 +117,7 @@ function SectionsViewModel(client)
     };
     this.renameSection = function()
     {
-        var newName = prompt("Enter the new name","");
+        var newName = self.dialogService.prompt("Enter the new name","");
         if(self.selectedSection != null && confirm("Do you really want to rename this section?"))
         {
             self.client.sections.renameSection(self.selectedSection.id, newName, function(response) {
@@ -127,7 +128,7 @@ function SectionsViewModel(client)
     };
     this.addNewGrade = function()
     {
-        var name = prompt("Enter name of new Difficulty", "");
+        var name = self.dialogService.prompt("Enter name of new Difficulty", "");
         var newGrade = self.grades[0];
         newGrade.name = name;
         newGrade.difficulty = self.grades.length + 1;

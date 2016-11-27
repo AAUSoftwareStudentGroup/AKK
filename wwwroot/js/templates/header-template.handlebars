@@ -16,13 +16,13 @@
 </div>
 <span class="navigation" id="navigationid">
     {{#if isAdmin}}
-    <a href="sections">Admin-panel</a>
+    <a href="sections">Admin Panel</a>
     {{/if}}
-    <a href="new-route">Add route</a>
+    <a href="new-route">Add Route</a>
     {{#if isAuthenticated}}
        <span onclick="headerViewModel.CookieService.expireToken()"> <a href="/">Logout</a></span>
     {{else}}
-        <a href="/login">Login</a>
+        <a href="/login">Log In</a>
     {{/if}}
 </span>
 <span class="navigation-closer" id="navigationcloserid"></span>
