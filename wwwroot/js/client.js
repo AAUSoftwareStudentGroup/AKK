@@ -10,7 +10,7 @@ function RouteClient(url, cookieService)
             url: url,
             data: 
             {
-                grade: grade,
+                gradeId: grade,
                 sectionId: sectionId,
                 sortBy: sortBy
             },
@@ -55,7 +55,7 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addRoute = function(sectionId, name, holdColor, author, grade, tape, success)
+    this.addRoute = function(sectionId, name, holdColor, gradeId, tape, success)
     {
         $.ajax({
             type: "POST",
@@ -66,15 +66,14 @@ function RouteClient(url, cookieService)
                 token: self.cookieService.getToken(),
                 sectionId: sectionId,
                 name: name,
-                author: author,
-                grade: grade,
+                gradeId: gradeId,
                 colorOfHolds: holdColor,
                 colorOfTape: tape
             },
             success: success
         });
     };
-    this.updateRoute = function(routeId, sectionId, name, holdColor, grade, tape, image, success)
+    this.updateRoute = function(routeId, sectionId, name, holdColor, gradeId, tape, image, success)
     {
         $.ajax({
             type: "PATCH",
@@ -86,9 +85,8 @@ function RouteClient(url, cookieService)
                 id: routeId,
                 sectionId: sectionId,
                 name: name,
-                author: author,
                 colorOfHolds: holdColor,
-                grade: grade,
+                gradeId: gradeId,
                 colorOfTape: tape,
                 image: image
             },
@@ -261,7 +259,6 @@ function GradeClient(url, cookieService)
         });
     };
 }
-
 
 function MemberClient(url, cookieService)
 {

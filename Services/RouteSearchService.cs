@@ -15,6 +15,7 @@ namespace AKK.Services
         {
             _allRoutes = allRoutes;
             _numRoutes = allRoutes.Count();
+
         }
 
         public IEnumerable<Route> Search(string searchStr)
@@ -50,11 +51,12 @@ namespace AKK.Services
             }
 
             //Sorts routes by their Levenshtein distance.
-            var sortedRoutes = routesWithDist.OrderBy(x => x.Item2);
+            var sortedRoutes = routesWithDist.OrderBy(x => x.Item2).ToList();
 
             //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
             var threshold = 2;
             var foundRoutes = new List<Route>();
+
             for (int i = 0; i < _numRoutes; i++)
             {
                 var el = sortedRoutes.ElementAt(i);

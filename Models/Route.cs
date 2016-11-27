@@ -9,7 +9,7 @@ namespace AKK.Models
         Newest, Oldest, Grading, Author
     }
 
-    public class Route : Model
+    public class Route : Model, ICloneable<Route>
     {
         public Route()
         {
@@ -18,20 +18,25 @@ namespace AKK.Models
 
         public override bool Equals (object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
+            Route route = obj as Route;
+
+            if (obj == null || route == null)
             {
                 return false;
             }
 
-            Route input = (Route) obj;
-
-            return Author == input.Author && Id == input.Id && Name == input.Name 
-                && CreatedDate == input.CreatedDate && Grade == input.Grade && SectionId == input.SectionId;
+            return Id == route.Id && Name == route.Name && CreatedDate == route.CreatedDate 
+                && GradeId == route.GradeId && SectionId == route.SectionId && MemberId == route.MemberId;
         }
         
         public override int GetHashCode()
         {
             return int.Parse(Name);
+        }
+
+        public Route Clone()
+        {
+            return JsonConvert.DeserializeObject<Route>(JsonConvert.SerializeObject(this));
         }
 
         public Guid MemberId { get; set; }
