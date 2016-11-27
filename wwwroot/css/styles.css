@@ -61,9 +61,6 @@ input {
     width: 75%;
     background-color: #424242;
     animation-name: navigation-show;
-        -webkit-box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
--moz-box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
-box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
     animation-duration: 0.3s;
     animation-timing-function: linear;
 }
