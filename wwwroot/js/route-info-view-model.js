@@ -43,7 +43,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             console.log(self);
             self.client.routes.deleteRoute(self.route.id, function (response) {
                 if (response.success) {
-                    navigationService.back();
+                    navigationService.toRoutes();
                 }
             });
         }

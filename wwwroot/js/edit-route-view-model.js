@@ -205,7 +205,7 @@ function EditRouteViewModel(client, navigationService)
             self.client.routes.updateRoute(routeId, sectionId, routeNumber, holdColor, gradeId, tapeColor, imgObject, function(response) {
                 if(response.success)
                 {
-                    window.history.back();
+                    navigationService.toRouteInfo(routeId);
                 }
                 else
                 {
