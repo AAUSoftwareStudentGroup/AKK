@@ -167,7 +167,8 @@ function EditRouteViewModel(client)
     };
     this.addHold = function(hold) 
     {
-        self.holds.push(hold);
+        self.HoldPositions.push(hold);
+        self.trigger("HoldsUpdated");
     },
     this.gradesGotTape =  function()
     {

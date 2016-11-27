@@ -131,7 +131,18 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <label class="submit-button left" style="background-color:#448AFF;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
+                <div class="submit-button left" onclick="viewModel.gradesGotTape()" style="background-color:#448AFF;">
+                    {{#if_eq hasTape true}}
+                        <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                            <path fill="#FFF" d="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                    {{else}}
+                        <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                            <path fill="#FFF" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                    {{/if_eq}}
+                    Uses tape
+                </div>
             </div>
         </script>
         <div id="holdColorContent"></div>
