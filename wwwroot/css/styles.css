@@ -51,7 +51,7 @@ input {
     left: 0;
     width: 0%;
     position: fixed;
-
+    padding-top: 72px;
     z-index: 666;
     height: 100%;
     overflow: hidden;
@@ -313,6 +313,10 @@ input {
         display: inline-block;
         text-align: center;
         line-height: 49px;
+    }
+
+    .color-picker label svg {
+        width: 46px;
     }
 
 .section-picker input:checked + label,
