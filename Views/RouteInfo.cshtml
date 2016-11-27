@@ -15,6 +15,7 @@
     <script type="text/javascript" src="js/route-info-view-model.js"></script>
     <script type="text/javascript" src="js/route-canvas.js"></script>
     <script type="text/javascript" src="js/helpers.js"></script>
+    <script type="text/javascript" src="js/header-view-model.js"></script>
 </head>
 <body>
     <script src="js/route-info.js"></script>
@@ -71,8 +72,8 @@
                     <span class="route-date">{{route.date}}</span>
                 </div>
             </div>
-            <input class="submit-button create-route-button left" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
-            <input class="submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute('{{route.id}}')" value="Delete"></input>
+            <input class="bottom-padding submit-button create-route-button left" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
+            <input class="bottom-padding submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute()" value="Delete"></input>
         </div>
     </script>
     <div id ="header"></div>

@@ -9,7 +9,6 @@ namespace AKK.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IRepository<Member> _memberRepository;
-        private readonly List<Role> _roles;
 
         public AuthenticationService(IRepository<Member> memberRepository)
         {

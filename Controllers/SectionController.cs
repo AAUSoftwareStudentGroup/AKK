@@ -62,16 +62,16 @@ namespace AKK.Controllers {
             {
                 return new ApiErrorResponse<IEnumerable<Section>>("You need to be logged in as an administrator to delete all sections");
             }
-            var sections = _sectionRepository.GetAll();
+            var sections = _sectionRepository.GetAll().ToList();
             if(!sections.Any())
                 return new ApiErrorResponse<IEnumerable<Section>>("No sections exist");
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections)) as IEnumerable<Section>;
 
-            foreach (Section section in sections)
+            for(int index = 0; index < sections.Count; index++)
             {
-                _sectionRepository.Delete(section);
+                _sectionRepository.Delete(sections[index].Id);
             }
 
             try
@@ -125,7 +125,7 @@ namespace AKK.Controllers {
                 // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
                 var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section)) as Section;
         
-                _sectionRepository.Delete(section);
+                _sectionRepository.Delete(section.Id);
 
                 try
                 {

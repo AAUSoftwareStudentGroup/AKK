@@ -41,13 +41,14 @@ function RouteInfoViewModel(client, navigationService) {
     };
     this.deleteRoute = function () {
         if (self.route != null && confirm("Do you really want to delete this route?")) {
-            self.client.routes.deleteRoute(self.route.routeId,
-                function (response) {
-                    if (response.success) {
-                        navigationService.back();
-                    }
-                });
+            console.log(self);
+            self.client.routes.deleteRoute(self.route.id, function (response) {
+                if (response.success) {
+                    navigationService.back();
+                }
+            });
         }
     };
 }
+
 RouteInfoViewModel.prototype = new EventNotifier();

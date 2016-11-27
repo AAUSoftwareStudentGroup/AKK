@@ -7,11 +7,29 @@ function RoutesViewModel(client) {
     this.selectedTape = null;
     this.selectedSortBy = null;
     this.routes = [];
+    this.init = function () {
+        self.client.grades.getAllGrades(function (gradesResponse) {
+            self.client.sections.getAllSections(function (sectionsResponse) {
+                if (gradesResponse.success && sectionsResponse.success) {
+                    self.sections = [{ id: "", name: "All" }];
+                    self.sections = self.sections.concat(sectionsResponse.data);
+                    self.grades = [{ id: "", name: "All" }];
+                    self.grades = self.grades.concat(gradesResponse.data);
+                    self.selectedGrade = self.grades[0];
+                    self.selectedSection = self.sections[0];
+                    self.selectedSortBy = self.sortOptions[0];
+                    self.refreshRoutes();
+                    self.trigger("RoutesChanged");
+                    self.trigger("SearchMethodChanged");
+                }
+            });
+        });
+    };
     this.grades = [
-        { difficulty: -1, name: "All" }
+        { id: "", name: "All" }
     ];
     this.sections = [
-        { sectionId: -1, name: "All" }
+        { id: "", name: "All" }
     ];
     this.sortOptions = [
         { value: 0, name: "Newest" },
@@ -26,7 +44,6 @@ function RoutesViewModel(client) {
         }
         self.trigger("SearchMethodChanged");
     }
-
     this.search = function(searchstring) {
         this.client.routes.searchRoutes(searchstring, function(response) {
             if (response.success) {
@@ -46,34 +63,10 @@ function RoutesViewModel(client) {
             self.trigger("RoutesChanged");
         });
     }
-
     this.isSearching = false;
-    this.init = function () {
-        self.grades = [{ difficulty: -1, name: "All" }];
-        self.getGrades();
-        self.client.sections.getAllSections(function (response) {
-            if (response.success) {
-                self.sections = [{ sectionId: -1, name: "All" }];
-                self.sections = self.sections.concat(response.data);
-                self.selectedGrade = self.grades[0];
-                self.selectedSection = self.sections[0];
-                self.selectedSortBy = self.sortOptions[0];
-                self.refreshRoutes();
-                self.trigger("RoutesChanged");
-                self.trigger("SearchMethodChanged");
-            }
-        });
-    };
-    this.changeGrade = function (gradeValue) {
-        self.selectedGrade = self.grades.filter(function (grade) { return grade.difficulty == gradeValue; })[0];
+    this.changeGrade = function (gradeId) {
+        self.selectedGrade = self.grades.filter(function (grade) { return grade.id == gradeId; })[0];
         self.refreshRoutes();
-    };
-    this.getGrades = function () {
-        self.client.grades.getAllGrades(function (response) {
-            if (response.success) {
-                self.grades = self.grades.concat(response.data);
-            }
-        });
     };
     this.changeSection = function (sectionId) {
         self.selectedSection = self.sections.filter(function (section) { return section.id == sectionId; })[0];
@@ -84,13 +77,7 @@ function RoutesViewModel(client) {
         self.refreshRoutes();
     };
     this.refreshRoutes = function () {
-        var gradeValue = self.selectedGrade.difficulty == -1 ? null : self.selectedGrade.difficulty;
-        var sectionId = self.selectedSection.id == -1 ? null : self.selectedSection.id;
-        var sortByValue = self.selectedSortBy.value == -1 ? null : self.selectedSortBy.value;
-        self.client.routes.getRoutes(gradeValue,
-            sectionId,
-            sortByValue,
-            function (response) {
+        self.client.routes.getRoutes(self.selectedGrade.id, self.selectedSection.id, self.selectedSortBy.value, function (response) {
             if (response.success) {
                 self.routes = response.data;
                 for (var i = 0; i < self.routes.length; i++) {
@@ -107,7 +94,5 @@ function RoutesViewModel(client) {
         });
     };
 };
-
-
 
 RoutesViewModel.prototype = new EventNotifier();

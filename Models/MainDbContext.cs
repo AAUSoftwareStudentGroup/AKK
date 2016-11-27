@@ -44,7 +44,7 @@ namespace AKK.Models
             images[0].Holds.AddRange(holds);
 
             List<Member> members = new List<Member> {
-                new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", IsAdmin = true}
+                new Member {DisplayName = "Morten Rask", Username = "Morten", Password = "adminadmin", IsAdmin = true}
             };
 
             List<Grade> grades = new List<Grade> {

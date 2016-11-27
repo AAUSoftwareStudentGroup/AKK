@@ -15,6 +15,7 @@
         <script src="js/route-canvas.js"></script>
         <script type="text/javascript" src="js/edit-route-view-model.js"></script>
         <script type="text/javascript" src="js/helpers.js"></script>
+        <script type="text/javascript" src="js/header-view-model.js"></script>
     </head>
     <body>
         <script src="js/edit-route.js"></script>
@@ -37,8 +38,8 @@
                     <h2>Grade</h2>
                     <div class="radio-inputs">
                         {{#each grades}}
-                        <input id="grade-input-{{difficulty}}" class="grade-box" onclick="viewModel.changeGrade({{difficulty}})" name="grade" type="radio">
-                        <label class="grade-{{difficulty}}" for="grade-input-{{difficulty}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
+                        <input id="grade-input-{{id}}" class="grade-box" onclick="viewModel.changeGrade('{{id}}')" name="grade" type="radio">
+                        <label for="grade-input-{{id}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
                             <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                             {{#ifCond color 200}}
                                 fill="#FFFFFF">
