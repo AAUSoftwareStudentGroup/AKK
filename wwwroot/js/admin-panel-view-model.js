@@ -97,7 +97,7 @@ function AdminPanelViewModel(client, dialogService)
     };
     this.clearSection = function()
     {
-        if(self.selectedSection != null && confirm("Do you really want to remove all routes from this section?"))
+        if(self.selectedSection != null && self.dialogService.confirm("Do you really want to remove all routes from this section?"))
         {
             self.client.sections.deleteSectionRoutes(self.selectedSection.id, function(response) {
                 if(response.success)
@@ -107,7 +107,7 @@ function AdminPanelViewModel(client, dialogService)
     };
     this.deleteSection = function()
     {
-        if(self.selectedSection != null && confirm("Do you really want permanently delete this section?"))
+        if(self.selectedSection != null && self.dialogService.confirm("Do you really want permanently delete this section?"))
         {
             self.client.sections.deleteSection(self.selectedSection.id, function(response) {
                 if(response.success)
@@ -118,7 +118,7 @@ function AdminPanelViewModel(client, dialogService)
     this.renameSection = function()
     {
         var newName = self.dialogService.prompt("Enter the new name","");
-        if(self.selectedSection != null && confirm("Do you really want to rename this section?"))
+        if(self.selectedSection != null && self.dialogService.confirm("Do you really want to rename this section?"))
         {
             self.client.sections.renameSection(self.selectedSection.id, newName, function(response) {
                 if(response.success)
@@ -140,7 +140,7 @@ function AdminPanelViewModel(client, dialogService)
     };
     this.deleteGrade = function()
     {
-        if(self.selectedGrade != null && confirm("Do you really want to permanently delete this difficulty?"))
+        if(self.selectedGrade != null && self.dialogService.confirm("Do you really want to permanently delete this difficulty?"))
         {
             self.client.grades.deleteGrade(self.selectedGrade.difficulty, function(response) {
                 if(response.success)
