@@ -1,4 +1,4 @@
-function SectionsViewModel(client, dialogService)
+function AdminPanelViewModel(client, dialogService)
 {
     var self = this;
     this.client = client;
@@ -149,4 +149,4 @@ function SectionsViewModel(client, dialogService)
         }
     };
 }
-SectionsViewModel.prototype = new EventNotifier();
+AdminPanelViewModel.prototype = new EventNotifier();

@@ -33,9 +33,9 @@ namespace AKK.Controllers {
         public IActionResult EditRoute() { return View("Views/EditRoute.cshtml"); }
 
         // GET: /sections
-        [HttpGet("sections")]
+        [HttpGet("admin-panel")]
         [RequiresAuth(Role.Admin)]
-        public IActionResult Sections() { return View("Views/Sections.cshtml"); }
+        public IActionResult Sections() { return View("Views/AdminPanel.cshtml"); }
 
         // GET: /login
         [HttpGet("login")]

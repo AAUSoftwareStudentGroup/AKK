@@ -15,7 +15,7 @@ $(document).ready(function () {
                 $('#header').html(templateheader(headerViewModel));
             });
 
-            viewModel = new SectionsViewModel(client, new DialogService());
+            viewModel = new AdminPanelViewModel(client, new DialogService());
             viewModel.addEventListener("DoneLoading", function changed() {
                 $('#content').html(template(viewModel));
                 $('#section-input-' + viewModel.selectedSection.name).prop("selected", true);
