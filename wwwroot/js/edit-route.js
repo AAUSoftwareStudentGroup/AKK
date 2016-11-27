@@ -4,38 +4,38 @@ var rc;
 $(document).ready(function () {
     $.get("js/templates/header-template.handlebars",
         function(response) {
-            var template = Handlebars.compile($("#edit-route-template").html());
-            var templateheader = Handlebars.compile(response);
-            var colortemplate = Handlebars.compile($("#holdcolortemplate").html());
-            var imagetemplate = Handlebars.compile($("#imagetemplate").html());
             var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+            var headerViewModel = new HeaderViewModel("Edit Route", client, new CookieService());
+            var headerTemplate = Handlebars.compile(response);
 
-            headerViewModel = new HeaderViewModel("Edit Route", client, new CookieService());
             headerViewModel.addEventListener("headerUpdated", function () {
-                $('#header').html(templateheader(headerViewModel));
+                $('#header').html(headerTemplate(headerViewModel));
             });
+
+            var contentTemplate = Handlebars.compile($("#edit-route-template").html());
+            var holdsTemplate = Handlebars.compile($("#edit-route-holds-template").html());
 
             viewModel = new EditRouteViewModel(client);
             viewModel.addEventListener("OnGradeOrSectionChanged", function () {
-                $('#content').html(template(viewModel));
+                $('#content').html(contentTemplate(viewModel));
                 $('#section-input-' + viewModel.selectedSection.name).prop("checked", true);
                 $('#grade-input-' + viewModel.selectedGrade.id).prop("checked", true);
             });
 
-            viewModel.addEventListener("OnImageChanged", function() {
-                $('#imageContent').html(imagetemplate(viewModel));
-                if (viewModel.hasImage) {
-                    rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
-                    rc.DrawCanvas();
-                }
-            });
-
             viewModel.addEventListener("OnColorChanged", function() {
-                $('#holdColorContent').html(colortemplate(viewModel));
+                $('.hold-picker').html(holdsTemplate(viewModel));
                 if (viewModel.hasTape === false)
                     $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
                 else if (viewModel.selectedTapeColor)
                     $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
+            });
+
+            viewModel.addEventListener("OnImageChanged", function() {
+                $('#content').html(contentTemplate(viewModel));
+                if (viewModel.hasImage) {
+                    rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
+                    rc.DrawCanvas();
+                }
             });
 
             viewModel.init();          
@@ -47,7 +47,6 @@ $(document).ready(function () {
 function UpdateCanvas(input) {
     readURL(input, function(i) {
         resizeImage(i, function(ni) {
-            console.log(ni.width + "," + ni.height);
             viewModel.setImage(ni);
             viewModel.HoldPositions = [];
         });

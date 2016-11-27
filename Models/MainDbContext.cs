@@ -70,6 +70,13 @@ namespace AKK.Models
                 new Section {Name = "B", Id = Guid.NewGuid()},
                 new Section {Name = "C", Id = Guid.NewGuid()},
                 new Section {Name = "D", Id = Guid.NewGuid()},
+                new Section {Name = "E", Id = Guid.NewGuid()},
+                new Section {Name = "G", Id = Guid.NewGuid()},
+                new Section {Name = "H", Id = Guid.NewGuid()},
+                new Section {Name = "I", Id = Guid.NewGuid()},
+                new Section {Name = "J", Id = Guid.NewGuid()},
+                new Section {Name = "K", Id = Guid.NewGuid()},
+                new Section {Name = "L", Id = Guid.NewGuid()},
             };
 
             var _grades = new List<Grade>
@@ -78,7 +85,9 @@ namespace AKK.Models
                 new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }, 
+                new Grade {Name = "Purple", Difficulty = 5, Color = new Color(128, 0, 128), Id = Guid.NewGuid(), Routes = new List<Route>() },
+                new Grade {Name = "Pink", Difficulty = 6, Color = new Color(255, 192, 203), Id = Guid.NewGuid(), Routes = new List<Route>() }
             };
 
             var _routes = new List<Route>
@@ -88,7 +97,7 @@ namespace AKK.Models
                     Name = "4",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 0),
-                    Member = new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = false},
+                    Member = new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = true},
                     Grade = _grades[0],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -97,7 +106,7 @@ namespace AKK.Models
                     Name = "4",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 0),
-                    Member = new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = false},
+                    Member = new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = true},
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 03, 24)
                 },
@@ -133,7 +142,7 @@ namespace AKK.Models
                     Name = "32",
                     Section = _sections[1],
                     ColorOfHolds = new Color(100, 100, 100),
-                    Member = new Member {DisplayName = "TannerHelland", Username = "TannerHelland123", Password = "123", IsAdmin = false},
+                    Member = new Member {DisplayName = "TannerHelland", Username = "TannerHelland123", Password = "123", IsAdmin = true},
                     Grade = _grades[4],
                     CreatedDate = new DateTime(2014, 11, 24)
                 },

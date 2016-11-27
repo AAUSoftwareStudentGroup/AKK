@@ -1,24 +1,14 @@
 ﻿$(document).ready(function () {
-    var navbar = document.getElementById("navbar");
-    var navigationContent = document.getElementById("navigationid");
-    var navigationCloser = document.getElementById("navigationcloserid");
+    var navMenuToggle = $(".nav-menu-toggle");
+    var navMenu = $(".nav-menu");
 
-    navbar.onclick = function (e) {
-        if(navigationContent.className != "navigation-visible")
-        {
-            navigationContent.className = "navigation-visible";
-            navigationCloser.style.display = "block";
-        }
-        else
-        {
-            navigationContent.className = "navigation-hidden";
-            navigationCloser.style.display = "none";
-        }
-    }
-
-    navigationCloser.onclick = function (e) {
-        navigationContent.className = "navigation-hidden";
-        navigationCloser.style.display = "none";
-    }
-
+    $(".nav-menu-toggle").on('click', function () {
+        navMenuToggle.toggleClass('open');
+        navMenu.toggleClass('open');
+    });
+    
+    $(".nav-menu-closer").on('click', function () {
+        navMenuToggle.removeClass('open');
+        navMenu.removeClass('open');
+    });
 });

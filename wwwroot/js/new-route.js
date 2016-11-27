@@ -3,30 +3,32 @@ var headerViewModel;
 $(document).ready(function () {
     $.get("js/templates/header-template.handlebars",
         function(response) {
-            var template = Handlebars.compile($("#new-route-template").html());
-            var colortemplate = Handlebars.compile($("#holdcolortemplate").html());
-            var templateheader = Handlebars.compile(response);
             var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+            var headerViewModel = new HeaderViewModel("New Route", client, new CookieService());
+            var headerTemplate = Handlebars.compile(response);
 
-            headerViewModel = new HeaderViewModel("New Route", client, new CookieService());
             headerViewModel.addEventListener("headerUpdated", function () {
-                $('#header').html(templateheader(headerViewModel));
+                $('#header').html(headerTemplate(headerViewModel));
             });
-
+            
+            var contentTemplate = Handlebars.compile($("#new-route-content-template").html());
+            var holdsTemplate = Handlebars.compile($("#new-route-holds-template").html());
             viewModel = new NewRouteViewModel(client, new NavigationService());
+
             viewModel.addEventListener("DataLoaded", function() {
-                $('#content').html(template(viewModel));
+                $('#content').html(contentTemplate(viewModel));
+                $('.hold-picker').html(holdsTemplate(viewModel));
             });
 
             viewModel.addEventListener("HoldColorUpdated", function() {
-                $('#holdColorContent').html(colortemplate(viewModel));
+                $('.hold-picker').html(holdsTemplate(viewModel));
                 if (viewModel.hasTape === false && viewModel.selectedColor)
                     $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
-                else if(viewModel.selectedTapeColor)
+                else if (viewModel.selectedTapeColor)
                     $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
             });
 
-            viewModel.init();          
             headerViewModel.init();
+            viewModel.init();          
         });
 });

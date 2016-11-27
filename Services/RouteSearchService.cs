@@ -23,12 +23,6 @@ namespace AKK.Services
             //Split search string into searchterms
             var searchTerms = _splitSearchStr(searchStr);
 
-            Console.WriteLine();
-            Console.WriteLine("New search:");
-            foreach (var searchTerm in searchTerms) {
-                Console.WriteLine($"Searchterm: {searchTerm}");   
-            }
-
             //Binds all routes together with an int value representing the Levenshtein distance.
             List<Tuple<Route, float>> routesWithDist = new List<Tuple<Route, float>>();
             for (int i = 0; i < _numRoutes; i++)

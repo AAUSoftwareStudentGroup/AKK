@@ -7,6 +7,7 @@ function RouteInfoViewModel(client, navigationService) {
             function (routeResponse) {
                 if (routeResponse.success) {
                     self.route = routeResponse.data;
+                    console.log(self.route);
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
 
                     self.client.routes.getImage(self.route.id, function(imageResponse) {

@@ -24,12 +24,3 @@ $(document).ready(function () {
         headerViewModel.init();
     });
 });
-
-$(document).on("click", "#routeimage", function() {
-    var el = $("#routeimage");
-    el.toggleClass("routeimagefullscreen");
-    el.toggleClass("routeimagesmall");
-    rc.resize();
-    rc.DrawCanvas();
-});
-
