@@ -228,6 +228,10 @@ input[type="checkbox"] {
     border-bottom: 1px solid rgba(255, 255, 255, 0.20);
 }
 
+.nav-menu > a:first-of-type {
+    margin-top: 64px; 
+}
+
 .nav-menu-closer {
     left: 75%;
     width: 25%;
