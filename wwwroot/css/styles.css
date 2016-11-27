@@ -458,6 +458,7 @@ input[type=checkbox] {
 }
 
 #search-field {
+    outline: none;
     width: calc(100% - 50px);
     padding: 0 10px;
     border-style: solid;
