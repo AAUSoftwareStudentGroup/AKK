@@ -3,10 +3,10 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using AKK.Classes.Models;
-using AKK.Classes.ApiResponses;
-using AKK.Classes.Models.Repository;
-using AKK.Classes.Services;
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
 
 namespace AKK.Controllers {
     [Route("api/section")]
@@ -30,7 +30,7 @@ namespace AKK.Controllers {
         // POST: /api/section
         [HttpPost]
         public ApiResponse<Section> AddSection(string token, string name) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Section>("You need to be logged in as an administrator to add a new section");
             }
@@ -58,20 +58,20 @@ namespace AKK.Controllers {
         // DELETE: /api/section
         [HttpDelete]
         public ApiResponse<IEnumerable<Section>> DeleteAllSections(string token) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<IEnumerable<Section>>("You need to be logged in as an administrator to delete all sections");
             }
-            var sections = _sectionRepository.GetAll();
+            var sections = _sectionRepository.GetAll().ToList();
             if(!sections.Any())
                 return new ApiErrorResponse<IEnumerable<Section>>("No sections exist");
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections)) as IEnumerable<Section>;
 
-            foreach (Section section in sections)
+            for(int index = 0; index < sections.Count; index++)
             {
-                _sectionRepository.Delete(section);
+                _sectionRepository.Delete(sections[index].Id);
             }
 
             try
@@ -106,7 +106,7 @@ namespace AKK.Controllers {
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
         public ApiResponse<Section> DeleteSection(string token, string name) {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Section>("You need to be logged in as an administrator to delete this section");
             }
@@ -125,7 +125,7 @@ namespace AKK.Controllers {
                 // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
                 var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section)) as Section;
         
-                _sectionRepository.Delete(section);
+                _sectionRepository.Delete(section.Id);
 
                 try
                 {
@@ -162,7 +162,7 @@ namespace AKK.Controllers {
         [HttpDelete("{name}/routes")]
         public ApiResponse<IEnumerable<Route>> DeleteSectionRoutes(string token, string name)
         {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<IEnumerable<Route>>("You need to be logged in as an administrator to delete section routes");
             }

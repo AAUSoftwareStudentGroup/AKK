@@ -3,9 +3,9 @@ using System.Linq;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using AKK.Classes.Models;
-using AKK.Classes.ApiResponses;
-using AKK.Classes.Models.Repository;
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
 using AKK.Services;
 
 namespace AKK.Controllers {
@@ -18,26 +18,28 @@ namespace AKK.Controllers {
         private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Hold> _holdRepository;
+        private readonly IRepository<Member> _memberRepository;
         private readonly IAuthenticationService _authenticationService;
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IAuthenticationService authenticationService) 
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IRepository<Member> memberRepository, IAuthenticationService authenticationService) 
         {
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
             _imageRepository = imageRepository;
             _holdRepository = holdRepository;
+            _memberRepository = memberRepository;
             _authenticationService = authenticationService;
         }
 
         // GET: /api/route
         [HttpGet]
-        public ApiResponse<IEnumerable<Route>> GetRoutes(int? grade, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
+        public ApiResponse<IEnumerable<Route>> GetRoutes(Guid? gradeId, Guid? sectionId, string searchStr, int? maxResults, SortOrder sortBy)
         {
             var routes = _routeRepository.GetAll();
 
-            if (grade != null)
+            if (gradeId != null)
             {
-                routes = routes.Where(r => r.Grade.Difficulty == grade);
+                routes = routes.Where(r => r.GradeId == gradeId);
             }
             if (sectionId != null)
             {
@@ -66,87 +68,78 @@ namespace AKK.Controllers {
                 var searcher = new RouteSearcher(routes, maxResults);
 
                 //Search for route
-                var foundRoutes = searcher.Search(searchStr);
+                routes = searcher.Search(searchStr);
 
                 //If no routes were found.
-                if (!foundRoutes.Any()) {
+                if (!routes.Any()) {
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
+
+            if(maxResults != null && routes.Count() > maxResults)
+            {
+                routes = routes.Take(maxResults.Value);
+            }
+
             return new ApiSuccessResponse<IEnumerable<Route>>(routes);
         }
 
         // POST: /api/route
         [HttpPost]
-        public ApiResponse<Route> AddRoute(string token, Route route, string sectionName) 
+        public ApiResponse<Route> AddRoute(string token, Route route) 
         {
-            if (!_authenticationService.IsAuthenticated(token))
+            route.Member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
+
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
             }
-            if (route.Author == null)
-            {
-                return new ApiErrorResponse<Route>("An author must be specified");   
-            }
+
             if (route.ColorOfHolds == null)
             {
                 return new ApiErrorResponse<Route>("A hold color must be specified");
             }
-            if (route.Grade == null)
-            {
-                return new ApiErrorResponse<Route>("A grade must be specified");
-            }
+
             if (route.Name == null)
             {
                 return new ApiErrorResponse<Route>("A route number must be specified");
             }
 
-            var sections = _sectionRepository.GetAll();
             if(route.SectionId != default(Guid))     
             {
-                sections = sections.Where(s => s.Id == route.SectionId);
-                if (!sections.Any())
+                if (_sectionRepository.Find(route.SectionId) == null)
                 {
                     return new ApiErrorResponse<Route>($"No section with id {route.SectionId}");
-                }
-            }
-            else if (sectionName != null)
-            {
-                sections = sections.Where(s => s.Name == sectionName);
-                if (!sections.Any())
-                {
-                    return new ApiErrorResponse<Route>($"No section with name {sectionName}");
                 }
             }
             else
             {
                 return new ApiErrorResponse<Route>("A section must be specified");
-
             }
                 
-            var grades = _gradeRepository.GetAll().Where(g => g.Difficulty == route.Grade.Difficulty);
-            if (!grades.Any())
+            if(route.GradeId != default(Guid))     
             {
-                return new ApiErrorResponse<Route>("No grade with given difficulty");
+                if (_gradeRepository.Find(route.GradeId) == null)
+                {
+                    return new ApiErrorResponse<Route>($"No grade with id {route.GradeId}");
+                }
             }
-            route.Grade = grades.First();
+            else
+            {
+                return new ApiErrorResponse<Route>("A grade must be specified");
+            }
 
-            if (_routeRepository.GetAll().Any(r => r.Grade.Difficulty == route.Grade.Difficulty && r.Name == route.Name))
+            if (_routeRepository.GetAll().Any(r => r.GradeId == route.GradeId && r.Name == route.Name))
             {
                 return new ApiErrorResponse<Route>("A route with this grade and number already exists");
             }
 
-            Section section = sections.First();
             route.CreatedDate = DateTime.Now; 
-            route.Section = section; 
-            route.SectionId = section.Id;
-            
-            section.Routes.Add(route);
             _routeRepository.Add(route);
 
             try
             {
-                _gradeRepository.Save();
+                _routeRepository.Save();
                 return new ApiSuccessResponse<Route>(route);
             }
             catch
@@ -159,11 +152,13 @@ namespace AKK.Controllers {
         [HttpDelete]
         public ApiResponse<IEnumerable<Route>> DeleteAllRoutes(string token)
         {
-            if (!_authenticationService.IsAuthenticated(token))
+            if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<IEnumerable<Route>>("You need to be logged in as an administrator to delete all routes");
             }
-            var routes = _routeRepository.GetAll();
+
+            var routes = _routeRepository.GetAll().ToList();
+
             if (!routes.Any())
             {
                 return new ApiErrorResponse<IEnumerable<Route>>("No routes exist");
@@ -173,9 +168,9 @@ namespace AKK.Controllers {
             var resultCopy = JsonConvert.DeserializeObject(
                 JsonConvert.SerializeObject(routes)) as IEnumerable<Route>;
 
-            foreach (var route in routes)
+            for(int index = 0; index < routes.Count; index++)
             {
-                _routeRepository.Delete(route);
+                _routeRepository.Delete(routes[index].Id);
             }
 
             try
@@ -224,26 +219,48 @@ namespace AKK.Controllers {
         [HttpPatch("{routeId}")]
         public ApiResponse<Route> UpdateRoute(string token, Guid routeId, Route route)
         {
-            if(!_authenticationService.IsAuthenticated(token))
+            if(!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to edit a route");
             }
+
             Route routeToUpdate = _routeRepository.Find(routeId);
+
+            if(routeToUpdate == null)
+            {
+                return new ApiErrorResponse<Route>($"Could not find route with id {routeId}");
+            }
+                
+            if(route == null)
+            {
+                return new ApiSuccessResponse<Route>(routeToUpdate);
+            }
+            
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
+            
             if(route.Image != null)
             {
-                routeToUpdate.Image = new Image {FileUrl = route.Image.FileUrl};
+                if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
+                    Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
+                    _imageRepository.Delete(img.Id);
+                }
+
+                routeToUpdate.Image = route.Image;
             }
+
             if(route.GradeId != default(Guid))
             {
-                routeToUpdate.GradeId = route.GradeId;
+                routeToUpdate.Grade = _gradeRepository.Find(route.GradeId);
+                routeToUpdate.GradeId = routeToUpdate.Grade.Id;
             }
+
             if(route.SectionId != default(Guid))
             {
                 routeToUpdate.SectionId = route.SectionId;
             }
+
             try
             {
                 _routeRepository.Save();
@@ -259,26 +276,25 @@ namespace AKK.Controllers {
         [HttpDelete("{routeId}")]
         public ApiResponse<Route> DeleteRoute(string token, Guid routeId)
         {
-            if (!_authenticationService.IsAuthenticated(token)) 
+            if (!_authenticationService.HasRole(token, Role.Authenticated)) 
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to delete a route");
             }
+
             var route = _routeRepository.Find(routeId);
             if(route == null) 
             {
                 return new ApiErrorResponse<Route>($"No route exists with id {routeId}");
             }
             
-            // create copy that can be sent as result
+            // Create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(route)) as Route;
-
-            _routeRepository.Delete(route);
+            _routeRepository.Delete(route.Id);
 
             try
             {
                 _routeRepository.Save();
                 return new ApiSuccessResponse<Route>(resultCopy);
-
             }
             catch
             {

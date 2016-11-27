@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using AKK.Classes.Models;
-using AKK.Classes.Models.Repository;
+using AKK.Models;
+using AKK.Models.Repositories;
 
 namespace AKK.Services
 {
@@ -50,8 +51,12 @@ namespace AKK.Services
 
         public bool HasRole(string token, Role role)
         {
-            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            if (string.IsNullOrEmpty(token)) 
+            {
+                return false;
+            }
 
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
             switch (role)
             {
                 case Role.Unauthenticated:
@@ -62,6 +67,17 @@ namespace AKK.Services
                     return member != default(Member) && member.IsAdmin;
                 default:
                     return false;
+            }
+        }
+
+        public IEnumerable<Role> GetRoles(string token)
+        {
+            foreach (Role role in Enum.GetValues(typeof(Role)))
+            {
+                if (HasRole(token, role))
+                {
+                    yield return role;
+                }
             }
         }
     }

@@ -1,60 +1,62 @@
-$.ajax({
-  url: "js/eventnotifier.js",
-  dataType: "script",
-  async: false
-});
-
 function EditRouteViewModel(client)
 {
     var self = this;
 
     this.init = function() {
         self.routeId = window.location.search.split("routeId=")[1];
-        self.getGrades();
-        self.client.sections.getAllSections(function(response)
-        {
-            if(response.success)
+        self.client.grades.getAllGrades(function(gradesResponse) {
+            if(gradesResponse.success)
             {
-                self.sections = response.data;
-                self.client.routes.getRoute(self.routeId, function(routeResponse)
+                self.grades = gradesResponse.data;
+                self.client.sections.getAllSections(function(sectionsResponse)
                 {
-                    if(routeResponse.success)
+                    if(sectionsResponse.success)
                     {
-                        self.changeSection(routeResponse.data.sectionId);
-                        self.changeGrade(routeResponse.data.grade.difficulty);
-                        self.getHoldColor(routeResponse.data.colorOfHolds);
-                        self.changeRouteNumber(routeResponse.data.name);
-                        var temp = routeResponse.data.colorOfTape;
-                        if(temp != null) {
-                            for(i = 0; i < self.holdColors.length; i++) {
-                                if(self.holdColors[i].r == temp.r && self.holdColors[i].g == temp.g && self.holdColors[i].b == temp.b) {
-                                    self.selectedTapeColor = self.holdColors[i];
-                                    break;
+                        self.sections = sectionsResponse.data;
+                        self.client.routes.getRoute(self.routeId, function(routeResponse)
+                        {
+                            if(routeResponse.success)
+                            {
+                                self.changeSection(routeResponse.data.sectionId);
+                                self.changeGrade(routeResponse.data.gradeId);
+                                self.getHoldColor(routeResponse.data.colorOfHolds);
+                                self.changeRouteNumber(routeResponse.data.name);
+                                var temp = routeResponse.data.colorOfTape;
+                                if(temp != null) {
+                                    for(i = 0; i < self.holdColors.length; i++) {
+                                        if(self.holdColors[i].r == temp.r && self.holdColors[i].g == temp.g && self.holdColors[i].b == temp.b) {
+                                            self.selectedTapeColor = self.holdColors[i];
+                                            break;
+                                        }
+                                    }
                                 }
-                            }
-                        }
-                        if(self.selectedTapeColor != null)
-                            self.hasTape = true;
+                                if(self.selectedTapeColor != null)
+                                    self.hasTape = true;
 
-                        
-                        self.client.routes.getImage(self.routeId, function(imageResponse) {
-                            console.log(imageResponse);
-                            if (imageResponse.success) {
-                                self.hasImage = true;
-                                self.image = new Image();
-                                self.image.src = imageResponse.data.fileUrl;
-                                self.HoldPositions = imageResponse.data.holds;
-                                self.image.onload = function() {
-                                    self.changeAuthor(routeResponse.data.author);
-                                    self.trigger("OnGradeOrSectionChanged");
-                                    self.trigger("OnColorChanged");
-                                    self.trigger("OnImageChanged");
-                                }
-                            } else {
-                                self.changeAuthor(routeResponse.data.author);
-                                self.trigger("OnGradeOrSectionChanged");
-                                self.trigger("OnColorChanged");
-                                self.trigger("OnImageChanged");
+                                
+                                self.client.routes.getImage(self.routeId, function(imageResponse) {
+                                    if (imageResponse.success) {
+                                        self.hasImage = true;
+                                        self.image = new Image();
+                                        self.image.src = imageResponse.data.fileUrl;
+                                        self.HoldPositions = imageResponse.data.holds;
+                                        self.image.onload = function() {
+                                            self.changeAuthor(routeResponse.data.author);
+                                            self.trigger("OnGradeOrSectionChanged");
+                                            self.trigger("OnColorChanged");
+                                            self.trigger("OnImageChanged");
+                                        }
+                                    } else {
+                                        self.changeAuthor(routeResponse.data.author);
+                                        self.trigger("OnGradeOrSectionChanged");
+                                        self.trigger("OnColorChanged");
+                                        self.trigger("OnImageChanged");
+                                    }
+                                });
+                            }
+                            else
+                            {
+                                $("#error-message").html(response.message).show();
                             }
                         });
                     }
@@ -64,11 +66,8 @@ function EditRouteViewModel(client)
                     }
                 });
             }
-            else
-            {
-                $("#error-message").html(response.message).show();
-            }
-        });
+        })
+        
     }
     this.hasImage = false;
     this.routeId = null;
@@ -113,18 +112,9 @@ function EditRouteViewModel(client)
     {
         self.selectedSection = self.sections.filter(function(s) { return s.id == sectionId; })[0];
     };
-    this.changeGrade = function(gradeValue)
+    this.changeGrade = function(gradeId)
     {
-        self.selectedGrade = self.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
-    };
-    this.getGrades = function()
-    {
-        self.client.grades.getAllGrades(function(response) {
-            if(response.success)
-            {
-                self.grades = response.data;
-            }
-        })
+        self.selectedGrade = self.grades.filter(function(g) { return g.id == gradeId; })[0];
     };
     this.getHoldColor = function(holdColor)
     {
@@ -195,7 +185,7 @@ function EditRouteViewModel(client)
         {
             var routeId = self.routeId;
             var sectionId = self.selectedSection.id;
-            var gradeValue = self.selectedGrade;
+            var gradeId = self.selectedGrade.id;
             var tapeColor = self.selectedTapeColor;
             var holdColor = self.selectedColor;
             var routeNumber = self.routeNumber;
@@ -210,7 +200,7 @@ function EditRouteViewModel(client)
                     holds : this.HoldPositions || []
                 }
             }
-            self.client.routes.updateRoute(routeId, sectionId, routeNumber, author, holdColor, gradeValue, tapeColor, imgObject, function(response) {
+            self.client.routes.updateRoute(routeId, sectionId, routeNumber, holdColor, gradeId, tapeColor, imgObject, function(response) {
                 if(response.success)
                 {
                     window.history.back();
