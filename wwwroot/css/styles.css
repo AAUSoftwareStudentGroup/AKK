@@ -456,12 +456,15 @@ input[type=checkbox] {
     position: relative;
 }
 
-.no-image-text {
+.no-image-added svg {
+    fill: #42423F;
+    width: 40%;
     position: absolute;
-    width: 80%;
-    top: 12px;
-    height: 52px;
-    left: 10%;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
 }
 
 #search-field {
