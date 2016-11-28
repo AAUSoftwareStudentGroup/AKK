@@ -103,6 +103,39 @@ namespace AKK.Controllers {
             return new ApiSuccessResponse<Section>(sections.First());
         }
 
+        [HttpPatch("{sectionId}")]
+        public ApiResponse<Section> UpdateSection(string token, string sectionId, Section sectionPatch) 
+        {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Section>("You need to be logged in as an administrator to update this section");
+            }
+            Section section;
+            
+            try {
+                Guid id = new Guid(sectionId);
+                section = _sectionRepository.Find(id);
+            } catch(System.FormatException) {
+                section = _sectionRepository.GetAll().FirstOrDefault(s => s.Name == sectionId);
+            }
+
+            if(section == null)
+                return new ApiErrorResponse<Section>("No section exists with name/id "+sectionId);
+                
+            if(sectionPatch.Name != null)
+            section.Name = sectionPatch.Name;
+
+            try
+            {
+                _sectionRepository.Save();
+                return new ApiSuccessResponse<Section>(section);
+            }
+            catch
+            {
+                return new ApiErrorResponse<Section>("Failed to update section with name/id " + sectionId);
+            }
+        }
+
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
         public ApiResponse<Section> DeleteSection(string token, string name) {
@@ -137,7 +170,6 @@ namespace AKK.Controllers {
                     return new ApiErrorResponse<Section>("Failed to delete section with name/id " + name);
                 }
             }
-
         }
 
         // GET: /api/section/{name}/routes
