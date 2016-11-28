@@ -12,11 +12,13 @@ namespace AKK.Controllers {
     [Route("api/section")]
     public class SectionController : Controller {
         IRepository<Section> _sectionRepository;
+        IRepository<Route> _routeRepository;
         IAuthenticationService _authenticationService;
-        public SectionController(IRepository<Section> sectionRepository, IAuthenticationService authenticationService)
+        public SectionController(IRepository<Section> sectionRepository, IAuthenticationService authenticationService, IRepository<Route> routeRepository)
         {
             _sectionRepository = sectionRepository;
             _authenticationService = authenticationService;
+            _routeRepository = routeRepository;
         }
 
         // GET: /api/section
@@ -183,11 +185,17 @@ namespace AKK.Controllers {
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section.Routes)) as IEnumerable<Route>;
-            section.Routes.RemoveAll(r => true);
+           // section.Routes.RemoveAll(r => true);
+            var routes = _routeRepository.GetAll().Where(r => r.SectionName == section.Name);
+            foreach (var item in routes)
+            {
+                _routeRepository.Delete(item.Id);
+            }
 
             try
             {
                 _sectionRepository.Save();
+                _routeRepository.Save();
                 return new ApiSuccessResponse<IEnumerable<Route>>(resultCopy);
 
             }

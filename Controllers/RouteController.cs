@@ -242,7 +242,7 @@ namespace AKK.Controllers {
             }
             
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
-            routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
+            routeToUpdate.ColorOfTape = route.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
             
