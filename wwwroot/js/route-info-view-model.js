@@ -17,10 +17,10 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                             self.route.image.src = imageResponse.data.fileUrl;
                             self.HoldPositions = imageResponse.data.holds;
                             self.route.image.onload = function() {
-                                self.trigger("ContentUpdated");
+                                self.trigger("cardUpdated");
                             }
                         } else {
-                            self.trigger("ContentUpdated");
+                            self.trigger("cardUpdated");
                         }
                     });
                 }
@@ -34,6 +34,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.grade = null;
 
     this.route = null;
+    
     this.editRoute = function () {
         if (self.route != null) {
             navigationService.toEditRoute(self.route.id);
