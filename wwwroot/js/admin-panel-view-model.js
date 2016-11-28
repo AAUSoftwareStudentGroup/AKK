@@ -33,7 +33,7 @@ function AdminPanelViewModel(client, dialogService)
     ];
     this.refreshRoutes = function()
     {
-        var gradeValue = self.selectedGrade == null ? "all" : self.selectedGrade.value;
+        var gradeValue = self.selectedGrade == null ? "all" : self.selectedGrade.id;
         var sectionId = self.selectedSection.id == -1 ? null : self.selectedSection.id;
         var sortByValue = self.selectedSortBy.value == -1 ? null : self.selectedSortBy.value;
         self.client.routes.getRoutes(gradeValue, sectionId, sortByValue, function(response) {
