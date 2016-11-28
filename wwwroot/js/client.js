@@ -191,12 +191,11 @@ function SectionClient(url, cookieService)
         $.ajax({
             type: "PATCH",
             dataType: "json",
-            url: url,
+            url: url + "/" + sectionId,
             data:
             {
                 token: self.cookieService.getToken(),
-                sectionId: sectionId,
-                newName: newName
+                name: newName
             },
             success: success
         });
