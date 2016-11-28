@@ -3,8 +3,6 @@ function RoutesViewModel(client) {
     this.client = client;
     this.selectedGrade = null;
     this.selectedSection = null;
-    this.selectedColor = null;
-    this.selectedTape = null;
     this.selectedSortBy = null;
     this.routes = [];
     this.init = function () {
