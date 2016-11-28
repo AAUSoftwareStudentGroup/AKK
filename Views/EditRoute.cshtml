@@ -7,29 +7,38 @@
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="js/handlebars.min.js"></script>
+        <script type="text/javascript" src="js/eventnotifier.js"></script>
+        <script type="text/javascript" src="js/navigation-service.js"></script>
+        <script type="text/javascript" src="js/cookie-service.js"></script>
         <script type="text/javascript" src="js/config.js"></script>
         <script type="text/javascript" src="js/client.js"></script>
+        <script src="js/route-canvas.js"></script>
         <script type="text/javascript" src="js/edit-route-view-model.js"></script>
+        <script type="text/javascript" src="js/helpers.js"></script>
+        <script type="text/javascript" src="js/header-view-model.js"></script>
     </head>
     <body>
-        <script src="js/edit-route.js"></script>
-        <script id="edit-route-template" type="text/x-handlebars-template">
-            <div class="header">
-                <div class="header-content">
-                    <a class="header-button left" onclick="window.history.back();">
-                        <svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#FFFFFF">
-                            <polygon points="19.7 11 7.5 11 13.1 5.4 11.7 4 3.7 12 11.7 20 13.1 18.6 7.5 13 19.7 13"></polygon>
-                        </svg>
-                    </a>
-                    <h1 class="page-title">Edit Route</h1>
+        <div id="header"></div>
+        <div class="content">
+            <div id="content"></div>
+            <div id="holdColorContent"></div>
+            <div id="imageContent"></div>
+            <div id="buttons">
+                <div class="new-route" id ="newroute_savebutton">
+                <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+                <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />            
                 </div>
             </div>
-            <div class="content new-route">
+        </div>
+        
+        <script src="js/edit-route.js"></script>
+    <script id="edit-route-template" type="text/x-handlebars-template">
+            <div class="new-route">
                 <div class="content-section section-picker">
                     <h2 class="">Section</h2>
                     <div class="radio-inputs">
                         {{#each sections}}
-                        <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{sectionId}}')" name="section" type="radio">
+                        <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{id}}')" name="section" type="radio">
                         <label for="section-input-{{name}}" class="section-box">
                             <span>{{name}}</span>
                         </label>
@@ -42,8 +51,8 @@
                     <h2>Grade</h2>
                     <div class="radio-inputs">
                         {{#each grades}}
-                        <input id="grade-input-{{difficulty}}" class="grade-box" onclick="viewModel.changeGrade({{difficulty}})" name="grade" type="radio">
-                        <label class="grade-{{difficulty}}" for="grade-input-{{difficulty}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
+                        <input id="grade-input-{{id}}" class="grade-box" onclick="viewModel.changeGrade('{{id}}')" name="grade" type="radio">
+                        <label for="grade-input-{{id}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
                             <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
                             {{#ifCond color 200}}
                                 fill="#FFFFFF">
@@ -57,20 +66,20 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <div class="content-section number-picker">
+                <div class="content-section string-input">
                     <h2>Route number</h2>
                     <input id="route-number" class="number-input" type="number" onchange="viewModel.changeRouteNumber(this.value)" value="{{routeNumber}}" placeholder="Number" pattern="[0-9]*" inputmode="numeric" min="0" max="50">
                 </div>
-                <div class="content-section author-picker">
+                <div class="content-section string-input">
                     <h2>Route creator</h2>
                     <input id="author" class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Author">
                 </div>
             </div>
         </script>
-        <div id="content"></div>
+        
         
         <script id="holdcolortemplate" type="text/x-handlebars-template">
-            <div class="content new-route" style="margin-top: 0px">
+            <div class="new-route" style="margin-top: 0px">
                 <div class="content-section color-picker">
                     <h2>Colour of holds</h2>
                     <div class="radio-inputs holdcolors">
@@ -134,11 +143,45 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
-                <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-                <input class="submit-button create-route-button section-button-clear left" type="button" onclick="viewModel.gradesGotTape()" value="Has Tape"></input>
-                <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />
+                <div style="width:100%;height:50px;">
+                <div class="submit-button left" onclick="viewModel.gradesGotTape()" style="background-color:#448AFF;">
+                    {{#if_eq hasTape true}}
+                        <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                            <path fill="#FFF" d="M10,17L5,12L6.41,10.58L10,14.17L17.59,6.58L19,8M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                    {{else}}
+                        <svg style="width:14px;height:14px" viewBox="0 0 24 24">
+                            <path fill="#FFF" d="M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                    {{/if_eq}}
+                    Uses tape
+                </div>
+                </div>
             </div>
         </script>
-        <div id="holdColorContent"></div>
+
+        <script id="imagetemplate" type="text/x-handlebars-template">
+            <div class="new-route">
+                <div class="content-section">
+                    <h2>Route image</h2>
+                    <label for="files" class="submit-button left" style="background-color:#448AFF;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
+                    <input id="files" style="display:none;" type="file" accept="image/*" onchange="UpdateCanvas(this);">
+                    
+                    {{#if_eq hasImage true}}
+                    <div id="canvas-container">
+                        <canvas id="route-edit-image" width="{{image.width}}" style="margin-bottom: 15px;" height="{{image.height}}">canvas not supported</canvas>
+                        <a class="undo-button" onclick="rc.undo()">
+                            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                                <path fill="#000000" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z" />
+                            </svg>Undo
+                        </a>
+                    </div>
+                    {{/if_eq}}
+                </div>
+                
+                
+            </div>
+        </script>
+        
     </body>
 </html>

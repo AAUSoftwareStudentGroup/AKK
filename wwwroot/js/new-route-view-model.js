@@ -1,8 +1,20 @@
-function NewRouteViewModel(client, changed, changed2) {
+function NewRouteViewModel(client, navigationService) {
+
+    this.init = function() {
+        this.getSections();
+        this.getGrades();
+        self.trigger("HoldColorUpdated");
+        self.client.members.getMemberInfo(function(response) {
+            if (response.success) {
+                self.changeAuthor(response.data.displayName);
+                self.trigger("DataLoaded");
+            }
+        });
+    }
+
     var self = this;
+    this.navigationService = navigationService;
     this.client = client;
-    this.changed = changed;
-    this.changed2 = changed2;
     this.sections = [];
     this.selectedSection = null;
     this.selectedGrade = null;
@@ -30,10 +42,10 @@ function NewRouteViewModel(client, changed, changed2) {
         { value: 14, name: "White", color: "D0D0D0", r: 208, g: 208, b: 208, a: 1 },
     ];
     this.changeSection = function (sectionId) {
-        self.selectedSection = self.sections.filter(function (s) { return s.sectionId == sectionId; })[0];
+        self.selectedSection = self.sections.filter(function (s) { return s.id == sectionId; })[0];
     };
-    this.changeGrade = function (gradeValue) {
-        self.selectedGrade = self.grades.filter(function (g) { return g.difficulty == gradeValue; })[0];
+    this.changeGrade = function (gradeId) {
+        self.selectedGrade = self.grades.filter(function (g) { return g.id == gradeId; })[0];
     };
     this.changeHoldColor = function (holdColor) {
         self.selectedColor = self.holdColors.filter(function (g) { return g.value == holdColor; })[0];
@@ -50,6 +62,7 @@ function NewRouteViewModel(client, changed, changed2) {
     this.getSections = function () {
         self.client.sections.getAllSections(function (response) {
             if (response.success) {
+                self.trigger("DataLoaded");
                 self.sections = response.data;
             } else {
                 $("#error-message").html(response.message).show();
@@ -60,7 +73,7 @@ function NewRouteViewModel(client, changed, changed2) {
         self.client.grades.getAllGrades(function (response) {
             if (response.success) {
                 self.grades = response.data;
-                self.changed();
+                self.trigger("DataLoaded");
             }
         })
     };
@@ -70,39 +83,24 @@ function NewRouteViewModel(client, changed, changed2) {
             self.selectedTapeColor = null;
         } else
             self.hasTape = true;
-        self.changed2();
+        self.trigger("HoldColorUpdated");
     };
     this.addRoute = function() {
-        if (self.selectedSection != null &&
-            self.selectedGrade != null &&
-            self.selectedColor != null &&
-            !isNaN(self.routeNumber)) {
-            var sectionId = self.selectedSection.sectionId;
-            var gradeValue = self.selectedGrade;
+        if (!isNaN(self.routeNumber)) {
+            var sectionId = (self.selectedSection == null ? null : self.selectedSection.id);
+            var gradeId = (self.selectedGrade == null ? null : self.selectedGrade.id);
             var holdColor = self.selectedColor;
             var tapeColor = self.selectedTapeColor;
             var routeNumber = self.routeNumber;
             var author = self.author;
-            self.client.routes.addRoute(sectionId,
-                routeNumber,
-                author,
-                holdColor,
-                gradeValue,
-                tapeColor,
-                function(response) {
+            self.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeId, tapeColor, function(response) {
                     if (response.success) {
-                        window.history.back();
+                        self.navigationService.back();
                     } else {
                         $("#error-message").html(response.message).show();
                     }
                 });
         }
     };
-    this.getSections();
-    this.getGrades();
-    setTimeout(function () {
-        changed();
-        changed2();
-    },
-        10);
 }
+NewRouteViewModel.prototype = new EventNotifier();

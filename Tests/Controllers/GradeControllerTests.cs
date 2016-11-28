@@ -1,12 +1,13 @@
-using AKK.Classes.Models.Repository;
-using AKK.Classes.Models;
 using AKK.Controllers;
 using NUnit.Framework;
-using Microsoft.EntityFrameworkCore;
-using AKK.Classes.ApiResponses;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using System.Runtime.InteropServices.ComTypes;
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
 
 namespace AKK.Tests.Controllers
 {
@@ -16,6 +17,7 @@ namespace AKK.Tests.Controllers
         private TestDataFactory _dataFactory;
         private GradeController _controller;
         private IRepository<Grade> _repo;
+        private IAuthenticationService _auth;
 
         [OneTimeSetUp] // Runs once before first test
         public void SetUpSuite() { }
@@ -28,7 +30,11 @@ namespace AKK.Tests.Controllers
         { 
             _dataFactory = new TestDataFactory();
             _repo = new TestRepository<Grade>(_dataFactory.Grades);
-            _controller = new GradeController(_repo);
+            var memberRepo = new TestRepository<Member>();
+            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = "Helland", IsAdmin = false, Token = "TannerHelland"});
+            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = "Rask", IsAdmin = true, Token = "AdminTestToken"});
+            _auth = new AuthenticationService(memberRepo);
+            _controller = new GradeController(_repo, _auth);
         }
 
         [TearDown] // Runs after each test
@@ -37,14 +43,11 @@ namespace AKK.Tests.Controllers
             _controller?.Dispose();
         }
 
-        [Test] // A test
+        [Test]
         public void GetAllGrades_Result_ReturnsAll() 
         {
-            ApiResponse<IEnumerable<Grade>> result;
-            IEnumerable<Grade> data;
-
-            result = _controller.GetAllGrades();
-            data = result.Data;
+            var result = _controller.GetAllGrades();
+            var data = result.Data;
 
             Assert.IsTrue(result.Success);
             Assert.IsTrue(data.Count() == _repo.GetAll().Count());
@@ -55,32 +58,47 @@ namespace AKK.Tests.Controllers
             }
         }
 
-        [Test] // A test
-        public void AddGrade_Repo_ContainsNewRoute() 
+        [Test]
+        public void AddGrade_AddGrade_RepoContainsNewGrade() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
+            var grade = new Grade
+            {
+                Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)
+            };
 
-            Grade grade = new Grade() {Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)};
+            _controller.AddGrade("AdminTestToken", grade);
+            var data = _repo.GetAll().FirstOrDefault(g => g.Difficulty == grade.Difficulty);
 
-            result = _controller.AddGrade(grade);
-            data =  _repo.GetAll().Where(g => g.Difficulty == grade.Difficulty).FirstOrDefault();
-
+            if (data == default(Grade))
+            {
+                Assert.Fail("Repo does not contain new grade");
+            }
             Assert.IsTrue(grade.Name == data.Name);
             Assert.IsTrue(grade.Difficulty == data.Difficulty);
             Assert.IsTrue(grade.Color.ToUint() == data.Color.ToUint());
         }
 
+        [Test]
+        public void AddGrade_NotPossibleIfNotAuthenticated() 
+        {
+            Grade grade = new Grade
+            {
+                Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)
+            };
+            var message = _controller.AddGrade("noToken", grade);
+            Assert.AreEqual(false, message.Success);
+        }
+
         [Test] // A test
         public void AddGrade_Result_ReturnsNewRoute() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
+            Grade grade = new Grade
+            {
+                Id = new Guid(), Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)
+            };
 
-            Grade grade = new Grade() {Id = new Guid(), Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255)};
-
-            result = _controller.AddGrade(grade);
-            data = result.Data;
+            var result = _controller.AddGrade("AdminTestToken", grade);
+            var data = result.Data;
 
             Assert.IsTrue(result.Success);
             Assert.IsTrue(grade.Name == data.Name);
@@ -88,18 +106,15 @@ namespace AKK.Tests.Controllers
             Assert.IsTrue(grade.Color.ToUint() == data.Color.ToUint());
         }
 
-        [Test] // A test
+        [Test]
         public void GetGrade_Result_ReturnsCorrectGrade() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
-
             IEnumerable<Grade> grades = _repo.GetAll();
 
-            foreach( Grade grade in grades )
+            foreach(Grade grade in grades)
             {
-                result = _controller.GetGrade(grade.Difficulty.ToString());
-                data = result.Data;
+                var result = _controller.GetGrade(grade.Id);
+                var data = result.Data;
 
                 Assert.IsTrue(result.Success);
                 Assert.IsTrue(grade.Name == data.Name);
@@ -108,84 +123,83 @@ namespace AKK.Tests.Controllers
             }
         }
 
-        [Test] // A test
+        [Test]
         public void UpdateGrade_Repo_ContainsUpdatedGrade() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
-            Random rnd = new Random();
+            var rnd = new Random();
 
-            Grade grade = _repo.GetAll().First();
-            int newdifficulty = rnd.Next(15, 99);
-            Color newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
+            var grade = _repo.GetAll().First();
+            var newdifficulty = rnd.Next(15, 99);
+            var newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
 
-            result = _controller.UpdateGrade(grade.Difficulty.ToString(), newdifficulty, newColor);
-            data = result.Data;
+            _controller.UpdateGrade("AdminTestToken", grade.Id, newdifficulty, newColor);
 
             Assert.IsTrue(grade.Difficulty == newdifficulty);
             Assert.IsTrue(grade.Color.ToUint() == newColor.ToUint());
         }
 
-        [Test] // A test
+        [Test]
         public void UpdateGrade_Result_ReturnsUpdatedGrade() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
-            Random rnd = new Random();
+            var rnd = new Random();
 
-            Grade grade = _repo.GetAll().First();
-            int newdifficulty = rnd.Next(15, 99);
-            Color newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
+            var grade = _repo.GetAll().First();
+            var newdifficulty = rnd.Next(15, 99);
+            var newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
 
-            result = _controller.UpdateGrade(grade.Difficulty.ToString(), newdifficulty, newColor);
-            data = result.Data;
+            var result = _controller.UpdateGrade("AdminTestToken", grade.Id, newdifficulty, newColor);
+            var data = result.Data;
 
             Assert.IsTrue(result.Success);
             Assert.IsTrue(grade.Name == data.Name);
             Assert.IsTrue(grade.Difficulty == data.Difficulty);
             Assert.IsTrue(grade.Color.ToUint() == data.Color.ToUint());
         }
-        /*
-        [Test] // A test
+
+        [Test]
+        public void DeleteGrade_RoutesWithGrade_FailsToDeleteGrade() {
+            var grade = _repo.GetAll().First();
+            var result = _controller.DeleteGrade("AdminTestToken", grade.Id);
+
+            Assert.IsFalse(result.Success);
+        }
+
+        [Test]
         public void DeleteGrade_Result_ReturnsDeletedGrade() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
+            var grade = new Grade {
+                Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255), Routes = new List<Route>()
+            };
 
-            Grade grade = _repo.GetAll().First();
-            string name = grade.Name;
-            int difficulty = grade.Difficulty;
-            uint? color = grade.Color.ToUint();
+            _controller.AddGrade("AdminTestToken", grade);
+            var result = _controller.DeleteGrade("AdminTestToken", grade.Id);
+            var data = result.Data;
 
-            // delete all routes
-            new RouteController(new TestRepository<Route>(_dataFactory.Routes), new TestRepository<Section>(_dataFactory.Sections), _repo).DeleteAllRoutes();
+            Assert.AreEqual(true, result.Success);
+            var grades = _controller.GetAllGrades().Data;
 
-            result = _controller.DeleteGrade(grade.Difficulty.ToString());
-            data = result.Data;
-
-            Assert.IsTrue(result.Success);
-            Assert.IsTrue(name == data.Name);
-            Assert.IsTrue(difficulty == data.Difficulty);
-            Assert.IsTrue(color == data.Color.ToUint());
+            foreach (Grade grad in grades)
+            {
+                if (grade.Difficulty == grad.Difficulty)
+                {
+                    Assert.Fail($"  Expected: Grade with Difficulty {grade.Difficulty} removed\n  Was: Grade still exists");
+                }
+            }
         }
 
-        [Test] // A test
-        public void DeleteGrade_Repo_DoesNotContainRoute() 
+        [Test]
+        public void DeleteGrade_Repo_DoesNotContainGrade() 
         {
-            ApiResponse<Grade> result;
-            Grade data;
+            var grade = new Grade {
+                Name = "Purple", Difficulty = 10, Color = new Color(255, 0, 255), Routes = new List<Route>()
+            };
 
-            Grade grade = _repo.GetAll().First();
-            int difficulty = grade.Difficulty;
+            _controller.AddGrade("AdminTestToken", grade);
+            var id = grade.Id;
 
-            // delete all routes
-            new RouteController(new TestRepository<Route>(_dataFactory.Routes), new TestRepository<Section>(_dataFactory.Sections), _repo).DeleteAllRoutes();
+            _controller.DeleteGrade("AdminTestToken", id);
 
-            result = _controller.DeleteGrade(grade.Difficulty.ToString());
-            data = result.Data;
-
-            Assert.False(_repo.GetAll().Any(g => g.Difficulty == difficulty));            
+            Assert.False(_repo.GetAll().Any(g => g.Id == id));            
         }
-        */
     }
 }
