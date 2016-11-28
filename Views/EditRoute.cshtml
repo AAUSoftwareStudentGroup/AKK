@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=3">
-        <title>AKK - Find Route</title>
+        <title>AKK - Edit Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
         <script src="js/handlebars.min.js"></script>
@@ -13,14 +13,14 @@
         <script src="js/config.js"></script>
         <script src="js/client.js"></script>
         <script src="js/route-canvas.js"></script>
-        <script src="js/routeViewModel.js"></script>
+        <script src="js/route-view-model.js"></script>
         <script src="js/edit-route-view-model.js"></script>
         <script src="js/helpers.js"></script>
         <script src="js/header-view-model.js"></script>
         <script src="js/edit-route.js"></script>
     </head>
-<body>
-    <div id="header"></div>
+    <body>
+        <div id="header"></div>
         <div class="content new-route">
             <div id="section-picker-content"></div>
             <div id="grade-picker-content"></div>
@@ -29,10 +29,11 @@
             <div id="hold-picker-content"></div>
             <div id="image-picker-content"></div>
             <div id="note-picker-content"></div>
-            <div id="error-message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-            <input class="submit-button positive right" type="button" onclick="viewModel.UpdateRoute()" value="Save" />
+            <div id="error-message" onclick="$(this).fadeOut(function() { $(this).empty() })"></div>
+            <input class="submit-button positive right" type="button" onclick="viewModel.UpdateRoute()" value="Save"/>
         </div>
-</body>
+    </body>
+
 <!--
     <div id="header"></div>
     <div class="content new-route" id="content"></div>

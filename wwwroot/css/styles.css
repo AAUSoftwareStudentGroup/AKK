@@ -258,7 +258,6 @@ input[type="checkbox"] {
 .content-section {
     width: 100%;
     display: block;
-    clear: both;
 }
 
 
@@ -289,6 +288,15 @@ input[type="checkbox"] {
     outline: none;
     color: #555555;
 }
+
+.search-bar {
+    width: 100%;
+    float: left;
+}
+
+    .search-bar svg {
+        float: right;
+    }
 
 #newroute-button {
     width: 56px;

@@ -32,7 +32,6 @@ $(document).ready(function () {
             elementId: "number-picker-content",
             event: "numberUpdated",
             viewmodel: viewModel
-            
         },
         {
             scriptSource: "js/templates/author-picker-template.handlebars",
