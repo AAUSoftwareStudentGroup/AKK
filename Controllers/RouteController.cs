@@ -261,6 +261,11 @@ namespace AKK.Controllers {
                 routeToUpdate.SectionId = route.SectionId;
             }
 
+            if (_routeRepository.GetAll().Any(r => r.GradeId == routeToUpdate.GradeId && r.Name == routeToUpdate.Name && r.Id != routeToUpdate.Id))
+            {
+                return new ApiErrorResponse<Route>("A route with this grade and number already exists");
+            }
+
             try
             {
                 _routeRepository.Save();
