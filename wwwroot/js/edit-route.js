@@ -54,10 +54,18 @@ $(document).ready(function () {
         }
     ];
 
+
     setUpContentUpdater(content, function() {
+        viewModel.addEventListener("imageUpdated", function() {
+            if (viewModel.hasImage) {
+                rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
+                rc.DrawCanvas();
+            }
+        });
         viewModel.init();
         headerViewModel.init();
     });
+    
 });
 
 /*$(document).ready(function () {
@@ -87,14 +95,6 @@ $(document).ready(function () {
                     $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
                 else if (viewModel.selectedTapeColor)
                     $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
-            });
-
-            viewModel.addEventListener("OnImageChanged", function() {
-                $('#content').html(contentTemplate(viewModel));
-                if (viewModel.hasImage) {
-                    rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
-                    rc.DrawCanvas();
-                }
             });
 
             viewModel.init();          

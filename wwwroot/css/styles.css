@@ -308,6 +308,9 @@ input[type="checkbox"] {
 }
 
 /* Image */
+#routeimage {
+    width:100%;
+}
 .routeimage {
     margin: 12px 0 12px 0;
 }

@@ -2,6 +2,7 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
     this.viewModel = viewModel;
     var self = this;
     this.canvas = canvas;
+    console.log(canvas);
     this.image = image;
 
     this.isDrawing = false;

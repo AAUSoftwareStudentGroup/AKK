@@ -72,7 +72,10 @@ function RouteViewModel(client, navigationService) {
                 self.trigger("imageUpdated");
             }
         });
-
+    }
+    this.addHold = function(hold) {
+        this.HoldPositions.push(hold);
+        this.trigger("HoldsUpdated");
     }
     
     this.toggleTape = function() {
@@ -108,6 +111,12 @@ function RouteViewModel(client, navigationService) {
     };
 
     this.changeImage = function(image) {
-        self.image = image;
+        self.hasImage = true;
+        self.image = new Image();
+        self.image.src = image.src;
+        self.HoldPositions = [];
+        self.image.onload = function() {
+            self.trigger("imageUpdated")
+        }
     }
 }
