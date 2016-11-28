@@ -15,11 +15,16 @@
     <script type="text/javascript" src="js/new-route-view-model.js"></script>
     <script type="text/javascript" src="js/helpers.js"></script>
     <script type="text/javascript" src="js/header-view-model.js"></script>
+    <script src="js/new-route.js"></script>
 </head>
 <body>
-    <script src="js/new-route.js"></script>
-<script id="new-route-template" type="text/x-handlebars-template">
-        <div class="content new-route">
+    <div id="header"></div>
+    <div class="content">
+        <div id="content"></div>
+        <div id="holdColorContent"></div>
+    </div>
+    <script id="new-route-template" type="text/x-handlebars-template">
+        <div class="new-route">
             <div class="content-section section-picker">
                 <h2 class="">Section</h2>
                 <div class="radio-inputs">
@@ -58,15 +63,13 @@
             </div>
             <div class="content-section string-input">
                 <h2>Route creator</h2>
-                <input class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Author">
+                <input class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Author" disabled="disabled">
             </div>
         </div>
     </script>
-    <div id="header"></div>
-    <div id="content"></div>
 
-<script id="holdcolortemplate" type="text/x-handlebars-template">
-        <div class="content new-route" style="margin-top: 0px">
+    <script id="holdcolortemplate" type="text/x-handlebars-template">
+        <div class="new-route" style="margin-top: 0px">
             <div class="content-section color-picker">
                 <h2>Colour of holds</h2>
                 <div class="radio-inputs holdcolors">
@@ -134,6 +137,6 @@
             <input class="submit-button create-route-button" type="button" onclick="viewModel.addRoute()" value="Create"></input>
         </div>
     </script>
-    <div id="holdColorContent"></div>
+    
 </body>
 </html>

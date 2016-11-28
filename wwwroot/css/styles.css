@@ -51,7 +51,7 @@ input {
     left: 0;
     width: 0%;
     position: fixed;
-
+    padding-top: 72px;
     z-index: 666;
     height: 100%;
     overflow: hidden;
@@ -61,9 +61,6 @@ input {
     width: 75%;
     background-color: #424242;
     animation-name: navigation-show;
-        -webkit-box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
--moz-box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
-box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
     animation-duration: 0.3s;
     animation-timing-function: linear;
 }
@@ -139,8 +136,9 @@ box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
 .content {
     width: 100%;
     max-width: 304px;
-    margin: 64px auto 0px auto;
     padding: 8px;
+    padding-top: 72px;
+    margin: 0px auto 0px auto;
     overflow: hidden;
 }
 
@@ -150,6 +148,7 @@ box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
 
 .submit-button {
     padding: 11px 18px 10px 18px;
+    margin-bottom: 18px;
     float: right;
     border: none;
     border-radius: 2px;
@@ -266,16 +265,16 @@ box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
 }
 
 .radio-inputs {
-    text-align: justify;
+    word-spacing: 10px;
 }
 
     .radio-inputs input {
         display: none;
     }
-
     .radio-inputs label {
-        width: 48px;
-        height: 48px;
+        margin-bottom: 15px;
+        width: 49.5px;
+        height: 50px;
         vertical-align: top;
         display: inline-block;
     }
@@ -306,13 +305,18 @@ box-shadow: -131px 44px 300px 94px rgba(0,0,0,0.55);
 }
 
     .section-picker label span,
+    .grade-picker label span,
     .color-picker label svg {
-        width: 46px;
+        width: 50px;
         color: #222222;
         font-size: 18px;
         display: inline-block;
         text-align: center;
         line-height: 49px;
+    }
+
+    .color-picker label svg {
+        width: 46px;
     }
 
 .section-picker input:checked + label,
@@ -461,6 +465,7 @@ input[type=checkbox] {
 }
 
 #search-field {
+    outline: none;
     width: calc(100% - 50px);
     padding: 0 10px;
     border-style: solid;

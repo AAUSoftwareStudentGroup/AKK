@@ -1,13 +1,13 @@
-function FindGetParam(param) {
-    var result = null,
-        tmp = [];
-    var items = location.search.substr(1).split("&");
-    for (var index = 0; index < items.length; index++) {
-        tmp = items[index].split("=");
-        if (tmp[0] === param) result = decodeURIComponent(tmp[1]);
-    }
-    return result;
-}
+// function FindGetParam(param) {
+//     var result = null,
+//         tmp = [];
+//     var items = location.search.substr(1).split("&");
+//     for (var index = 0; index < items.length; index++) {
+//         tmp = items[index].split("=");
+//         if (tmp[0] === param) result = decodeURIComponent(tmp[1]);
+//     }
+//     return result;
+// }
 
 function RegisterViewModel(client, navigationService, cookieService) {
     var self = this
@@ -15,8 +15,9 @@ function RegisterViewModel(client, navigationService, cookieService) {
     this.cookieService = cookieService;
     
     this.init = function () {
-        var getTarget = FindGetParam("target");
-        var getUsername = FindGetParam("username");
+        var parameters = navigationService.getParameters();
+        var getTarget = parameters["target"];
+        var getUsername = parameters["username"];
         self.target = (getTarget == null ? self.target : getTarget);
         self.username = (getUsername == null ? self.username : getUsername);
     };
@@ -62,4 +63,5 @@ function RegisterViewModel(client, navigationService, cookieService) {
         });        
     };
 }
+
 RegisterViewModel.prototype = new EventNotifier();

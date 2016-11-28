@@ -1,9 +1,10 @@
-function EditRouteViewModel(client)
+function EditRouteViewModel(client, navigationService)
 {
     var self = this;
-
+    this.client = client;
+    this.navigationService = navigationService;
     this.init = function() {
-        self.routeId = window.location.search.split("routeId=")[1];
+        self.routeId = navigationService.getParameters()["routeId"];
         self.client.grades.getAllGrades(function(gradesResponse) {
             if(gradesResponse.success)
             {
@@ -204,7 +205,7 @@ function EditRouteViewModel(client)
             self.client.routes.updateRoute(routeId, sectionId, routeNumber, holdColor, gradeId, tapeColor, imgObject, function(response) {
                 if(response.success)
                 {
-                    window.history.back();
+                    navigationService.toRouteInfo(routeId);
                 }
                 else
                 {
@@ -213,7 +214,6 @@ function EditRouteViewModel(client)
             });
         }
     }
-    this.client = client;
 }
 
 EditRouteViewModel.prototype = new EventNotifier();

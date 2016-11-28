@@ -12,7 +12,7 @@ $(document).ready(function () {
             $('#header').html(templateheader(headerViewModel));
         });
         
-        viewModel = new RouteInfoViewModel(client, new NavigationService());
+        viewModel = new RouteInfoViewModel(client, new NavigationService(), new DialogService());
         viewModel.addEventListener("ContentUpdated", function () {
             $('#content').html(template(viewModel));
             if (viewModel.hasImage) {

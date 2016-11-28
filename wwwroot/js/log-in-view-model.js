@@ -1,14 +1,3 @@
-function FindGetParam(param) {
-    var result = null,
-        tmp = [];
-    var items = location.search.substr(1).split("&");
-    for (var index = 0; index < items.length; index++) {
-        tmp = items[index].split("=");
-        if (tmp[0] === param) result = decodeURIComponent(tmp[1]);
-    }
-    return result;
-}
-
 function LogInViewModel(client, navigationService, cookieService) {
     var self = this;
     this.client = client;
@@ -16,7 +5,7 @@ function LogInViewModel(client, navigationService, cookieService) {
     this.cookieService = cookieService;
     
     this.init = function () {
-        var getTarget = FindGetParam("target");
+        var getTarget = navigationService.getParameters()["target"];
         self.target = (getTarget == null ? self.target : getTarget);
     };
     
