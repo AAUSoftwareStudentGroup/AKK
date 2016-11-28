@@ -21,9 +21,11 @@ $(document).ready(function () {
         }
     ];
 
-    $(document).on("click", "#routeimage", function(e) {
-        $("#routeimage").toggleClass("routeimagesmall");
-        $("#routeimage").toggleClass("routeimagelarge");
+    $(document).on("click", ".routeimage", function(e) {
+        e.stopPropagation();
+        $("#routeimagecontainer").toggleClass("routeimagesmall");
+        $("#routeimagecontainer").toggleClass("routeimagelarge");
+        $("#image-overlay").toggleClass("hidden");
         rc.resize();
         rc.DrawCanvas();
     });

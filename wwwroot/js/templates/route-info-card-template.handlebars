@@ -40,7 +40,14 @@
             </div>
         </div>
         {{#if_eq hasImage true}}
-            <canvas id="routeimage" class="routeimagesmall routeimage" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
+        <div class="routeimagesmall routeimage" id="routeimagecontainer">
+            <canvas id="routeimage" class="routeimage" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
+            <div id="image-overlay">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#000000" d="M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z" />
+                </svg>
+            </div>
+        </div>
         {{else}}
             <div class="routeimage routeimagesmall no-image-added" onclick="viewModel.editRoute()">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 548.165 548.165">

@@ -328,8 +328,33 @@ input[type="checkbox"] {
     width:100%;
 }
 
+#routeimage {
+    width: 100%;
+}
+
+#routeimagecontainer {
+    position: relative;
+}
+
+#image-overlay {
+    position: absolute;
+    left:0;
+    right:0;
+    top:calc(50% - 25px);
+    bottom: 0;
+    width:100%;
+    text-align: center;
+}
+#image-overlay>svg {
+    height: 50px;
+    width:50px;
+    padding:10px;
+    background-color: rgba(255,255,255,0.4);
+    border-radius: 100px;
+}
+
 .routeimage {
-    margin: 12px 0 12px 0;
+    margin-top:4px;
 }
 
 .no-image-added {
@@ -353,7 +378,7 @@ input[type="checkbox"] {
 
 .note {
     margin: 0;
-    text-align: justify;
+    text-align: left;
 }
 
 /* Route cards */
@@ -602,3 +627,4 @@ input[type="checkbox"] {
     .button-group input:last-of-type {
         float: right;
     }
+.hidden {display: none;}
