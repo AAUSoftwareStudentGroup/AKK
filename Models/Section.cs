@@ -11,11 +11,8 @@ namespace AKK.Models
             Routes = new List<Route>();
         }
 
-        public Guid SectionId => Id;
-
         public string Name { get; set; }    
         
-        [InverseProperty("Section")]
         public List<Route> Routes { get; set; }
     }
 }

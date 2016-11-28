@@ -37,30 +37,58 @@ a {
 input {
 }
 
-.navigation {
+@keyframes navigation-show {
+    from {width: 0%;}
+    to {width: 75%;}
+}
+
+@keyframes navigation-hide {
+    from {width: 75%;}
+    to {width: 0%;}
+}
+
+.navigation, .navigation-visible, .navigation-hidden {
     left: 0;
+    width: 0%;
+    position: fixed;
+    padding-top: 72px;
+    z-index: 666;
+    height: 100%;
+    overflow: hidden;
+}
+
+.navigation-visible {
     width: 75%;
+    background-color: #424242;
+    animation-name: navigation-show;
+    animation-duration: 0.3s;
+    animation-timing-function: linear;
+}
+
+.navigation-hidden {
+    width: 0%;
+    background-color: #424242;
+    animation-name: navigation-hide;
+    animation-duration: 0.2s;
+    animation-timing-function: linear;
+}
+
+.navigation-closer {
+    left: 75%;
+    width: 25%;
     height: 100%;
     position: fixed;
     z-index: 666;
-    -o-transition: 2s;
-    -webkit-transition: 2s;
-    transition: 2s;
-    background-color: #424242;
     display: none;
-    box-shadow: 4px 10px 12px black;
 }
 
-    .navigation a {
-        display: block;
-        padding: 20px;
-        -ms-transition: 1s;
-        -o-transition: 1s;
-        -webkit-transition: 1s;
-        transition: 1s;
-        font-size: 18px;
-        color: white;
-    }
+.navigation-hidden a, .navigation-visible a, .navigation a {
+    display: block;
+    padding: 20px;
+    font-size: 18px;
+    white-space: nowrap;
+    color: white;
+}
 
 .left {
     float: left !important;
@@ -108,13 +136,19 @@ input {
 .content {
     width: 100%;
     max-width: 304px;
-    margin: 64px auto 0px auto;
     padding: 8px;
+    padding-top: 72px;
+    margin: 0px auto 0px auto;
     overflow: hidden;
+}
+
+.bottom-padding {
+    padding-bottom: 8px;
 }
 
 .submit-button {
     padding: 11px 18px 10px 18px;
+    margin-bottom: 18px;
     float: right;
     border: none;
     border-radius: 2px;
@@ -231,16 +265,16 @@ input {
 }
 
 .radio-inputs {
-    text-align: justify;
+    word-spacing: 10px;
 }
 
     .radio-inputs input {
         display: none;
     }
-
     .radio-inputs label {
-        width: 48px;
-        height: 48px;
+        margin-bottom: 15px;
+        width: 49.5px;
+        height: 50px;
         vertical-align: top;
         display: inline-block;
     }
@@ -271,13 +305,18 @@ input {
 }
 
     .section-picker label span,
+    .grade-picker label span,
     .color-picker label svg {
-        width: 46px;
+        width: 50px;
         color: #222222;
         font-size: 18px;
         display: inline-block;
         text-align: center;
         line-height: 49px;
+    }
+
+    .color-picker label svg {
+        width: 46px;
     }
 
 .section-picker input:checked + label,
@@ -426,6 +465,7 @@ input[type=checkbox] {
 }
 
 #search-field {
+    outline: none;
     width: calc(100% - 50px);
     padding: 0 10px;
     border-style: solid;

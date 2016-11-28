@@ -58,37 +58,37 @@ namespace AKK.Models
 
             Section sectionA = new Section { Id = new Guid(), Name = "A" };
             List<Route> routesForA = new List<Route> {
-                new Route{Name = "4", Image = images[0], ColorOfHolds = new Color(255, 0, 0), Member = members[0], Grade = grades[5], CreatedDate = new DateTime(2016, 03, 24)},
-                new Route{Name = "14", ColorOfHolds = new Color(0, 255, 0), Member = members[0], Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
-                new Route{Name = "43", ColorOfHolds = new Color(255, 0, 255), Member = members[0], Grade = grades[2], CreatedDate = new DateTime(2016, 11, 11)},
-                new Route{Name = "21", ColorOfHolds = new Color(255, 255, 0), Member = members[0], Grade = grades[3], CreatedDate = new DateTime(2016, 03, 24)} };
+                new Route{Name = "4", Image = images[0], ColorOfHolds = new Color(255, 0, 0), Member = members[0], Author = members[0].DisplayName, Grade = grades[5], CreatedDate = new DateTime(2016, 03, 24)},
+                new Route{Name = "14", ColorOfHolds = new Color(0, 255, 0), Member = members[0], Author = members[0].DisplayName, Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
+                new Route{Name = "43", ColorOfHolds = new Color(255, 0, 255), Member = members[0], Author = members[0].DisplayName, Grade = grades[2], CreatedDate = new DateTime(2016, 11, 11)},
+                new Route{Name = "21", ColorOfHolds = new Color(255, 255, 0), Member = members[0], Author = members[0].DisplayName, Grade = grades[3], CreatedDate = new DateTime(2016, 03, 24)} };
             sectionA.Routes.AddRange(routesForA);
             context.Sections.Add(sectionA);
 
             Section sectionB = new Section { Id = new Guid(), Name = "B" };
             List<Route> routesForB = new List<Route> {
-                new Route{Name = "32", ColorOfHolds =  new Color(100, 100, 100), Member = members[0], Grade = grades[4], CreatedDate = new DateTime(2014, 11, 24)},
-                new Route{Name = "99", ColorOfHolds =  new Color(170, 12, 54), Member = members[0], Grade = grades[2], CreatedDate = new DateTime(2016, 01, 02)},
-                new Route{Name = "3", ColorOfHolds =  new Color(255, 34, 89), Member = members[0], Grade = grades[3], CreatedDate = new DateTime(2016, 04, 11)},
-                new Route{Name = "7", ColorOfHolds =  new Color(232, 233, 5), Member = members[0], Grade = grades[3], CreatedDate = new DateTime(2016, 08, 10)} };
+                new Route{Name = "32", ColorOfHolds =  new Color(100, 100, 100), Member = members[0], Author = members[0].DisplayName, Grade = grades[4], CreatedDate = new DateTime(2014, 11, 24)},
+                new Route{Name = "99", ColorOfHolds =  new Color(170, 12, 54), Member = members[0], Author = members[0].DisplayName, Grade = grades[2], CreatedDate = new DateTime(2016, 01, 02)},
+                new Route{Name = "3", ColorOfHolds =  new Color(255, 34, 89), Member = members[0], Author = members[0].DisplayName, Grade = grades[3], CreatedDate = new DateTime(2016, 04, 11)},
+                new Route{Name = "7", ColorOfHolds =  new Color(232, 233, 5), Member = members[0], Author = members[0].DisplayName, Grade = grades[3], CreatedDate = new DateTime(2016, 08, 10)} };
             sectionB.Routes.AddRange(routesForB);
             context.Sections.Add(sectionB);
 
             Section sectionC = new Section { Id = new Guid(), Name = "C" };
             List<Route> routesForC = new List<Route> {
-                new Route{Name = "66", ColorOfHolds =  new Color(255, 0, 0), Member = members[0], Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
-                new Route{Name = "33", ColorOfHolds =  new Color(0, 22, 123), Member = members[0], Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
-                new Route{Name = "22", ColorOfHolds =  new Color(255, 123, 0), Member = members[0], Grade = grades[1], CreatedDate = new DateTime(2016, 11, 11)},
-                new Route{Name = "44", ColorOfHolds =  new Color(123, 22, 22), Member = members[0], Grade = grades[2], CreatedDate = new DateTime(2016, 03, 24)} };
+                new Route{Name = "66", ColorOfHolds =  new Color(255, 0, 0), Member = members[0], Author = members[0].DisplayName, Grade = grades[0], CreatedDate = new DateTime(2016, 03, 24)},
+                new Route{Name = "33", ColorOfHolds =  new Color(0, 22, 123), Member = members[0], Author = members[0].DisplayName, Grade = grades[1], CreatedDate = new DateTime(2016, 07, 12)},
+                new Route{Name = "22", ColorOfHolds =  new Color(255, 123, 0), Member = members[0], Author = members[0].DisplayName, Grade = grades[1], CreatedDate = new DateTime(2016, 11, 11)},
+                new Route{Name = "44", ColorOfHolds =  new Color(123, 22, 22), Member = members[0], Author = members[0].DisplayName, Grade = grades[2], CreatedDate = new DateTime(2016, 03, 24)} };
             sectionC.Routes.AddRange(routesForC);
             context.Sections.Add(sectionC);
 
             Section sectionD = new Section { Id = new Guid(), Name = "D" };
             List<Route> routesForD = new List<Route> {
-                new Route{Name = "20", ColorOfHolds = new Color(35, 0, 22), Member = members[0], Grade = grades[1], CreatedDate = new DateTime(2016, 03, 01), ColorOfTape = new Color(123,255,22)},
-                new Route{Name = "9", ColorOfHolds = new Color(123, 255, 22), Member = members[0], Grade = grades[0], CreatedDate = new DateTime(2016, 10, 27)},
-                new Route{Name = "76", ColorOfHolds = new Color(0, 22, 68), Member = members[0], Grade = grades[0], CreatedDate = new DateTime(2016, 09, 04)},
-                new Route{Name = "54", ColorOfHolds = new Color(123, 22, 123), Member = members[0], Grade = grades[4], CreatedDate = new DateTime(2016, 06, 22)} };
+                new Route{Name = "20", ColorOfHolds = new Color(35, 0, 22), Member = members[0], Author = members[0].DisplayName, Grade = grades[1], CreatedDate = new DateTime(2016, 03, 01), ColorOfTape = new Color(123,255,22)},
+                new Route{Name = "9", ColorOfHolds = new Color(123, 255, 22), Member = members[0], Author = members[0].DisplayName, Grade = grades[0], CreatedDate = new DateTime(2016, 10, 27)},
+                new Route{Name = "76", ColorOfHolds = new Color(0, 22, 68), Member = members[0], Author = members[0].DisplayName, Grade = grades[0], CreatedDate = new DateTime(2016, 09, 04)},
+                new Route{Name = "54", ColorOfHolds = new Color(123, 22, 123), Member = members[0], Author = members[0].DisplayName, Grade = grades[4], CreatedDate = new DateTime(2016, 06, 22)} };
             sectionD.Routes.AddRange(routesForD);
             context.Sections.Add(sectionD);
 

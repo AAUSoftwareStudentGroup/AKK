@@ -15,7 +15,7 @@ $(document).ready(function () {
                 $('#header').html(templateheader(headerViewModel));
             });
 
-            viewModel = new EditRouteViewModel(client);
+            viewModel = new EditRouteViewModel(client, new NavigationService());
             viewModel.addEventListener("OnGradeOrSectionChanged", function () {
                 $('#content').html(template(viewModel));
                 $('#section-input-' + viewModel.selectedSection.name).prop("checked", true);

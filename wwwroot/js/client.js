@@ -55,7 +55,7 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addRoute = function(sectionId, name, holdColor, gradeId, tape, success)
+    this.addRoute = function(sectionId, name, author, holdColor, gradeId, tape, success)
     {
         $.ajax({
             type: "POST",
@@ -65,6 +65,7 @@ function RouteClient(url, cookieService)
             {
                 token: self.cookieService.getToken(),
                 sectionId: sectionId,
+                author: author,
                 name: name,
                 gradeId: gradeId,
                 colorOfHolds: holdColor,
@@ -73,7 +74,7 @@ function RouteClient(url, cookieService)
             success: success
         });
     };
-    this.updateRoute = function(routeId, sectionId, name, holdColor, gradeId, tape, image, success)
+    this.updateRoute = function(routeId, sectionId, author, name, holdColor, gradeId, tape, image, success)
     {
         $.ajax({
             type: "PATCH",
@@ -84,6 +85,7 @@ function RouteClient(url, cookieService)
                 token: self.cookieService.getToken(),
                 id: routeId,
                 sectionId: sectionId,
+                author: author,
                 name: name,
                 colorOfHolds: holdColor,
                 gradeId: gradeId,
@@ -189,12 +191,11 @@ function SectionClient(url, cookieService)
         $.ajax({
             type: "PATCH",
             dataType: "json",
-            url: url,
+            url: url + "/" + sectionId,
             data:
             {
                 token: self.cookieService.getToken(),
-                sectionId: sectionId,
-                newName: newName
+                name: newName
             },
             success: success
         });

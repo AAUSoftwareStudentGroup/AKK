@@ -1,6 +1,8 @@
-function SectionsViewModel(client)
+function AdminPanelViewModel(client, dialogService)
 {
     var self = this;
+    this.client = client;
+    this.dialogService = dialogService;
     this.init = function()
     {
         self.getGrades();
@@ -18,7 +20,6 @@ function SectionsViewModel(client)
             }
         });
     };
-    this.client = client;
     this.selectedSection = null;
     this.selectedGrade = null;
     this.routes = [];
@@ -32,7 +33,7 @@ function SectionsViewModel(client)
     ];
     this.refreshRoutes = function()
     {
-        var gradeValue = self.selectedGrade == null ? "all" : self.selectedGrade.value;
+        var gradeValue = self.selectedGrade == null ? "all" : self.selectedGrade.id;
         var sectionId = self.selectedSection.id == -1 ? null : self.selectedSection.id;
         var sortByValue = self.selectedSortBy.value == -1 ? null : self.selectedSortBy.value;
         self.client.routes.getRoutes(gradeValue, sectionId, sortByValue, function(response) {
@@ -87,7 +88,7 @@ function SectionsViewModel(client)
     };
     this.addNewSection = function()
     {
-        var name = prompt("Enter name of new Section","");
+        var name = self.dialogService.prompt("Enter name of new Section","");
         var response;
         self.client.sections.addSection(name, function(response) {
             if(response.success)
@@ -96,9 +97,9 @@ function SectionsViewModel(client)
     };
     this.clearSection = function()
     {
-        if(self.selectedSection != null && confirm("Do you really want to remove all routes from this section?"))
+        if(self.selectedSection != null && self.dialogService.confirm("Do you really want to remove all routes from this section?"))
         {
-            self.client.sections.deleteSectionRoutes(self.selectedSection.id, function(response) {
+            self.client.sections.deleteSectionRoutes(self.selectedSection.name, function(response) {
                 if(response.success)
                     self.refreshRoutes();
             });
@@ -106,7 +107,7 @@ function SectionsViewModel(client)
     };
     this.deleteSection = function()
     {
-        if(self.selectedSection != null && confirm("Do you really want permanently delete this section?"))
+        if(self.selectedSection != null && self.dialogService.confirm("Do you really want permanently delete this section?"))
         {
             self.client.sections.deleteSection(self.selectedSection.id, function(response) {
                 if(response.success)
@@ -116,8 +117,8 @@ function SectionsViewModel(client)
     };
     this.renameSection = function()
     {
-        var newName = prompt("Enter the new name","");
-        if(self.selectedSection != null && confirm("Do you really want to rename this section?"))
+        var newName = self.dialogService.prompt("Enter the new name","");
+        if(self.selectedSection != null && self.dialogService.confirm("Do you really want to rename this section?"))
         {
             self.client.sections.renameSection(self.selectedSection.id, newName, function(response) {
                 if(response.success)
@@ -127,7 +128,7 @@ function SectionsViewModel(client)
     };
     this.addNewGrade = function()
     {
-        var name = prompt("Enter name of new Difficulty", "");
+        var name = self.dialogService.prompt("Enter name of new Difficulty", "");
         var newGrade = self.grades[0];
         newGrade.name = name;
         newGrade.difficulty = self.grades.length + 1;
@@ -139,13 +140,13 @@ function SectionsViewModel(client)
     };
     this.deleteGrade = function()
     {
-        if(self.selectedGrade != null && confirm("Do you really want to permanently delete this difficulty?"))
+        if(self.selectedGrade != null && self.dialogService.confirm("Do you really want to permanently delete this difficulty?"))
         {
-            self.client.grades.deleteGrade(self.selectedGrade.difficulty, function(response) {
+            self.client.grades.deleteGrade(self.selectedGrade.id, function(response) {
                 if(response.success)
                 self.trigger("DoneLoading");                
             });
         }
     };
 }
-SectionsViewModel.prototype = new EventNotifier();
+AdminPanelViewModel.prototype = new EventNotifier();

@@ -49,13 +49,14 @@ namespace AKK.Models
         [JsonIgnore]
         public Section Section { get; set; }
 
-        [NotMapped]
-        public string Author => Member?.DisplayName;
+        public string Author { get; set; }
 
         [NotMapped]
         public string SectionName => Section?.Name;
 
         public string Name { get; set; }
+
+        public string Note { get; set; }
 
         public DateTime CreatedDate { get; set; }
 

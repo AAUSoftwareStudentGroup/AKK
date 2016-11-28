@@ -105,6 +105,11 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse<Route>("A route number must be specified");
             }
 
+            if (route.Author == null)
+            {
+                return new ApiErrorResponse<Route>("An author must be specified");
+            }
+
             if(route.SectionId != default(Guid))     
             {
                 if (_sectionRepository.Find(route.SectionId) == null)
@@ -117,7 +122,7 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse<Route>("A section must be specified");
             }
                 
-            if(route.GradeId != default(Guid))     
+            if(route.GradeId != default(Guid))
             {
                 if (_gradeRepository.Find(route.GradeId) == null)
                 {
@@ -237,13 +242,21 @@ namespace AKK.Controllers {
             }
             
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
-            routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
+            routeToUpdate.ColorOfTape = route.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
+            routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
+            routeToUpdate.Note = route.Note ?? routeToUpdate.Note;
             
             if(route.Image != null)
             {
                 if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
                     Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
+                    IEnumerable<Hold> holds = _holdRepository.GetAll().Where(h => h.ImageId == img.Id);
+                    if(holds != null && holds.Any())
+                    {
+                        holds.ToList().ForEach(h => _holdRepository.Delete(h.Id));
+                    }
+                    _holdRepository.Save();
                     _imageRepository.Delete(img.Id);
                 }
 
@@ -259,6 +272,11 @@ namespace AKK.Controllers {
             if(route.SectionId != default(Guid))
             {
                 routeToUpdate.SectionId = route.SectionId;
+            }
+
+            if (_routeRepository.GetAll().Any(r => r.GradeId == routeToUpdate.GradeId && r.Name == routeToUpdate.Name && r.Id != routeToUpdate.Id))
+            {
+                return new ApiErrorResponse<Route>("A route with this grade and number already exists");
             }
 
             try

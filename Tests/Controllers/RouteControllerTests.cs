@@ -55,6 +55,7 @@ namespace AKK.Tests.Controllers
             testRoute.SectionId = _sectionRepo.GetAll().First().Id;
             testRoute.Name = "50";
             testRoute.Member = _memberRepo.GetAll().First();
+            testRoute.Author = testRoute.Member.DisplayName;
             testRoute.ColorOfHolds = _routeRepo.GetAll().First().ColorOfHolds;
 
             token = _auth.Login("Morten", "Rask");
@@ -159,7 +160,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _AddRoute_NewRouteWithAnExistingID_RouteGetsAdded()
         {
-            testRoute.SectionId = _sectionRepo.GetAll().First().SectionId;
+            testRoute.SectionId = _sectionRepo.GetAll().First().Id;
 
             var response = _controller.AddRoute(token, testRoute);
 
@@ -349,6 +350,26 @@ namespace AKK.Tests.Controllers
             var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
 
             Assert.AreEqual(testRoute.ColorOfTape.R, Origroute.ColorOfTape.R);
+        }
+
+        [Test]
+        public void _UpdateRoute_UpdateTapeOnRouteRemoveTape_TapeGetsRemoved()
+        {
+            Route Origroute = _routeRepo.GetAll().First(t => t.Author == "Manfred");
+            Route test = new Route();
+
+            test.Author = Origroute.Author;
+            test.ColorOfHolds = Origroute.ColorOfHolds;
+            test.ColorOfTape = null;
+            test.CreatedDate = Origroute.CreatedDate;
+            test.Grade = Origroute.Grade;
+            test.GradeId = Origroute.GradeId;
+            test.HexColorOfHolds = Origroute.HexColorOfHolds;
+            test.HexColorOfTape = null;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.IsNull(Origroute.ColorOfTape);
         }
 
         [Test]
