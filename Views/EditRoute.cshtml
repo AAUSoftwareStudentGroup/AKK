@@ -13,6 +13,7 @@
         <script src="js/config.js"></script>
         <script src="js/client.js"></script>
         <script src="js/route-canvas.js"></script>
+        <script src="js/routeViewModel.js"></script>
         <script src="js/edit-route-view-model.js"></script>
         <script src="js/helpers.js"></script>
         <script src="js/header-view-model.js"></script>
@@ -26,12 +27,12 @@
             <div id="number-picker-content"></div>
             <div id="author-picker-content"></div>
             <div id="hold-picker-content"></div>
+            <div id="image-picker-content"></div>
             <div id="error-message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-            <input class="submit-button positive right" type="button" onclick="viewModel.addRoute()" value="Create" />
+            <input class="submit-button positive right" type="button" onclick="viewModel.UpdateRoute()" value="Save" />
         </div>
 </body>
 <!--
-
     <div id="header"></div>
     <div class="content new-route" id="content"></div>
 

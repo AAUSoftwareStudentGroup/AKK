@@ -12,15 +12,38 @@ Handlebars.registerHelper('if_eq', function (a, b, opts) {
         return opts.inverse(this);
 });
 
+Handlebars.registerHelper("log", function(something) {
+ console.log(something);
+});
+
 var templates = [];
-function setUpContentUpdater(obj) {
-    $.get(obj.scriptSource, function(response) {
-        templates[obj.elementId] = Handlebars.compile(response);
-        obj.viewmodel.addEventListener(obj.event, function() {
-            $("#" + obj.elementId).html(templates[obj.elementId](obj.viewmodel));
+function setUpContentUpdater(objs, callback) {
+    asyncLoop({
+    length : objs.length,
+    functionToLoop : function(loop, i){
+        var obj = objs.shift();
+        $.get(obj.scriptSource, function(response) {
+            templates[obj.elementId] = Handlebars.compile(response);
+            obj.viewmodel.addEventListener(obj.event, function() {
+                $("#" + obj.elementId).html(templates[obj.elementId](obj.viewmodel));
+            });
+            loop();
         });
-        if (obj.callback) {
-            obj.callback();
-        }
+    },
+    callback : function(){
+        callback();
+    }
     });
+}
+
+//http://stackoverflow.com/a/7654602
+var asyncLoop = function(o){
+    var i=-1;
+
+    var loop = function(){
+        i++;
+        if(i==o.length){o.callback(); return;}
+        o.functionToLoop(loop, i);
+    } 
+    loop();//init
 }

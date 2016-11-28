@@ -1,4 +1,47 @@
-function EditRouteViewModel(client, navigationService)
+function EditRouteViewModel(client, navigationService) {
+    RouteViewModel.apply (this, arguments);
+    var self = this;
+    this.init = function() {
+        var routeId = this.navigationService.getParameters()["routeId"];
+        this.client.routes.getRoute(routeId, function(response) {
+            if (response.success) {
+                self.downloadSections(function() {
+                    self.changeSection(response.data.sectionId);
+                    self.trigger("sectionsUpdated");
+                });
+
+                self.downloadGrades(function() {
+                    self.changeGrade(response.data.gradeId);
+                    self.trigger("gradesUpdated");
+                });
+
+                self.changeNumber(response.data.name);
+                self.trigger("numberUpdated");
+
+                self.changeAuthor(response.data.author);
+                self.trigger("authorUpdated");
+
+                self.changeHold(response.data.colorOfHolds);
+                if (response.data.colorOfTape) {
+                    self.changeTape(response.data.colorOfTape);
+                    self.toggleTape();
+                }
+                self.trigger("holdsUpdated");
+
+                self.downloadImage();
+
+            } else {
+                self.trigger("Error", response.message);
+            }
+        });
+    }
+    this.UpdateRoute = function() {
+        
+    }
+    
+}
+
+/*function EditRouteViewModel(client, navigationService)
 {
     var self = this;
     this.client = client;
@@ -208,5 +251,5 @@ function EditRouteViewModel(client, navigationService)
         }
     }
 }
-
 EditRouteViewModel.prototype = new EventNotifier();
+*/
