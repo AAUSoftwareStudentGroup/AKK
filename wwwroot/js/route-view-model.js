@@ -96,7 +96,6 @@ function RouteViewModel(client, navigationService) {
     };
 
     this.changeHold = function (holdColor) {
-        console.log(holdColor);
         self.selectedHold = self.colors.filter(function (g) { return g.r == holdColor.r && g.g == holdColor.g && g.b == holdColor.b; })[0];
     };
     
