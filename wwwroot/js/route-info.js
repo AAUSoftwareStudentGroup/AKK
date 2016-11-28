@@ -1,5 +1,6 @@
 ﻿var viewModel;
 var headerViewModel;
+var rc;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
     headerViewModel = new HeaderViewModel("Route Info", client, new CookieService());
@@ -19,6 +20,13 @@ $(document).ready(function () {
             viewmodel: viewModel
         }
     ];
+
+    $(document).on("click", "#routeimage", function(e) {
+        $("#routeimage").toggleClass("routeimagesmall");
+        $("#routeimage").toggleClass("routeimagelarge");
+        rc.resize();
+        rc.DrawCanvas();
+    });
 
     setUpContentUpdater(content, function() {
         viewModel.addEventListener("cardUpdated", function() {

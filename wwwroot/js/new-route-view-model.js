@@ -32,7 +32,7 @@ function NewRouteViewModel(client, navigationService) {
         var tapeColor = self.selectedTape;
         var routeNumber = self.number;
         var author = self.author;
-        self.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeId, tapeColor,imgObject, function(response) {
+        self.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeId, tapeColor, this.note, imgObject, function(response) {
             if (response.success) {
                 self.navigationService.back();
             } else {

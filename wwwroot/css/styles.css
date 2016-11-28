@@ -318,9 +318,16 @@ input[type="checkbox"] {
 }
 
 /* Image */
-#routeimage {
+.routeimage {
+    float:right;
+}
+.routeimagesmall {
+    width:50%;
+}
+.routeimagelarge {
     width:100%;
 }
+
 .routeimage {
     margin: 12px 0 12px 0;
 }

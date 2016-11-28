@@ -54,7 +54,8 @@ function EditRouteViewModel(client, navigationService) {
                                         this.routeNumber, 
                                         this.selectedHold, 
                                         this.selectedGrade.id, 
-                                        this.selectedTape, 
+                                        this.selectedTape,
+                                        this.note,
                                         imgObject, function(response) {
             if(response.success)
             {
