@@ -13,9 +13,6 @@ $(document).ready(function () {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
             event: "headerUpdated",
-            callback: function() {
-                headerViewModel.init();
-            },
             viewmodel: headerViewModel
         },
         {
@@ -44,19 +41,23 @@ $(document).ready(function () {
             viewmodel: viewModel
         },
         {
+            scriptSource: "js/templates/image-picker-template.handlebars",
+            elementId: "image-picker-content",
+            event: "imageUpdated",
+            viewmodel: viewModel
+        },
+        {
             scriptSource: "js/templates/hold-picker-template.handlebars",
             elementId: "hold-picker-content",
             event: "holdsUpdated",
-            callback: function() {
-                viewModel.init();
-            },
             viewmodel: viewModel
         }
     ];
 
-    for (var i = 0; i < content.length; i++) {
-        setUpContentUpdater(content[i]);
-    }
+    setUpContentUpdater(content, function() {
+        viewModel.init();
+        headerViewModel.init();
+    });
 });
 
 /*$(document).ready(function () {
@@ -105,7 +106,7 @@ $(document).ready(function () {
 function UpdateCanvas(input) {
     readURL(input, function(i) {
         resizeImage(i, function(ni) {
-            viewModel.setImage(ni);
+            viewModel.changeImage(ni);
             viewModel.HoldPositions = [];
         });
     });
