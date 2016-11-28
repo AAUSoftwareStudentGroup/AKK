@@ -41,7 +41,7 @@ namespace AKK.Tests.Controllers
             memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = "Helland", IsAdmin = false, Token = "TannerHelland"});
             memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = "Rask", IsAdmin = true, Token = "AdminTestToken"});
             _auth = new AuthenticationService(memberRepo);
-            _controller = new SectionController(_sectionRepo, _auth);
+            _controller = new SectionController(_sectionRepo, _auth, _routeRepo);
 
             token = _auth.Login("Morten", "Rask");
         }
