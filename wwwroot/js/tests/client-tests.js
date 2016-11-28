@@ -16,12 +16,13 @@ QUnit.test("Client tests", function( assert ) {
           assert.equal(gradesResponse.success, true, "getAllGrades success = " + true);
           var gradeId = gradesResponse.data[0].id;
           var name = "T";
+          var author = "Morten";
           var holdColor = { r: 200, g: 200, b: 200, a: 1 };
           var tape = { r: 200, g: 200, b: 200, a: 1 };
           var image = { fileUrl: TEST_IMAGE, width: TEST_IMAGE_WIDTH, height: TEST_IMAGE_HEIGHT };
           var onRouteAdded = function(routeId) {
             //Update route
-            routeClient.updateRoute(routeId, sectionId, name, holdColor, gradeId, tape, image, function (routeResponse) {
+            routeClient.updateRoute(routeId, sectionId, author, name, holdColor, gradeId, tape, image, function (routeResponse) {
               console.log(routeResponse);
               assert.equal(routeResponse.success, true, "updateRoute success = " + true);
               assert.equal(routeResponse.data.id, routeId, "updateRoute id = " + routeId);
@@ -62,7 +63,7 @@ QUnit.test("Client tests", function( assert ) {
             var testRoutes = allRoutesResponse.data.filter(function(route) { return route.name == "T" });
             if(testRoutes.length == 0)
             {
-              routeClient.addRoute(sectionId, name, holdColor, gradeId, tape, function (routeAddedResponse) {
+              routeClient.addRoute(sectionId, name, author, holdColor, gradeId, tape, function (routeAddedResponse) {
                 onRouteAdded(routeAddedResponse.data.id);
               });
             }

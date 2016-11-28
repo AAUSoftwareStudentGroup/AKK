@@ -183,7 +183,7 @@ function EditRouteViewModel(client, navigationService)
     },
     this.updateRoute = function()
     {
-        if(self.selectedSection != null && self.selectedGrade != null && self.selectedColor != null && !isNaN(this.routeNumber))
+        if(self.selectedSection != null && self.author && self.selectedGrade != null && self.selectedColor != null && !isNaN(this.routeNumber))
         {
             var routeId = self.routeId;
             var sectionId = self.selectedSection.id;
@@ -202,10 +202,10 @@ function EditRouteViewModel(client, navigationService)
                     holds : this.HoldPositions || []
                 }
             }
-            self.client.routes.updateRoute(routeId, sectionId, routeNumber, holdColor, gradeId, tapeColor, imgObject, function(response) {
+            self.client.routes.updateRoute(routeId, sectionId, author, routeNumber, holdColor, gradeId, tapeColor, imgObject, function(response) {
                 if(response.success)
                 {
-                    window.history.back();
+                    navigationService.toRouteInfo(routeId);
                 }
                 else
                 {

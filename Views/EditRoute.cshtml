@@ -18,9 +18,22 @@
         <script type="text/javascript" src="js/header-view-model.js"></script>
     </head>
     <body>
+        <div id="header"></div>
+        <div class="content">
+            <div id="content"></div>
+            <div id="holdColorContent"></div>
+            <div id="imageContent"></div>
+            <div id="buttons">
+                <div class="new-route" id ="newroute_savebutton">
+                <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+                <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />            
+                </div>
+            </div>
+        </div>
+        
         <script src="js/edit-route.js"></script>
     <script id="edit-route-template" type="text/x-handlebars-template">
-            <div class="content new-route">
+            <div class="new-route">
                 <div class="content-section section-picker">
                     <h2 class="">Section</h2>
                     <div class="radio-inputs">
@@ -59,15 +72,14 @@
                 </div>
                 <div class="content-section string-input">
                     <h2>Route creator</h2>
-                    <input id="author" class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Author"  disabled="disabled">
+                    <input id="author" class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Author">
                 </div>
             </div>
         </script>
-        <div id="header"></div>
-        <div id="content"></div>
+        
         
         <script id="holdcolortemplate" type="text/x-handlebars-template">
-            <div class="content new-route" style="margin-top: 0px">
+            <div class="new-route" style="margin-top: 0px">
                 <div class="content-section color-picker">
                     <h2>Colour of holds</h2>
                     <div class="radio-inputs holdcolors">
@@ -131,6 +143,7 @@
                         <div class="stretch"></div>
                     </div>
                 </div>
+                <div style="width:100%;height:50px;">
                 <div class="submit-button left" onclick="viewModel.gradesGotTape()" style="background-color:#448AFF;">
                     {{#if_eq hasTape true}}
                         <svg style="width:14px;height:14px" viewBox="0 0 24 24">
@@ -143,12 +156,12 @@
                     {{/if_eq}}
                     Uses tape
                 </div>
+                </div>
             </div>
         </script>
-        <div id="holdColorContent"></div>
 
         <script id="imagetemplate" type="text/x-handlebars-template">
-            <div class="content new-route" style="margin-top: 0px">
+            <div class="new-route">
                 <div class="content-section">
                     <h2>Route image</h2>
                     <label for="files" class="submit-button left" style="background-color:#448AFF;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
@@ -156,7 +169,7 @@
                     
                     {{#if_eq hasImage true}}
                     <div id="canvas-container">
-                        <canvas id="route-edit-image" width="{{image.width}}" height="{{image.height}}">canvas not supported</canvas>
+                        <canvas id="route-edit-image" width="{{image.width}}" style="margin-bottom: 15px;" height="{{image.height}}">canvas not supported</canvas>
                         <a class="undo-button" onclick="rc.undo()">
                             <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                                 <path fill="#000000" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z" />
@@ -169,13 +182,6 @@
                 
             </div>
         </script>
-        <div id="imageContent"></div>
-
-        <div id="buttons">
-            <div class="content new-route" id ="newroute_savebutton">
-            <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-            <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />            
-            </div>
-        </div>
+        
     </body>
 </html>
