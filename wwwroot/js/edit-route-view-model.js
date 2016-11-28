@@ -30,6 +30,8 @@ function EditRouteViewModel(client, navigationService) {
 
                 self.downloadImage();
 
+                self.changeNote(response.data.note);
+                self.trigger("noteUpdated");
             } else {
                 self.trigger("Error", response.message);
             }

@@ -33,6 +33,7 @@ function RouteViewModel(client, navigationService) {
     this.HoldPositions = [];
     this.hasImage = false;
     this.image = null;
+    this.note = null;
 
     this.downloadSections = function(callback) {
         self.client.sections.getAllSections(function (response) {
@@ -109,5 +110,9 @@ function RouteViewModel(client, navigationService) {
 
     this.changeImage = function(image) {
         self.image = image;
+    }
+
+    this.changeNote = function(note) {
+        self.note = note;
     }
 }

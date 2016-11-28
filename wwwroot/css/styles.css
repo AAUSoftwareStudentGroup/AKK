@@ -257,6 +257,7 @@ input[type="checkbox"] {
 .content-section {
     width: 100%;
     display: block;
+    clear: both;
 }
 
 

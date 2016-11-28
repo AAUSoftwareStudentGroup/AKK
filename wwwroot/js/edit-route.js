@@ -51,6 +51,18 @@ $(document).ready(function () {
             elementId: "hold-picker-content",
             event: "holdsUpdated",
             viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/image-picker-template.handlebars",
+            elementId: "image-picker-content",
+            event: "imageUpdated",
+            viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/note-picker-template.handlebars",
+            elementId: "note-picker-content",
+            event: "noteUpdated",
+            viewmodel: viewModel
         }
     ];
 

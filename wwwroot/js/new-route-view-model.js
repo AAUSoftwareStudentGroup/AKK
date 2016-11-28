@@ -4,6 +4,7 @@ function NewRouteViewModel(client, navigationService) {
     this.init = function() {
         this.downloadSections();
         this.downloadGrades();
+        this.trigger("numberUpdated");
         this.client.members.getMemberInfo(function(response) {
             if (response.success) {
                 self.changeAuthor(response.data.displayName);
@@ -11,7 +12,8 @@ function NewRouteViewModel(client, navigationService) {
             }
         });
         this.trigger("holdsUpdated");
-        this.trigger("numberUpdated");
+        this.trigger("imageUpdated");
+        this.trigger("noteUpdated");
     }
 
     this.addRoute = function() {
