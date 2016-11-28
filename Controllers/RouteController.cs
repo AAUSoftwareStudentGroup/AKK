@@ -122,7 +122,7 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse<Route>("A section must be specified");
             }
                 
-            if(route.GradeId != default(Guid))     
+            if(route.GradeId != default(Guid))
             {
                 if (_gradeRepository.Find(route.GradeId) == null)
                 {
@@ -245,6 +245,7 @@ namespace AKK.Controllers {
             routeToUpdate.ColorOfTape = route.ColorOfTape ?? routeToUpdate.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
+            routeToUpdate.Note = route.Note ?? routeToUpdate.Note;
             
             if(route.Image != null)
             {
