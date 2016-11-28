@@ -55,6 +55,7 @@ namespace AKK.Tests.Controllers
             testRoute.SectionId = _sectionRepo.GetAll().First().Id;
             testRoute.Name = "50";
             testRoute.Member = _memberRepo.GetAll().First();
+            testRoute.Author = testRoute.Member.DisplayName;
             testRoute.ColorOfHolds = _routeRepo.GetAll().First().ColorOfHolds;
 
             token = _auth.Login("Morten", "Rask");
@@ -159,7 +160,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _AddRoute_NewRouteWithAnExistingID_RouteGetsAdded()
         {
-            testRoute.SectionId = _sectionRepo.GetAll().First().SectionId;
+            testRoute.SectionId = _sectionRepo.GetAll().First().Id;
 
             var response = _controller.AddRoute(token, testRoute);
 
