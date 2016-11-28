@@ -12,11 +12,13 @@ namespace AKK.Controllers {
     [Route("api/section")]
     public class SectionController : Controller {
         IRepository<Section> _sectionRepository;
+        IRepository<Route> _routeRepository;
         IAuthenticationService _authenticationService;
-        public SectionController(IRepository<Section> sectionRepository, IAuthenticationService authenticationService)
+        public SectionController(IRepository<Section> sectionRepository, IAuthenticationService authenticationService, IRepository<Route> routeRepository)
         {
             _sectionRepository = sectionRepository;
             _authenticationService = authenticationService;
+            _routeRepository = routeRepository;
         }
 
         // GET: /api/section
@@ -103,6 +105,39 @@ namespace AKK.Controllers {
             return new ApiSuccessResponse<Section>(sections.First());
         }
 
+        [HttpPatch("{sectionId}")]
+        public ApiResponse<Section> UpdateSection(string token, string sectionId, Section sectionPatch) 
+        {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Section>("You need to be logged in as an administrator to update this section");
+            }
+            Section section;
+            
+            try {
+                Guid id = new Guid(sectionId);
+                section = _sectionRepository.Find(id);
+            } catch(System.FormatException) {
+                section = _sectionRepository.GetAll().FirstOrDefault(s => s.Name == sectionId);
+            }
+
+            if(section == null)
+                return new ApiErrorResponse<Section>("No section exists with name/id "+sectionId);
+                
+            if(sectionPatch.Name != null)
+            section.Name = sectionPatch.Name;
+
+            try
+            {
+                _sectionRepository.Save();
+                return new ApiSuccessResponse<Section>(section);
+            }
+            catch
+            {
+                return new ApiErrorResponse<Section>("Failed to update section with name/id " + sectionId);
+            }
+        }
+
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
         public ApiResponse<Section> DeleteSection(string token, string name) {
@@ -137,7 +172,6 @@ namespace AKK.Controllers {
                     return new ApiErrorResponse<Section>("Failed to delete section with name/id " + name);
                 }
             }
-
         }
 
         // GET: /api/section/{name}/routes
@@ -183,11 +217,17 @@ namespace AKK.Controllers {
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section.Routes)) as IEnumerable<Route>;
-            section.Routes.RemoveAll(r => true);
+           // section.Routes.RemoveAll(r => true);
+            var routes = _routeRepository.GetAll().Where(r => r.SectionName == section.Name);
+            foreach (var item in routes)
+            {
+                _routeRepository.Delete(item.Id);
+            }
 
             try
             {
                 _sectionRepository.Save();
+                _routeRepository.Save();
                 return new ApiSuccessResponse<IEnumerable<Route>>(resultCopy);
 
             }

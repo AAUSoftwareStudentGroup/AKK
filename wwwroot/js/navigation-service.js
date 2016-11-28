@@ -22,7 +22,7 @@ function NavigationService() {
         window.location = "new-route";
     };
     this.toRoutes = function() {
-        window.location = "routes";
+        window.location.href = "/";
     };
     this.toLogin = function() {
         window.location = "login";

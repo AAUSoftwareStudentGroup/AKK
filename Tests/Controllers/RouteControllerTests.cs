@@ -353,6 +353,26 @@ namespace AKK.Tests.Controllers
         }
 
         [Test]
+        public void _UpdateRoute_UpdateTapeOnRouteRemoveTape_TapeGetsRemoved()
+        {
+            Route Origroute = _routeRepo.GetAll().First(t => t.Author == "Manfred");
+            Route test = new Route();
+
+            test.Author = Origroute.Author;
+            test.ColorOfHolds = Origroute.ColorOfHolds;
+            test.ColorOfTape = null;
+            test.CreatedDate = Origroute.CreatedDate;
+            test.Grade = Origroute.Grade;
+            test.GradeId = Origroute.GradeId;
+            test.HexColorOfHolds = Origroute.HexColorOfHolds;
+            test.HexColorOfTape = null;
+
+            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+
+            Assert.IsNull(Origroute.ColorOfTape);
+        }
+
+        [Test]
         public void _UpdateRoute_UpdateUserWhileNotAuthenticated_ErrorResponseAndRouteNotUpdated()
         {
             Route Origroute = _routeRepo.GetAll().First();
