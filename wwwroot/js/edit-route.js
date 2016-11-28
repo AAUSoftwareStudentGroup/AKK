@@ -56,7 +56,7 @@ function UpdateCanvas(input) {
 
 function resizeImage(image, callback) {
     var maxWidth = 500;
-    if (image.width < maxWidth) return image;
+    if (image.width < maxWidth) callback(image);
     var ratio = image.width / image.height;
 
     var canvas =  document.createElement('canvas');
