@@ -51,7 +51,6 @@ function RegisterViewModel(client, navigationService, cookieService) {
             return;
         }
         client.members.register(self.fullName, self.username, self.password, function(response) {
-            console.log(response);
             if (response.success) {
                 if(response.data) {
                     cookieService.setToken(response.data);

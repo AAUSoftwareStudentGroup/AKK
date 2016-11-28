@@ -23,7 +23,6 @@ QUnit.test("Client tests", function( assert ) {
           var onRouteAdded = function(routeId) {
             //Update route
             routeClient.updateRoute(routeId, sectionId, author, name, holdColor, gradeId, tape, image, function (routeResponse) {
-              console.log(routeResponse);
               assert.equal(routeResponse.success, true, "updateRoute success = " + true);
               assert.equal(routeResponse.data.id, routeId, "updateRoute id = " + routeId);
               assert.equal(routeResponse.data.gradeId, gradeId, "updateRoute gradeId = " + gradeId);
@@ -32,7 +31,7 @@ QUnit.test("Client tests", function( assert ) {
               assert.equal(routeResponse.data.name, name, "updateRoute name = " + name);
               
               routeClient.getRoutes(null, null, null, function (routesResponse) {
-                assert.equal(routesResponse.success, true, "getRoutes success = " + true);
+                assert.equal(routesResponse.success, true, "getRoutes 22 success = " + true);
                 assert.ok(routesResponse.data.length > 0, "getRoutes length > 0");
                 //Added route is in the list of all routes
                 assert.equal(routesResponse.data.filter(function(r) { return r.id == routeId; }).length, 1, "getRoutes contains added route");
@@ -59,7 +58,8 @@ QUnit.test("Client tests", function( assert ) {
           }
           
           routeClient.getRoutes(null, null, null, function (allRoutesResponse) {
-            assert.equal(allRoutesResponse.success, true, "getRoutes success");
+            assert.equal(allRoutesResponse.success, true, "" +
+                "getRoutes success =" + true);
             var testRoutes = allRoutesResponse.data.filter(function(route) { return route.name == "T" });
             if(testRoutes.length == 0)
             {
