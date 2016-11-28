@@ -99,7 +99,7 @@ function AdminPanelViewModel(client, dialogService)
     {
         if(self.selectedSection != null && self.dialogService.confirm("Do you really want to remove all routes from this section?"))
         {
-            self.client.sections.deleteSectionRoutes(self.selectedSection.id, function(response) {
+            self.client.sections.deleteSectionRoutes(self.selectedSection.name, function(response) {
                 if(response.success)
                     self.refreshRoutes();
             });
@@ -142,7 +142,7 @@ function AdminPanelViewModel(client, dialogService)
     {
         if(self.selectedGrade != null && self.dialogService.confirm("Do you really want to permanently delete this difficulty?"))
         {
-            self.client.grades.deleteGrade(self.selectedGrade.difficulty, function(response) {
+            self.client.grades.deleteGrade(self.selectedGrade.id, function(response) {
                 if(response.success)
                 self.trigger("DoneLoading");                
             });
