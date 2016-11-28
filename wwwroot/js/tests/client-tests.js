@@ -59,11 +59,7 @@ QUnit.test("Client tests", function( assert ) {
           
           routeClient.getRoutes(null, null, null, function (allRoutesResponse) {
             assert.equal(allRoutesResponse.success, true, "" +
-                "getRoutes success =" +
-                "" +
-                "" +
-                "" +
-                "" + true);
+                "getRoutes success =" + true);
             var testRoutes = allRoutesResponse.data.filter(function(route) { return route.name == "T" });
             if(testRoutes.length == 0)
             {

@@ -35,15 +35,15 @@ function RoutesViewModel(client) {
         { value: 2, name: "Grading" },
         { value: 3, name: "Author" },
     ];
-    this.searchClicked = function() {
+    this.searchClicked = function () {
         this.isSearching = !this.isSearching;
         if (!this.isSearching) {
             this.init();
         }
         self.trigger("SearchMethodChanged");
     }
-    this.search = function(searchstring) {
-        this.client.routes.searchRoutes(searchstring, function(response) {
+    this.search = function (searchstring) {
+        this.client.routes.searchRoutes(searchstring, function (response) {
             if (response.success) {
                 self.routes = response.data;
                 for (var i = 0; i < self.routes.length; i++) {
