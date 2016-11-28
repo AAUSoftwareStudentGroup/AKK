@@ -17,13 +17,22 @@ function NewRouteViewModel(client, navigationService) {
     }
 
     this.addRoute = function() {
+        var imgObject = null;
+        if (this.image != null) {
+            imgObject = {
+                fileUrl : this.image.src,
+                width : this.image.width,
+                height : this.image.height,
+                holds : this.HoldPositions || []
+            }
+        }
         var sectionId = (self.selectedSection == null ? null : self.selectedSection.id);
         var gradeId = (self.selectedGrade == null ? null : self.selectedGrade.id);
         var holdColor = self.selectedHold;
         var tapeColor = self.selectedTape;
         var routeNumber = self.number;
         var author = self.author;
-        self.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeId, tapeColor, function(response) {
+        self.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeId, tapeColor,imgObject, function(response) {
             if (response.success) {
                 self.navigationService.back();
             } else {

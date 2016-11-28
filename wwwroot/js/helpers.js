@@ -47,3 +47,36 @@ var asyncLoop = function(o){
     } 
     loop();//init
 }
+
+function resizeImage(image, callback) {
+    var maxWidth = 500;
+    if (image.width < maxWidth) callback(image);
+    var ratio = image.width / image.height;
+
+    var canvas =  document.createElement('canvas');
+    canvas.width = maxWidth;
+    canvas.height = maxWidth / ratio;
+    var context = canvas.getContext("2d");
+    context.drawImage(image, 0, 0, canvas.width, canvas.height);
+    var newImageData = canvas.toDataURL();
+
+    var newImage = new Image();
+    newImage.src = newImageData;
+    newImage.onload = function() {
+        callback(newImage);
+    }
+}
+
+function readURL(input, callback) {
+  if (input.files && input.files[0]) {
+    var reader = new FileReader();
+    var i = document.createElement('img');
+    reader.onload = function (e) {
+        i.setAttribute("src", e.target.result);
+        i.onload = function(e) {
+            callback(i);
+        }
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+}

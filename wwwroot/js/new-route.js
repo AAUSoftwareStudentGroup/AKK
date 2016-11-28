@@ -58,6 +58,12 @@ $(document).ready(function () {
     ];
 
     setUpContentUpdater(content, function() {
+        viewModel.addEventListener("imageUpdated", function() {
+            if (viewModel.hasImage) {
+                rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
+                rc.DrawCanvas();
+            }
+        });
         viewModel.init();
         headerViewModel.init();
     });

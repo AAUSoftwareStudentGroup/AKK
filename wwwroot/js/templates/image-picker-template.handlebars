@@ -2,7 +2,7 @@
 <div class="content-section image-picker">
     <h2>Route image</h2>
     <label for="files" class="submit-button neutral left no-select">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} image</label>
-    <input id="files" style="display:none;" type="file" accept="image/*" onchange="UpdateCanvas(this);">
+    <input id="files" style="display:none;" type="file" accept="image/*" onchange="viewModel.UpdateCanvas(this);">
 
     {{#if_eq hasImage true}}
     <div id="canvas-container">

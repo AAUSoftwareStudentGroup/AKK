@@ -125,4 +125,14 @@ function RouteViewModel(client, navigationService) {
     this.changeNote = function(note) {
         self.note = note;
     }
+    
+    this.UpdateCanvas = function(input) {
+        readURL(input, function(i) {
+            resizeImage(i, function(ni) {
+                viewModel.changeImage(ni);
+                viewModel.HoldPositions = [];
+            });
+        });
+    }
 }
+
