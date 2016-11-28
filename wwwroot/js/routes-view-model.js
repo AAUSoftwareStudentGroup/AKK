@@ -28,6 +28,9 @@ function RoutesViewModel(client) {
                 if (gradesResponse.success && sectionsResponse.success) {
                     self.sections = self.sections.concat(sectionsResponse.data);
                     self.grades = self.grades.concat(gradesResponse.data);
+                    self.selectedGrade = self.grades[0];
+                    self.selectedSection = self.sections[0];
+                    self.selectedSortBy = self.sortOptions[0];
                     self.downloadRoutes();
                     self.trigger("routesChanged");
                     self.trigger("filteringChanged");
@@ -83,6 +86,9 @@ function RoutesViewModel(client) {
 
     this.toggleSearch = function() {
         this.isSearching = !this.isSearching;
+        if (!this.isSearching) {
+            this.init();
+        }
         self.trigger("filteringChanged");
     }   
 
