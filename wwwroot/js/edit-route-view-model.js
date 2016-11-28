@@ -66,7 +66,6 @@ function EditRouteViewModel(client, navigationService) {
             }
         });
     }
-    
 }
 
 /*function EditRouteViewModel(client, navigationService)
