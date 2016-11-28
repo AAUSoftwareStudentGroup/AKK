@@ -257,6 +257,11 @@ namespace AKK.Tests
                 }
             };
 
+            for(int i = 0; i< _routes.Count; i++)
+            {
+                _routes[i].Author = _routes[i].Member.DisplayName;
+            }
+
             foreach (var section in _sections)
             {
                 foreach (var route in _routes)

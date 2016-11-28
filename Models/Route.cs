@@ -49,8 +49,7 @@ namespace AKK.Models
         [JsonIgnore]
         public Section Section { get; set; }
 
-        [NotMapped]
-        public string Author => Member?.DisplayName;
+        public string Author { get; set; }
 
         [NotMapped]
         public string SectionName => Section?.Name;
