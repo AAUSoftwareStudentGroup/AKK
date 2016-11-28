@@ -317,25 +317,29 @@ input[type="checkbox"] {
     margin: 12px 0 12px 0;
 }
 
-    .routeimage .submit-button {
-        text-align: center;
-    }
+.no-image-added {
+    text-align: center;
+    font-size: small;
+    border: 1px solid black;
+    height: 100px;
+    position: relative;
+}
+
+.no-image-added svg {
+    fill: #42423F;
+    width: 40%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+}
 
 .note {
     margin: 0;
     text-align: justify;
 }
-
-#route-edit-image {
-    width: 100%;
-}
-
-#canvas-container {
-    width: 100%;
-    clear: both;
-    position: relative;
-}
-
 
 /* Route cards */
 .route-card {
@@ -468,18 +472,9 @@ input[type="checkbox"] {
     -webkit-box-sizing: border-box;
 }
 
-.number-picker input:focus,
-.author-picker input:focus {
-    outline: none;
-}
-
-.string-input input.invalid {
-    border-bottom: 2px solid #EF5350;
-}
-
-.string-input input:focus {
-    outline: none;
-}
+    .string-input input:focus {
+        outline: none;
+    }
 
 /* Holds */
 .hold-picker .radio-inputs {
@@ -504,8 +499,25 @@ input[type="checkbox"] {
 }
 
 .hold-picker .tape-switch {
-    margin: 0 0 24px 8px;
+    margin: 0 0 30px 8px;
 }
+
+/* Image */
+.image-picker .no-image {
+    padding-bottom: 56px;
+}
+
+.image-picker .image-container {
+    width: 100%;
+    clear: both;
+    position: relative;
+    padding: 20px 0 12px 0;
+    outline: none;
+}
+
+    .image-picker .image-container canvas {
+        width: 100%;
+    }
 
 .undo-button {
     line-height: 24px;
@@ -515,25 +527,6 @@ input[type="checkbox"] {
     background-color: rgba(255,255,255,.7);
     padding: 0;
     margin: 0;
-}
-
-.no-image-added {
-    text-align: center;
-    font-size: small;
-    border: 1px solid black;
-    height: 100px;
-    position: relative;
-}
-
-.no-image-added svg {
-    fill: #42423F;
-    width: 40%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-    left: 0;
-    right: 0;
 }
 
 #search-field {
@@ -571,11 +564,6 @@ input[type="checkbox"] {
 
 .route-list {
     margin-bottom: 75px;
-}
-
-#canvas-container {
-    padding-top:20px;
-    outline: none;
 }
 
 /** ADMIN PANEL **/
