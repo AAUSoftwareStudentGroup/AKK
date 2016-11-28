@@ -250,6 +250,12 @@ namespace AKK.Controllers {
             {
                 if(_imageRepository.GetAll().Any(i => i.RouteId == routeId)) {
                     Image img = _imageRepository.GetAll().First(i => i.RouteId == routeId);
+                    IEnumerable<Hold> holds = _holdRepository.GetAll().Where(h => h.ImageId == img.Id);
+                    if(holds != null && holds.Any())
+                    {
+                        holds.ToList().ForEach(h => _holdRepository.Delete(h.Id));
+                    }
+                    _holdRepository.Save();
                     _imageRepository.Delete(img.Id);
                 }
 
