@@ -20,7 +20,7 @@
 </head>
 <body>
     <script src="js/route-info.js"></script>
-<script id="route-info-template" type="text/x-handlebars-template">
+    <script id="route-info-template" type="text/x-handlebars-template">
         <div class="content single-route">
             <div class="route-card">
                 <div class="route-card-top">
@@ -62,19 +62,21 @@
                         </svg>
                     </div>
                 </div>
-                {{#if_eq hasImage true}}
-                    <canvas id="routeimage" class="routeimagesmall routeimage" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
-                {{else}}
-                    <div class="routeimage routeimagesmall no-image-added" onclick="viewModel.editRoute()"><p class="no-image-text">This route has no image, click to add one</p></div>
-                {{/if_eq}}
-                <p class="note">Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note Note </p>
+                <div class="routeimage">
+                    {{#if_eq hasImage true}}
+                        <canvas id="routeimage" width="{{route.image.width}}" height="{{route.image.height}}">Canvas not supported</canvas>
+                    {{else}}
+                        <div class="submit-button neutral no-select" onclick="viewModel.editRoute()">Tap to add an image</div>
+                    {{/if_eq}}
+                </div>
+                <p class="note">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
                 <div class="route-card-bottom" style="clear:both;">
                     <span class="route-author">Made by: {{route.author}}</span>
                     <span class="route-date">{{route.date}}</span>
                 </div>
             </div>
-            <input class="bottom-padding submit-button create-route-button left" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
-            <input class="bottom-padding submit-button delete-route-button right" type="button" onclick="viewModel.deleteRoute()" value="Delete"></input>
+            <input class="bottom-padding submit-button neutral left" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
+            <input class="bottom-padding submit-button negative right" type="button" onclick="viewModel.deleteRoute()" value="Delete"></input>
         </div>
     </script>
     <div id ="header"></div>

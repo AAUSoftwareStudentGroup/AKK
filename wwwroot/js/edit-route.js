@@ -1,53 +1,110 @@
 ﻿var viewModel;
 var headerViewModel;
 var rc;
+var client;
+
 $(document).ready(function () {
+    client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+    headerViewModel = new HeaderViewModel("Edit Route", client, new CookieService());
+    viewModel = new EditRouteViewModel(client, new NavigationService());
+
+    var content = [
+        {
+            scriptSource: "js/templates/header-template.handlebars", 
+            elementId: "header", 
+            event: "headerUpdated",
+            callback: function() {
+                headerViewModel.init();
+            },
+            viewmodel: headerViewModel
+        },
+        {
+            scriptSource: "js/templates/section-picker-template.handlebars", 
+            elementId: "section-picker-content", 
+            event: "sectionsUpdated",
+            viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/grade-picker-template.handlebars",
+            elementId: "grade-picker-content",
+            event: "gradesUpdated",
+            viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/number-picker-template.handlebars",
+            elementId: "number-picker-content",
+            event: "numberUpdated",
+            viewmodel: viewModel
+            
+        },
+        {
+            scriptSource: "js/templates/author-picker-template.handlebars",
+            elementId: "author-picker-content",
+            event: "authorUpdated",
+            viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/hold-picker-template.handlebars",
+            elementId: "hold-picker-content",
+            event: "holdsUpdated",
+            callback: function() {
+                viewModel.init();
+            },
+            viewmodel: viewModel
+        }
+    ];
+
+    for (var i = 0; i < content.length; i++) {
+        setUpContentUpdater(content[i]);
+    }
+});
+
+/*$(document).ready(function () {
     $.get("js/templates/header-template.handlebars",
         function(response) {
-            var template = Handlebars.compile($("#edit-route-template").html());
-            var templateheader = Handlebars.compile(response);
-            var colortemplate = Handlebars.compile($("#holdcolortemplate").html());
-            var imagetemplate = Handlebars.compile($("#imagetemplate").html());
             var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+            var headerViewModel = new HeaderViewModel("Edit Route", client, new CookieService());
+            var headerTemplate = Handlebars.compile(response);
 
-            headerViewModel = new HeaderViewModel("Edit Route", client, new CookieService());
             headerViewModel.addEventListener("headerUpdated", function () {
-                $('#header').html(templateheader(headerViewModel));
+                $('#header').html(headerTemplate(headerViewModel));
             });
+
+            var contentTemplate = Handlebars.compile($("#edit-route-template").html());
+            var holdsTemplate = Handlebars.compile($("#edit-route-holds-template").html());
 
             viewModel = new EditRouteViewModel(client, new NavigationService());
             viewModel.addEventListener("OnGradeOrSectionChanged", function () {
-                $('#content').html(template(viewModel));
+                $('#content').html(contentTemplate(viewModel));
                 $('#section-input-' + viewModel.selectedSection.name).prop("checked", true);
                 $('#grade-input-' + viewModel.selectedGrade.id).prop("checked", true);
             });
 
-            viewModel.addEventListener("OnImageChanged", function() {
-                $('#imageContent').html(imagetemplate(viewModel));
-                if (viewModel.hasImage) {
-                    rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
-                    rc.DrawCanvas();
-                }
-            });
-
             viewModel.addEventListener("OnColorChanged", function() {
-                $('#holdColorContent').html(colortemplate(viewModel));
+                $('.hold-picker').html(holdsTemplate(viewModel));
                 if (viewModel.hasTape === false)
                     $('#holdColor-input-' + viewModel.selectedColor.value).prop("checked", true);
                 else if (viewModel.selectedTapeColor)
                     $('#holdColor-input-' + viewModel.selectedTapeColor.value).prop("checked", true);
             });
 
+            viewModel.addEventListener("OnImageChanged", function() {
+                $('#content').html(contentTemplate(viewModel));
+                if (viewModel.hasImage) {
+                    rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
+                    rc.DrawCanvas();
+                }
+            });
+
             viewModel.init();          
             headerViewModel.init();
         });
 
-});
+});*/
 
 function UpdateCanvas(input) {
     readURL(input, function(i) {
         resizeImage(i, function(ni) {
-            console.log(ni.width + "," + ni.height);
             viewModel.setImage(ni);
             viewModel.HoldPositions = [];
         });
