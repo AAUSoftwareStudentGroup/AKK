@@ -29,7 +29,7 @@ namespace AKK.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
-                return new ApiErrorResponse<string>("Login failed");
+                return new ApiErrorResponse<string>("Login failed - Invalid username or password");
             }
             
             return new ApiSuccessResponse<string>(token);
@@ -78,6 +78,7 @@ namespace AKK.Controllers
 
             return Login(username, password);
         }
+
         // GET: /api/member/role
         [HttpGet("role")]
         public ApiResponse<IEnumerable> GetRole(string token)

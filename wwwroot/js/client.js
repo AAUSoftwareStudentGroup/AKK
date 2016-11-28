@@ -55,7 +55,7 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addRoute = function(sectionId, name, author, holdColor, gradeId, tape, success)
+    this.addRoute = function(sectionId, name, author, holdColor, gradeId, tape,image, success)
     {
         $.ajax({
             type: "POST",
@@ -69,7 +69,8 @@ function RouteClient(url, cookieService)
                 name: name,
                 gradeId: gradeId,
                 colorOfHolds: holdColor,
-                colorOfTape: tape
+                colorOfTape: tape,
+                image: image
             },
             success: success
         });

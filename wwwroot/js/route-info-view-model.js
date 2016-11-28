@@ -6,6 +6,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
                 if (routeResponse.success) {
                     self.route = routeResponse.data;
+                    console.log(self.route);
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
 
                     self.client.routes.getImage(self.route.id, function(imageResponse) {
@@ -16,10 +17,10 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                             self.route.image.src = imageResponse.data.fileUrl;
                             self.HoldPositions = imageResponse.data.holds;
                             self.route.image.onload = function() {
-                                self.trigger("ContentUpdated");
+                                self.trigger("cardUpdated");
                             }
                         } else {
-                            self.trigger("ContentUpdated");
+                            self.trigger("cardUpdated");
                         }
                     });
                 }
@@ -33,6 +34,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.grade = null;
 
     this.route = null;
+    
     this.editRoute = function () {
         if (self.route != null) {
             navigationService.toEditRoute(self.route.id);
