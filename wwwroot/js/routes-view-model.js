@@ -65,7 +65,7 @@ function RoutesViewModel(client) {
             } else {
                 self.routes = [];
             }
-            self.trigger("RoutesChanged");
+            self.trigger("routesChanged");
         });
     }
 
