@@ -15,20 +15,18 @@ function NewRouteViewModel(client, navigationService) {
     }
 
     this.addRoute = function() {
-        if (!isNaN(self.routeNumber)) {
-            var sectionId = (self.selectedSection == null ? null : self.selectedSection.id);
-            var gradeId = (self.selectedGrade == null ? null : self.selectedGrade.id);
-            var holdColor = self.selectedHold;
-            var tapeColor = self.selectedTape;
-            var routeNumber = self.number;
-            var author = self.author;
-            self.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeId, tapeColor, function(response) {
-                if (response.success) {
-                    self.navigationService.back();
-                } else {
-                    $("#error-message").html(response.message).show();
-                }
-            });
-        }
+        var sectionId = (self.selectedSection == null ? null : self.selectedSection.id);
+        var gradeId = (self.selectedGrade == null ? null : self.selectedGrade.id);
+        var holdColor = self.selectedHold;
+        var tapeColor = self.selectedTape;
+        var routeNumber = self.number;
+        var author = self.author;
+        self.client.routes.addRoute(sectionId, routeNumber, author, holdColor, gradeId, tapeColor, function(response) {
+            if (response.success) {
+                self.navigationService.back();
+            } else {
+                $("#error-message").html(response.message).show();
+            }
+        });
     };
 }

@@ -95,6 +95,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "4",
+                    Author = "Test",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 0),
                     Member = new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = true},
@@ -104,6 +105,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "4",
+                    Author = "Test",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 0),
                     Member = new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = true},
@@ -113,6 +115,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "14",
+                    Author = "Test",
                     Section = _sections[0],
                     ColorOfHolds = new Color(0, 255, 0),
                     Member = new Member {DisplayName = "Jakobsen", Username = "Jakobsen123", Password = "123", IsAdmin = false},
@@ -122,6 +125,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "43",
+                    Author = "Test",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 255),
                     Member = new Member {DisplayName = "Hornum", Username = "Hornum123", Password = "123", IsAdmin = false},
@@ -131,6 +135,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "21",
+                    Author = "Test",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 255, 0),
                     Member = new Member {DisplayName = "Jakob", Username = "Jakob123", Password = "123", IsAdmin = false},
@@ -140,6 +145,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "32",
+                    Author = "Test",
                     Section = _sections[1],
                     ColorOfHolds = new Color(100, 100, 100),
                     Member = new Member {DisplayName = "TannerHelland", Username = "TannerHelland123", Password = "123", IsAdmin = true},
@@ -149,6 +155,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "99",
+                    Author = "Test",
                     Section = _sections[1],
                     ColorOfHolds = new Color(170, 12, 54),
                     Member = new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = false},
@@ -158,6 +165,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "3",
+                    Author = "Test",
                     Section = _sections[1],
                     ColorOfHolds = new Color(255, 34, 89),
                     Member = new Member {DisplayName = "Ibsen", Username = "Ibsen123", Password = "123", IsAdmin = false},
@@ -167,6 +175,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "7",
+                    Author = "Test",
                     Section = _sections[1],
                     ColorOfHolds = new Color(232, 233, 5),
                     Member = new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = false},
@@ -176,6 +185,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "66",
+                    Author = "Test",
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 0, 0),
                     Member = new Member {DisplayName = "Geo", Username = "Geo123", Password = "123", IsAdmin = false},
@@ -185,6 +195,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "33",
+                    Author = "Test",
                     Section = _sections[2],
                     ColorOfHolds = new Color(0, 22, 123),
                     Member = new Member {DisplayName = "Bacci", Username = "Bacci123", Password = "123", IsAdmin = false},
@@ -194,6 +205,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "94",
+                    Author = "Test",
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 123, 0),
                     Member = new Member {DisplayName = "Geogebra", Username = "Geogebra123", Password = "123", IsAdmin = false},
@@ -203,6 +215,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "22",
+                    Author = "Test",
                     Section = _sections[2],
                     ColorOfHolds = new Color(255, 123, 0),
                     Member = new Member {DisplayName = "Kurt", Username = "Kurt123", Password = "123", IsAdmin = false},
@@ -212,6 +225,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "44",
+                    Author = "Test",
                     Section = _sections[2],
                     ColorOfHolds = new Color(123, 22, 22),
                     Member = new Member {DisplayName = "Benja", Username = "Benja123", Password = "123", IsAdmin = false},
@@ -221,6 +235,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "20",
+                    Author = "Test",
                     Section = _sections[3],
                     ColorOfHolds = new Color(35, 0, 22),
                     Member = new Member {DisplayName = "Manfred", Username = "Manfred123", Password = "123", IsAdmin = false},
@@ -231,6 +246,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "9",
+                    Author = "Test",
                     Section = _sections[3],
                     ColorOfHolds = new Color(123, 255, 22),
                     Member = new Member {DisplayName = "Bettina", Username = "Bettina123", Password = "123", IsAdmin = false},
@@ -240,6 +256,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "76",
+                    Author = "Test",
                     Section = _sections[3],
                     ColorOfHolds = new Color(0, 22, 68),
                     Member = new Member {DisplayName = "Kasper", Username = "Kasper123", Password = "123", IsAdmin = false},
@@ -249,6 +266,7 @@ namespace AKK.Models
                 new Route
                 {
                     Name = "54",
+                    Author = "Test",
                     Section = _sections[3],
                     ColorOfHolds = new Color(123, 22, 123),
                     Member = new Member {DisplayName = "Rasmus", Username = "Rasmus123", Password = "123", IsAdmin = false},
