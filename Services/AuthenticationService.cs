@@ -26,7 +26,10 @@ namespace AKK.Services
 
             if (member != default(Member) && member.Password == password)
             {
-                member.Token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+                if(member.Token != null) {
+                    return member.Token;
+                }
+                member.Token = Guid.NewGuid().ToString();
                 _memberRepository.Save();
                 return member.Token;
             }
@@ -39,7 +42,6 @@ namespace AKK.Services
             {
                 return;
             }
-
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
 
             if (member != default(Member))

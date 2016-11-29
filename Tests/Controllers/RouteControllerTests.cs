@@ -79,7 +79,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _GetRoutes_GettingAllRoutesInTheSystem_ExpectTheyreAllThere()
         {
-            var response = _controller.GetRoutes(null,null,null,null,SortOrder.Newest);
+            var response = _controller.GetRoutes(null,null,null,0,SortOrder.Newest);
             var routes = response.Data;
             Assert.AreEqual(true, response.Success);
             
@@ -90,7 +90,7 @@ namespace AKK.Tests.Controllers
         public void _GetRoutes_GettingRoutesOfCertainGrade_ExpectOnlyRoutesWithThatGrade()
         {
             var grade = _gradeRepo.GetAll().First(g => g.Name == "Green");
-            var response = _controller.GetRoutes(grade.Id, null, null, null, SortOrder.Newest);
+            var response = _controller.GetRoutes(grade.Id, null, null, 0, SortOrder.Newest);
             var routes = response.Data;
 
             Assert.AreEqual(true, response.Success);
@@ -121,7 +121,7 @@ namespace AKK.Tests.Controllers
         public void _GetRoutes_GettingRoutesFromSectionWithID_ExpectOnlyRoutesFromThatSection()
         {
             var section = _sectionRepo.GetAll().First();
-            var response = _controller.GetRoutes(null, section.Id, null, null, SortOrder.Newest);
+            var response = _controller.GetRoutes(null, section.Id, null, 0, SortOrder.Newest);
             var routes = response.Data;
 
             Assert.AreEqual(true, response.Success);

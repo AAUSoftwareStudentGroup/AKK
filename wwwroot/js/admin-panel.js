@@ -1,35 +1,33 @@
-﻿var headerViewModel;
-var viewModel;
-
+﻿var viewModel;
+var headerViewModel;
 $(document).ready(function () {
-    $.get("js/templates/header-template.handlebars",
-        function (response) {
-            var template = Handlebars.compile($("#sections-template").html());
-            var templateheader = Handlebars.compile(response);
-            var sectionTemplate = Handlebars.compile($("#sectionsArea-template").html());
-            var routeTemplate = Handlebars.compile($("#routes-template").html());
-            var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+    var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+    headerViewModel = new HeaderViewModel("Admin Panel", client, "/");
+    viewModel = new AdminPanelViewModel(client, new DialogService());
 
-            headerViewModel = new HeaderViewModel("Admin Panel", client, new CookieService());
-            headerViewModel.addEventListener("headerUpdated", function () {
-                $('#header').html(templateheader(headerViewModel));
-            });
+    var content = [
+        {
+            scriptSource: "js/templates/header-template.handlebars", 
+            elementId: "header", 
+            event: "headerUpdated",
+            viewmodel: headerViewModel
+        },
+        {
+            scriptSource: "js/templates/section-admin-template.handlebars", 
+            elementId: "section-admin", 
+            event: "sectionsChanged",
+            viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/route-list-template.handlebars", 
+            elementId: "routes-content", 
+            event: "routesChanged",
+            viewmodel: viewModel
+        }
+    ];
 
-            viewModel = new AdminPanelViewModel(client, new DialogService());
-            viewModel.addEventListener("DoneLoading", function changed() {
-                $('#content').html(template(viewModel));
-                $('#section-input-' + viewModel.selectedSection.name).prop("selected", true);
-            });
-
-            viewModel.addEventListener("SectionsUpdated", function () {
-                $('#sectionArea').html(sectionTemplate(viewModel));
-            });
-
-            viewModel.addEventListener("RoutesUpdated", function () {
-                $('#routeList').html(routeTemplate(viewModel));
-            });
-
-            headerViewModel.init();
-            viewModel.init();
-        });
+    setUpContentUpdater(content, function() {
+        viewModel.init();
+        headerViewModel.init();
+    });
 });

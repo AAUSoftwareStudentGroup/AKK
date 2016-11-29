@@ -31,7 +31,7 @@ namespace AKK.Models
         
         public override int GetHashCode()
         {
-            return int.Parse(Name);
+            return Name.GetHashCode();
         }
 
         public Route Clone()

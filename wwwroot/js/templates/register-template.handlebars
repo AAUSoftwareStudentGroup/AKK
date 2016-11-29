@@ -1,0 +1,21 @@
+<form>
+    <div class="content-section string-input">
+        <h2>Full name</h2>
+        <input id="full-name" class="full-name-input" type="text" onchange="viewModel.changeFullName(this.value)" placeholder="Full name">
+    </div>
+    <div class="content-section string-input">
+        <h2>Username</h2>
+        <input id="username" class="username-input" type="text" onchange="viewModel.changeUsername(this.value)" value="{{username}}" placeholder="Username">
+    </div>
+    <div class="content-section string-input">
+        <h2>Password</h2>
+        <input id="password" class="password-input" type="password" onchange="viewModel.changePassword(this.value)" placeholder="Password">
+    </div>
+    <div class="content-section string-input">
+        <h2>Confirm password</h2>
+        <input id="passwordconfirm" class="passwordconfirm-input" type="password" onchange="viewModel.changePasswordconfirm(this.value)" placeholder="Password">
+    </div>
+    
+    <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+    <input class="submit-button neutral right" type="button" onclick="viewModel.register()" value="Register">
+</form>

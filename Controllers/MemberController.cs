@@ -25,11 +25,11 @@ namespace AKK.Controllers
         [HttpGet("login")]
         public ApiResponse<string> Login(string username, string password)
         {
-            string token = _authenticator.Login(username, password);
+            string token = _authenticator.Login(username.ToLower(), password);
 
             if (string.IsNullOrEmpty(token))
             {
-                return new ApiErrorResponse<string>("Login failed");
+                return new ApiErrorResponse<string>("Login failed - Invalid username or password");
             }
             
             return new ApiSuccessResponse<string>(token);
@@ -60,6 +60,7 @@ namespace AKK.Controllers
         [HttpPost]
         public ApiResponse<string> AddMember(string username, string password, string displayName)
         {
+            username = username.ToLower();
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(displayName)) {
                 return new ApiErrorResponse<string>("Failed to create user. Missing username, password or display name");
             }
@@ -78,6 +79,7 @@ namespace AKK.Controllers
 
             return Login(username, password);
         }
+
         // GET: /api/member/role
         [HttpGet("role")]
         public ApiResponse<IEnumerable> GetRole(string token)

@@ -129,12 +129,12 @@ namespace AKK.Tests.Controllers
             var rnd = new Random();
 
             var grade = _repo.GetAll().First();
-            var newdifficulty = rnd.Next(15, 99);
             var newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
+            var gradePatch = new Grade() {Difficulty = rnd.Next(15, 99), Color = newColor};
 
-            _controller.UpdateGrade("AdminTestToken", grade.Id, newdifficulty, newColor);
+            _controller.UpdateGrade("AdminTestToken", grade.Id, gradePatch);
 
-            Assert.IsTrue(grade.Difficulty == newdifficulty);
+            Assert.IsTrue(grade.Difficulty == gradePatch.Difficulty);
             Assert.IsTrue(grade.Color.ToUint() == newColor.ToUint());
         }
 
@@ -144,10 +144,10 @@ namespace AKK.Tests.Controllers
             var rnd = new Random();
 
             var grade = _repo.GetAll().First();
-            var newdifficulty = rnd.Next(15, 99);
             var newColor = new Color((byte)rnd.Next(255), (byte)rnd.Next(255), (byte)rnd.Next(255));
+            var gradePatch = new Grade() {Difficulty = rnd.Next(15, 99), Color = newColor};
 
-            var result = _controller.UpdateGrade("AdminTestToken", grade.Id, newdifficulty, newColor);
+            var result = _controller.UpdateGrade("AdminTestToken", grade.Id, gradePatch);
             var data = result.Data;
 
             Assert.IsTrue(result.Success);

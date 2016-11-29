@@ -1,4 +1,75 @@
-function EditRouteViewModel(client, navigationService)
+function EditRouteViewModel(client, navigationService) {
+    RouteViewModel.apply (this, arguments);
+    this.routeId = "";
+    var self = this;
+    this.init = function() {
+        this.routeId = this.navigationService.getParameters()["routeId"];
+        this.client.routes.getRoute(this.routeId, function(response) {
+            if (response.success) {
+                self.downloadSections(function() {
+                    self.changeSection(response.data.sectionId);
+                    self.trigger("sectionsUpdated");
+                });
+
+                self.downloadGrades(function() {
+                    self.changeGrade(response.data.gradeId);
+                    self.trigger("gradesUpdated");
+                });
+
+                self.changeNumber(response.data.name);
+                self.trigger("numberUpdated");
+
+                self.changeAuthor(response.data.author);
+                self.trigger("authorUpdated");
+
+                self.changeHold(response.data.colorOfHolds);
+                if (response.data.colorOfTape) {
+                    self.changeTape(response.data.colorOfTape);
+                    self.toggleTape();
+                }
+                self.trigger("holdsUpdated");
+
+                self.downloadImage();
+
+                self.changeNote(response.data.note);
+                self.trigger("noteUpdated");
+            } else {
+                self.trigger("Error", response.message);
+            }
+        });
+    }
+    this.UpdateRoute = function() {
+        var imgObject = null;
+        if (this.image != null) {
+            imgObject = {
+                fileUrl : this.image.src,
+                width : this.image.width,
+                height : this.image.height,
+                holds : this.HoldPositions || []
+            }
+        }
+        self.client.routes.updateRoute( this.routeId, 
+                                        this.selectedSection.id, 
+                                        this.author, 
+                                        this.routeNumber, 
+                                        this.selectedHold, 
+                                        this.selectedGrade.id, 
+                                        this.selectedTape,
+                                        this.note,
+                                        imgObject, function(response) {
+            if(response.success)
+            {
+                navigationService.toRouteInfo(self.routeId);
+            }
+            else
+            {
+                $("#error-message").html(response.message).show();
+            }
+        });
+    }
+}
+
+/*function EditRouteViewModel(client, navigationService)
 {
     var self = this;
     this.client = client;
@@ -83,21 +154,21 @@ function EditRouteViewModel(client, navigationService)
     this.grades = [ ];
     this.HoldPositions = [ ];
     this.holdColors = [
-        { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1},
-        { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1},
-        { value: 2, name: "Blue", color: "0000FF", r: 0, g: 0, b: 255, a: 1},
-        { value: 3, name: "Violet", color: "7F00FF", r: 127, g: 0, b: 255, a: 1},
-        { value: 4, name: "Magenta", color: "FF00FF", r: 255, g: 0, b: 255, a: 1},
-        { value: 5, name: "Rose", color: "FF017F", r: 255, g: 1, b: 127, a: 1},
-        { value: 6, name: "Red", color: "FF0000", r: 255, g: 0, b: 0, a: 1},
+        { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1 },
+        { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1 },
+        { value: 2, name: "Blue", color: "3C3Cff", r: 60, g: 60, b: 255, a: 1 },
+        { value: 3, name: "Violet", color: "7F00FF", r: 127, g: 0, b: 255, a: 1 },
+        { value: 4, name: "Magenta", color: "C832C8", r: 200, g: 50, b: 200, a: 1 },
+        { value: 5, name: "Rose", color: "D21978", r: 210, g: 25, b: 120, a: 1 },
+        { value: 6, name: "Red", color: "C81E1E", r: 200, g: 30, b: 30, a: 1},
         { value: 7, name: "Orange", color: "FF7F00", r: 255, g: 127, b: 0, a: 1},
-        { value: 8, name: "Yellow", color: "e4dc00", r: 228, g: 220, b: 0, a: 1},
-        { value: 9, name: "Chartreuse Green", color: "79FF00", r: 121, g: 255, b: 0, a: 1},
-        { value: 10, name: "Green", color: "00e900", r: 0, g: 233, b: 0, a: 1},
+        { value: 8, name: "Yellow", color: "DCC81E", r: 220, g: 200, b: 30, a: 1},
+        { value: 9, name: "Light Green", color: "6ED214", r: 110, g: 210, b: 20, a: 1},
+        { value: 10, name: "Green", color: "149614", r: 20, g: 150, b: 20, a: 1},
         { value: 11, name: "Black", color: "000000", r: 0, g: 0, b: 0, a: 1},
         { value: 12, name: "Brown", color: "7E360F", r: 127, g: 54, b: 15, a: 1},
         { value: 13, name: "Grey", color: "5c5959", r: 92, g: 89, b: 89, a: 1},
-        { value: 14, name: "White", color: "D0D0D0", r: 208, g: 208, b: 208, a: 1},
+        { value: 14, name: "White", color: "CDCDCD", r: 205, g: 205, b: 205, a: 1},
     ];
 
     this.setImage = function(img) {
@@ -117,7 +188,7 @@ function EditRouteViewModel(client, navigationService)
     {
         self.selectedGrade = self.grades.filter(function(g) { return g.id == gradeId; })[0];
     };
-    this.getHoldColor = function(holdColor)
+    this.getHoldColor = function(holdColor) 
     {
         var temp = self.holdColors;
         self.selectedColor = temp[0];
@@ -129,14 +200,7 @@ function EditRouteViewModel(client, navigationService)
         }
     };
     this.changeHoldColor = function(holdColor)
-    {/*
-        var temp = viewModel.holdColors;
-        for(var i = 0; i < temp.length; i++) {
-            if(temp[i].r == holdColor.r && temp[i].g == holdColor.g && temp[i].b == holdColor.b && temp[i].a == holdColor.a) {
-                viewModel.selectedColor = holdColor;
-                return;
-            }
-        }*/
+    {
         self.selectedColor = self.holdColors.filter(function(g) {return g.value == holdColor; })[0];
     };
     this.changeTapeColor = function(tapeColor)
@@ -215,5 +279,5 @@ function EditRouteViewModel(client, navigationService)
         }
     }
 }
-
 EditRouteViewModel.prototype = new EventNotifier();
+*/
