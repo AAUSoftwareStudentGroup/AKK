@@ -105,6 +105,12 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Route>("A route number must be specified");
             }
 
+            int temp;
+            if (!int.TryParse(route.Name, out temp) || temp<1)
+            {
+                return new ApiErrorResponse<Route>("Route number must be a positive integer");
+            }
+
             if (route.Author == null)
             {
                 return new ApiErrorResponse<Route>("An author must be specified");
