@@ -11,9 +11,5 @@ namespace AKK.Models
         }
 
         public virtual List<Hold> Holds { get; set; }
-
-        public uint Width { get; set; }
-
-        public uint Height { get; set; }
     }
 }

@@ -187,9 +187,13 @@ namespace AKK.Migrations
 
                     b.Property<string>("FileUrl");
 
+                    b.Property<uint>("Height");
+
                     b.Property<Guid>("MemberId");
 
                     b.Property<Guid>("RouteId");
+
+                    b.Property<uint>("Width");
 
                     b.HasKey("Id");
 

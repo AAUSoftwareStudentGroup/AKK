@@ -8,7 +8,7 @@ using AKK.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161129140417_dbinit")]
+    [Migration("20161129132256_dbinit")]
     partial class dbinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,9 +188,13 @@ namespace AKK.Migrations
 
                     b.Property<string>("FileUrl");
 
+                    b.Property<uint>("Height");
+
                     b.Property<Guid>("MemberId");
 
                     b.Property<Guid>("RouteId");
+
+                    b.Property<uint>("Width");
 
                     b.HasKey("Id");
 

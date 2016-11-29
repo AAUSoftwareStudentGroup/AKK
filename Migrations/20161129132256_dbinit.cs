@@ -168,8 +168,10 @@ namespace AKK.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     FileUrl = table.Column<string>(nullable: true),
+                    Height = table.Column<uint>(nullable: false),
                     MemberId = table.Column<Guid>(nullable: false),
-                    RouteId = table.Column<Guid>(nullable: false)
+                    RouteId = table.Column<Guid>(nullable: false),
+                    Width = table.Column<uint>(nullable: false)
                 },
                 constraints: table =>
                 {
