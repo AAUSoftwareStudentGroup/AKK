@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace AKK.Models
 {
-    public class Comments : Model
+    public class Comment : Model
     {
         public Guid RouteId { get; set; }
 
