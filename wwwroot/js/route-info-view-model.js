@@ -7,6 +7,11 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 if (routeResponse.success) {
                     self.route = routeResponse.data;
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
+                    self.route.rating = 3.74;
+                    self.filledStars = Math.round(self.route.rating);
+                    self.emptyStars = 5-(self.filledStars);
+                    console.log(self.filledStars)
+                    console.log(self.emptyStars)
 
                     self.client.routes.getImage(self.route.id, function(imageResponse) {
                         if (imageResponse.success) {
@@ -38,6 +43,8 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.grade = null;
     this.route = null;
     this.isAuthed = false;
+    self.filledStars = null;
+    self.emptyStars = null;
     
     this.editRoute = function () {
         if (self.route != null) {
