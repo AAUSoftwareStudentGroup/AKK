@@ -10,16 +10,17 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
 
                     self.client.routes.getImage(self.route.id, function(imageResponse) {
                         if (imageResponse.success) {
-                            console.log(imageResponse);
                             self.hasImage = true;
                             self.route.image = new Image();
                             self.route.image.src = imageResponse.data.fileUrl;
                             self.HoldPositions = imageResponse.data.holds;
                             self.route.image.onload = function() {
                                 self.trigger("cardUpdated");
+                                self.trigger("betasUpdated");
                             }
                         } else {
                             self.trigger("cardUpdated");
+                            self.trigger("betasUpdated");
                         }
                     });
                 }
@@ -54,6 +55,12 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             });
         }
     };
+    this.addBeta = function(form) {
+        var fd = new FormData(form);
+        this.client.routes.addBeta(fd, self.route.id, function(response) {
+            self.init();
+        });
+    }
 }
 
 RouteInfoViewModel.prototype = new EventNotifier();

@@ -56,13 +56,18 @@ function RouteClient(url, cookieService)
     }
 
     this.addBeta = function(formdata, routeId, success) {
-        formData.append('token', self.cookieService.getToken());
-        formData.append('id', routeId);
+        formdata.append('token', self.cookieService.getToken());
+        formdata.append('id', routeId);
+
+        for (var pair of formdata.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]); 
+        }
+
         $.ajax({
             url: url + "/beta", 
             type: 'POST',
             success: success,
-            data: formData,
+            data: formdata,
             cache: false,
             contentType: false,
             processData: false
