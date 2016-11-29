@@ -20,18 +20,21 @@ QUnit.test("Client tests", function( assert ) {
           var holdColor = { r: 200, g: 200, b: 200, a: 1 };
           var tape = { r: 200, g: 200, b: 200, a: 1 };
           var image = { fileUrl: TEST_IMAGE, width: TEST_IMAGE_WIDTH, height: TEST_IMAGE_HEIGHT };
+          var note = "Test note";
           var onRouteAdded = function(routeId) {
             //Update route
-            routeClient.updateRoute(routeId, sectionId, author, name, holdColor, gradeId, tape, image, function (routeResponse) {
+            routeClient.updateRoute(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, function (routeResponse) {
               assert.equal(routeResponse.success, true, "updateRoute success = " + true);
               assert.equal(routeResponse.data.id, routeId, "updateRoute id = " + routeId);
               assert.equal(routeResponse.data.gradeId, gradeId, "updateRoute gradeId = " + gradeId);
               assert.equal(routeResponse.data.colorOfHolds.r, holdColor.r, "updateRoute colorOfHolds.r = " + holdColor.r);
+              console.log(routeResponse.data);
               assert.equal(routeResponse.data.colorOfTape.r, tape.r, "updateRoute colorOfTape.r = " + tape.r);
               assert.equal(routeResponse.data.name, name, "updateRoute name = " + name);
+              assert.equal(routeResponse.data.note, note, "updateRoute note = " + name);
               
               routeClient.getRoutes(null, null, null, function (routesResponse) {
-                assert.equal(routesResponse.success, true, "getRoutes 22 success = " + true);
+                assert.equal(routesResponse.success, true, "getRoutes success = " + true);
                 assert.ok(routesResponse.data.length > 0, "getRoutes length > 0");
                 //Added route is in the list of all routes
                 assert.equal(routesResponse.data.filter(function(r) { return r.id == routeId; }).length, 1, "getRoutes contains added route");
@@ -56,14 +59,15 @@ QUnit.test("Client tests", function( assert ) {
               });
             });
           }
-          
           routeClient.getRoutes(null, null, null, function (allRoutesResponse) {
             assert.equal(allRoutesResponse.success, true, "" +
                 "getRoutes success =" + true);
+                console.log(note);
             var testRoutes = allRoutesResponse.data.filter(function(route) { return route.name == "T" });
             if(testRoutes.length == 0)
             {
-              routeClient.addRoute(sectionId, name, author, holdColor, gradeId, tape, function (routeAddedResponse) {
+              routeClient.addRoute(sectionId, name, author, holdColor, gradeId, tape, note, image, function (routeAddedResponse) {
+                console.log(routeAddedResponse);
                 onRouteAdded(routeAddedResponse.data.id);
               });
             }

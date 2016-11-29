@@ -63,6 +63,8 @@
             <span class="route-date">{{route.date}}</span>
         </div>
     </div>
-    <input class="bottom-padding submit-button neutral left" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
-    <input class="bottom-padding submit-button negative right" type="button" onclick="viewModel.deleteRoute()" value="Delete"></input>
+    {{#if isAuthed}}
+    <input class="bottom-padding submit-button negative left" type="button" onclick="viewModel.deleteRoute()" value="Delete"></input>
+    {{/if}}
+    <input class="bottom-padding submit-button neutral right" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
 </div>

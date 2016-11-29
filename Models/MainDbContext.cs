@@ -95,7 +95,6 @@ namespace AKK.Models
             {
                 new Route
                 {
-                    Note = "Hej",
                     Name = "4",
                     Section = _sections[0],
                     ColorOfHolds = new Color(255, 0, 0),
