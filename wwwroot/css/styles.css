@@ -42,6 +42,10 @@ input[type="checkbox"] {
     display: none;
 }
 
+.hidden {
+    display: none;
+}
+
 #error-message {
     display: none;
     background-color: #F44336;
@@ -57,7 +61,7 @@ input[type="checkbox"] {
 }
 
 .submit-button {
-    padding: 11px 18px 10px 18px;
+    padding: 10px 18px 10px 18px;
     border: none;
     border-radius: 2px;
     color: white;
@@ -273,11 +277,6 @@ input[type="checkbox"] {
 .content-section {
     width: 100%;
     display: block;
-}
-
-
-.bottom-padding {
-    padding-bottom: 8px;
 }
 
 /** ROUTE LIST **/
