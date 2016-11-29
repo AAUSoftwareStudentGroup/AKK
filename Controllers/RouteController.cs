@@ -7,6 +7,10 @@ using AKK.Controllers.ApiResponses;
 using AKK.Models;
 using AKK.Models.Repositories;
 using AKK.Services;
+using Microsoft.AspNetCore.Http;
+using System.IO;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace AKK.Controllers
 {
@@ -221,6 +225,42 @@ namespace AKK.Controllers
             image.Holds = _holdRepository.GetAll().Where(h => h.ImageId == image.Id).ToList();
 
             return new ApiSuccessResponse<Image>(image);
+        }
+
+        //POST /api/route/beta
+        [HttpPost("beta")]
+        public async Task<ApiResponse<string>> AddBeta(string token, IFormFile file, Guid id, string type) {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to add a beta");
+            }
+            if (file == null) {
+                return new ApiErrorResponse<string>("File is not valid");
+            }
+            var route = _routeRepository.Find(id);
+            if (route == null)
+            {
+                return new ApiErrorResponse<string>($"No route exists with id {id}");
+            }
+
+            var fileExtension = ContentDispositionHeaderValue
+                .Parse(file.ContentDisposition)
+                .FileName
+                .Trim('"')
+                .Split('.')
+                .Last();
+            var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
+
+            using (var fileStream = System.IO.File.Create("wwwroot/" + fileName)) {
+                await file.CopyToAsync(fileStream);
+            }
+
+            if (type == "video") {
+                
+            } else if (type == "image") {
+
+            }
+            return new ApiSuccessResponse<string>("success");
         }
 
         // PATCH: /api/route/{routeId}
