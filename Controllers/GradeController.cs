@@ -1,127 +1,161 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using AKK.Classes.Models;
-using AKK.Classes.ApiResponses;
+using AKK.Controllers.ApiResponses;
+using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
 
-
-namespace AKK.Controllers {
+namespace AKK.Controllers 
+{
     [Route("api/grade")]
-    public class GradeController : Controller {
-        MainDbContext db;
-        public GradeController(MainDbContext mainDbContext) {
-            db = mainDbContext;
+    public class GradeController : Controller 
+    {
+        readonly IRepository<Grade> _gradeRepository;
+        readonly IAuthenticationService _authenticationService;
+
+        public GradeController(IRepository<Grade> gradeRepository, IAuthenticationService authenticationService)
+        {
+            _gradeRepository = gradeRepository;
+            _authenticationService = authenticationService;
         }
 
         // GET: /api/grade
         [HttpGet]
-        public ApiResponse GetAllGrades() {
-            var grades = db.Grades.Include(g => g.Color).AsQueryable().OrderBy(g => g.Difficulty);
+        public ApiResponse<IEnumerable<Grade>> GetAllGrades() {
+            var grades = _gradeRepository.GetAll().AsQueryable().OrderBy(g => g.Difficulty);
 
-            return new ApiSuccessResponse(grades);
+            return new ApiSuccessResponse<IEnumerable<Grade>>(grades);
         }
 
         // POST: /api/grade
         [HttpPost]
-        public ApiResponse AddGrade(Grade grade) {
-            if(db.Grades.Where(g => g.Difficulty == grade.Difficulty).Count() != 0)
-                return new ApiErrorResponse("A grade already exists with the given difficulty");
+        public ApiResponse<Grade> AddGrade(string token, Grade grade) 
+        {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to add a new grade");
+            }
+            if(_gradeRepository.GetAll().Count(g => g.Difficulty == grade.Difficulty) != 0)
+                return new ApiErrorResponse<Grade>("A grade already exists with the given difficulty");
 
-            db.Grades.Add(grade);
-            if(db.SaveChanges() == 0)
-                return new ApiErrorResponse("Failed to add grade");
-            return new ApiSuccessResponse(grade);
+            _gradeRepository.Add(grade);
+            try
+            {
+                _gradeRepository.Save();
+                return new ApiSuccessResponse<Grade>(grade);
+            }
+            catch
+            {
+                return new ApiErrorResponse<Grade>("Failed to add grade");
+            }
         }
 
         // GET: /api/grade/{id}
         [HttpGet("{id}")]
-        public ApiResponse GetGrade(string id) {
-            Grade grade = FindGrade(id, db.Grades.Include(g => g.Color).AsQueryable());
-            if(grade == null)
-                return new ApiErrorResponse("No grades with given id exist");
-
-            return new ApiSuccessResponse(grade);
+        public ApiResponse<Grade> GetGrade(Guid id)
+        {
+            var grade = _gradeRepository.Find(id);
+            if (grade == null)
+            {
+                return new ApiErrorResponse<Grade>("No grades with given id exist");
+            }
+                
+            return new ApiSuccessResponse<Grade>(grade);
         }
 
         // PATCH: /api/grade/{id}
         [HttpPatch("{id}")]
-        public ApiResponse UpdateGrade(string id, int? difficulty, Color color) {
-            Grade oldGrade = FindGrade(id, db.Grades.Include(g => g.Color).AsQueryable());
-            if(oldGrade == null)
-                return new ApiErrorResponse("No grade exists with difficulty/id " + id);
+        public ApiResponse<Grade> UpdateGrade(string token, Guid id, int? difficulty, Color color) 
+        {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to change this grade");
+            }
+            var oldGrade = _gradeRepository.Find(id);
+            if (oldGrade == null)
+            {
+                return new ApiErrorResponse<Grade>($"No grade exists with id {id}");
+            }
 
-            if(difficulty != null) {
-                if(db.Grades.Where(g => g.Difficulty == difficulty).Count() > 0)
-                    return new ApiErrorResponse("A grade with this difficulty already exist");
-    
+            if(difficulty != null) 
+            {
+                if (_gradeRepository.GetAll().Count(g => g.Difficulty == difficulty) > 0)
+                {
+                    return new ApiErrorResponse<Grade>("A grade with this difficulty already exist");
+                }
+                    
                 oldGrade.Difficulty = (int)difficulty; 
             }
 
-            if(color != null)
+            if (color != null)
+            {
                 oldGrade.Color = color;
-
-            if(db.SaveChanges() == 0)
-                return new ApiErrorResponse("Failed to update grade to database");
-            return new ApiSuccessResponse(oldGrade);
+            }
+                
+            try
+            {
+                _gradeRepository.Save();
+                return new ApiSuccessResponse<Grade>(oldGrade);
+            }
+            catch
+            {
+                return new ApiErrorResponse<Grade>("Failed to update grade to database");
+            }
         }
 
         // DELETE: /api/grade/{id}
         [HttpDelete("{id}")]
-        public ApiResponse DeleteGrade(string id) {
-            Grade grade = FindGrade(id, db.Grades.Include(g => g.Color).Include(g => g.Routes).AsQueryable());
-            if(grade == null)
-                return new ApiErrorResponse("No grade exists with difficulty/id " + id);
-            
-            if(grade.Routes.Count() != 0)
-                return new ApiErrorResponse("Routes already exists with this grade. Remove those before you delete this grade");
+        public ApiResponse<Grade> DeleteGrade(string token, Guid id) 
+        {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to delete this grade");
+            }
+
+            var grade = _gradeRepository.Find(id);
+            if (grade == default(Grade))
+            {
+                return new ApiErrorResponse<Grade>($"No grade exists with id {id}");
+            }
+
+            if (grade.Routes.Count != 0)
+            {
+                return new ApiErrorResponse<Grade>("Routes already exists with this grade. Remove those before you delete this grade");
+            }
 
             // create copy that can be sent as result
-            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade));
+            Grade resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade)) as Grade;
+            //resultCopy = new Grade();
+            //System.Console.WriteLine(resultCopy.Color.R);
+            _gradeRepository.Delete(grade.Id);
 
-            db.Grades.Remove(grade);
-            if(db.SaveChanges() == 0)
-                return new ApiErrorResponse("Failed to remove grade from database");
-            
-            return new ApiSuccessResponse(resultCopy);
+            try
+            {
+                _gradeRepository.Save();
+                return new ApiSuccessResponse<Grade>(resultCopy);
+
+            }
+            catch
+            {
+                return new ApiErrorResponse<Grade>("Failed to remove grade from database");
+            }
         }
 
         // GET: /api/grade/{id}/routes
         [HttpGet("{id}/routes")]
-        public ApiResponse GetGradeRoutes(string id) {
-            Grade grade = FindGrade(id, db.Grades
-                .Include(g => g.Routes).ThenInclude(r => r.ColorOfHolds)
-                .Include(g => g.Routes).ThenInclude(r => r.ColorOfTape)
-                .Include(g => g.Routes).ThenInclude(r => r.Grade.Color).AsQueryable()
-            );
+        public ApiResponse<IEnumerable<Route>> GetGradeRoutes(Guid id)
+        {
+            var grade = _gradeRepository.Find(id);
 
-            if(grade == null)
-                return new ApiErrorResponse("No grades with given id exists");
-
-
-            return new ApiSuccessResponse(grade.Routes);
-        }
-
-        // returns grade on either guid or difficulty
-        public Grade FindGrade(string identifier, IQueryable<Grade> queryContext) {
-            // Guid guid = new Guid(identifier);
-            int difficulty;
-            Grade grade = null;
-            if(int.TryParse(identifier, out difficulty)) {
-                var grades = queryContext.Where(g => g.Difficulty == difficulty);
-                if(grades.Count() == 1)
-                    grade = grades.First();
+            if (grade == null)
+            {
+                return new ApiErrorResponse<IEnumerable<Route>>("No grades with given id exists");
             }
-            /*
-            else {
-                var grades = queryContext.Where(g => g.GradeId == guid);
-                if(grades.Count() == 1)
-                    grade = grades.First();
-            }
-            */
-            return grade;
+
+            return new ApiSuccessResponse<IEnumerable<Route>>(grade.Routes);
         }
     }
 }

@@ -1,49 +1,55 @@
-function RouteInfoViewModel(client, changed)
-{
-    var viewModel = 
-    {
-        init: function()
-        {
-            client.routes.getRoute(window.location.search.split("routeId=")[1], function(routeResponse) {
-                if(routeResponse.success)
-                {
-                    viewModel.route = routeResponse.data;
-                    viewModel.route.date = viewModel.route.createdDate.split("T")[0].split("-").reverse().join("/");
-                    viewModel.route.colorOfHolds = viewModel.route.colorOfHolds;
-                    viewModel.route.grade = viewModel.route.grade;
-                    viewModel.client.sections.getSection(viewModel.route.sectionId, function (sectionResponse) {
-                        if(sectionResponse.success)
-                        {
-                            viewModel.route.sectionName = sectionResponse.data.name;
-                            viewModel.changed();
+function RouteInfoViewModel(client, navigationService, dialogService) {
+    var self = this
+    this.navigationService = navigationService;
+    this.dialogService = dialogService;
+    this.init = function () {
+        self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
+                if (routeResponse.success) {
+                    self.route = routeResponse.data;
+                    console.log(self.route);
+                    self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
+
+                    self.client.routes.getImage(self.route.id, function(imageResponse) {
+                        if (imageResponse.success) {
+                            console.log(imageResponse);
+                            self.hasImage = true;
+                            self.route.image = new Image();
+                            self.route.image.src = imageResponse.data.fileUrl;
+                            self.HoldPositions = imageResponse.data.holds;
+                            self.route.image.onload = function() {
+                                self.trigger("cardUpdated");
+                            }
+                        } else {
+                            self.trigger("cardUpdated");
                         }
                     });
                 }
-            });
-        },
-        client: client,
-        changed: changed,
-        grade: null,
-        editRoute: function()
-        {
-            if(viewModel.route != null)
-            {
-                window.location = "edit-route.html?routeId=" + viewModel.route.routeId;
             }
-        },
-        deleteRoute: function()
-        {
-            if(viewModel.route != null && confirm("Do you really want to delete this route?"))
-            {
-                viewModel.client.routes.deleteRoute(viewModel.route.routeId, function(response) {
-                    if(response.success)
-                    {
-                        window.history.back();
-                    }
-                });
-            }
+        );
+    };
+    this.image = null;
+    this.hasImage = false;
+    this.HoldPositions = [];
+    this.client = client;
+    this.grade = null;
+
+    this.route = null;
+    
+    this.editRoute = function () {
+        if (self.route != null) {
+            navigationService.toEditRoute(self.route.id);
         }
     };
-    viewModel.init();
-    return viewModel;
+    this.deleteRoute = function () {
+        if (self.route != null && self.dialogService.confirm("Do you really want to delete this route?")) {
+            console.log(self);
+            self.client.routes.deleteRoute(self.route.id, function (response) {
+                if (response.success) {
+                    navigationService.toRoutes();
+                }
+            });
+        }
+    };
 }
+
+RouteInfoViewModel.prototype = new EventNotifier();
