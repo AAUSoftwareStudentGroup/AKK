@@ -25,8 +25,11 @@ $(document).ready(function () {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
         $("#image-overlay").toggleClass("hidden");
-        rc.resize();
-        rc.DrawCanvas();
+        if(rc != null)
+        {
+            rc.resize();
+            rc.DrawCanvas();
+        }
     });
 
     setUpContentUpdater(content, function() {
