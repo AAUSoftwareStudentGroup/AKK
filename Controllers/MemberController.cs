@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿
+﻿using System.Collections;
+using System.Linq;
 using AKK.Controllers.ApiResponses;
 using AKK.Models;
 using AKK.Models.Repositories;
@@ -27,10 +29,22 @@ namespace AKK.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
-                return new ApiErrorResponse<string>("Login failed");
+                return new ApiErrorResponse<string>("Login failed - Invalid username or password");
             }
             
             return new ApiSuccessResponse<string>(token);
+        }
+
+        // GET: /api/member/
+        [HttpGet]
+        public ApiResponse<Member> GetMemberInfo(string token) {
+            var member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
+
+            if (member == null || token == null) {
+                return new ApiErrorResponse<Member>("Invalid token");
+            }
+
+            return new ApiSuccessResponse<Member>(member);
         }
 
         // GET: /api/member/logout
@@ -63,6 +77,21 @@ namespace AKK.Controllers
             _memberRepository.Save();
 
             return Login(username, password);
+        }
+
+        // GET: /api/member/role
+        [HttpGet("role")]
+        public ApiResponse<IEnumerable> GetRole(string token)
+        {    
+            var role = _authenticator.GetRoles(token);
+            if (role.Any())
+            {
+                return new ApiSuccessResponse<IEnumerable>(role);
+            }
+            else
+            {
+                return new ApiErrorResponse<IEnumerable>("The member has no role");
+            }
         }
     }
 }

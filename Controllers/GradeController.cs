@@ -127,9 +127,10 @@ namespace AKK.Controllers
             }
 
             // create copy that can be sent as result
-            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade)) as Grade;
-
-            _gradeRepository.Delete(grade);
+            Grade resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade)) as Grade;
+            //resultCopy = new Grade();
+            //System.Console.WriteLine(resultCopy.Color.R);
+            _gradeRepository.Delete(grade.Id);
 
             try
             {

@@ -29,9 +29,9 @@ namespace AKK.Models.Repositories
             _dbContext.SaveChanges();
         }
 
-        public virtual void Delete(TEntity entity)
+        public virtual void Delete(Guid id)
         {
-            _dbset.Remove(Find(entity.Id));
+            _dbset.Remove(Find(id));
         }
 
         public virtual IEnumerable<TEntity> GetAll()

@@ -2,6 +2,7 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
     this.viewModel = viewModel;
     var self = this;
     this.canvas = canvas;
+    console.log(canvas);
     this.image = image;
 
     this.isDrawing = false;
@@ -9,7 +10,9 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
 
     this.viewModel.HoldPositions = this.viewModel.HoldPositions || [];
 
-    this.viewModel.addEventListener("HoldsUpdated", this.DrawCanvas);
+    this.viewModel.addEventListener("HoldsUpdated", function() {
+        self.DrawCanvas();
+    });
 
     this.resize = function(){
         var ratio = this.canvas.width / this.canvas.height;
@@ -45,8 +48,7 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
                     return;
                 }
             }
-            self.viewModel.HoldPositions.push({x: mmouseX, y: mmouseY, radius: 0.06});
-            self.DrawCanvas();
+            self.viewModel.addHold({x: mmouseX, y: mmouseY, radius: 0.06});
             self.latestClick = {x: mmouseX, y: mmouseY};
         });
     }

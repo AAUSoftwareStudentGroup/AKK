@@ -1,12 +1,14 @@
 ﻿$(document).ready(function () {
-    var navbar = document.getElementById("navbar");
-    var navigationContent = document.getElementById("navigationid");
+    var navMenuToggle = $(".nav-menu-toggle");
+    var navMenu = $(".nav-menu");
 
-    navbar.onclick = function (e) {
-        if (navigationContent.style.display == "none") {
-            navigationContent.style.display = "block";
-        } else {
-            navigationContent.style.display = "none";
-        }
-    }
+    $(".nav-menu-toggle").on('click', function () {
+        navMenuToggle.toggleClass('open');
+        navMenu.toggleClass('open');
+    });
+    
+    $(".nav-menu-closer").on('click', function () {
+        navMenuToggle.removeClass('open');
+        navMenu.removeClass('open');
+    });
 });

@@ -9,15 +9,15 @@ namespace AKK
     {
         public static void Main(string[] args)
         {
-            string PORT = Environment.GetEnvironmentVariable("ASPNET_HTTP_PORT");
-            PORT = (PORT == null ? "5000" : PORT);
+            string port = Environment.GetEnvironmentVariable("ASPNET_HTTP_PORT");
+            port = (port ?? "5000");
 
             var host = new WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
-                //.UseUrls("http://0.0.0.0:"+PORT)
+                .UseUrls($"http://0.0.0.0:{port}")
                 .Build();
 
             host.Run();

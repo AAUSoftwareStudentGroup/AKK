@@ -51,6 +51,7 @@ namespace AKK.Tests
             Assert.AreEqual(12, distance);
         }
 
+<<<<<<< HEAD
         /* The following tests will assert that searching for a specific term (difficulty, author, etc.) will only display 
          * routes that match the search term.
          */
@@ -333,5 +334,7 @@ namespace AKK.Tests
                 }
             }
         }
+=======
+>>>>>>> develop
     }
 }

@@ -3,41 +3,62 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=3">
-        <title>AKK - Find Route</title>
+        <title>AKK - Edit Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-        <script type="text/javascript" src="js/handlebars.min.js"></script>
-        <script type="text/javascript" src="js/config.js"></script>
-        <script type="text/javascript" src="js/client.js"></script>
+        <script src="js/handlebars.min.js"></script>
+        <script src="js/eventnotifier.js"></script>
+        <script src="js/navigation-service.js"></script>
+        <script src="js/cookie-service.js"></script>
+        <script src="js/config.js"></script>
+        <script src="js/client.js"></script>
         <script src="js/route-canvas.js"></script>
-        <script type="text/javascript" src="js/edit-route-view-model.js"></script>
-        <script type="text/javascript" src="js/helpers.js"></script>
+        <script src="js/route-view-model.js"></script>
+        <script src="js/edit-route-view-model.js"></script>
+        <script src="js/helpers.js"></script>
+        <script src="js/header-view-model.js"></script>
+        <script src="js/edit-route.js"></script>
     </head>
     <body>
-        <script src="js/edit-route.js"></script>
+        <div id="header"></div>
+        <div class="content new-route">
+            <div id="section-picker-content"></div>
+            <div id="grade-picker-content"></div>
+            <div id="number-picker-content"></div>
+            <div id="author-picker-content"></div>
+            <div id="hold-picker-content"></div>
+            <div id="image-picker-content"></div>
+            <div id="note-picker-content"></div>
+            <div id="error-message" onclick="$(this).fadeOut(function() { $(this).empty() })"></div>
+            <input class="submit-button positive right" type="button" onclick="viewModel.UpdateRoute()" value="Save"/>
+        </div>
+    </body>
+
+<!--
+    <div id="header"></div>
+    <div class="content new-route" id="content"></div>
+
     <script id="edit-route-template" type="text/x-handlebars-template">
-            <div class="content new-route">
-                <div class="content-section section-picker">
-                    <h2 class="">Section</h2>
-                    <div class="radio-inputs">
-                        {{#each sections}}
-                        <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{id}}')" name="section" type="radio">
-                        <label for="section-input-{{name}}" class="section-box">
-                            <span>{{name}}</span>
-                        </label>
-                        {{/each}}
-                        <label class="shadow"></label>  
-                        <div class="stretch"></div>
-                    </div>
-                </div>
-                <div class="content-section grade-picker">
-                    <h2>Grade</h2>
-                    <div class="radio-inputs">
-                        {{#each grades}}
-                        <input id="grade-input-{{difficulty}}" class="grade-box" onclick="viewModel.changeGrade({{difficulty}})" name="grade" type="radio">
-                        <label class="grade-{{difficulty}}" for="grade-input-{{difficulty}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
-                            <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" 
+        <div class="content-section section-picker">
+            <h2 class="">Section</h2>
+            <div class="radio-inputs">
+                {{#each sections}}
+                <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{id}}')" name="section" type="radio">
+                <label for="section-input-{{name}}" class="section-box">
+                    <span>{{name}}</span>
+                </label>
+                {{/each}}
+            </div>
+        </div>
+        <div class="content-section grade-picker">
+            <h2>Grade</h2>
+            <div class="radio-inputs">
+                {{#each grades}}
+                <input id="grade-input-{{id}}" class="grade-box" onclick="viewModel.changeGrade('{{id}}')" name="grade" type="radio">
+                <label for="grade-input-{{id}}" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
+                    <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
                             {{#ifCond color 200}}
+<<<<<<< HEAD
                                 fill="#FFFFFF">
                             {{else}}
                                 fill="#222222">
@@ -59,11 +80,10 @@
                 </div>
             </div>
         </script>
-        <div id="header"></div>
-        <div id="content"></div>
+        
         
         <script id="holdcolortemplate" type="text/x-handlebars-template">
-            <div class="content new-route" style="margin-top: 0px">
+            <div class="new-route" style="margin-top: 0px">
                 <div class="content-section color-picker">
                     <h2>Colour of holds</h2>
                     <div class="radio-inputs holdcolors">
@@ -91,76 +111,109 @@
                                 </div>
                             </label>
                             {{/each}}
+=======
+                            fill="#FFFFFF">
+>>>>>>> feature-improved-ui
                         {{else}}
-                            {{#each holdColors}}
-                            <input id="holdColor-input-{{value}}" onclick="viewModel.changeTapeColor({{value}})" name="hold" type="radio" />
-                            <label class="hold-box holdColor-{{value}}" for="holdColor-input-{{value}}">
-                                <div class="route-grip">
-                                    <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
-                                        <g>
-                                            <path id="grip-midtone" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="#{{../selectedColor.color}}"></path>
-                                            <g fill="none">
-                                                <path d="M 36.836383,33.068567 C 35.213237,32.496533 27.693198,29.524638 26.0254,29.248225 c 2.143442,-1.861054 3.712738,-3.316786 5.856531,-4.894293 1.367188,-0.382813 12.179769,-3.777121 14.179769,-4.488059 -2.964755,5.020908 -5.947458,8.02823 -9.225317,13.202694 z"/>
-                                                <path d="m 24.442188,73.077988 c 1.557844,3.447141 11.510897,5.693371 12.417063,1.46103 -2.103343,-14.804299 -0.389963,-37.666269 -0.02593,-41.468466 0.03049,-1.239421 -6.95035,-5.688298 -10.802212,-3.827023 -2.750526,12.215569 -2.640597,36.472758 -1.588921,43.834459 z"/>
-                                                <path d="m 24.447945,73.064321 1.636801,7.663963 c 4.70668,0.419845 6.404662,0.720301 13.036371,1.983757 L 36.856992,74.539086 C 33.266215,73.666251 27.750168,73.100003 24.447945,73.064321 Z"/>
-                                            </g>
-                                            <g fill="rgb({{r}}, {{g}}, {{b}})">
-                                                <path
-                                                d="M 36.836383,33.068567 C 35.213237,32.496533 27.693198,29.524638 26.0254,29.248225 c 2.143442,-1.861054 3.712738,-3.316786 5.856531,-4.894293 1.367188,-0.382813 12.179769,-3.777121 14.179769,-4.488059 -2.964755,5.020908 -5.947458,8.02823 -9.225317,13.202694 z"/>
-                                                <path
-                                                d="m 24.442188,73.077988 c 1.557844,3.447141 11.510897,5.693371 12.417063,1.46103 -2.103343,-14.804299 -0.389963,-37.666269 -0.02593,-41.468466 0.03049,-1.239421 -6.95035,-5.688298 -10.802212,-3.827023 -2.750526,12.215569 -2.640597,36.472758 -1.588921,43.834459 z"/>
-                                                <path
-                                                d="m 24.447945,73.064321 1.636801,7.663963 c 4.70668,0.419845 6.404662,0.720301 13.036371,1.983757 L 36.856992,74.539086 C 33.266215,73.666251 27.750168,73.100003 24.447945,73.064321 Z"/>
-                                            </g>
-                                            <path id="grip-highlight" d="m98.4,80.75c27.7,-10.8 1.9,-42.2 13.1,-61c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.2,-2.6 -11.4,-2.6 -16.6,0c-10.7,5.3 -33.1,15.5 -56.8,20.5c-1.8,0.4 -3.5,1 -5,1.8l0,0c0,0 22.8,-4.7 37.6,20.5c14.6,25.1 17.6,41.9 45.3,31.2z" fill="rgba(255,255,255,0.15)"></path>
-                                            <path id="grip-shadow" d="m126.5,82.35c2.5,-3.2 3.8,-7 4,-10.8c-8,7.9 -22,20.7 -32.1,25.2c-14.9,6.7 -26.6,-12.1 -56.1,-20.8c-14.2,-4.2 -24.9,-3.2 -32.1,-1.1c3.2,3.3 7.6,5.4 12.5,5.6c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.1 19,-11.1 27.7,-22.3z" fill="rgba(0,0,0,0.15)"></path>
-                                            <g>
-                                                <circle r="11.7" cy="57.25" cx="90.6" fill="#E6E7E8"></circle>
-                                                <circle r="7.8" cy="57.25" cx="90.6" fill="#414042"></circle>
-                                            </g>
-                                        </g>
-                                    </svg>
-                                </div>
-                            </label>
-                            {{/each}}
-                        {{/if_eq}}
-                        <div class="stretch"></div>
-                    </div>
-                </div>
-                <label class="submit-button left" style="background-color:green;"><input type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()"> Has tape</label>
-            </div>
-        </script>
-        <div id="holdColorContent"></div>
-
-        <script id="imagetemplate" type="text/x-handlebars-template">
-            <div class="content new-route" style="margin-top: 0px">
-                <div class="content-section">
-                    <h2>Route image</h2>
-                    <label for="files" class="submit-button left" style="background-color:yellow;">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} route image</label>
-                    <input id="files" style="display:none;" type="file" accept="image/*" onchange="UpdateCanvas(this);">
-                    
-                    {{#if_eq hasImage true}}
-                    <div id="canvas-container">
-                        <canvas id="route-edit-image" width="{{image.width}}" height="{{image.height}}">canvas not supported</canvas>
-                        <a class="undo-button" onclick="rc.undo()">
-                            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                                <path fill="#000000" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z" />
-                            </svg>Undo
-                        </a>
-                    </div>
-                    {{/if_eq}}
-                </div>
-                
-                
-            </div>
-        </script>
-        <div id="imageContent"></div>
-
-        <div id="buttons">
-            <div class="content new-route">
-            <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-            <input class="submit-button create-route-button" type="button" onclick="viewModel.updateRoute()" value="Save" />            
+                        fill="#222222">
+                        {{/ifCond}}
+                        <polygon id="checkmark-shape" points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
+                    </svg>
+                </label>
+                {{/each}}
             </div>
         </div>
-    </body>
+        <div class="content-section string-input">
+            <h2>Route number</h2>
+            <input id="route-number" class="number-input" type="number" onchange="viewModel.changeRouteNumber(this.value)" value="{{routeNumber}}" placeholder="Number" pattern="[0-9]*" inputmode="numeric" min="0" max="50">
+        </div>
+        <div class="content-section string-input">
+            <h2>Route creator</h2>
+            <input id="author" class="author-input" type="text" onchange="viewModel.changeAuthor(this.value)" value="{{author}}" placeholder="Route author">
+        </div>
+        <div class="content-section hold-picker"></div>
+        <div class="content-section image-picker" id="imageContent">
+            <h2>Route image</h2>
+            <label for="files" class="submit-button neutral left no-select">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} image</label>
+            <input id="files" style="display:none;" type="file" accept="image/*" onchange="UpdateCanvas(this);">
+
+            {{#if_eq hasImage true}}
+            <div id="canvas-container">
+                <canvas id="route-edit-image" width="{{image.width}}" height="{{image.height}}">Canvas not supported</canvas>
+                <a class="undo-button" onclick="rc.undo()">
+                    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#000000" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z" />
+                    </svg>Undo
+                </a>
+            </div>
+            {{/if_eq}}
+        </div>
+        <div id="error-message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+        <input class="submit-button positive right" type="button" onclick="viewModel.updateRoute()" value="Save" />
+    </script>
+
+    <script id="edit-route-holds-template" type="text/x-handlebars-template">
+        <h2>Colour of holds</h2>
+        <div class="radio-inputs">
+            {{#if_eq hasTape false}}
+            {{#each holdColors}}
+            <input id="holdColor-input-{{value}}" onclick="viewModel.changeHoldColor({{value}})" name="hold" type="radio" />
+            <label class="hold-box holdColor-{{value}}" for="holdColor-input-{{value}}">
+                <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <path id="grip-midtone" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="#{{color}}"></path>
+                        <g fill="none">
+                            <path d="M 36.836383,33.068567 C 35.213237,32.496533 27.693198,29.524638 26.0254,29.248225 c 2.143442,-1.861054 3.712738,-3.316786 5.856531,-4.894293 1.367188,-0.382813 12.179769,-3.777121 14.179769,-4.488059 -2.964755,5.020908 -5.947458,8.02823 -9.225317,13.202694 z" />
+                            <path d="m 24.442188,73.077988 c 1.557844,3.447141 11.510897,5.693371 12.417063,1.46103 -2.103343,-14.804299 -0.389963,-37.666269 -0.02593,-41.468466 0.03049,-1.239421 -6.95035,-5.688298 -10.802212,-3.827023 -2.750526,12.215569 -2.640597,36.472758 -1.588921,43.834459 z" />
+                            <path d="m 24.447945,73.064321 1.636801,7.663963 c 4.70668,0.419845 6.404662,0.720301 13.036371,1.983757 L 36.856992,74.539086 C 33.266215,73.666251 27.750168,73.100003 24.447945,73.064321 Z" />
+                        </g>
+                        <path id="grip-highlight" d="m98.4,80.75c27.7,-10.8 1.9,-42.2 13.1,-61c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.2,-2.6 -11.4,-2.6 -16.6,0c-10.7,5.3 -33.1,15.5 -56.8,20.5c-1.8,0.4 -3.5,1 -5,1.8l0,0c0,0 22.8,-4.7 37.6,20.5c14.6,25.1 17.6,41.9 45.3,31.2z" fill="rgba(255,255,255,0.20)"></path>
+                        <path id="grip-shadow" d="m126.5,82.35c2.5,-3.2 3.8,-7 4,-10.8c-8,7.9 -22,20.7 -32.1,25.2c-14.9,6.7 -26.6,-12.1 -56.1,-20.8c-14.2,-4.2 -24.9,-3.2 -32.1,-1.1c3.2,3.3 7.6,5.4 12.5,5.6c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.1 19,-11.1 27.7,-22.3z" fill="rgba(0,0,0,0.20)"></path>
+                        <g>
+                            <circle r="11.7" cy="57.25" cx="90.6" fill="#E6E7E8"></circle>
+                            <circle r="7.8" cy="57.25" cx="90.6" fill="#414042"></circle>
+                        </g>
+                    </g>
+                </svg>
+            </label>
+            {{/each}}
+            {{else}}
+            {{#each holdColors}}
+            <input id="holdColor-input-{{value}}" onclick="viewModel.changeTapeColor({{value}})" name="hold" type="radio" />
+            <label class="hold-box holdColor-{{value}}" for="holdColor-input-{{value}}">
+                <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
+                    <g>
+                        <path id="grip-midtone" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="#{{../selectedColor.color}}"></path>
+                        <g fill="none">
+                            <path d="M 36.836383,33.068567 C 35.213237,32.496533 27.693198,29.524638 26.0254,29.248225 c 2.143442,-1.861054 3.712738,-3.316786 5.856531,-4.894293 1.367188,-0.382813 12.179769,-3.777121 14.179769,-4.488059 -2.964755,5.020908 -5.947458,8.02823 -9.225317,13.202694 z" />
+                            <path d="m 24.442188,73.077988 c 1.557844,3.447141 11.510897,5.693371 12.417063,1.46103 -2.103343,-14.804299 -0.389963,-37.666269 -0.02593,-41.468466 0.03049,-1.239421 -6.95035,-5.688298 -10.802212,-3.827023 -2.750526,12.215569 -2.640597,36.472758 -1.588921,43.834459 z" />
+                            <path d="m 24.447945,73.064321 1.636801,7.663963 c 4.70668,0.419845 6.404662,0.720301 13.036371,1.983757 L 36.856992,74.539086 C 33.266215,73.666251 27.750168,73.100003 24.447945,73.064321 Z" />
+                        </g>
+                        <g fill="rgb({{r}}, {{g}}, {{b}})">
+                            <path d="M 36.836383,33.068567 C 35.213237,32.496533 27.693198,29.524638 26.0254,29.248225 c 2.143442,-1.861054 3.712738,-3.316786 5.856531,-4.894293 1.367188,-0.382813 12.179769,-3.777121 14.179769,-4.488059 -2.964755,5.020908 -5.947458,8.02823 -9.225317,13.202694 z" />
+                            <path d="m 24.442188,73.077988 c 1.557844,3.447141 11.510897,5.693371 12.417063,1.46103 -2.103343,-14.804299 -0.389963,-37.666269 -0.02593,-41.468466 0.03049,-1.239421 -6.95035,-5.688298 -10.802212,-3.827023 -2.750526,12.215569 -2.640597,36.472758 -1.588921,43.834459 z" />
+                            <path d="m 24.447945,73.064321 1.636801,7.663963 c 4.70668,0.419845 6.404662,0.720301 13.036371,1.983757 L 36.856992,74.539086 C 33.266215,73.666251 27.750168,73.100003 24.447945,73.064321 Z" />
+                        </g>
+                        <path id="grip-highlight" d="m98.4,80.75c27.7,-10.8 1.9,-42.2 13.1,-61c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.2,-2.6 -11.4,-2.6 -16.6,0c-10.7,5.3 -33.1,15.5 -56.8,20.5c-1.8,0.4 -3.5,1 -5,1.8l0,0c0,0 22.8,-4.7 37.6,20.5c14.6,25.1 17.6,41.9 45.3,31.2z" fill="rgba(255,255,255,0.20)"></path>
+                        <path id="grip-shadow" d="m126.5,82.35c2.5,-3.2 3.8,-7 4,-10.8c-8,7.9 -22,20.7 -32.1,25.2c-14.9,6.7 -26.6,-12.1 -56.1,-20.8c-14.2,-4.2 -24.9,-3.2 -32.1,-1.1c3.2,3.3 7.6,5.4 12.5,5.6c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.1 19,-11.1 27.7,-22.3z" fill="rgba(0,0,0,0.20)"></path>
+                        <g>
+                            <circle r="11.7" cy="57.25" cx="90.6" fill="#E6E7E8"></circle>
+                            <circle r="7.8" cy="57.25" cx="90.6" fill="#414042"></circle>
+                        </g>
+                    </g>
+                </svg>
+            </label>
+            {{/each}}
+            {{/if_eq}}
+        </div>
+        <h2>Tape on the holds</h2>
+        <div class="tape-switch">
+
+            <input id="holdColor-tape-switch" type="checkbox" {{#if_eq hasTape true}} checked {{/if_eq}} onclick="viewModel.gradesGotTape()">
+            <label for="holdColor-tape-switch" class="toggle-switch"></label>
+        </div>
+    </script>
+
+</body>
+-->
 </html>

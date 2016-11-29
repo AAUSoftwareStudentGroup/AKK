@@ -74,5 +74,10 @@ namespace AKK.Tests
                     return false;
             }
         }
+
+        public IEnumerable<Role> GetRoles(string token)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

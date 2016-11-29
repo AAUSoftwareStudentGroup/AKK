@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -7,10 +7,13 @@
     <link rel="stylesheet" type="text/css" href="css/styles.css">
     <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/handlebars.min.js"></script>
+    <script type="text/javascript" src="js/eventnotifier.js"></script>
+    <script type="text/javascript" src="js/navigation-service.js"></script>
+    <script type="text/javascript" src="js/cookie-service.js"></script>
     <script type="text/javascript" src="js/config.js"></script>
     <script type="text/javascript" src="js/client.js"></script>
-    <script type="text/javascript" src="js/navigation-service.js"></script>
     <script type="text/javascript" src="js/register-view-model.js"></script>
+    <script type="text/javascript" src="js/helpers.js"></script>
 </head>
 <body>
     <script src="js/register.js"></script>
@@ -35,11 +38,16 @@
                 <input id="username" class="username-input" type="text" onchange="viewModel.changeUsername(this.value)" value="{{username}}" placeholder="Username">
             </div>
             <div class="content-section string-input">
-                <h2>Route creator</h2>
+                <h2>Password</h2>
                 <input id="password" class="password-input" type="password" onchange="viewModel.changePassword(this.value)" placeholder="Password">
             </div>
-
-            <input class="submit-button create-route-button left" type="button" onclick="viewModel.register()" value="Register"></input>
+            <div class="content-section string-input">
+                <h2>Confirm password</h2>
+                <input id="passwordconfirm" class="passwordconfirm-input" type="password" onchange="viewModel.changePasswordconfirm(this.value)" placeholder="Password">
+            </div>
+            
+            <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+            <input class="submit-button neutral right" type="button" onclick="viewModel.register()" value="Register">
         </div>
     </script>
     <div id="content"></div>

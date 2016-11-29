@@ -1,28 +1,12 @@
-$.ajax({
-  url: "js/eventnotifier.js",
-  dataType: "script",
-  async: false
-});
-
-function FindGetParam(param) {
-    var result = null,
-        tmp = [];
-    var items = location.search.substr(1).split("&");
-    for (var index = 0; index < items.length; index++) {
-        tmp = items[index].split("=");
-        if (tmp[0] === param) result = decodeURIComponent(tmp[1]);
-    }
-    return result;
-}
-
-function LogInViewModel(client, navigationService) {
-    var self = this
+function LogInViewModel(client, navigationService, cookieService) {
+    var self = this;
+    this.client = client;
     this.navigationService = navigationService;
+    this.cookieService = cookieService;
     
     this.init = function () {
-        var getTarget = FindGetParam("target");
+        var getTarget = navigationService.getParameters()["target"];
         self.target = (getTarget == null ? self.target : getTarget);
-        self.trigger("ContentUpdated");
     };
     
     this.target = "/";
@@ -39,14 +23,21 @@ function LogInViewModel(client, navigationService) {
 
 
     this.register = function () {
-        navigationService.toRegister(self.target, self.username);
+        self.navigationService.toRegister(self.target, self.username);
     };
     
     this.logIn = function () {
-        console.log("GoGo Dr. LOGIN!!");
-        if(false) { // on success
-            window.location = target;
-        }
+        self.client.members.logIn
+        self.client.members.logIn(self.username, self.password, function(response) {
+            if (response.success) {
+                if(response.data) {
+                    self.cookieService.setToken(response.data);
+                }
+                navigationService.to(self.target);
+            } else {
+                $("#error-message").html(response.message).show();
+            }
+        });
     };
 }
 LogInViewModel.prototype = new EventNotifier();

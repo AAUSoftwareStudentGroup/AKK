@@ -8,7 +8,7 @@ namespace AKK.Models.Repositories
         void Add(TEntity entity);
         TEntity Find(Guid Id);
         void Save();
-        void Delete(TEntity entity);
+        void Delete(Guid Id);
         IEnumerable<TEntity> GetAll();
     }
 }

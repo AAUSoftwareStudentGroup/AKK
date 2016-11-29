@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AKK.Models.Repositories
 {
@@ -22,16 +23,16 @@ namespace AKK.Models.Repositories
 
         public TEntity Find(Guid Id)
         {
-            return _entities.Find(x => x.Id == Id);
+            return _entities.FirstOrDefault(x => x.Id == Id);
         }
 
         public void Save()
         {
         }
 
-        public void Delete(TEntity entity)
+        public void Delete(Guid id)
         {
-            _entities.Remove(Find(entity.Id));
+            _entities.Remove(Find(id));
         }
 
         public IEnumerable<TEntity> GetAll()

@@ -9,13 +9,13 @@ namespace AKK.Services
 {
     public class RouteSearchService:ISearchService<Route>
     {
-        private readonly int _numRoutes;
         private readonly IEnumerable<Route> _allRoutes;
+        private readonly int _numRoutes;
 
         public RouteSearchService(IEnumerable<Route> allRoutes)
         {
             _allRoutes = allRoutes;
-            _numRoutes = _allRoutes.Count();
+            _numRoutes = allRoutes.Count();
         }
 
         public IEnumerable<Route> Search(string searchStr)
@@ -58,11 +58,12 @@ namespace AKK.Services
             }
 
             //Sorts routes by their Levenshtein distance.
-            var sortedRoutes = routesWithDist.OrderBy(x => x.Item2);
+            var sortedRoutes = routesWithDist.OrderBy(x => x.Item2).ToList();
 
             //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
             var threshold = 20;
             var foundRoutes = new List<Route>();
+
             for (int i = 0; i < _numRoutes; i++)
             {
                 var el = sortedRoutes.ElementAt(i);
@@ -80,7 +81,7 @@ namespace AKK.Services
         private IEnumerable<string> _splitSearchStr(string searchStr)
         {
             //Splits the input after every space to make it search for each word.
-            var searchTerms = Regex.Split(searchStr, @"\s+").ToList();
+            var searchTerms = Regex.Split(searchStr.Trim(), @"\s+").ToList();
             var numSearchTerms = searchTerms.Count;
 
             //If a single letter is followed by a string of digits, split them into two searchterms.

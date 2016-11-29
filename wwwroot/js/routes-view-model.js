@@ -1,23 +1,13 @@
-$.ajax({
-  url: "js/eventnotifier.js",
-  dataType: "script",
-  async: false
-});
-
 function RoutesViewModel(client) {
     var self = this;
     this.client = client;
-    this.selectedGrade = null;
-    this.selectedSection = null;
-    this.selectedColor = null;
-    this.selectedTape = null;
-    this.selectedSortBy = null;
+
     this.routes = [];
     this.grades = [
-        { difficulty: -1, name: "All" }
+        { id: "", name: "All" }
     ];
     this.sections = [
-        { sectionId: -1, name: "All" }
+        { id: "", name: "All" }
     ];
     this.sortOptions = [
         { value: 0, name: "Newest" },
@@ -25,16 +15,45 @@ function RoutesViewModel(client) {
         { value: 2, name: "Grading" },
         { value: 3, name: "Author" },
     ];
-    this.searchClicked = function() {
+
+    this.selectedGrade = this.grades[0];
+    this.selectedSection = this.sections[0];
+    this.selectedSortBy = this.sortOptions[0];
+
+    this.isSearching = false;
+
+    this.init = function () {
+        self.client.grades.getAllGrades(function (gradesResponse) {
+            self.client.sections.getAllSections(function (sectionsResponse) {
+                if (gradesResponse.success && sectionsResponse.success) {
+                    self.sections = self.sections.concat(sectionsResponse.data);
+                    self.grades = self.grades.concat(gradesResponse.data);
+                    self.selectedGrade = self.grades[0];
+                    self.selectedSection = self.sections[0];
+                    self.selectedSortBy = self.sortOptions[0];
+                    self.downloadRoutes();
+                    self.trigger("routesChanged");
+                    self.trigger("filteringChanged");
+                }
+            });
+        });
+    }
+
+    this.downloadRoutes = function () {
+        self.client.routes.getRoutes(self.selectedGrade.id, self.selectedSection.id, self.selectedSortBy.value, function (response) {
+            self.parseRoutes(response);
+        });
+    }
+
+    this.searchClicked = function () {
         this.isSearching = !this.isSearching;
         if (!this.isSearching) {
             this.init();
         }
         self.trigger("SearchMethodChanged");
     }
-
-    this.search = function(searchstring) {
-        this.client.routes.searchRoutes(searchstring, function(response) {
+    this.search = function (searchstring) {
+        this.client.routes.searchRoutes(searchstring, function (response) {
             if (response.success) {
                 self.routes = response.data;
                 for (var i = 0; i < self.routes.length; i++) {
@@ -49,71 +68,44 @@ function RoutesViewModel(client) {
             } else {
                 self.routes = [];
             }
-            self.trigger("RoutesChanged");
+            self.trigger("routesChanged");
         });
     }
 
-    this.isSearching = false;
-    this.init = function () {
-        self.grades = [{ difficulty: -1, name: "All" }];
-        self.getGrades();
-        self.client.sections.getAllSections(function (response) {
-            if (response.success) {
-                self.sections = [{ sectionId: -1, name: "All" }];
-                self.sections = self.sections.concat(response.data);
-                self.selectedGrade = self.grades[0];
-                self.selectedSection = self.sections[0];
-                self.selectedSortBy = self.sortOptions[0];
-                self.refreshRoutes();
-                self.trigger("RoutesChanged");
-                self.trigger("SearchMethodChanged");
+    this.parseRoutes = function(response) {
+        if (response.success) {
+            self.routes = response.data;
+            for (var i = 0; i < self.routes.length; i++) {
+                self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
             }
-        });
-    };
-    this.changeGrade = function (gradeValue) {
-        self.selectedGrade = self.grades.filter(function (grade) { return grade.difficulty == gradeValue; })[0];
-        self.refreshRoutes();
-    };
-    this.getGrades = function () {
-        self.client.grades.getAllGrades(function (response) {
-            if (response.success) {
-                self.grades = self.grades.concat(response.data);
-            }
-        });
-    };
+            self.trigger("routesChanged");
+        } else {
+            self.routes = [];
+        }
+    }
+
+    this.toggleSearch = function() {
+        this.isSearching = !this.isSearching;
+        if (!this.isSearching) {
+            this.init();
+        }
+        self.trigger("filteringChanged");
+    }   
+
+    this.changeGrade = function (gradeId) {
+        self.selectedGrade = self.grades.filter(function (grade) { return grade.id == gradeId; })[0];
+        self.downloadRoutes();
+    }
+
     this.changeSection = function (sectionId) {
         self.selectedSection = self.sections.filter(function (section) { return section.id == sectionId; })[0];
-        self.refreshRoutes();
-    };
+        self.downloadRoutes();
+    }
+
     this.changeSortBy = function (sortByValue) {
         self.selectedSortBy = self.sortOptions.filter(function (sortBy) { return sortBy.value == sortByValue; })[0];
-        self.refreshRoutes();
-    };
-    this.refreshRoutes = function () {
-        var gradeValue = self.selectedGrade.difficulty == -1 ? null : self.selectedGrade.difficulty;
-        var sectionId = self.selectedSection.id == -1 ? null : self.selectedSection.id;
-        var sortByValue = self.selectedSortBy.value == -1 ? null : self.selectedSortBy.value;
-        self.client.routes.getRoutes(gradeValue,
-            sectionId,
-            sortByValue,
-            function (response) {
-            if (response.success) {
-                self.routes = response.data;
-                for (var i = 0; i < self.routes.length; i++) {
-                    self.routes[i].sectionName = self.sections.filter(function (s) {
-                        return s.id == self.routes[i].sectionId;
-                    })[0].name;
-                    self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-")
-                        .reverse()
-                        .join("/");
-                    self.routes[i].selectedColor = self.routes[i].colorOfHolds;
-                }
-                self.trigger("RoutesChanged");
-            }
-        });
-    };
+        self.downloadRoutes();
+    }
 };
-
-
 
 RoutesViewModel.prototype = new EventNotifier();
