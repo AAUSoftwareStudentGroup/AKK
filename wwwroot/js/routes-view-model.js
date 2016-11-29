@@ -54,20 +54,7 @@ function RoutesViewModel(client) {
     }
     this.search = function (searchstring) {
         this.client.routes.searchRoutes(searchstring, function (response) {
-            if (response.success) {
-                self.routes = response.data;
-                for (var i = 0; i < self.routes.length; i++) {
-                    self.routes[i].sectionName = self.sections.filter(function (s) {
-                        return s.id == self.routes[i].sectionId;
-                    })[0].name;
-                    self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-")
-                        .reverse()
-                        .join("/");
-                    self.routes[i].selectedColor = self.routes[i].colorOfHolds;
-                }
-            } else {
-                self.routes = [];
-            }
+            self.parseRoutes(response);
             self.trigger("routesChanged");
         });
     }
@@ -76,6 +63,10 @@ function RoutesViewModel(client) {
         if (response.success) {
             self.routes = response.data;
             for (var i = 0; i < self.routes.length; i++) {
+                self.routes[i].rating = Math.random() * 5;
+                var temp = Math.round(self.routes[i].rating);
+                self.routes[i].filledStars = temp
+                self.routes[i].emptyStars = 5 - temp;
                 self.routes[i].date = self.routes[i].createdDate.split("T")[0].split("-").reverse().join("/");
             }
             self.trigger("routesChanged");

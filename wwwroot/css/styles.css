@@ -1,4 +1,4 @@
-    @import url('https://fonts.googleapis.com/css?family=Roboto');
+@import url('https://fonts.googleapis.com/css?family=Roboto');
 
 /** GENERAL **/
 html, body {
@@ -167,6 +167,10 @@ input[type="checkbox"] {
 
 .right {
     float: right !important;
+}
+
+.clear {
+    clear: both;
 }
 
 .text-right {
@@ -414,22 +418,28 @@ input[type="checkbox"] {
 }
 
 .route-card-bottom {
-    height: 8px;
-    padding: 8px 0px;
+    height: 30px;
+    padding-top: 8px;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
 }
 
 .route-author {
-    width: 200px;
+    width: 100px;
     float: left;
+    margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 .route-date {
+    float: left;
+}
+
+.route-rating {
     float: right;
+    margin: 4px 8px 0 0;
 }
 
 /** NEW ROUTE **/
