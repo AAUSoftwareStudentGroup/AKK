@@ -61,7 +61,8 @@ namespace AKK.Models
                 new Member {DisplayName = "Manfred"},
                 new Member {DisplayName = "Betinna"},
                 new Member {DisplayName = "Kasper"},
-                new Member {DisplayName = "Rasmus"}
+                new Member {DisplayName = "Rasmus"},
+                new Member {DisplayName = "Morten Rask"}
             };
 
             var _sections = new List<Section>
@@ -83,6 +84,15 @@ namespace AKK.Models
 
             var _routes = new List<Route>
             {
+                new Route
+                {
+                    Name = "27",
+                    Section = _sections[2],
+                    ColorOfHolds = new Color(255, 0, 0),
+                    Member = new Member {DisplayName = "Morten Rask", Username = "nousername", Password = "123", IsAdmin = false},
+                    Grade = _grades[1],
+                    CreatedDate = new DateTime(2016, 03, 24)
+                },
                 new Route
                 {
                     Name = "4",
