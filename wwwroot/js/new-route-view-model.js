@@ -36,7 +36,7 @@ function NewRouteViewModel(client, navigationService) {
             if (response.success) {
                 self.navigationService.back();
             } else {
-                $("#error-message").html(response.message).show();
+                self.trigger("Error", response.message);
             }
         });
     };
