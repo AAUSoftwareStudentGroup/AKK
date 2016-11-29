@@ -38,6 +38,8 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.grade = null;
     this.route = null;
     this.isAuthed = false;
+    this.filledStars = 3;
+    this.emptyStars = 2;
     
     this.editRoute = function () {
         if (self.route != null) {
