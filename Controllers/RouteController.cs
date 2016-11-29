@@ -263,7 +263,7 @@ namespace AKK.Controllers
                                           .FirstOrDefault(m => m.Token == token);
             var video = new Video {FileUrl = path, Member = member};
 
-            route.Videoes.Add(video);
+            route.Videos.Add(video);
             _routeRepository.Save();
             
             return new ApiSuccessResponse<string>("success");

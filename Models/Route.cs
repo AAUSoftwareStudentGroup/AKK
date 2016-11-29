@@ -18,7 +18,7 @@ namespace AKK.Models
         {
             CreatedDate = DateTime.Now.Date;
             Comments = new List<Comment>();
-            Videoes = new List<Video>();
+            Videos = new List<Video>();
         }
 
         public override bool Equals (object obj)
@@ -73,7 +73,7 @@ namespace AKK.Models
 
         public Image Image { get; set; }
 
-        public List<Video> Videoes { get; set; }    
+        public List<Video> Videos { get; set; }    
 
         public List<Comment> Comments { get; set; }
 
