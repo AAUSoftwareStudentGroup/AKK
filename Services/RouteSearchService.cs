@@ -2,20 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using AKK.Models;
 
 namespace AKK.Services
 {
     public class RouteSearchService:ISearchService<Route>
     {
-        private readonly int _numRoutes;
         private readonly IEnumerable<Route> _allRoutes;
+        private readonly int _numRoutes;
 
         public RouteSearchService(IEnumerable<Route> allRoutes)
         {
             _allRoutes = allRoutes;
             _numRoutes = allRoutes.Count();
-
         }
 
         public IEnumerable<Route> Search(string searchStr)
@@ -31,14 +31,27 @@ namespace AKK.Services
             }
 
             //Calculates the Levenshtein distance for each search term and adds it to each route's specific Levenshtein distance value.
+            string specialization = null;
+            var specializationAge = 0;
             foreach (var searchTerm in searchTerms)
             {
-                var searchTermLength = searchTerm.Length;
-
+                if (++specializationAge > 1)
+                {
+                    specialization = null;
+                }
+                switch (searchTerm.ToLower())
+                {
+                    case "author":
+                    case "section":
+                    case "grade":
+                        specialization = searchTerm;
+                        specializationAge = 0;
+                        continue;
+                }
                 for (int i = 0; i < _numRoutes; i++)
                 {
                     var route = routesWithDist[i].Item1;
-                    float dist = routesWithDist[i].Item2 + _getSmallestDistance(route, searchTerm) / (float)searchTermLength;
+                    float dist = routesWithDist[i].Item2 + _getSmallestDistance(route, searchTerm, specialization);
 
                     routesWithDist[i] = new Tuple<Route, float>(route, dist);
                 }
@@ -48,7 +61,7 @@ namespace AKK.Services
             var sortedRoutes = routesWithDist.OrderBy(x => x.Item2).ToList();
 
             //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
-            var threshold = 2;
+            var threshold = 20;
             var foundRoutes = new List<Route>();
 
             for (int i = 0; i < _numRoutes; i++)
@@ -67,6 +80,7 @@ namespace AKK.Services
 
         private IEnumerable<string> _splitSearchStr(string searchStr)
         {
+            //Splits the input after every space to make it search for each word.
             var searchTerms = Regex.Split(searchStr.Trim(), @"\s+").ToList();
             var numSearchTerms = searchTerms.Count;
 
@@ -83,8 +97,22 @@ namespace AKK.Services
             return searchTerms;
         }
 
-        private int _getSmallestDistance(Route route, string searchStr)
+        private int _getSmallestDistance(Route route, string searchStr, string specialization)
         {
+            if (!string.IsNullOrEmpty(specialization))
+            {
+                specialization = specialization.ToLower();
+                switch (specialization)
+                {
+                    case "section":
+                        return _computeLevenshtein(searchStr, route.SectionName);
+                    case "author":
+                        return _computeLevenshtein(searchStr, route.Author);
+                    case "difficulty": case "grade":
+                        return _computeLevenshtein(searchStr, route.Grade.Name);
+                }
+            }
+
             int smallestDist = int.MaxValue;
             int[] distances =
             {
@@ -138,9 +166,9 @@ namespace AKK.Services
                     {
                         d[i, j] = Math.Min(
                             Math.Min(
-                                d[i - 1, j] + cost, //Deletion
-                                d[i, j - 1] + 1), //Insertion
-                            d[i - 1, j - 1] + cost); //Substitution
+                                d[i - 1, j] + cost,     //Deletion
+                                d[i, j - 1] + 1),       //Insertion
+                            d[i - 1, j - 1] + cost);    //Substitution
                     }
                 }
             }
