@@ -4,26 +4,14 @@ function LogInViewModel(client, navigationService, cookieService) {
     this.navigationService = navigationService;
     this.cookieService = cookieService;
     
-    this.init = function () {
-        var getTarget = navigationService.getParameters()["target"];
-        self.target = (getTarget == null ? self.target : getTarget);
-    };
-    
     this.target = "/";
     this.username = "";
     this.password = "";
-
-    this.changeUsername = function (username) {
-        self.username = username;
-    };
-
-    this.changePassword = function (password) {
-        self.password = password;
-    };
-
-
-    this.register = function () {
-        self.navigationService.toRegister(self.target, self.username);
+    
+    this.init = function () {
+        var getTarget = navigationService.getParameters()["target"];
+        self.target = (getTarget == null ? self.target : getTarget);
+        self.trigger('loginChanged')
     };
     
     this.logIn = function () {
@@ -38,6 +26,18 @@ function LogInViewModel(client, navigationService, cookieService) {
                 $("#error-message").html(response.message).show();
             }
         });
+    };
+
+    this.register = function () {
+        self.navigationService.toRegister(self.target, self.username);
+    };
+
+    this.changeUsername = function (username) {
+        self.username = username;
+    };
+
+    this.changePassword = function (password) {
+        self.password = password;
     };
 }
 LogInViewModel.prototype = new EventNotifier();
