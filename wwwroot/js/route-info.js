@@ -25,8 +25,8 @@ $(document).ready(function () {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
         $("#image-overlay").toggleClass("hidden");
-        if(rc != null)
-        {
+
+        if(rc != null) {
             rc.resize();
             rc.DrawCanvas();
         }

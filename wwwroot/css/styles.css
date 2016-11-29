@@ -42,6 +42,10 @@ input[type="checkbox"] {
     display: none;
 }
 
+.hidden {
+    display: none;
+}
+
 #error-message {
     display: none;
     background-color: #F44336;
