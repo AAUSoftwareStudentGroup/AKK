@@ -1,32 +1,19 @@
-// function FindGetParam(param) {
-//     var result = null,
-//         tmp = [];
-//     var items = location.search.substr(1).split("&");
-//     for (var index = 0; index < items.length; index++) {
-//         tmp = items[index].split("=");
-//         if (tmp[0] === param) result = decodeURIComponent(tmp[1]);
-//     }
-//     return result;
-// }
-
 function RegisterViewModel(client, navigationService, cookieService) {
     var self = this
     this.navigationService = navigationService;
     this.cookieService = cookieService;
-    
-    this.init = function () {
-        var parameters = navigationService.getParameters();
-        var getTarget = parameters["target"];
-        var getUsername = parameters["username"];
-        self.target = (getTarget == null ? self.target : getTarget);
-        self.username = (getUsername == null ? self.username : getUsername);
-    };
-    
     this.target = "/";
     this.fullName = "";
     this.username = "";
     this.password = "";
     this.passwordConfirm = "";
+    
+    this.init = function () {
+        var parameters = navigationService.getParameters();
+        self.target = (parameters["target"] == null ? self.target : "");
+        self.username = (parameters["username"] == null ? self.username : "");
+        self.trigger("registerChanged");
+    };
 
     this.changeFullName = function (fullName) {
         self.fullName = fullName;
