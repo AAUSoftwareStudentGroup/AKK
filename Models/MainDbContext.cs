@@ -46,23 +46,23 @@ namespace AKK.Models
 
             var _members = new List<Member>
             {
-                new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Jakobsen", Username = "Jakobsen123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Hornum", Username = "Hornum123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Jakob", Username = "Jakob123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "TannerHelland", Username = "TannerHelland123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Ibsen", Username = "Ibsen123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Geo", Username = "Geo123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Bacci", Username = "Bacci123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Geogebra", Username = "Geogebra123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Kurt", Username = "Kurt123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Benja", Username = "Benja123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Manfred", Username = "Manfred123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Betinna", Username = "Betinna123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Kasper", Username = "Kasper123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Rasmus", Username = "Rasmus123", Password = "123", IsAdmin = false}
+                new Member {DisplayName = "Anton", Username = "anton123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Hornum", Username = "hornum123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Jakob", Username = "jakob123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "TannerHelland", Username = "tannerhelland123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Geo", Username = "geo123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Bacci", Username = "bacci123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Geogebra", Username = "geogebra123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Kurt", Username = "kurt123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Benja", Username = "benja123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Manfred", Username = "manfred123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Betinna", Username = "betinna123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Kasper", Username = "kasper123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Rasmus", Username = "rasmus123", Password = "123", IsAdmin = false}
             };
 
             var _sections = new List<Section>
