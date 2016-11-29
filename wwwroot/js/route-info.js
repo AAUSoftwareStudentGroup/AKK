@@ -18,6 +18,12 @@ $(document).ready(function () {
             elementId: "cardtemplate", 
             event: "cardUpdated",
             viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/beta-picker-template.handlebars", 
+            elementId: "betatemplate", 
+            event: "betasUpdated",
+            viewmodel: viewModel
         }
     ];
 
