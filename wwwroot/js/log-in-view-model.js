@@ -15,12 +15,8 @@ function LogInViewModel(client, navigationService, cookieService) {
     };
     
     this.logIn = function () {
-        self.client.members.logIn
         self.client.members.logIn(self.username, self.password, function(response) {
             if (response.success) {
-                if(response.data) {
-                    self.cookieService.setToken(response.data);
-                }
                 navigationService.to(self.target);
             } else {
                 $("#error-message").html(response.message).show();

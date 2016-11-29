@@ -7,9 +7,9 @@ using AKK.Controllers.ApiResponses;
 using AKK.Models;
 using AKK.Models.Repositories;
 using AKK.Services;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace AKK.Controllers
 {
@@ -106,6 +106,12 @@ namespace AKK.Controllers
             if (route.Name == null)
             {
                 return new ApiErrorResponse<Route>("A route number must be specified");
+            }
+
+            int temp;
+            if (!int.TryParse(route.Name, out temp) || temp<1)
+            {
+                return new ApiErrorResponse<Route>("Route number must be a positive integer");
             }
 
             if (route.Author == null)
