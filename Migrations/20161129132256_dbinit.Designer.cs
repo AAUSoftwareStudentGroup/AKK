@@ -8,13 +8,33 @@ using AKK.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161125111658_dbinit")]
+    [Migration("20161129132256_dbinit")]
     partial class dbinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
+
+            modelBuilder.Entity("AKK.Models.Comment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("MemberId");
+
+                    b.Property<string>("Message");
+
+                    b.Property<Guid>("RouteId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("Comments");
+                });
 
             modelBuilder.Entity("AKK.Models.Grade", b =>
                 {
@@ -93,6 +113,26 @@ namespace AKK.Migrations
                     b.ToTable("Members");
                 });
 
+            modelBuilder.Entity("AKK.Models.Rating", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid?>("MemberId");
+
+                    b.Property<int>("RatingValue");
+
+                    b.Property<Guid>("RouteId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("Rating");
+                });
+
             modelBuilder.Entity("AKK.Models.Route", b =>
                 {
                     b.Property<Guid>("Id")
@@ -111,6 +151,8 @@ namespace AKK.Migrations
                     b.Property<Guid>("MemberId");
 
                     b.Property<string>("Name");
+
+                    b.Property<string>("Note");
 
                     b.Property<bool>("PendingDeletion");
 
@@ -139,6 +181,43 @@ namespace AKK.Migrations
                     b.ToTable("Sections");
                 });
 
+            modelBuilder.Entity("AKK.Models.Video", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileUrl");
+
+                    b.Property<uint>("Height");
+
+                    b.Property<Guid>("MemberId");
+
+                    b.Property<Guid>("RouteId");
+
+                    b.Property<uint>("Width");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("RouteId");
+
+                    b.ToTable("Videos");
+                });
+
+            modelBuilder.Entity("AKK.Models.Comment", b =>
+                {
+                    b.HasOne("AKK.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AKK.Models.Route", "Route")
+                        .WithMany("Comments")
+                        .HasForeignKey("RouteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("AKK.Models.Hold", b =>
                 {
                     b.HasOne("AKK.Models.Image", "Image")
@@ -149,9 +228,21 @@ namespace AKK.Migrations
 
             modelBuilder.Entity("AKK.Models.Image", b =>
                 {
-                    b.HasOne("AKK.Models.Route")
+                    b.HasOne("AKK.Models.Route", "Route")
                         .WithOne("Image")
                         .HasForeignKey("AKK.Models.Image", "RouteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AKK.Models.Rating", b =>
+                {
+                    b.HasOne("AKK.Models.Member", "Member")
+                        .WithMany("Ratings")
+                        .HasForeignKey("MemberId");
+
+                    b.HasOne("AKK.Models.Route", "Route")
+                        .WithMany("Ratings")
+                        .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -170,6 +261,19 @@ namespace AKK.Migrations
                     b.HasOne("AKK.Models.Section", "Section")
                         .WithMany("Routes")
                         .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AKK.Models.Video", b =>
+                {
+                    b.HasOne("AKK.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AKK.Models.Route", "Route")
+                        .WithMany("Videoes")
+                        .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

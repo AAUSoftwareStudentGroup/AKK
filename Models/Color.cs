@@ -12,9 +12,9 @@ namespace AKK.Models
 
         public Color(byte r, byte g, byte b)
         {
-            this.R = r;
-            this.G = g;
-            this.B = b;
+            R = r;
+            G = g;
+            B = b;
         }
 
         public Color()

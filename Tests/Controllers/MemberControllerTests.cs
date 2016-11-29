@@ -72,13 +72,13 @@ namespace AKK.Tests.Controllers
         }
 
         [Test]
-        public void _Login_UserThatIsAlreadyLoggedInLogsIn_ExpectsNewToken()
+        public void _Login_UserThatIsAlreadyLoggedInLogsIn_ExpectsNoChange()
         {
             var member = _dataFactory.Members.First();
             string token;
             token = _controller.Login(member.Username, member.Password).Data;
 
-            Assert.AreNotEqual(token, _controller.Login(member.Username, member.Password).Data);
+            Assert.AreEqual(token, _controller.Login(member.Username, member.Password).Data);
         }
 
         [Test]
