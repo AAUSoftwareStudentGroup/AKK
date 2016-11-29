@@ -4,13 +4,12 @@
     async: false
 });
 
-function HeaderViewModel(title, client, cookieService) {
+function HeaderViewModel(title, client) {
     var self = this;
     this.title = title;
     this.client = client;
     this.isAuthenticated = false;
     this.isAdmin = false;
-    this.CookieService = cookieService;
 
     this.init = function () {
         self.getRoles();
