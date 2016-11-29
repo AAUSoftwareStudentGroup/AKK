@@ -319,22 +319,18 @@ input[type="checkbox"] {
 }
 
 /* Image */
-.routeimage {
-    float:right;
-}
-.routeimagesmall {
-    width:50%;
-}
-.routeimagelarge {
-    width:100%;
-}
-
-#routeimage {
+.route-image {
     width: 100%;
+    float: right;
+    position: relative;
 }
 
-#routeimagecontainer {
-    position: relative;
+    .route-image.small {
+        width: 50%;
+    }
+
+.route-canvas {
+    width: 100%;
 }
 
 #image-overlay {
@@ -346,7 +342,8 @@ input[type="checkbox"] {
     width:100%;
     text-align: center;
 }
-#image-overlay>svg {
+
+#image-overlay > svg {
     height: 50px;
     width:50px;
     padding:10px;
@@ -359,11 +356,12 @@ input[type="checkbox"] {
 }
 
 .no-image-added {
-    text-align: center;
-    font-size: small;
-    border: 1px solid black;
     height: 100px;
+    text-align: center;
     position: relative;
+    font-size: small;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
 }
 
 .no-image-added svg {
@@ -378,7 +376,7 @@ input[type="checkbox"] {
 }
 
 .note {
-    margin: 12px;
+    margin-top: 12px;
     text-align: left;
 }
 
