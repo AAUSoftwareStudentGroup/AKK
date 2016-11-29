@@ -259,3 +259,4 @@ web.config
 .vscode/
 Properties/
 /AKK.sln
+wwwroot/files/*

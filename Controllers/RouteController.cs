@@ -7,6 +7,9 @@ using AKK.Controllers.ApiResponses;
 using AKK.Models;
 using AKK.Models.Repositories;
 using AKK.Services;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace AKK.Controllers
 {
@@ -103,6 +106,12 @@ namespace AKK.Controllers
             if (route.Name == null)
             {
                 return new ApiErrorResponse<Route>("A route number must be specified");
+            }
+
+            int temp;
+            if (!int.TryParse(route.Name, out temp) || temp<1)
+            {
+                return new ApiErrorResponse<Route>("Route number must be a positive integer");
             }
 
             if (route.Author == null)
@@ -221,6 +230,44 @@ namespace AKK.Controllers
             image.Holds = _holdRepository.GetAll().Where(h => h.ImageId == image.Id).ToList();
 
             return new ApiSuccessResponse<Image>(image);
+        }
+
+        //POST /api/route/beta
+        [HttpPost("beta")]
+        public async Task<ApiResponse<string>> AddBeta(string token, IFormFile file, Guid id, string type) {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to add a beta");
+            }
+            if (file == null) {
+                return new ApiErrorResponse<string>("File is not valid");
+            }
+            var route = _routeRepository.Find(id);
+            if (route == null)
+            {
+                return new ApiErrorResponse<string>($"No route exists with id {id}");
+            }
+
+            var fileExtension = ContentDispositionHeaderValue
+                .Parse(file.ContentDisposition)
+                .FileName
+                .Trim('"')
+                .Split('.')
+                .Last();
+            var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
+            var path = "files/" + fileName;
+            var savePath = "wwwroot/" + path;
+            using (var fileStream = System.IO.File.Create(savePath)) {
+                await file.CopyToAsync(fileStream);
+            }
+            var member = _memberRepository.GetAll()
+                                          .FirstOrDefault(m => m.Token == token);
+            var video = new Video {FileUrl = path, Member = member};
+
+            route.Videos.Add(video);
+            _routeRepository.Save();
+            
+            return new ApiSuccessResponse<string>("success");
         }
 
         // PATCH: /api/route/{routeId}

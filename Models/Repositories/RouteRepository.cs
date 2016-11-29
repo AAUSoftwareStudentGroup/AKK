@@ -19,6 +19,7 @@ namespace AKK.Models.Repositories
 
         public override IEnumerable<Route> GetAll()
         {
+
             return _dbContext.Routes.Include(r => r.Section).Include(r => r.Member).Include(r => r.Grade).Include(r => r.Videos).Include(r=> r.Ratings).Include(r=>r.Comments).AsEnumerable();
         }
     }

@@ -75,6 +75,9 @@ $(document).ready(function () {
                 rc.DrawCanvas();
             }
         });
+        viewModel.addEventListener("Error", function(msg) {
+            $("#error-message").html(msg).show();
+        });
         viewModel.init();
         headerViewModel.init();
     }); 
