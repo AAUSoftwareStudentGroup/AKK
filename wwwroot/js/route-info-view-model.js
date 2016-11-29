@@ -26,14 +26,19 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 }
             }
         );
+        self.client.members.getMemberInfo(function(response) {
+            if(response.success) {
+                self.isAuthed = true;
+            }
+        });
     };
     this.image = null;
     this.hasImage = false;
     this.HoldPositions = [];
     this.client = client;
     this.grade = null;
-
     this.route = null;
+    this.isAuthed = false;
     
     this.editRoute = function () {
         if (self.route != null) {
