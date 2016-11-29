@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+    @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 /** GENERAL **/
 html, body {
@@ -319,51 +319,43 @@ input[type="checkbox"] {
 }
 
 /* Image */
-.routeimage {
-    float:right;
-}
-.routeimagesmall {
-    width:50%;
-}
-.routeimagelarge {
-    width:100%;
+.route-image {
+    width: 100%;
+    float: right;
+    position: relative;
+    margin-top: 8px;
 }
 
-#routeimage {
+    .route-image.small {
+        width: 50%;
+    }
+
+.route-canvas {
     width: 100%;
 }
 
-#routeimagecontainer {
-    position: relative;
-}
-
-#image-overlay {
-    position: absolute;
-    left:0;
-    right:0;
-    top:calc(50% - 25px);
-    bottom: 0;
-    width:100%;
-    text-align: center;
-}
-#image-overlay>svg {
+.image-overlay {
     height: 50px;
-    width:50px;
-    padding:10px;
+    width: 50px;
+    padding: 10px;
     background-color: rgba(255,255,255,0.4);
     border-radius: 100px;
-}
-
-.routeimage {
-    margin-top:4px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 .no-image-added {
-    text-align: center;
-    font-size: small;
-    border: 1px solid black;
     height: 100px;
+    text-align: center;
     position: relative;
+    font-size: small;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 3px;
+    cursor: pointer;
 }
 
 .no-image-added svg {
@@ -378,7 +370,7 @@ input[type="checkbox"] {
 }
 
 .note {
-    margin: 12px;
+    margin-top: 12px;
     text-align: left;
 }
 
@@ -614,4 +606,3 @@ input[type="checkbox"] {
     .button-group input:last-of-type {
         float: right;
     }
-.hidden {display: none;}

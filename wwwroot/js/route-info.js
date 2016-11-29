@@ -21,13 +21,15 @@ $(document).ready(function () {
         }
     ];
 
-    $(document).on("click", ".routeimage", function(e) {
+    $(document).on("click", "#routeimagecontainer", function(e) {
         e.stopPropagation();
-        $("#routeimagecontainer").toggleClass("routeimagesmall");
-        $("#routeimagecontainer").toggleClass("routeimagelarge");
+        $("#routeimagecontainer").toggleClass("small");
         $("#image-overlay").toggleClass("hidden");
-        rc.resize();
-        rc.DrawCanvas();
+        if(rc != null)
+        {
+            rc.resize();
+            rc.DrawCanvas();
+        }
     });
 
     setUpContentUpdater(content, function() {
