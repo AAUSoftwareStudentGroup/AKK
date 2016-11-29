@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AKK.Models
 {
-    public class MainDbContext:DbContext
+    public class MainDbContext : DbContext
     {
         public MainDbContext(DbContextOptions<MainDbContext> options)
             : base(options)
@@ -17,6 +17,9 @@ namespace AKK.Models
         public DbSet<Member> Members { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Hold> Holds { get; set; }
+        public DbSet<Video> Videos { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Rating> Rating { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -46,23 +49,23 @@ namespace AKK.Models
 
             var _members = new List<Member>
             {
-                new Member {DisplayName = "Anton", Username = "Anton123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Jakobsen", Username = "Jakobsen123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Hornum", Username = "Hornum123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Jakob", Username = "Jakob123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "TannerHelland", Username = "TannerHelland123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Grunberg", Username = "Grunberg123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Ibsen", Username = "Ibsen123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Geo", Username = "Geo123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Bacci", Username = "Bacci123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Geogebra", Username = "Geogebra123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Kurt", Username = "Kurt123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Benja", Username = "Benja123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Manfred", Username = "Manfred123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Betinna", Username = "Betinna123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Kasper", Username = "Kasper123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Rasmus", Username = "Rasmus123", Password = "123", IsAdmin = false}
+                new Member {DisplayName = "Anton", Username = "anton123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Hornum", Username = "hornum123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Jakob", Username = "jakob123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "TannerHelland", Username = "tannerhelland123", Password = "123", IsAdmin = true},
+                new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Geo", Username = "geo123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Bacci", Username = "bacci123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Geogebra", Username = "geogebra123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Kurt", Username = "kurt123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Benja", Username = "benja123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Manfred", Username = "manfred123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Betinna", Username = "betinna123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Kasper", Username = "kasper123", Password = "123", IsAdmin = false},
+                new Member {DisplayName = "Rasmus", Username = "rasmus123", Password = "123", IsAdmin = false}
             };
 
             var _sections = new List<Section>
@@ -86,9 +89,16 @@ namespace AKK.Models
                 new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }, 
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Purple", Difficulty = 5, Color = new Color(128, 0, 128), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Pink", Difficulty = 6, Color = new Color(255, 192, 203), Id = Guid.NewGuid(), Routes = new List<Route>() }
+            };
+
+            var comments = new List<Comment>
+            {
+                new Comment {Message = "Dette er en kommentar", Member = _members[0]},
+                new Comment {Message = "Dette er en anden kommentar", Member = _members[1] },
+                new Comment{Message = "Dette er en trejde kommentar", Member = _members[2]}
             };
 
             var _routes = new List<Route>
@@ -101,7 +111,7 @@ namespace AKK.Models
                     Member = _members[0],
                     Author = _members[0].DisplayName,
                     Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
                 },
                 new Route
                 {
@@ -111,7 +121,7 @@ namespace AKK.Models
                     Member = _members[1],
                     Author = _members[1].DisplayName,
                     Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
                 },
                 new Route
                 {
@@ -121,7 +131,7 @@ namespace AKK.Models
                     Member = _members[2],
                     Author = _members[2].DisplayName,
                     Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 07, 12)
+                    CreatedDate = new DateTime(2016, 07, 12),
                 },
                 new Route
                 {
@@ -131,7 +141,7 @@ namespace AKK.Models
                     Member = _members[3],
                     Author = _members[3].DisplayName,
                     Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 11, 11)
+                    CreatedDate = new DateTime(2016, 11, 11),
                 },
                 new Route
                 {
@@ -141,7 +151,7 @@ namespace AKK.Models
                     Member = _members[4],
                     Author = _members[4].DisplayName,
                     Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
                 },
                 new Route
                 {
@@ -151,7 +161,7 @@ namespace AKK.Models
                     Member = _members[5],
                     Author = _members[5].DisplayName,
                     Grade = _grades[4],
-                    CreatedDate = new DateTime(2014, 11, 24)
+                    CreatedDate = new DateTime(2014, 11, 24),
                 },
                 new Route
                 {
@@ -161,7 +171,7 @@ namespace AKK.Models
                     Member = _members[1],
                     Author = _members[1].DisplayName,
                     Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 01, 02)
+                    CreatedDate = new DateTime(2016, 01, 02),
                 },
                 new Route
                 {
@@ -171,7 +181,7 @@ namespace AKK.Models
                     Member = _members[6],
                     Author = _members[6].DisplayName,
                     Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 04, 11)
+                    CreatedDate = new DateTime(2016, 04, 11),
                 },
                 new Route
                 {

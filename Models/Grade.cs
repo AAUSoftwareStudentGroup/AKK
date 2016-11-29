@@ -8,7 +8,7 @@ namespace AKK.Models
     {
         public string Name { get; set; }
 
-        public int Difficulty { get; set; }
+        public int? Difficulty { get; set; }
 
         public uint? HexColor { get; set; }
 
