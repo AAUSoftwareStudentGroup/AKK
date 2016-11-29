@@ -5,7 +5,9 @@
         <input class="hidden" id="files" name="file" type="file" accept="video/*" onchange="viewModel.addBeta($(this).parent()[0]);">
     </form>
     {{/if}}
-    {{#each videos}}
-
+    {{#each route.videos}}
+        <video width="320" height="240" controls>
+            <source src="{{fileUrl}}" type="video/mp4">
+        </video>
     {{/each}}
 </div>

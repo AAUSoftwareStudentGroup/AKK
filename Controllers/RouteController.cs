@@ -255,8 +255,9 @@ namespace AKK.Controllers
                 .Split('.')
                 .Last();
             var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
-            var path = "wwwroot/" + fileName;
-            using (var fileStream = System.IO.File.Create(path)) {
+            var path = "files/" + fileName;
+            var savePath = "wwwroot/" + path;
+            using (var fileStream = System.IO.File.Create(savePath)) {
                 await file.CopyToAsync(fileStream);
             }
             var member = _memberRepository.GetAll()

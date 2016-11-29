@@ -14,12 +14,12 @@ namespace AKK.Models.Repositories
         }
         public override Route Find(Guid Id)
         {
-            return _dbContext.Routes.Include(r => r.Section).Include(r => r.Member).Include(r => r.Grade).FirstOrDefault(d => d.Id == Id);
+            return _dbContext.Routes.Include(r => r.Section).Include(r => r.Member).Include(r => r.Grade).Include(r => r.Videos).FirstOrDefault(d => d.Id == Id);
         }
 
         public override IEnumerable<Route> GetAll()
         {
-            return _dbContext.Routes.Include(r => r.Section).Include(r => r.Member).Include(r => r.Grade).AsEnumerable();
+            return _dbContext.Routes.Include(r => r.Section).Include(r => r.Member).Include(r => r.Grade).Include(r => r.Videos).AsEnumerable();
         }
     }
 }
