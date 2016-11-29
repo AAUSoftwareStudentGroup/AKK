@@ -68,6 +68,10 @@ namespace AKK.Models
 
         public Image Image { get; set; }
 
+        public Video Video { get; set; }    
+
+        public Comments Comment { get; set; }
+
         [JsonIgnore]
         public uint? HexColorOfHolds { get; set; }
 

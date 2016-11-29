@@ -8,13 +8,34 @@ using AKK.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161125111658_dbinit")]
+    [Migration("20161129125918_dbinit")]
     partial class dbinit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.0-rtm-21431");
+
+            modelBuilder.Entity("AKK.Models.Comments", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<Guid>("MemberId");
+
+                    b.Property<string>("Message");
+
+                    b.Property<Guid>("RouteId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("RouteId")
+                        .IsUnique();
+
+                    b.ToTable("Comments");
+                });
 
             modelBuilder.Entity("AKK.Models.Grade", b =>
                 {
@@ -112,6 +133,8 @@ namespace AKK.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<string>("Note");
+
                     b.Property<bool>("PendingDeletion");
 
                     b.Property<Guid>("SectionId");
@@ -139,6 +162,44 @@ namespace AKK.Migrations
                     b.ToTable("Sections");
                 });
 
+            modelBuilder.Entity("AKK.Models.Video", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("FileUrl");
+
+                    b.Property<uint>("Height");
+
+                    b.Property<Guid>("MemberId");
+
+                    b.Property<Guid>("RouteId");
+
+                    b.Property<uint>("Width");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
+
+                    b.HasIndex("RouteId")
+                        .IsUnique();
+
+                    b.ToTable("Videos");
+                });
+
+            modelBuilder.Entity("AKK.Models.Comments", b =>
+                {
+                    b.HasOne("AKK.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AKK.Models.Route", "Route")
+                        .WithOne("Comment")
+                        .HasForeignKey("AKK.Models.Comments", "RouteId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("AKK.Models.Hold", b =>
                 {
                     b.HasOne("AKK.Models.Image", "Image")
@@ -149,7 +210,7 @@ namespace AKK.Migrations
 
             modelBuilder.Entity("AKK.Models.Image", b =>
                 {
-                    b.HasOne("AKK.Models.Route")
+                    b.HasOne("AKK.Models.Route", "Route")
                         .WithOne("Image")
                         .HasForeignKey("AKK.Models.Image", "RouteId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -170,6 +231,19 @@ namespace AKK.Migrations
                     b.HasOne("AKK.Models.Section", "Section")
                         .WithMany("Routes")
                         .HasForeignKey("SectionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("AKK.Models.Video", b =>
+                {
+                    b.HasOne("AKK.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AKK.Models.Route", "Route")
+                        .WithOne("Video")
+                        .HasForeignKey("AKK.Models.Video", "RouteId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

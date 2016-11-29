@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace AKK.Models
 {
-    public class MainDbContext:DbContext
+    public class MainDbContext : DbContext
     {
         public MainDbContext(DbContextOptions<MainDbContext> options)
             : base(options)
@@ -17,6 +17,8 @@ namespace AKK.Models
         public DbSet<Member> Members { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Hold> Holds { get; set; }
+        public DbSet<Video> Videos { get; set; }
+        public DbSet<Comments> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -86,9 +88,16 @@ namespace AKK.Models
                 new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }, 
+                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Purple", Difficulty = 5, Color = new Color(128, 0, 128), Id = Guid.NewGuid(), Routes = new List<Route>() },
                 new Grade {Name = "Pink", Difficulty = 6, Color = new Color(255, 192, 203), Id = Guid.NewGuid(), Routes = new List<Route>() }
+            };
+
+            var comments = new List<Comments>
+            {
+                new Comments {Message = "Dette er en kommentar", Member = _members[0]},
+                new Comments {Message = "Dette er en anden kommentar", Member = _members[1] },
+                new Comments{Message = "Dette er en trejde kommentar", Member = _members[2]}
             };
 
             var _routes = new List<Route>
@@ -101,7 +110,8 @@ namespace AKK.Models
                     Member = _members[0],
                     Author = _members[0].DisplayName,
                     Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
+                    Comment = comments[1]
                 },
                 new Route
                 {
@@ -111,7 +121,8 @@ namespace AKK.Models
                     Member = _members[1],
                     Author = _members[1].DisplayName,
                     Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
+                    Comment = comments[2]
                 },
                 new Route
                 {
@@ -121,7 +132,8 @@ namespace AKK.Models
                     Member = _members[2],
                     Author = _members[2].DisplayName,
                     Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 07, 12)
+                    CreatedDate = new DateTime(2016, 07, 12),
+                    Comment = comments[0]
                 },
                 new Route
                 {
@@ -131,7 +143,8 @@ namespace AKK.Models
                     Member = _members[3],
                     Author = _members[3].DisplayName,
                     Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 11, 11)
+                    CreatedDate = new DateTime(2016, 11, 11),
+                    Comment = comments[1]
                 },
                 new Route
                 {
@@ -141,7 +154,8 @@ namespace AKK.Models
                     Member = _members[4],
                     Author = _members[4].DisplayName,
                     Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
+                    Comment = comments[2]
                 },
                 new Route
                 {
@@ -151,7 +165,8 @@ namespace AKK.Models
                     Member = _members[5],
                     Author = _members[5].DisplayName,
                     Grade = _grades[4],
-                    CreatedDate = new DateTime(2014, 11, 24)
+                    CreatedDate = new DateTime(2014, 11, 24),
+                    Comment = comments[1]
                 },
                 new Route
                 {
@@ -161,7 +176,8 @@ namespace AKK.Models
                     Member = _members[1],
                     Author = _members[1].DisplayName,
                     Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 01, 02)
+                    CreatedDate = new DateTime(2016, 01, 02),
+                    Comment = comments[0]
                 },
                 new Route
                 {
@@ -171,7 +187,8 @@ namespace AKK.Models
                     Member = _members[6],
                     Author = _members[6].DisplayName,
                     Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 04, 11)
+                    CreatedDate = new DateTime(2016, 04, 11),
+                    Comment = comments[2]
                 },
                 new Route
                 {
@@ -181,7 +198,8 @@ namespace AKK.Models
                     Member = _members[7],
                     Author = _members[7].DisplayName,
                     Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 08, 10)
+                    CreatedDate = new DateTime(2016, 08, 10),
+                    Comment = comments[0]
                 },
                 new Route
                 {
@@ -191,7 +209,8 @@ namespace AKK.Models
                     Member = _members[8],
                     Author = _members[8].DisplayName,
                     Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
+                    Comment = comments[1]
                 },
                 new Route
                 {
@@ -201,7 +220,8 @@ namespace AKK.Models
                     Member = _members[9],
                     Author = _members[9].DisplayName,
                     Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 07, 12)
+                    CreatedDate = new DateTime(2016, 07, 12),
+                    Comment = comments[0]
                 },
                 new Route
                 {
@@ -211,7 +231,8 @@ namespace AKK.Models
                     Member = _members[10],
                     Author = _members[10].DisplayName,
                     Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 11, 11)
+                    CreatedDate = new DateTime(2016, 11, 11),
+                    Comment = comments[2]
                 },
                 new Route
                 {
@@ -221,7 +242,8 @@ namespace AKK.Models
                     Member = _members[11],
                     Author = _members[11].DisplayName,
                     Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 11, 11)
+                    CreatedDate = new DateTime(2016, 11, 11),
+                    Comment = comments[1]
                 },
                 new Route
                 {
@@ -231,7 +253,8 @@ namespace AKK.Models
                     Member = _members[12],
                     Author = _members[12].DisplayName,
                     Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    CreatedDate = new DateTime(2016, 03, 24),
+                    Comment = comments[0]
                 },
                 new Route
                 {
@@ -242,7 +265,8 @@ namespace AKK.Models
                     Author = _members[13].DisplayName,
                     Grade = _grades[1],
                     CreatedDate = new DateTime(2016, 03, 01),
-                    ColorOfTape = new Color(123, 255, 22)
+                    ColorOfTape = new Color(123, 255, 22),
+                    Comment = comments[1]
                 },
                 new Route
                 {
@@ -252,7 +276,8 @@ namespace AKK.Models
                     Member = _members[14],
                     Author = _members[14].DisplayName,
                     Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 10, 27)
+                    CreatedDate = new DateTime(2016, 10, 27),
+                    Comment = comments[1]
                 },
                 new Route
                 {
@@ -262,7 +287,8 @@ namespace AKK.Models
                     Member = _members[15],
                     Author = _members[15].DisplayName,
                     Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 09, 04)
+                    CreatedDate = new DateTime(2016, 09, 04),
+                    Comment = comments[2]
                 },
                 new Route
                 {
@@ -272,7 +298,8 @@ namespace AKK.Models
                     Member = _members[16],
                     Author = _members[16].DisplayName,
                     Grade = _grades[4],
-                    CreatedDate = new DateTime(2016, 06, 22)
+                    CreatedDate = new DateTime(2016, 06, 22),
+                    Comment = comments[0]
                 }
             };
 
