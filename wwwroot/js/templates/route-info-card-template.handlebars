@@ -64,5 +64,7 @@
         </div>
     </div>
     <input class="bottom-padding submit-button neutral left" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
+    {{#if isAuthed}}
     <input class="bottom-padding submit-button negative right" type="button" onclick="viewModel.deleteRoute()" value="Delete"></input>
+    {{/if}}
 </div>
