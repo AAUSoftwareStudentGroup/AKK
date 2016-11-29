@@ -323,5 +323,107 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Route>($"Failed to remove routes with id {routeId}");
             }
         }
+
+        // POST: /api/route/{routeId}/rating
+        [HttpPost("routeId/rating")]
+        public ApiResponse<Route> AddRating(string token, Guid routeId, int ratingValue)
+        {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
+            }
+
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            var route = _routeRepository.Find(routeId);
+
+            //Checks if user already rated specific route
+            if (route.Ratings.FirstOrDefault(r => r.Member == member) != null)
+            {
+                return new ApiErrorResponse<Route>($"{member.DisplayName} already rated this route");
+            }
+
+            //Checks if route is the default value, which means Find found nothing
+            if (route.Equals(null))
+            {
+                return new ApiErrorResponse<Route>($"No route exists with id {routeId}");
+            }
+
+            if (ratingValue > 5 || ratingValue < 1)
+            {
+                return new ApiErrorResponse<Route>($"The given rating is not within the allowed spectrum, which is 5>=rating>=1");
+            }
+
+            var rating = new Rating
+            {
+                RatingValue = ratingValue,
+                Member = member,
+                RouteId = routeId
+            };
+
+            route.Ratings.Add(rating);
+
+            _routeRepository.Save();
+
+            return new ApiSuccessResponse<Route>(route);
+        }
+
+        // DELETE: /api/route/{routeId}/rating
+        [HttpDelete("routeId/rating")]
+        public ApiResponse<Route> DeleteRating(string token, Rating rating)
+        {
+            //Checks if user is logged in
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
+            }
+
+            //Finds the member according to the token
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            var route = _routeRepository.Find(rating.RouteId);
+
+            if (route == null)
+            {
+                return new ApiErrorResponse<Route>($"No route exists with id {rating.RouteId}");
+            }
+
+            //If the person trying to delete is not the same as the one who created the rating, or if the member is not an admin
+            if (rating.Member != member && !_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Route>($"User {member.DisplayName} is unauthenticated to delete this rating");
+            }
+
+            route.Ratings.Remove(rating);
+            _routeRepository.Save();
+
+            return new ApiSuccessResponse<Route>(route);
+        }
+
+        // PATCH: /api/route/{routeId}/rating
+        [HttpPatch("routeId/rating")]
+        public ApiResponse<Route> UpdateRating(string token, Rating rating, int ratingValue)
+        {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
+            }
+
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            var route = _routeRepository.Find(rating.RouteId);
+
+            if (member != route.Member)
+            {
+                return new ApiErrorResponse<Route>("Unauthenticated to change rating");
+            }
+
+            if (ratingValue > 5 || ratingValue < 1)
+            {
+                return new ApiErrorResponse<Route>($"The given rating is not within the allowed spectrum, which is 5>=rating>=1");
+            }
+
+            rating.RatingValue = ratingValue;
+            _routeRepository.Save();
+
+            return new ApiSuccessResponse<Route>(route);
+        }
     }
 }

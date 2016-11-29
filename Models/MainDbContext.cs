@@ -17,6 +17,7 @@ namespace AKK.Models
         public DbSet<Member> Members { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<Hold> Holds { get; set; }
+        public DbSet<Rating> Rating { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
