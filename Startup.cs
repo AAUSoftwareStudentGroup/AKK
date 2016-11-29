@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using AKK.Models;
 using AKK.Models.Repositories;
 using AKK.Services;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace AKK
 {
@@ -34,6 +35,11 @@ namespace AKK
 	        services.AddDbContext<MainDbContext>(options =>
 	        	options.UseSqlite(connection)
 	        );
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 1000000000;
+            });
 
             services.AddScoped<IRepository<Route>, RouteRepository>();
             services.AddScoped<IRepository<Section>, SectionRepository>();
