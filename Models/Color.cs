@@ -8,7 +8,7 @@ namespace AKK.Models
         
         public byte B { get; set; }
 
-        public float A { get; set; } = 1f;
+        public byte A { get; set; } = 255;
 
         public Color(byte r, byte g, byte b)
         {
@@ -26,7 +26,7 @@ namespace AKK.Models
             col += R;
             col = (col << 8) + G;
             col = (col << 8) + B;
-            col = (col << 8) + (byte)(A * 255);
+            col = (col << 8) + A;
             return col;
         }
         
@@ -37,7 +37,7 @@ namespace AKK.Models
             c.R = (byte)((col & 0xFF000000) >> 24);
             c.G = (byte)((col & 0x00FF0000) >> 16);
             c.B = (byte)((col & 0x0000FF00) >> 8);
-            c.A = ((uint)col & 0x000000FF) / 255;
+            c.A = (byte)(col & 0x000000FF);
             return c;
         }
     }

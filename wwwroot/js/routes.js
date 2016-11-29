@@ -2,7 +2,7 @@
 var headerViewModel;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
-    headerViewModel = new HeaderViewModel("Find Route", client, new CookieService());
+    headerViewModel = new HeaderViewModel("Find Route", client);
     viewModel = new RoutesViewModel(client);
 
     var content = [
