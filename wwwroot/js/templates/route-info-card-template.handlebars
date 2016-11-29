@@ -42,14 +42,12 @@
         {{#if_eq hasImage true}}
         <div class="route-image small" id="routeimagecontainer">
             <canvas id="routeimage" class="route-canvas" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
-            <div id="image-overlay">
-                <svg viewBox="0 0 24 24">
-                    <path fill="#000000" d="M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z" />
-                </svg>
-            </div>
+            <svg class="image-overlay" viewBox="0 0 24 24">
+                <path fill="#000000" d="M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z" />
+            </svg>
         </div>
         {{else}}
-            <div class="routeimage no-image-added small" onclick="viewModel.editRoute()">
+            <div class="route-image no-image-added small" onclick="viewModel.editRoute()">
                 <svg width="64px" height="64" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#000000">
                     <circle cx="12" cy="12" r="3.2"/>
                     <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
