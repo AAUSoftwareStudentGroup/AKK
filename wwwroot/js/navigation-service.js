@@ -1,16 +1,23 @@
 function NavigationService() {
     this.back = function() { window.history.back(); };
+
     this.getParameters = function() {
-        var parameterStrings = window.location.search.split("?")[1].split("&");
-        var parameters = {};
-        
-        for(var i = 0; i < parameterStrings.length; i++)
-        {
-            var keyValue = parameterStrings[i].split("=");
-            parameters[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
+        try {
+            var parameterStrings = window.location.search.split("?")[1].split("&");
+            var parameters = {};
+            
+            for(var i = 0; i < parameterStrings.length; i++)
+            {
+                var keyValue = parameterStrings[i].split("=");
+                parameters[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
+            }
+            
+            return parameters;            
         }
-        
-        return parameters;
+        catch (error)
+        {
+            return [];
+        }
     }
     this.toEditRoute = function(routeId) {
         window.location = "edit-route?routeId=" + encodeURIComponent(routeId);
@@ -27,8 +34,8 @@ function NavigationService() {
     this.toLogin = function() {
         window.location = "login";
     };
-    this.toRegister = function(target, username) {
-        window.location = "register?target=" + encodeURIComponent(target) + "&username=" + encodeURIComponent(username);
+    this.toRegister = function(target) {
+        window.location = "register?target=" + encodeURIComponent(target);
     };
     this.to = function(target) {
         window.location = target;
