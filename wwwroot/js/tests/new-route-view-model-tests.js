@@ -29,6 +29,4 @@ QUnit.test("NewRoute ViewModel init test", function (assert) {
     assert.equal(holdsUpdatedTriggered, true, "NewRoute ViewModel holdsUpdated Triggered");
     assert.equal(imageUpdatedTriggered, true, "NewRoute ViewModel imageUpdated Triggered");
     assert.equal(noteUpdatedTriggered, true, "NewRoute ViewModel noteUpdated Triggered");
-
-
 });

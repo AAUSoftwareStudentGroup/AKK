@@ -20,6 +20,7 @@ namespace AKK.Models
         public DbSet<Video> Videos { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Rating> Rating { get; set; }
+        public DbSet<HoldColor> HoldColors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -88,6 +89,25 @@ namespace AKK.Models
                 new Comment {Message = "Dette er en kommentar", Member = members["Anton"]},
                 new Comment {Message = "Dette er en anden kommentar", Member = members["Jakobsen"]},
                 new Comment{Message = "Dette er en trejde kommentar", Member = members["Grunberg"]}
+            };
+
+            var holdColors = new List<HoldColor>
+            {
+                new HoldColor {HexColorOfHolds = 4278190335},
+                new HoldColor {HexColorOfHolds = 4280441343},
+                new HoldColor {HexColorOfHolds = 2065045247},
+                new HoldColor {HexColorOfHolds = 4278255615},
+                new HoldColor {HexColorOfHolds = 2852927231},
+                new HoldColor {HexColorOfHolds = 1684301055},
+                new HoldColor {HexColorOfHolds = 2065071103},
+                new HoldColor {HexColorOfHolds = 1459455},
+                new HoldColor {HexColorOfHolds = 2080315135},
+                new HoldColor {HexColorOfHolds = 587208447},
+                new HoldColor {HexColorOfHolds = 4286251263},
+                new HoldColor {HexColorOfHolds = 16711935},
+                new HoldColor {HexColorOfHolds = 1473535},
+                new HoldColor {HexColorOfHolds = 4294902015},
+                new HoldColor {HexColorOfHolds = 3907585535},
             };
 
             var routes = new List<Route>
@@ -381,6 +401,7 @@ namespace AKK.Models
                 },
             };
 
+            context.HoldColors.AddRange(holdColors);
             context.Grades.AddRange(grades.Select(x => x.Value));
             context.Routes.AddRange(routes);
             context.Sections.AddRange(sections.Select(x => x.Value));

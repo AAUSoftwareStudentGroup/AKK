@@ -59,10 +59,6 @@ function RouteClient(url, cookieService)
         formdata.append('token', self.cookieService.getToken());
         formdata.append('id', routeId);
 
-        for (var pair of formdata.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]); 
-        }
-
         $.ajax({
             url: url + "/beta", 
             type: 'POST',
@@ -344,18 +340,45 @@ function MemberClient(url, cookieService)
         });
     };
 
-    this.getMemberInfo = function(success) {
+    this.getMemberInfo = function(success) 
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/" + self.cookieService.getToken(),
+            success: success
+        });
+    };
+
+    this.getAllMembers = function(success)
+    {
         $.ajax({
             type: "GET",
             dataType: "json",
             url: url,
-            data:
+            data: 
             {
                 token: self.cookieService.getToken()
             },
             success: success
         });
-    }
+    };
+
+    this.changeRole = function(memberid, role, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url + "/role",
+            data:
+            {
+                token: self.cookieService.getToken(),
+                memberid: memberid,
+                role: role
+            },
+            success: success
+        });
+    }; 
 }
 
 function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)

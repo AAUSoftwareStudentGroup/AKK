@@ -13,13 +13,26 @@ namespace AKK.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Difficulty = table.Column<int>(nullable: false),
+                    Difficulty = table.Column<int>(nullable: true),
                     HexColor = table.Column<uint>(nullable: true),
                     Name = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Grades", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "HoldColors",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    HexColorOfHolds = table.Column<uint>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HoldColors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -169,7 +182,7 @@ namespace AKK.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     FileUrl = table.Column<string>(nullable: true),
                     MemberId = table.Column<Guid>(nullable: false),
-                    RouteId = table.Column<Guid>(nullable: false)
+                    RouteId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -185,7 +198,7 @@ namespace AKK.Migrations
                         column: x => x.RouteId,
                         principalTable: "Routes",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -273,6 +286,9 @@ namespace AKK.Migrations
 
             migrationBuilder.DropTable(
                 name: "Holds");
+
+            migrationBuilder.DropTable(
+                name: "HoldColors");
 
             migrationBuilder.DropTable(
                 name: "Rating");
