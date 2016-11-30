@@ -3,6 +3,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.navigationService = navigationService;
     this.dialogService = dialogService;
 
+    this.member = null;
     this.image = null;
     this.hasImage = false;
     this.HoldPositions = [];
@@ -26,10 +27,11 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         self.client.members.getMemberInfo(function(response) {
             if(response.success) {
                 self.isAuthed = true;
+                self.member = response.data;
             }
         });
     };
-    
+
     this.parseRating = function() {
         self.route.rating = 3.74;
         var temp = Math.round(self.route.rating);
@@ -46,11 +48,11 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.HoldPositions = imageResponse.data.holds;
                 self.route.image.onload = function() {
                     self.trigger("cardUpdated");
-                    self.trigger("betasUpdated");
+                    self.trigger("commentsUpdated");
                 }
             } else {
                 self.trigger("cardUpdated");
-                self.trigger("betasUpdated");
+                self.trigger("commentsUpdated");
             }
         });
     }
@@ -71,10 +73,30 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         }
     };
 
-    this.addBeta = function(form) {
+    this.addComment = function(form) {
         var fd = new FormData(form);
-        this.client.routes.addBeta(fd, self.route.id, function(response) {
+        this.client.routes.addComment(fd, self.route.id, function(response) {
             self.init();
+        });
+    }
+
+    this.imageAdded = function() {
+        this.trigger("imageUpdated");
+    }
+
+    this.removeComment = function (id, routeId) {
+        if (!self.dialogService.confirm("Are you sure that you want to remove the comment?")) return;
+        this.client.routes.removeComment(id, routeId, function(response) {
+            if (response.success) {
+                self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
+                    if (routeResponse.success) {
+                        self.route.comments = routeResponse.data.comments;
+                        self.trigger("commentsUpdated");
+                    }
+                });
+            } else {
+                self.trigger("Error", response.message);
+            }
         });
     }
 }

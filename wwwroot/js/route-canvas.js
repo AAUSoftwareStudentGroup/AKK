@@ -60,7 +60,7 @@ RouteCanvas.prototype.DrawCanvas = function() {
 
     for (var i = 0; i < this.viewModel.HoldPositions.length; i++) {
         var circle = this.viewModel.HoldPositions[i];
-        this.DrawCircle(circle.x * c.width(), circle.y * c.height(), circle.radius * c.width())
+        this.DrawCircle(circle.x * c.width(), circle.y * c.height(), circle.radius * Math.min(c.width(), c.height()));
     }
 }
 

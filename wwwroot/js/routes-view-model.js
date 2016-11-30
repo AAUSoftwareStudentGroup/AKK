@@ -43,7 +43,7 @@ function RoutesViewModel(client) {
         self.client.routes.getRoutes(self.selectedGrade.id, self.selectedSection.id, self.selectedSortBy.value, function (response) {
             self.parseRoutes(response);
         });
-    }
+    };
 
     this.searchClicked = function () {
         this.isSearching = !this.isSearching;
@@ -51,13 +51,18 @@ function RoutesViewModel(client) {
             this.init();
         }
         self.trigger("SearchMethodChanged");
-    }
+    };
+
+    this.currentAjaxRequest = null;
     this.search = function (searchstring) {
-        this.client.routes.searchRoutes(searchstring, function (response) {
+        if (this.currentAjaxRequest != null) {
+            this.currentAjaxRequest.abort();
+        }
+        this.currentAjaxRequest = this.client.routes.searchRoutes(searchstring, function (response) {
             self.parseRoutes(response);
             self.trigger("routesChanged");
         });
-    }
+    };
 
     this.parseRoutes = function(response) {
         if (response.success) {
