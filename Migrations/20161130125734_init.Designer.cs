@@ -8,8 +8,8 @@ using AKK.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161129141228_dbinit")]
-    partial class dbinit
+    [Migration("20161130125734_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,17 +21,23 @@ namespace AKK.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Date");
+
                     b.Property<Guid>("MemberId");
 
                     b.Property<string>("Message");
 
                     b.Property<Guid>("RouteId");
 
+                    b.Property<Guid?>("VideoId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MemberId");
 
                     b.HasIndex("RouteId");
+
+                    b.HasIndex("VideoId");
 
                     b.ToTable("Comments");
                 });
@@ -41,7 +47,7 @@ namespace AKK.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Difficulty");
+                    b.Property<int?>("Difficulty");
 
                     b.Property<uint?>("HexColor");
 
@@ -188,15 +194,7 @@ namespace AKK.Migrations
 
                     b.Property<string>("FileUrl");
 
-                    b.Property<Guid>("MemberId");
-
-                    b.Property<Guid>("RouteId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("MemberId");
-
-                    b.HasIndex("RouteId");
 
                     b.ToTable("Videos");
                 });
@@ -212,6 +210,10 @@ namespace AKK.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AKK.Models.Video", "Video")
+                        .WithMany()
+                        .HasForeignKey("VideoId");
                 });
 
             modelBuilder.Entity("AKK.Models.Hold", b =>
@@ -257,19 +259,6 @@ namespace AKK.Migrations
                     b.HasOne("AKK.Models.Section", "Section")
                         .WithMany("Routes")
                         .HasForeignKey("SectionId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("AKK.Models.Video", b =>
-                {
-                    b.HasOne("AKK.Models.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("AKK.Models.Route", "Route")
-                        .WithMany("Videoes")
-                        .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
