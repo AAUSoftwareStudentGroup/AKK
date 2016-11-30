@@ -40,7 +40,7 @@ namespace AKK.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("Difficulty");
+                    b.Property<int?>("Difficulty");
 
                     b.Property<uint?>("HexColor");
 
@@ -69,6 +69,20 @@ namespace AKK.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("Holds");
+                });
+
+            modelBuilder.Entity("AKK.Models.HoldColor", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<uint?>("HexColorOfHolds");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("HoldColors");
                 });
 
             modelBuilder.Entity("AKK.Models.Image", b =>
@@ -189,7 +203,7 @@ namespace AKK.Migrations
 
                     b.Property<Guid>("MemberId");
 
-                    b.Property<Guid>("RouteId");
+                    b.Property<Guid?>("RouteId");
 
                     b.HasKey("Id");
 
@@ -266,10 +280,9 @@ namespace AKK.Migrations
                         .HasForeignKey("MemberId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("AKK.Models.Route", "Route")
-                        .WithMany("Videoes")
-                        .HasForeignKey("RouteId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("AKK.Models.Route")
+                        .WithMany("Videos")
+                        .HasForeignKey("RouteId");
                 });
         }
     }
