@@ -13,7 +13,7 @@ function TestRouteClient(url, cookieService)
 
     this.getRoute = function(id, success)
     {
-        success({success: true, data: TEST_ROUTES.filter(function(r){ return r.id == id; })});
+        success({success: true, data: TEST_ROUTES.filter(function(r){ return r.id == id })[0]});
     };
 
     this.getImage = function(id, success) {

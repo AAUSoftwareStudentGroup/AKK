@@ -17,6 +17,8 @@ namespace AKK.Models
         public Route()
         {
             CreatedDate = DateTime.Now.Date;
+            Comments = new List<Comment>();
+            Videos = new List<Video>();
         }
 
         public override bool Equals (object obj)
@@ -69,7 +71,15 @@ namespace AKK.Models
 
         public bool PendingDeletion { get; set; }
 
+        [JsonIgnore]
         public Image Image { get; set; }
+
+        [NotMapped]
+        public bool HasImage => Image != null;
+
+        public List<Video> Videos { get; set; }    
+
+        public List<Comment> Comments { get; set; }
 
         public List<Rating> Ratings { get; set; }
 

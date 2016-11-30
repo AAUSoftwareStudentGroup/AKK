@@ -18,13 +18,19 @@ $(document).ready(function () {
             elementId: "cardtemplate", 
             event: "cardUpdated",
             viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/beta-picker-template.handlebars", 
+            elementId: "betatemplate", 
+            event: "betasUpdated",
+            viewmodel: viewModel
         }
     ];
 
     $(document).on("click", "#routeimagecontainer", function(e) {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
-        $("#image-overlay").toggleClass("hidden");
+        $(".image-overlay").toggleClass("hidden");
 
         if(rc != null) {
             rc.resize();

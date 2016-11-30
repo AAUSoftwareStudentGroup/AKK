@@ -1,4 +1,4 @@
-<form>
+<form action="javascript:viewModel.register()">
     <div class="content-section string-input">
         <h2>Full name</h2>
         <input id="full-name" class="full-name-input" type="text" onchange="viewModel.changeFullName(this.value)" placeholder="Full name">
@@ -15,7 +15,7 @@
         <h2>Confirm password</h2>
         <input id="passwordconfirm" class="passwordconfirm-input" type="password" onchange="viewModel.changePasswordconfirm(this.value)" placeholder="Password">
     </div>
-    
+
     <div id=error-message onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-    <input class="submit-button neutral right" type="button" onclick="viewModel.register()" value="Register">
+    <input class="submit-button neutral right" type="button" value="Register">
 </form>
