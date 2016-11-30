@@ -14,12 +14,30 @@ namespace AKK.Models.Repositories
         }
         public override Route Find(Guid Id)
         {
-            return _dbContext.Routes.Include(r => r.Section).Include(r => r.Member).Include(r => r.Grade).Include(r => r.Videos).Include(r=>r.Ratings).Include(r=> r.Comments).Include(r => r.Image).FirstOrDefault(d => d.Id == Id);
+            return _dbContext.Routes.Include(r => r.Section)
+                                    .Include(r => r.Member)
+                                    .Include(r => r.Grade)
+                                    .Include(r=>r.Ratings)
+                                    .Include(r=> r.Comments)
+                                        .ThenInclude(c => c.Member)
+                                    .Include(r => r.Comments)
+                                        .ThenInclude(c => c.Video)
+                                    .Include(r => r.Image)
+                                    .FirstOrDefault(d => d.Id == Id);
         }
 
         public override IEnumerable<Route> GetAll()
         {
-            return _dbContext.Routes.Include(r => r.Section).Include(r => r.Member).Include(r => r.Grade).Include(r => r.Videos).Include(r=> r.Ratings).Include(r=>r.Comments).Include(r => r.Image).AsEnumerable();
+            return _dbContext.Routes.Include(r => r.Section)
+                                    .Include(r => r.Member)
+                                    .Include(r => r.Grade)
+                                    .Include(r=>r.Ratings)
+                                    .Include(r=> r.Comments)
+                                        .ThenInclude(c => c.Member)
+                                    .Include(r => r.Comments)
+                                        .ThenInclude(c => c.Video)
+                                    .Include(r => r.Image)
+                                    .AsEnumerable();
         }
     }
 }
