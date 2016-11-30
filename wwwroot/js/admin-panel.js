@@ -20,7 +20,7 @@ $(document).ready(function () {
         },
         {
             scriptSource: "js/templates/grade-admin-template.handlebars", 
-            elementId: "grade-admin",
+            elementId: "content-grade",
             event: "gradesChanged",
             viewmodel: viewModel
         },
@@ -44,18 +44,14 @@ $(document).ready(function () {
     viewModel.addEventListener("gradesChanged", function(msg) {
         window.setTimeout(function() {
             if(viewModel.selectedGrade)
-                $('.orderable-list').scrollTop(61*viewModel.selectedGrade.difficulty-31);
+                $('.orderable-list').scrollTop(61*viewModel.selectedGrade.difficulty-61*2);
         },10);
     });
 
     $(document).on('click','.expansion-panel-header', function (event) {
         var element = $(this).closest('.expansion-panel');
-        if($('.expansion-panel.expanded').find('.content-section').length) {
-            viewModel.changeSection();
-        }
-        if($('.expansion-panel.expanded').find('.content-grade').length) {
-            viewModel.selectGrade();
-        }
+        viewModel.changeSection();
+        viewModel.selectGrade();
         
         if(element.hasClass('expanded'))
             element.removeClass('expanded');

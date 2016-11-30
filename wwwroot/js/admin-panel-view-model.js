@@ -8,6 +8,7 @@ function AdminPanelViewModel(client, dialogService) {
     this.gradeName = "";
     this.sections = [];
     this.routes = [];
+    this.editingGrades = false;
 
     this.init = function() {
         self.downloadSections();
@@ -25,6 +26,8 @@ function AdminPanelViewModel(client, dialogService) {
     }
 
     this.downloadRoutes = function() {
+        console.log("Downloading routes");
+        console.trace();
         if(self.selectedSection != null || self.selectedGrade != null) {
             self.client.routes.getRoutes((self.selectedGrade ? self.selectedGrade.id : null), (self.selectedSection ? self.selectedSection.id : null), null, function(response) {
                 if(response.success) {
@@ -44,6 +47,7 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.changeSection = function (sectionId) {
         self.selectedSection = self.sections.filter(function (s) { return s.id == sectionId; })[0];
+        self.selectedGrade = null;
         self.downloadRoutes();
     };
 
@@ -131,8 +135,11 @@ function AdminPanelViewModel(client, dialogService) {
     this.updateGrade = function()
     {
         self.client.grades.updateGrade(self.selectedGrade, function(response) {
-            if(response.success)                
+            if(response.success) {
+                self.selectedGrade = null;
                 self.trigger("gradesChanged");
+                self.downloadRoutes();
+            }
             else {
                 self.dialogService.showMessage(response.message);
             }
@@ -170,14 +177,15 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.selectGrade = function(gradeValue)
     {
+        self.selectedSection = null;
         if(gradeValue === undefined || gradeValue === null) {
             self.selectedGrade = null;
             self.gradeName = "";
         }
         else {
             self.selectedGrade = self.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
-            self.trigger("gradesChanged");   
         }
+        self.trigger("gradesChanged");
         self.downloadRoutes();
     }
 
@@ -185,6 +193,39 @@ function AdminPanelViewModel(client, dialogService) {
         if(self.selectedGrade) {
             self.selectedGrade.name = name;
         }
+    }
+
+    this.gradesSwap = function(diff, change) {
+        if(diff+change < 0 || diff+change >= self.grades.length)
+            return;
+        
+        var gradeA = self.grades[diff];
+        var gradeB = self.grades[diff+change];
+        var gradeBCopy = JSON.parse(JSON.stringify(gradeB));
+
+        gradeB.difficulty = gradeA.difficulty;
+        gradeA.difficulty = 999;
+
+        self.client.grades.updateGrade(gradeA, function(response) {
+            if(response.success) {
+                self.client.grades.updateGrade(gradeB, function(response) {
+                    if(response.success) {
+                        gradeA.difficulty = gradeBCopy.difficulty
+                        self.client.grades.updateGrade(gradeA, function(response) {
+                            if(response.success) {
+                                self.downloadGrades();
+                            }
+                            else
+                                self.dialogService.showMessage(response.message);
+                        });
+                    }
+                    else
+                        self.dialogService.showMessage(response.message);
+                });
+            }
+            else
+                self.dialogService.showMessage(response.message);
+        });
     }
 }
 AdminPanelViewModel.prototype = new EventNotifier();

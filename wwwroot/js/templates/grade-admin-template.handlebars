@@ -1,61 +1,53 @@
-<div class="expansion-panel {{#if_be selectedGrade}}expanded{{/if_be}}">
-    <div class="expansion-panel-header">
-        <h2 class="title">Grades</h2>
-        <div class="arrow transitioning-icon">
-            <span class="first"></span>
-            <span class="second"></span>
+{{#if_eq selectedGrade null}}
+<div class="orderable-list">
+    {{#each grades}}
+    <div class="orderable-item">
+        <div class="order-controls">
+            <div class="order-up pressable" onclick="viewModel.gradesSwap({{difficulty}}, -1)"></div>
+            <div class="order-down pressable" onclick="viewModel.gradesSwap({{difficulty}}, 1)"></div>
+        </div>
+        <div class="order-content grade-{{difficulty}} grade-item pressable" onclick="viewModel.selectGrade({{difficulty}})">
+            <label class="color-label" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
+                <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                    {{#ifCond color 200}}
+                    fill="#FFFFFF">
+                    {{else}}
+                    fill="#222222">
+                    {{/ifCond}}
+                    <polygon points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
+                </svg>
+            </label>
+            <div class="grade-details">
+                <h2>Name</h2>
+                <span class="gradename">{{name}}</span>
+            </div>
+            <div class="clear"></div>
         </div>
     </div>
-    <div class="content-grade">
-        <div class="orderable-list">
-            {{#each grades}}
-            <div class="orderable-item">
-                <div class="order-controls">
-                    <div class="order-up pressable"></div>
-                    <div class="order-down pressable"></div>
-                </div>
-                <div class="order-content grade-{{difficulty}} grade-item pressable" onclick="viewModel.selectGrade({{difficulty}})">
-                    <label class="color-label" style="background-color: rgb({{color.r}},{{color.g}},{{color.b}})">
-                        <svg class="grade-checkmark" viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
-                            {{#ifCond color 200}}
-                            fill="#FFFFFF">
-                            {{else}}
-                            fill="#222222">
-                            {{/ifCond}}
-                            <polygon points="8.9999939 16.2 4.7999939 12 3.3999939 13.4 8.9999939 19 20.9999939 7 19.5999939 5.6"></polygon>
-                        </svg>
-                    </label>
-                    <div class="grade-details">
-                        <h2>Name</h2>
-                        <span class="gradename">{{name}}</span>
-                    </div>
-                    <div class="clear"></div>
-                </div>
-            </div>
-            {{/each}}
-        </div>
-        <div class="button-group">
-            <input class="submit-button neutral" id="grade-input-new" type="button" onclick="viewModel.addNewGrade()" value="Add">
-        </div>
-
-        <div class="string-input">
-            <h2>Name</h2>
-            <input id="name" class="gradename-input" type="text" onchange="viewModel.changeGradeName(this.value)" value="{{selectedGrade.name}}" placeholder="Name">
-        </div>
-        <div class="color-select-input">
-            <h2>Color</h2>
-            <div class="color-select-preview color-label" style="background-color:rgb({{selectedGrade.color.r}},{{selectedGrade.color.g}},{{selectedGrade.color.b}})"></div>
-            <input class="color-select-slider" type="range" min="0" max="360" oninput="viewModel.setHue(this.value)">
-            <div class="predefines">
-                <input type="button" class="set-white" value="White" onclick="viewModel.setColor(0xfb,0xfb,0xfb)" />
-                <input type="button" class="set-black" value="black" onclick="viewModel.setColor(0x66,0x66,0x66)"/>
-            </div>
-        </div>
-
-        <div class="button-group">
-            <input class="submit-button negative" type="button" onclick="viewModel.deleteGrade('{{selectedGrade.difficulty}}')" value="Delete">
-            <input class="submit-button neutral" type="button" onclick="viewModel.updateGrade()" value="Update">
-        </div>
-        <div class="clear"></div>
+    {{/each}}
+</div>
+<div class="button-group">
+    <input class="submit-button neutral" id="grade-input-new" type="button" onclick="viewModel.addNewGrade()" value="Add">
+</div>
+{{else}}
+<div class="close-button" onclick="viewModel.selectGrade()"></div>
+<div class="string-input">
+    <h2>Name</h2>
+    <input id="name" class="gradename-input" type="text" onchange="viewModel.changeGradeName(this.value)" value="{{selectedGrade.name}}" placeholder="Name">
+</div>
+<div class="color-select-input">
+    <h2>Color</h2>
+    <div class="color-select-preview color-label" style="background-color:rgb({{selectedGrade.color.r}},{{selectedGrade.color.g}},{{selectedGrade.color.b}})"></div>
+    <input class="color-select-slider" type="range" min="0" max="360" oninput="viewModel.setHue(this.value)">
+    <div class="predefines">
+        <input type="button" class="set-white" value="White" onclick="viewModel.setColor(0xfb,0xfb,0xfb)" />
+        <input type="button" class="set-black" value="black" onclick="viewModel.setColor(0x66,0x66,0x66)"/>
     </div>
 </div>
+
+<div class="button-group">
+    <input class="submit-button negative" type="button" onclick="viewModel.deleteGrade('{{selectedGrade.difficulty}}')" value="Delete">
+    <input class="submit-button neutral" type="button" onclick="viewModel.updateGrade()" value="Update">
+</div>
+<div class="clear"></div>
+{{/if_eq}}
