@@ -30,7 +30,7 @@ $(document).ready(function () {
     $(document).on("click", "#routeimagecontainer", function(e) {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
-        $("#image-overlay").toggleClass("hidden");
+        $(".image-overlay").toggleClass("hidden");
 
         if(rc != null) {
             rc.resize();

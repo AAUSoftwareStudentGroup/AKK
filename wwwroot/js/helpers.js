@@ -12,11 +12,20 @@ Handlebars.registerHelper('if_eq', function (a, b, opts) {
         return opts.inverse(this);
 });
 
+//http://stackoverflow.com/a/11924998
+Handlebars.registerHelper('times', function(n, block) {
+    var accum = '';
+    for(var i = 0; i < n; ++i)
+        accum += block.fn(i);
+    return accum;
+});
+
 Handlebars.registerHelper('if_eq_or', function (a, b, c, opts) {
     if (a == b || c) // Or === depending on your needs
         return opts.fn(this);
     else
         return opts.inverse(this);
+
 });
 
 Handlebars.registerHelper("log", function(something) {
