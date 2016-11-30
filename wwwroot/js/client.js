@@ -19,7 +19,7 @@ function RouteClient(url, cookieService)
     };
 
     this.searchRoutes = function(searchstring, success) {
-        $.ajax({
+       return $.ajax({
             type: "GET",
             dataType: "json",
             url: url,
