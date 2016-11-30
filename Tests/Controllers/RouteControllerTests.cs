@@ -8,7 +8,7 @@ using AKK.Controllers.ApiResponses;
 using AKK.Models;
 using AKK.Models.Repositories;
 using AKK.Services;
-using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 
 namespace AKK.Tests.Controllers
 {
@@ -228,7 +228,17 @@ namespace AKK.Tests.Controllers
 
             Assert.AreEqual(false, response.Success);
         }
-
+/*
+        [Test]
+        public void _AddBeta_AddBetaToRouteAsMember_BetaGetsAdded()
+        {
+            IFormFile beta;
+            beta.OpenReadStream();
+            var response = _controller.AddBeta(token, beta, _routeRepo.GetAll().FirstOrDefault().Id, "");
+            Assert.IsTrue(response.Result.Success);
+            Assert.IsNotEmpty(_routeRepo.GetAll().First().Videos);
+        }
+*/
         [Test]
         public void _UpdateRoute_UpdateNameOnRoute_NameGetsUpdated()
         {
@@ -418,6 +428,141 @@ namespace AKK.Tests.Controllers
             var response = _controller.DeleteRoute(token, _sectionRepo.GetAll().First().Id);
 
             Assert.AreEqual(false, response.Success);
+        }
+
+        [Test]
+        public void _AddRating_AddRatingAsMemberToRoute_RatingGetsAdded()
+        {
+            Route route = _routeRepo.GetAll().First();
+            var response = _controller.AddRating(token, route.Id, 5);
+
+            Assert.IsTrue(response.Success);
+            Assert.AreEqual(1, route.Ratings.Count);
+            Assert.AreEqual(5, route.Ratings.First().RatingValue);
+        }
+
+        [Test]
+        public void _AddRating_AddRatingAsMemberToRouteWhichHasSeveralRatings_AverageIsCorrect()
+        {
+            Route route = _routeRepo.GetAll().First();
+            _controller.AddRating(token, route.Id, 5);
+            _controller.AddRating(_auth.Login("Tanner", "Helland"), route.Id, 3);
+            
+            Member testMember = new Member();
+            testMember.Password = "123";
+            testMember.Username = "test";
+            testMember.IsAdmin = false;
+            testMember.DisplayName = "test123";
+            _memberRepo.Add(testMember);
+            var response = _controller.AddRating(_auth.Login("test", "123"), route.Id, 1);
+            Assert.IsTrue(response.Success);
+
+            Assert.AreEqual(3, route.Ratings.Count);
+            Assert.AreEqual(3, route.AverageRating);
+        }
+
+        [Test]
+        public void _AddRating_AddRatingAsGuest_NoRatingGetsAdded()
+        {
+            Route route = _routeRepo.GetAll().First();
+            var response = _controller.AddRating("123", route.Id, 5);
+            Assert.IsFalse(response.Success);
+            Assert.IsEmpty(route.Ratings);
+        }
+
+        [Test]
+        public void _DeleteRating_DeleteRatingAsTheMemberWhoAddedTheRating_RatingGetsRemoved()
+        {
+            Route route = _routeRepo.GetAll().First();
+            var response = _controller.AddRating(token, route.Id, 5);
+            
+            response = _controller.DeleteRating(token, route.Ratings.First());
+            Assert.IsTrue(response.Success);
+            Assert.IsEmpty(route.Ratings);
+            Assert.IsNull(route.AverageRating);
+        }
+
+        [Test]
+        public void _DeleteRating_DeleteRatingAsMemberThatDidntAddTheRating_RatingDoesntGetRemoved()
+        {
+            Route route = _routeRepo.GetAll().First();
+            _controller.AddRating(token, route.Id, 5);
+
+            var response = _controller.DeleteRating(_auth.Login("Tanner", "Helland"), route.Ratings.First());
+            Assert.IsFalse(response.Success);
+            Assert.IsNotEmpty(route.Ratings);
+        }
+
+        [Test]
+        public void _DeleteRating_DeleteRatingThatDoesntExist_NoChange()
+        {
+            Route route = _routeRepo.GetAll().First();
+            _controller.AddRating(token, route.Id, 5);
+            Rating rating = new Rating();
+            rating.Member = _memberRepo.GetAll().First();
+            rating.RatingValue = 2;
+            var response = _controller.DeleteRating(token, rating);
+
+            Assert.IsFalse(response.Success);
+            Assert.AreEqual(1, route.Ratings.Count);
+        }
+
+        [Test]
+        public void _DeleteRating_DeleteRatingAsAdminWhoDidntAddTheRating_RatingGetsRemoved()
+        {
+            Route route = _routeRepo.GetAll().First();
+            _controller.AddRating(_auth.Login("Tanner", "Helland"), route.Id, 5);
+            var response = _controller.DeleteRating(token, route.Ratings.First());
+
+            Assert.IsTrue(response.Success);
+            Assert.IsEmpty(route.Ratings);
+        }
+
+        [Test]
+        public void _UpdateRating_UpdateRatingAsMemberWhoAddedIt_RatingGetsUpdated()
+        {
+            Route route = _routeRepo.GetAll().First();
+            var tokenForMember = _auth.Login("Tanner", "Helland");
+            _controller.AddRating(tokenForMember, route.Id, 5);
+            var response = _controller.UpdateRating(tokenForMember, route.Ratings.First(), 2);
+
+            Assert.IsTrue(response.Success);
+            Assert.AreEqual(2, route.Ratings.First().RatingValue);
+        }
+
+        [Test]
+        public void _UpdateRating_UpdateRatingAsAdminWhoDidntAddIt_RatingDoesntGetChanged()
+        {
+            Route route = _routeRepo.GetAll().First();
+            var tokenForMember = _auth.Login("Tanner", "Helland");
+            _controller.AddRating(tokenForMember, route.Id, 5);
+            var response = _controller.UpdateRating(token, route.Ratings.First(), 2);
+
+            Assert.IsFalse(response.Success);
+            Assert.AreEqual(5, route.Ratings.First().RatingValue);
+        }
+
+        [Test]
+        public void _UpdateRating_UpdateRatingAsGuest_RatingDoesntGetChanged()
+        {
+            Route route = _routeRepo.GetAll().First();
+            _controller.AddRating(token, route.Id, 5);
+            var response = _controller.UpdateRating("123", route.Ratings.First(), 2);
+
+            Assert.IsFalse(response.Success);
+            Assert.AreEqual(5, route.Ratings.First().RatingValue);
+        }
+
+        [Test]
+        public void _UpdateRating_UpdateRatingThatDoesntExist_RatingDoesntGetChanged()
+        {
+            Route route = _routeRepo.GetAll().First();
+            var tokenForMember = _auth.Login("Tanner", "Helland");
+            _controller.AddRating(tokenForMember, route.Id, 5);
+            var response = _controller.UpdateRating(token, new Rating(), 2);
+
+            Assert.IsFalse(response.Success);
+            Assert.AreEqual(1, route.Ratings.Count);
         }
     }
 }
