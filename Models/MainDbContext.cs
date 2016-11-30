@@ -37,266 +37,354 @@ namespace AKK.Models
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            List<Image> images = new List<Image> {
-                new Image {Id = new Guid(), Width = 800, Height = 500, FileUrl = "https://placeholdit.imgix.net/~text?txtsize=28&txt=500%C3%97800&w=500&h=800"}
+            var colors = new Dictionary<string, Color> {
+                {"Cyan", new Color(0, 200, 200)},
+                {"Azure", new Color(1, 126, 255)},
+                {"Blue", new Color(60, 60, 255)},
+                {"Violet", new Color(27, 0, 255)},
+                {"Magenta", new Color(200, 50, 200)},
+                {"Rose", new Color(210, 25, 120)},
+                {"Red", new Color(200, 30, 30)},
+                {"Orange", new Color(255, 127, 00)},
+                {"Yellow", new Color(220, 200, 30)},
+                {"Light Green", new Color(110, 210, 20)},
+                {"Green", new Color(20, 150, 20)},
+                {"Black", new Color(0, 0, 0)},
+                {"Brown", new Color(126, 54, 15)},
+                {"Grey", new Color(92, 89, 89)},
+                {"White", new Color(205, 205, 205)},
             };
 
-            List<Hold> holds = new List<Hold> {
-                new Hold {Id = new Guid(), ImageId = images[0].Id, X = 0.5, Y = 0.5, Radius = 0.1}
+            var grades = new Dictionary<string, Grade> {
+                {"Green", new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid(), Routes = new List<Route>() }},
+                {"Blue", new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() }},
+                {"Red", new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid(), Routes = new List<Route>() }},
+                {"Black", new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid(), Routes = new List<Route>() }},
+                {"White", new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }}
             };
 
-            images[0].Holds.AddRange(holds);
-
-            var _members = new List<Member>
+            var members = new Dictionary<string, Member>
             {
-                new Member {DisplayName = "Anton", Username = "anton123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Hornum", Username = "hornum123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Jakob", Username = "jakob123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "TannerHelland", Username = "tannerhelland123", Password = "123", IsAdmin = true},
-                new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Geo", Username = "geo123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Bacci", Username = "bacci123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Geogebra", Username = "geogebra123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Kurt", Username = "kurt123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Benja", Username = "benja123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Manfred", Username = "manfred123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Betinna", Username = "betinna123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Kasper", Username = "kasper123", Password = "123", IsAdmin = false},
-                new Member {DisplayName = "Rasmus", Username = "rasmus123", Password = "123", IsAdmin = false}
+                {"Anton", new Member {DisplayName = "Anton", Username = "anton123", Password = "123", IsAdmin = true}},
+                {"Grunberg", new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = true}},
+                {"Jacob", new Member {DisplayName = "Jacob Svenningsen", Username = "jacob123", Password = "123", IsAdmin = true}},
+                {"Morten", new Member {DisplayName = "Morten", Username = "morten123", Password = "123", IsAdmin = true}},
+                {"Ibsen", new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = "123", IsAdmin = true}},
+                {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true}},
+                {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = "123", IsAdmin = false}},
+                {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = "adminadmin", IsAdmin = true}},
+                
             };
 
-            var _sections = new List<Section>
-            {
-                new Section {Name = "A", Id = Guid.NewGuid()},
-                new Section {Name = "B", Id = Guid.NewGuid()},
-                new Section {Name = "C", Id = Guid.NewGuid()},
-                new Section {Name = "D", Id = Guid.NewGuid()},
-                new Section {Name = "E", Id = Guid.NewGuid()},
-                new Section {Name = "G", Id = Guid.NewGuid()},
-                new Section {Name = "H", Id = Guid.NewGuid()},
-                new Section {Name = "I", Id = Guid.NewGuid()},
-                new Section {Name = "J", Id = Guid.NewGuid()},
-                new Section {Name = "K", Id = Guid.NewGuid()},
-                new Section {Name = "L", Id = Guid.NewGuid()},
-            };
-
-            var _grades = new List<Grade>
-            {
-                new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "Purple", Difficulty = 5, Color = new Color(128, 0, 128), Id = Guid.NewGuid(), Routes = new List<Route>() },
-                new Grade {Name = "Pink", Difficulty = 6, Color = new Color(255, 192, 203), Id = Guid.NewGuid(), Routes = new List<Route>() }
+            var sections = new Dictionary<string, Section> {
+                {"A", new Section{Name = "A"}},
+                {"B", new Section{Name = "B"}},
+                {"C", new Section{Name = "C"}},
+                {"D", new Section{Name = "D"}},
             };
 
             var comments = new List<Comment>
             {
-                new Comment {Message = "Dette er en kommentar", Member = _members[0]},
-                new Comment {Message = "Dette er en anden kommentar", Member = _members[1] },
-                new Comment{Message = "Dette er en trejde kommentar", Member = _members[2]}
+                new Comment {Message = "Dette er en kommentar", Member = members["Anton"]},
+                new Comment {Message = "Dette er en anden kommentar", Member = members["Jakobsen"]},
+                new Comment{Message = "Dette er en trejde kommentar", Member = members["Grunberg"]}
             };
 
-            var _routes = new List<Route>
+            var routes = new List<Route>
             {
                 new Route
                 {
-                    Name = "4",
-                    Section = _sections[0],
-                    ColorOfHolds = new Color(255, 0, 0),
-                    Member = _members[0],
-                    Author = _members[0].DisplayName,
-                    Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 03, 24),
-                },
-                new Route
-                {
-                    Name = "4",
-                    Section = _sections[0],
-                    ColorOfHolds = new Color(255, 0, 0),
-                    Member = _members[1],
-                    Author = _members[1].DisplayName,
-                    Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 03, 24),
-                },
-                new Route
-                {
-                    Name = "14",
-                    Section = _sections[0],
-                    ColorOfHolds = new Color(0, 255, 0),
-                    Member = _members[2],
-                    Author = _members[2].DisplayName,
-                    Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 07, 12),
-                },
-                new Route
-                {
-                    Name = "43",
-                    Section = _sections[0],
-                    ColorOfHolds = new Color(255, 0, 255),
-                    Member = _members[3],
-                    Author = _members[3].DisplayName,
-                    Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 11, 11),
-                },
-                new Route
-                {
-                    Name = "21",
-                    Section = _sections[0],
-                    ColorOfHolds = new Color(255, 255, 0),
-                    Member = _members[4],
-                    Author = _members[4].DisplayName,
-                    Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 03, 24),
-                },
-                new Route
-                {
-                    Name = "32",
-                    Section = _sections[1],
-                    ColorOfHolds = new Color(100, 100, 100),
-                    Member = _members[5],
-                    Author = _members[5].DisplayName,
-                    Grade = _grades[4],
-                    CreatedDate = new DateTime(2014, 11, 24),
-                },
-                new Route
-                {
-                    Name = "99",
-                    Section = _sections[1],
-                    ColorOfHolds = new Color(170, 12, 54),
-                    Member = _members[1],
-                    Author = _members[1].DisplayName,
-                    Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 01, 02),
-                },
-                new Route
-                {
-                    Name = "3",
-                    Section = _sections[1],
-                    ColorOfHolds = new Color(255, 34, 89),
-                    Member = _members[6],
-                    Author = _members[6].DisplayName,
-                    Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 04, 11),
-                },
-                new Route
-                {
+                    Grade = grades["Green"],
                     Name = "7",
-                    Section = _sections[1],
-                    ColorOfHolds = new Color(232, 233, 5),
-                    Member = _members[7],
-                    Author = _members[7].DisplayName,
-                    Grade = _grades[3],
-                    CreatedDate = new DateTime(2016, 08, 10)
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Red"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
                 },
                 new Route
                 {
-                    Name = "66",
-                    Section = _sections[2],
-                    ColorOfHolds = new Color(255, 0, 0),
-                    Member = _members[8],
-                    Author = _members[8].DisplayName,
-                    Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    Grade = grades["Green"],
+                    Name = "12",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["White"],
+                    Member = members["Anton"],
+                    Author = "Clara",
+                    CreatedDate = new DateTime(2016, 7, 3),
                 },
                 new Route
                 {
-                    Name = "33",
-                    Section = _sections[2],
-                    ColorOfHolds = new Color(0, 22, 123),
-                    Member = _members[9],
-                    Author = _members[9].DisplayName,
-                    Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 07, 12)
+                    Grade = grades["Green"],
+                    Name = "13",
+                    Section = sections["D"],
+                    ColorOfHolds = colors["Grey"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
                 },
                 new Route
                 {
-                    Name = "94",
-                    Section = _sections[2],
-                    ColorOfHolds = new Color(255, 123, 0),
-                    Member = _members[10],
-                    Author = _members[10].DisplayName,
-                    Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 11, 11)
+                    Grade = grades["Green"],
+                    Name = "15",
+                    Section = sections["C"],
+                    ColorOfHolds = colors["Yellow"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
                 },
                 new Route
                 {
-                    Name = "22",
-                    Section = _sections[2],
-                    ColorOfHolds = new Color(255, 123, 0),
-                    Member = _members[11],
-                    Author = _members[11].DisplayName,
-                    Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 11, 11)
+                    Grade = grades["Green"],
+                    Name = "17",
+                    Section = sections["C"],
+                    ColorOfHolds = colors["Red"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
                 },
                 new Route
                 {
-                    Name = "44",
-                    Section = _sections[2],
-                    ColorOfHolds = new Color(123, 22, 22),
-                    Member = _members[12],
-                    Author = _members[12].DisplayName,
-                    Grade = _grades[2],
-                    CreatedDate = new DateTime(2016, 03, 24)
+                    Grade = grades["Green"],
+                    Name = "7",
+                    Section = sections["D"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Ukendt",
+                    CreatedDate = new DateTime(2016, 3, 18),
                 },
                 new Route
                 {
+                    Grade = grades["Blue"],
+                    Name = "7",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Black"],
+                    Member = members["Anton"],
+                    Author = "Mads",
+                    CreatedDate = new DateTime(2016, 10, 11),
+                    Note = "Monkey"
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "37",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Orange"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016,9, 29),
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "38",
+                    Section = sections["D"],
+                    ColorOfHolds = colors["Brown"],
+                    Member = members["Anton"],
+                    Author = "Mette og Meike",
+                    CreatedDate = new DateTime(2016, 4, 10),
+                    Note = "Twist & Shout!"
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "11",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Yellow"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 7, 3),
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "3",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Rose"],
+                    Member = members["Anton"],
+                    Author = "Lykke og Meike",
+                    CreatedDate = new DateTime(2016, 10, 11),
+                    Note = "Standing start"
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "24",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["White"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016, 9, 10),
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "23",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Jens Christian",
+                    CreatedDate = new DateTime(2016, 7, 1),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "30",
+                    Section = sections["D"],
+                    ColorOfHolds = colors["Black"],
+                    Member = members["Anton"],
+                    Author = "T. Laursen",
+                    CreatedDate = new DateTime(2016, 4, 10),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "5",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Rose"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 7, 26),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "29",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Yellow"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016, 9, 25),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "28",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016, 7, 27),
+                    Note = "Low sit start"
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "2",
+                    Section = sections["C"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 10, 28),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
                     Name = "20",
-                    Section = _sections[3],
-                    ColorOfHolds = new Color(35, 0, 22),
-                    Member = _members[13],
-                    Author = _members[13].DisplayName,
-                    Grade = _grades[1],
-                    CreatedDate = new DateTime(2016, 03, 01),
-                    ColorOfTape = new Color(123, 255, 22)
+                    Section = sections["C"],
+                    ColorOfHolds = colors["White"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 10, 21),
                 },
                 new Route
                 {
-                    Name = "9",
-                    Section = _sections[3],
-                    ColorOfHolds = new Color(123, 255, 22),
-                    Member = _members[14],
-                    Author = _members[14].DisplayName,
-                    Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 10, 27)
+                    Grade = grades["Red"],
+                    Name = "35",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Rose"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 10, 30),
+                    Note = "Left edge is not included"
                 },
                 new Route
                 {
-                    Name = "76",
-                    Section = _sections[3],
-                    ColorOfHolds = new Color(0, 22, 68),
-                    Member = _members[15],
-                    Author = _members[15].DisplayName,
-                    Grade = _grades[0],
-                    CreatedDate = new DateTime(2016, 09, 04)
+                    Grade = grades["Black"],
+                    Name = "10",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 10, 21),
+                    Note = "Only holds with screws"
                 },
                 new Route
                 {
-                    Name = "54",
-                    Section = _sections[3],
-                    ColorOfHolds = new Color(123, 22, 123),
-                    Member = _members[16],
-                    Author = _members[16].DisplayName,
-                    Grade = _grades[4],
-                    CreatedDate = new DateTime(2016, 06, 22)
-                }
+                    Grade = grades["Black"],
+                    Name = "4",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Orange"],
+                    Member = members["Anton"],
+                    Author = "Clara",
+                    CreatedDate = new DateTime(2016, 7, 4),
+                },
+                new Route
+                {
+                    Grade = grades["Black"],
+                    Name = "2",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Yellow"],
+                    Member = members["Anton"],
+                    Author = "Mattias",
+                    CreatedDate = new DateTime(2016, 7, 22),
+                },
+                new Route
+                {
+                    Grade = grades["Black"],
+                    Name = "8",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Mattias",
+                    CreatedDate = new DateTime(2016, 10, 8),
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "8",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 7, 3),
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "2",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Pawo",
+                    CreatedDate = new DateTime(2016, 7, 3),
+                    ColorOfTape = colors["Yellow"]
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "4",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Magenta"],
+                    Member = members["Anton"],
+                    Author = "Mattias",
+                    CreatedDate = new DateTime(2016, 7, 25),
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "6",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Red"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 4, 10),
+                },
             };
 
-            foreach (var section in _sections)
-            {
-                section.Routes.AddRange(_routes.Where(r => r.Section.Id == section.Id));
-            }
-
-            foreach (var grade in _grades)
-            {
-                grade.Routes.AddRange(_routes.Where(r => r.Grade.Id == grade.Id));
-            }
-
-            context.Sections.AddRange(_sections);
+            context.Grades.AddRange(grades.Select(x => x.Value));
+            context.Routes.AddRange(routes);
+            context.Sections.AddRange(sections.Select(x => x.Value));
+            context.Members.AddRange(members.Select(x => x.Value));
 
             //// save changes and release resources
             context.SaveChanges();
