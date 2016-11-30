@@ -56,8 +56,8 @@ namespace AKK.Models
             };
 
             var grades = new Dictionary<string, Grade> {
-                {"Blue", new Grade {Name = "Blue", Difficulty = 0, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() }},
-                {"Green", new Grade {Name = "Green", Difficulty = 1, Color = new Color(67, 160, 71), Id = Guid.NewGuid(), Routes = new List<Route>() }},
+                {"Green", new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid(), Routes = new List<Route>() }},
+                {"Blue", new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() }},
                 {"Red", new Grade {Name = "Red", Difficulty = 2, Color = new Color(228, 83, 80), Id = Guid.NewGuid(), Routes = new List<Route>() }},
                 {"Black", new Grade {Name = "Black", Difficulty = 3, Color = new Color(97, 97, 97), Id = Guid.NewGuid(), Routes = new List<Route>() }},
                 {"White", new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }}
@@ -67,7 +67,13 @@ namespace AKK.Models
             {
                 {"Anton", new Member {DisplayName = "Anton", Username = "anton123", Password = "123", IsAdmin = true}},
                 {"Grunberg", new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = true}},
-                {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true}}
+                {"Jacob", new Member {DisplayName = "Jacob Svenningsen", Username = "jacob123", Password = "123", IsAdmin = true}},
+                {"Morten", new Member {DisplayName = "Morten", Username = "morten123", Password = "123", IsAdmin = true}},
+                {"Ibsen", new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = "123", IsAdmin = true}},
+                {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true}},
+                {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = "123", IsAdmin = false}},
+                {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = "adminadmin", IsAdmin = true}},
+                
             };
 
             var sections = new Dictionary<string, Section> {
@@ -88,24 +94,84 @@ namespace AKK.Models
             {
                 new Route
                 {
-                    Grade = grades["Blue"],
-                    Name = "2",
-                    Section = sections["B"],
-                    ColorOfHolds = colors["Brown"],
+                    Grade = grades["Green"],
+                    Name = "7",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Red"],
                     Member = members["Anton"],
-                    Author = "Jane og Benny",
-                    CreatedDate = new DateTime(2016, 04, 10),
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
+                },
+                new Route
+                {
+                    Grade = grades["Green"],
+                    Name = "12",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["White"],
+                    Member = members["Anton"],
+                    Author = "Clara",
+                    CreatedDate = new DateTime(2016, 7, 3),
+                },
+                new Route
+                {
+                    Grade = grades["Green"],
+                    Name = "13",
+                    Section = sections["D"],
+                    ColorOfHolds = colors["Grey"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
+                },
+                new Route
+                {
+                    Grade = grades["Green"],
+                    Name = "15",
+                    Section = sections["C"],
+                    ColorOfHolds = colors["Yellow"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
+                },
+                new Route
+                {
+                    Grade = grades["Green"],
+                    Name = "17",
+                    Section = sections["C"],
+                    ColorOfHolds = colors["Red"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 11, 4),
+                },
+                new Route
+                {
+                    Grade = grades["Green"],
+                    Name = "7",
+                    Section = sections["D"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Ukendt",
+                    CreatedDate = new DateTime(2016, 3, 18),
                 },
                 new Route
                 {
                     Grade = grades["Blue"],
-                    Name = "34",
+                    Name = "7",
                     Section = sections["B"],
-                    ColorOfHolds = colors["Blue"],
+                    ColorOfHolds = colors["Black"],
                     Member = members["Anton"],
-                    Author = "Jens Christian",
-                    CreatedDate = new DateTime(2016, 04, 10),
-                    Note = "Børneproblem"
+                    Author = "Mads",
+                    CreatedDate = new DateTime(2016, 10, 11),
+                    Note = "Monkey"
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "37",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Orange"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016,9, 29),
                 },
                 new Route
                 {
@@ -114,9 +180,9 @@ namespace AKK.Models
                     Section = sections["D"],
                     ColorOfHolds = colors["Brown"],
                     Member = members["Anton"],
-                    Author = "Mette og Maiken",
-                    CreatedDate = new DateTime(2016, 04, 10),
-                    Note = "Twist & Shout",
+                    Author = "Mette og Meike",
+                    CreatedDate = new DateTime(2016, 4, 10),
+                    Note = "Twist & Shout!"
                 },
                 new Route
                 {
@@ -125,8 +191,193 @@ namespace AKK.Models
                     Section = sections["A"],
                     ColorOfHolds = colors["Yellow"],
                     Member = members["Anton"],
-                    Author = "Foss",
+                    Author = "Føuss",
                     CreatedDate = new DateTime(2016, 7, 3),
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "3",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Rose"],
+                    Member = members["Anton"],
+                    Author = "Lykke og Meike",
+                    CreatedDate = new DateTime(2016, 10, 11),
+                    Note = "Standing start"
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "24",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["White"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016, 9, 10),
+                },
+                new Route
+                {
+                    Grade = grades["Blue"],
+                    Name = "23",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Jens Christian",
+                    CreatedDate = new DateTime(2016, 7, 1),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "30",
+                    Section = sections["D"],
+                    ColorOfHolds = colors["Black"],
+                    Member = members["Anton"],
+                    Author = "T. Laursen",
+                    CreatedDate = new DateTime(2016, 4, 10),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "5",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Rose"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 7, 26),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "29",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Yellow"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016, 9, 25),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "28",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Hans",
+                    CreatedDate = new DateTime(2016, 7, 27),
+                    Note = "Low sit start"
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "2",
+                    Section = sections["C"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 10, 28),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "20",
+                    Section = sections["C"],
+                    ColorOfHolds = colors["White"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 10, 21),
+                },
+                new Route
+                {
+                    Grade = grades["Red"],
+                    Name = "35",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Rose"],
+                    Member = members["Anton"],
+                    Author = "Søren",
+                    CreatedDate = new DateTime(2016, 10, 30),
+                    Note = "Left edge is not included"
+                },
+                new Route
+                {
+                    Grade = grades["Black"],
+                    Name = "10",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 10, 21),
+                    Note = "Only holds with screws"
+                },
+                new Route
+                {
+                    Grade = grades["Black"],
+                    Name = "4",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Orange"],
+                    Member = members["Anton"],
+                    Author = "Clara",
+                    CreatedDate = new DateTime(2016, 7, 4),
+                },
+                new Route
+                {
+                    Grade = grades["Black"],
+                    Name = "2",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Yellow"],
+                    Member = members["Anton"],
+                    Author = "Mattias",
+                    CreatedDate = new DateTime(2016, 7, 22),
+                },
+                new Route
+                {
+                    Grade = grades["Black"],
+                    Name = "8",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Blue"],
+                    Member = members["Anton"],
+                    Author = "Mattias",
+                    CreatedDate = new DateTime(2016, 10, 8),
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "8",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 7, 3),
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "2",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Green"],
+                    Member = members["Anton"],
+                    Author = "Pawo",
+                    CreatedDate = new DateTime(2016, 7, 3),
+                    ColorOfTape = colors["Yellow"]
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "4",
+                    Section = sections["A"],
+                    ColorOfHolds = colors["Magenta"],
+                    Member = members["Anton"],
+                    Author = "Mattias",
+                    CreatedDate = new DateTime(2016, 7, 25),
+                },
+                new Route
+                {
+                    Grade = grades["White"],
+                    Name = "6",
+                    Section = sections["B"],
+                    ColorOfHolds = colors["Red"],
+                    Member = members["Anton"],
+                    Author = "Føuss",
+                    CreatedDate = new DateTime(2016, 4, 10),
                 },
             };
 
