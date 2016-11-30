@@ -383,7 +383,7 @@ namespace AKK.Controllers
         {
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
-                return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
+                return new ApiErrorResponse<Route>("You need to be logged in to add a rating to this route");
             }
 
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
@@ -427,7 +427,7 @@ namespace AKK.Controllers
             //Checks if user is logged in
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
-                return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
+                return new ApiErrorResponse<Route>("You need to be logged in to delete this rating");
             }
 
             //Finds the member according to the token
@@ -457,13 +457,13 @@ namespace AKK.Controllers
         {
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
-                return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
+                return new ApiErrorResponse<Route>("You need to be logged in to change this rating");
             }
 
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
             var route = _routeRepository.Find(rating.RouteId);
 
-            if (member != route.Member)
+            if (member != rating.Member)
             {
                 return new ApiErrorResponse<Route>("Unauthenticated to change rating");
             }
