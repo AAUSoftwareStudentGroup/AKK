@@ -18,6 +18,7 @@ Handlebars.registerHelper('times', function(n, block) {
     for(var i = 0; i < n; ++i)
         accum += block.fn(i);
     return accum;
+});
 
 Handlebars.registerHelper('if_eq_or', function (a, b, c, opts) {
     if (a == b || c) // Or === depending on your needs
