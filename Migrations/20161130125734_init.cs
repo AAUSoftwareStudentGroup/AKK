@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AKK.Migrations
 {
-    public partial class dbinit : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace AKK.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    Difficulty = table.Column<int>(nullable: false),
+                    Difficulty = table.Column<int>(nullable: true),
                     HexColor = table.Column<uint>(nullable: true),
                     Name = table.Column<string>(nullable: true)
                 },
@@ -48,6 +48,18 @@ namespace AKK.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Sections", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Videos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    FileUrl = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Videos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,9 +106,11 @@ namespace AKK.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    Date = table.Column<DateTime>(nullable: false),
                     MemberId = table.Column<Guid>(nullable: false),
                     Message = table.Column<string>(nullable: true),
-                    RouteId = table.Column<Guid>(nullable: false)
+                    RouteId = table.Column<Guid>(nullable: false),
+                    VideoId = table.Column<Guid>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -113,6 +127,12 @@ namespace AKK.Migrations
                         principalTable: "Routes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Videos_VideoId",
+                        column: x => x.VideoId,
+                        principalTable: "Videos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,32 +183,6 @@ namespace AKK.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Videos",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    FileUrl = table.Column<string>(nullable: true),
-                    MemberId = table.Column<Guid>(nullable: false),
-                    RouteId = table.Column<Guid>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Videos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Videos_Members_MemberId",
-                        column: x => x.MemberId,
-                        principalTable: "Members",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Videos_Routes_RouteId",
-                        column: x => x.RouteId,
-                        principalTable: "Routes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Holds",
                 columns: table => new
                 {
@@ -218,6 +212,11 @@ namespace AKK.Migrations
                 name: "IX_Comments_RouteId",
                 table: "Comments",
                 column: "RouteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_VideoId",
+                table: "Comments",
+                column: "VideoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Holds_ImageId",
@@ -254,16 +253,6 @@ namespace AKK.Migrations
                 name: "IX_Routes_SectionId",
                 table: "Routes",
                 column: "SectionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Videos_MemberId",
-                table: "Videos",
-                column: "MemberId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Videos_RouteId",
-                table: "Videos",
-                column: "RouteId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

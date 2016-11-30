@@ -16,6 +16,17 @@ Handlebars.registerHelper("log", function(something) {
  console.log(something);
 });
 
+Handlebars.registerHelper("formatdate", function(dateString) {
+    var date = new Date(dateString);
+    return date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
+});
+
+Handlebars.registerHelper('breaklines', function(text) {
+    text = Handlebars.Utils.escapeExpression(text);
+    text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+    return new Handlebars.SafeString(text);
+});
+
 var templates = [];
 function setUpContentUpdater(objs, callback) {
     asyncLoop({
