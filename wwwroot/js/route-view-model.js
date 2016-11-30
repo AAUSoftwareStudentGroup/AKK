@@ -33,8 +33,8 @@ function RouteViewModel(client, navigationService) {
     this.HoldPositions = [];
     this.hasImage = false;
     this.image = null;
+    this.imageRotation = 0;
     this.note = null;
-
     this.downloadSections = function(callback) {
         self.client.sections.getAllSections(function (response) {
             if (response.success) {
@@ -67,7 +67,9 @@ function RouteViewModel(client, navigationService) {
                 self.image.src = imageResponse.data.fileUrl;
                 self.HoldPositions = imageResponse.data.holds;
                 self.image.onload = function() {
-                    self.trigger("imageUpdated")
+                    self.imageRotation = 0;
+                    self.trigger("imageUpdated");
+                    self.trigger("imageRotationUpdated");
                 }
             } else {
                 self.trigger("imageUpdated");
@@ -125,6 +127,19 @@ function RouteViewModel(client, navigationService) {
         self.note = note;
     }
     
+    this.rotateImageClockwise = function() {
+        self.imageRotation += 90;
+        self.imageRotation %= 360;
+        self.trigger("imageRotationUpdated");
+    }
+
+    this.rotateImage = function() {
+        resizeImage(self.image, function(rotatedImage) {
+            self.changeImage(rotatedImage);
+            self.HoldPositions = [];
+        });
+    }
+
     this.UpdateCanvas = function(input) {
         readURL(input, function(i) {
             resizeImage(i, function(ni) {

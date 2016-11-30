@@ -67,6 +67,41 @@ function resizeImage(image, callback) {
     }
 }
 
+function rotateImage(input, times, callback) {
+    var ratio = image.width / image.height;
+    var newImageWidth = image.width;
+    var newImageHeight = image.height;
+    if(times % 2 == 0)
+    {
+        ratio = image.height / image.width;
+        newImageWidth = image.height;
+        newImageHeight = image.width;
+    }
+
+    var canvas =  document.createElement('canvas');
+    canvas.width = newImageWidth;
+    canvas.height = newImageHeight;
+    var context = canvas.getContext("2d");
+
+    context.save();
+
+    context.translate(canvas.width / 2, canvas.height / 2);
+
+    context.rotate(times * 90 * (Math.PI * 2) / 360);
+
+    context.drawImage(this.image, -(canvas.width/2), -(canvas.height/2), canvas.width, canvas.height);
+
+    this.context.restore();
+
+    var newImageData = canvas.toDataURL();
+
+    var rotatedImage = new Image();
+    rotatedImage.src = rotatedImageData;
+    rotatedImage.onload = function() {
+        callback(rotatedImage);
+    }
+}
+
 function readURL(input, callback) {
   if (input.files && input.files[0]) {
     var reader = new FileReader();

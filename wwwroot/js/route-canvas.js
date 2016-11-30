@@ -3,7 +3,6 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
     var self = this;
     this.canvas = canvas;
     this.image = image;
-
     this.isDrawing = false;
     this.currentCircle;
 
@@ -13,7 +12,17 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
         self.DrawCanvas();
     });
 
+    this.viewModel.addEventListener("imageRotationUpdated", function() {
+        self.canvas.height = self.viewModel.imageRotation % 180 == 0 ? self.image.height : self.image.width;
+        self.canvas.width = self.viewModel.imageRotation % 180 == 0 ? self.image.width : self.image.height;
+        self.resize();
+        self.DrawCanvas();
+    });
+
+    this.imageCanvasSizeRatio = 1;
+
     this.resize = function(){
+        var oldHeight = self.canvas.height;
         var ratio = this.canvas.width / this.canvas.height;
         var currentWidth = $(this.canvas).width();
         var newHeight = currentWidth / ratio;
@@ -22,6 +31,7 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
         this.context = this.canvas.getContext("2d");
         this.context.strokeStyle = "#FF0000";
         this.context.lineWidth = 4;
+        self.imageCanvasSizeRatio = oldHeight / self.canvas.height;
     }
     this.resize();
 
@@ -34,9 +44,27 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
         $(this.canvas).click(function(e) {
             var c = $(self.canvas);
             var position = c.offset();
-            mmouseX = (e.pageX-position.left) /c.width();
-            mmouseY = (e.pageY-position.top) / c.height();
-
+            var angle = self.viewModel.imageRotation;
+            mmouseX = (e.pageX-position.left - c.width() / 2) / c.width();
+            mmouseY = (e.pageY-position.top - c.height() / 2) / c.height();
+            if(angle == 90)
+            {
+                var oldX = mmouseX;
+                mmouseX = -mmouseY;
+                mmouseY = oldX;
+            }
+            else if(angle == 180)
+            {
+                mmouseX = -mmouseX;
+                mmouseY = -mmouseY;
+            }
+            else if(angle == 270)
+            {
+                var oldX = mmouseX;
+                mmouseX = mmouseY;
+                mmouseY = -oldX;
+            }
+                
             if (self.latestClick) {
                 var dist = Math.sqrt(Math.pow(self.latestClick.x * c.width()  - mmouseX * c.width(),  2) + 
                                      Math.pow(self.latestClick.y * c.height() - mmouseY * c.height(), 2));
@@ -55,13 +83,28 @@ function RouteCanvas(canvas, image, viewModel, editable = false) {
 
 RouteCanvas.prototype.DrawCanvas = function() {
     var c = $(this.canvas);
+
+console.log(self.viewModel);
+
+    var drawWidth = self.image.width / this.imageCanvasSizeRatio;
+    var drawHeight = self.image.height / this.imageCanvasSizeRatio;
+
     this.context.clearRect(0,0, c.width(), c.height());
-    this.context.drawImage(this.image, 0, 0, c.width(), c.height());
+
+    this.context.save();
+
+    this.context.translate(c.width() / 2, c.height() / 2);
+
+    this.context.rotate(-self.viewModel.imageRotation * (Math.PI * 2) / 360);
+
+    this.context.drawImage(this.image, -(drawWidth/2), -(drawHeight/2), drawWidth, drawHeight);
 
     for (var i = 0; i < this.viewModel.HoldPositions.length; i++) {
         var circle = this.viewModel.HoldPositions[i];
-        this.DrawCircle(circle.x * c.width(), circle.y * c.height(), circle.radius * c.width())
+        this.DrawCircle(circle.x * drawWidth, circle.y * drawHeight, circle.radius * Math.min(drawWidth, drawHeight));
     }
+
+    this.context.restore();
 }
 
 RouteCanvas.prototype.DrawCircle = function(x, y, r) {
@@ -77,4 +120,8 @@ RouteCanvas.prototype.undo = function() {
     }
     this.latestClick = null;
     this.DrawCanvas();
+}
+
+RouteCanvas.prototype.rotate = function() {
+    this.viewModel.rotateImageClockwise();
 }
