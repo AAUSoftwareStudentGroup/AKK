@@ -145,9 +145,9 @@ namespace AKK.Models
                 new Route
                 {
                     Grade = grades["Green"],
-                    Name = "7",
+                    Name = "8",
                     Section = sections["D"],
-                    ColorOfHolds = colors["Blue"],
+                    ColorOfHolds = colors["Green"],
                     Member = members["Anton"],
                     Author = "Ukendt",
                     CreatedDate = new DateTime(2016, 3, 18),
