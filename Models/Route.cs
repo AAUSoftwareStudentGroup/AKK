@@ -18,6 +18,7 @@ namespace AKK.Models
         {
             CreatedDate = DateTime.Now.Date;
             Comments = new List<Comment>();
+            Ratings = new List<Rating>();
         }
 
         public override bool Equals (object obj)
