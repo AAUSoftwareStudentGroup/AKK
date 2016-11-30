@@ -10,17 +10,13 @@ function LogInViewModel(client, navigationService, cookieService) {
     
     this.init = function () {
         var getTarget = navigationService.getParameters()["target"];
-        self.target = (getTarget == null ? self.target : getTarget);
+        self.target = (getTarget == undefined ? self.target : getTarget);
         self.trigger('loginChanged')
     };
     
     this.logIn = function () {
-        self.client.members.logIn
         self.client.members.logIn(self.username, self.password, function(response) {
             if (response.success) {
-                if(response.data) {
-                    self.cookieService.setToken(response.data);
-                }
                 navigationService.to(self.target);
             } else {
                 $("#error-message").html(response.message).show();
@@ -29,7 +25,7 @@ function LogInViewModel(client, navigationService, cookieService) {
     };
 
     this.register = function () {
-        self.navigationService.toRegister(self.target, self.username);
+        self.navigationService.toRegister(self.target);
     };
 
     this.changeUsername = function (username) {

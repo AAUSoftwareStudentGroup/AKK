@@ -25,6 +25,10 @@ namespace AKK.Controllers
         [HttpGet("login")]
         public ApiResponse<string> Login(string username, string password)
         {
+            if (string.IsNullOrEmpty(username))
+            {
+                return new ApiErrorResponse<string>("Login failed - Invalid username or password");
+            }
             string token = _authenticator.Login(username.ToLower(), password);
 
             if (string.IsNullOrEmpty(token))

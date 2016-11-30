@@ -4,23 +4,22 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.dialogService = dialogService;
     this.init = function () {
         self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
-                if (routeResponse.success) {
+            if (routeResponse.success) {
                     self.route = routeResponse.data;
-                    console.log(self.route);
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
-
                     self.client.routes.getImage(self.route.id, function(imageResponse) {
                         if (imageResponse.success) {
-                            console.log(imageResponse);
                             self.hasImage = true;
                             self.route.image = new Image();
                             self.route.image.src = imageResponse.data.fileUrl;
                             self.HoldPositions = imageResponse.data.holds;
                             self.route.image.onload = function() {
                                 self.trigger("cardUpdated");
+                                self.trigger("betasUpdated");
                             }
                         } else {
                             self.trigger("cardUpdated");
+                            self.trigger("betasUpdated");
                         }
                     });
                 }
@@ -47,7 +46,6 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     };
     this.deleteRoute = function () {
         if (self.route != null && self.dialogService.confirm("Do you really want to delete this route?")) {
-            console.log(self);
             self.client.routes.deleteRoute(self.route.id, function (response) {
                 if (response.success) {
                     navigationService.toRoutes();
@@ -55,6 +53,12 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             });
         }
     };
+    this.addBeta = function(form) {
+        var fd = new FormData(form);
+        this.client.routes.addBeta(fd, self.route.id, function(response) {
+            self.init();
+        });
+    }
 }
 
 RouteInfoViewModel.prototype = new EventNotifier();

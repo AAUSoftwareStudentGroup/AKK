@@ -10,8 +10,7 @@ function RegisterViewModel(client, navigationService, cookieService) {
     
     this.init = function () {
         var parameters = navigationService.getParameters();
-        self.target = (parameters["target"] == null ? self.target : "");
-        self.username = (parameters["username"] == null ? self.username : "");
+        self.target = (parameters["target"] == undefined ? self.target : parameters["target"]);
         self.trigger("registerChanged");
     };
 
@@ -33,7 +32,6 @@ function RegisterViewModel(client, navigationService, cookieService) {
 
     this.register = function () {
         if(self.password != self.passwordConfirm) {
-            console.log("invalid password match")
             $("#error-message").html("The passwords you entered are not the same!").show();
             return;
         }
