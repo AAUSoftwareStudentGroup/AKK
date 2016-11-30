@@ -358,6 +358,16 @@ input[type="checkbox"] {
     width: 100%;
 }
 
+.route-image > .image-overlay {
+    visibility: hidden;
+}
+
+.route-image.small > .image-overlay {
+    visibility: visible;
+}
+
+
+
 .image-overlay {
     height: 50px;
     width: 50px;
