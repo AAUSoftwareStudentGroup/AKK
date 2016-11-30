@@ -19,7 +19,7 @@ function RouteClient(url, cookieService)
     };
 
     this.searchRoutes = function(searchstring, success) {
-        $.ajax({
+       return $.ajax({
             type: "GET",
             dataType: "json",
             url: url,
@@ -67,6 +67,21 @@ function RouteClient(url, cookieService)
             cache: false,
             contentType: false,
             processData: false
+        });
+    }
+
+    this.removeComment = function(id, routeId, success) {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url + "/comment/remove",
+            data:
+            {
+                token: self.cookieService.getToken(),
+                id: id,
+                routeId: routeId,
+            },
+            success: success
         });
     }
 

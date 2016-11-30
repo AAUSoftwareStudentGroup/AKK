@@ -12,6 +12,13 @@ Handlebars.registerHelper('if_eq', function (a, b, opts) {
         return opts.inverse(this);
 });
 
+Handlebars.registerHelper('if_eq_or', function (a, b, c, opts) {
+    if (a == b || c) // Or === depending on your needs
+        return opts.fn(this);
+    else
+        return opts.inverse(this);
+});
+
 Handlebars.registerHelper("log", function(something) {
  console.log(something);
 });
