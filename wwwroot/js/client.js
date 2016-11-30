@@ -55,6 +55,20 @@ function RouteClient(url, cookieService)
         });
     }
 
+    this.addBeta = function(formdata, routeId, success) {
+        formData.append('token', self.cookieService.getToken());
+        formData.append('id', routeId);
+        $.ajax({
+            url: url + "/beta", 
+            type: 'POST',
+            success: success,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+
     this.addRoute = function(sectionId, name, author, holdColor, gradeId, tape,note,image, success)
     {
         $.ajax({
