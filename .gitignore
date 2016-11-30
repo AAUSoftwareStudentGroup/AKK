@@ -260,3 +260,4 @@ web.config
 Properties/
 /AKK.sln
 wwwroot/files/*
+files/*

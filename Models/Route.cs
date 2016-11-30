@@ -71,7 +71,11 @@ namespace AKK.Models
 
         public bool PendingDeletion { get; set; }
 
+        [JsonIgnore]
         public Image Image { get; set; }
+
+        [NotMapped]
+        public bool HasImage => Image != null;
 
         public List<Video> Videos { get; set; }    
 

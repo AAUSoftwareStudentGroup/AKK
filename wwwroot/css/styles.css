@@ -381,9 +381,15 @@ input[type="checkbox"] {
 }
 
 .route-card-top {
-    height: 50px;
+    height: 66px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
+
+.route-icons {
+    float:right;
+    clear:right;
+}
+
 
 .route-grade-number {
     width: 42px;
