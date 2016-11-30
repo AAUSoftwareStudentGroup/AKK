@@ -4,6 +4,7 @@ function NewRouteViewModel(client, navigationService) {
     this.init = function() {
         this.downloadSections();
         this.downloadGrades();
+        this.downloadHolds();
         this.trigger("numberUpdated");
         this.client.members.getMemberInfo(function(response) {
             if (response.success) {

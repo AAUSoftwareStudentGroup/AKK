@@ -16,6 +16,11 @@ function EditRouteViewModel(client, navigationService) {
                     self.trigger("gradesUpdated");
                 });
 
+                self.downloadHolds(function() {
+                    self.changeHold(response.data.color);
+                    self.trigger("holdsUpdated");
+                });
+                
                 self.changeNumber(response.data.name);
                 self.trigger("numberUpdated");
 
