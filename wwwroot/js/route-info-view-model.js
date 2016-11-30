@@ -15,11 +15,11 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                             self.HoldPositions = imageResponse.data.holds;
                             self.route.image.onload = function() {
                                 self.trigger("cardUpdated");
-                                self.trigger("betasUpdated");
+                                self.trigger("commentsUpdated");
                             }
                         } else {
                             self.trigger("cardUpdated");
-                            self.trigger("betasUpdated");
+                            self.trigger("commentsUpdated");
                         }
                     });
                 }
@@ -53,11 +53,15 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             });
         }
     };
-    this.addBeta = function(form) {
+    this.addComment = function(form) {
         var fd = new FormData(form);
-        this.client.routes.addBeta(fd, self.route.id, function(response) {
+        this.client.routes.addComment(fd, self.route.id, function(response) {
             self.init();
         });
+    }
+
+    this.imageAdded = function() {
+        this.trigger("imageUpdated");
     }
 }
 

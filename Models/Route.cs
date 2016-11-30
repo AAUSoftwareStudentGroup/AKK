@@ -18,7 +18,6 @@ namespace AKK.Models
         {
             CreatedDate = DateTime.Now.Date;
             Comments = new List<Comment>();
-            Videos = new List<Video>();
             Ratings = new List<Rating>();
         }
 
@@ -76,11 +75,12 @@ namespace AKK.Models
         public Image Image { get; set; }
 
         [NotMapped]
-        public bool HasImage => Image != null;
-
-        public List<Video> Videos { get; set; }    
+        public bool HasImage => Image != null; 
 
         public List<Comment> Comments { get; set; }
+
+        [NotMapped]
+        public bool HasBeta => Comments.Any(c => c.Video != null);
 
         public List<Rating> Ratings { get; set; }
 
