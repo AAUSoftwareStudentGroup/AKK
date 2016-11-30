@@ -70,6 +70,21 @@ function RouteClient(url, cookieService)
         });
     }
 
+    this.removeComment = function(id, routeId, success) {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url + "/comment/remove",
+            data:
+            {
+                token: self.cookieService.getToken(),
+                id: id,
+                routeId: routeId,
+            },
+            success: success
+        });
+    }
+
     this.addRoute = function(sectionId, name, author, holdColor, gradeId, tape,note,image, success)
     {
         $.ajax({
