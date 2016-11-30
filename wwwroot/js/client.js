@@ -55,12 +55,12 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addBeta = function(formdata, routeId, success) {
+    this.addComment = function(formdata, routeId, success) {
         formdata.append('token', self.cookieService.getToken());
         formdata.append('id', routeId);
 
         $.ajax({
-            url: url + "/beta", 
+            url: url + "/comment", 
             type: 'POST',
             success: success,
             data: formdata,

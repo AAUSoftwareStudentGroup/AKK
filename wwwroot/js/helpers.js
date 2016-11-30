@@ -16,6 +16,17 @@ Handlebars.registerHelper("log", function(something) {
  console.log(something);
 });
 
+Handlebars.registerHelper("formatdate", function(dateString) {
+    var date = new Date(dateString);
+    return date.getDay() + "/" + date.getMonth() + "/" + date.getFullYear();
+});
+
+Handlebars.registerHelper('breaklines', function(text) {
+    text = Handlebars.Utils.escapeExpression(text);
+    text = text.replace(/(\r\n|\n|\r)/gm, '<br>');
+    return new Handlebars.SafeString(text);
+});
+
 var templates = [];
 function setUpContentUpdater(objs, callback) {
     asyncLoop({
@@ -64,6 +75,45 @@ function resizeImage(image, callback) {
     newImage.src = newImageData;
     newImage.onload = function() {
         callback(newImage);
+    }
+}
+
+function rotateImage(image, times, callback) {
+    var ratio = image.width / image.height;
+    var newImageWidth = image.width;
+    var newImageHeight = image.height;
+
+    if(times % 2 == 1)
+    {
+        ratio = image.height / image.width;
+        newImageWidth = image.height;
+        newImageHeight = image.width;
+    }
+
+    console.log(newImageHeight);
+    console.log(newImageWidth);
+
+    var canvas =  document.createElement('canvas');
+    canvas.width = newImageWidth;
+    canvas.height = newImageHeight;
+    var context = canvas.getContext("2d");
+
+    context.save();
+
+    context.translate(canvas.width / 2, canvas.height / 2);
+
+    context.rotate(times * 90 * (Math.PI * 2) / 360);
+
+    context.drawImage(image, -(image.width/2), -(image.height/2), image.width, image.height);
+
+    context.restore();
+
+    var rotatedImageData = canvas.toDataURL();
+
+    var rotatedImage = new Image();
+    rotatedImage.src = rotatedImageData;
+    rotatedImage.onload = function() {
+        callback(rotatedImage);
     }
 }
 
