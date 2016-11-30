@@ -72,6 +72,26 @@ namespace AKK.Services
             }
         }
 
+        public void ChangeRole(Guid id, Role role)
+        {
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Id == id);
+
+            if (member == default(Member))
+            {
+                return;
+            }
+
+            switch (role)
+            {
+                case Role.Admin:
+                    member.IsAdmin = true;
+                    break;
+                case Role.Authenticated:
+                    member.IsAdmin = false;
+                    break;
+            }
+        }
+
         public IEnumerable<Role> GetRoles(string token)
         {
             foreach (Role role in Enum.GetValues(typeof(Role)))

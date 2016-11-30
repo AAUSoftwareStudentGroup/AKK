@@ -82,7 +82,7 @@ function RouteViewModel(client, navigationService) {
     this.toggleTape = function() {
         self.hasTape = !self.hasTape;
         if (!self.hasTape) {
-            self.selectedTapeColor = null;
+            self.selectedTape = null;
         }
         self.trigger("holdsUpdated");
     }
