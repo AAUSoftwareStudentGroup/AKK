@@ -279,7 +279,6 @@ namespace AKK.Controllers
             }
             
             route.Comments.Add(comment);
-            System.Console.WriteLine(route.Comments.Count);
             _routeRepository.Save();
             
             return new ApiSuccessResponse<string>("success");
