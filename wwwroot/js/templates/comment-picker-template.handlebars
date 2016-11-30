@@ -1,6 +1,13 @@
 <div class="content comment-section">
     {{#each route.comments}}
     <div class="route-card">
+    {{#if_eq_or ../member.id member.id ../member.isAdmin}}
+    <span class="comment-remove right">
+        <svg onclick="viewModel.removeComment('{{id}}','{{routeId}}');" style="width:18px;height:18px" viewBox="0 0 24 24">
+            <path fill="#ccc" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+        </svg>
+    </span>
+    {{/if_eq_or}}
     <span class="comment-author">{{{member.displayName}}} on {{formatdate date}}:</span>
         {{#if_eq video null}}
         {{else}}

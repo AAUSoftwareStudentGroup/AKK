@@ -28,9 +28,11 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         self.client.members.getMemberInfo(function(response) {
             if(response.success) {
                 self.isAuthed = true;
+                self.member = response.data;
             }
         });
     };
+    this.member = null;
     this.image = null;
     this.hasImage = false;
     this.HoldPositions = [];
@@ -62,6 +64,22 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
 
     this.imageAdded = function() {
         this.trigger("imageUpdated");
+    }
+
+    this.removeComment = function (id, routeId) {
+        if (!self.dialogService.confirm("Are you sure that you want to remove the comment?")) return;
+        this.client.routes.removeComment(id, routeId, function(response) {
+            if (response.success) {
+                self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
+                    if (routeResponse.success) {
+                        self.route.comments = routeResponse.data.comments;
+                        self.trigger("commentsUpdated");
+                    }
+                });
+            } else {
+                self.trigger("Error", response.message);
+            }
+        });
     }
 }
 
