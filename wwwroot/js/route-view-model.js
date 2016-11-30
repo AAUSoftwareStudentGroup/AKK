@@ -10,7 +10,7 @@ function RouteViewModel(client, navigationService) {
     this.selectedGrade = null;
     this.number = null;
     this.author = null;
-    this.colors = [/*
+    this.colors = [
         { value: 0, name: "Cyan", color: "00c8c8", r: 0, g: 200, b: 200, a: 1 },
         { value: 1, name: "Azure", color: "017EFF", r: 1, g: 127, b: 255, a: 1 },
         { value: 2, name: "Blue", color: "3C3Cff", r: 60, g: 60, b: 255, a: 1 },
@@ -25,7 +25,7 @@ function RouteViewModel(client, navigationService) {
         { value: 11, name: "Black", color: "000000", r: 0, g: 0, b: 0, a: 1},
         { value: 12, name: "Brown", color: "7E360F", r: 127, g: 54, b: 15, a: 1},
         { value: 13, name: "Grey", color: "5c5959", r: 92, g: 89, b: 89, a: 1},
-        { value: 14, name: "White", color: "CDCDCD", r: 205, g: 205, b: 205, a: 1},*/
+        { value: 14, name: "White", color: "CDCDCD", r: 205, g: 205, b: 205, a: 1},
         ];
     this.selectedHold = null;
     this.selectedTape = null;
@@ -58,7 +58,7 @@ function RouteViewModel(client, navigationService) {
             if (callback) callback();
         });
     }
-
+/*
     this.downloadHolds = function(callback) {
         self.client.holds.getAllHolds(function (response) {
             if (response.success) {
@@ -69,7 +69,7 @@ function RouteViewModel(client, navigationService) {
             }
             if (callback) callback();
         });
-    }
+    }*/
 
     this.downloadImage = function(callback) {
         self.client.routes.getImage(self.routeId, function(imageResponse) {

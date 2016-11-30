@@ -1,4 +1,4 @@
-﻿var viewModel;
+var viewModel;
 var headerViewModel;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
@@ -13,16 +13,10 @@ $(document).ready(function () {
             viewmodel: headerViewModel
         },
         {
-            scriptSource: "js/templates/section-admin-template.handlebars", 
-            elementId: "section-admin", 
-            event: "sectionsChanged",
-            viewmodel: viewModel
-        },
-        {
-            scriptSource: "js/templates/route-list-template.handlebars", 
-            elementId: "routes-content", 
-            event: "routesChanged",
-            viewmodel: viewModel
+            scriptSource: "js/templates/hold-admin-template.handlebars",
+            elementId: "hold-content",
+            event: "holdChanged",
+            viewModel: viewModel
         }
     ];
 
@@ -30,4 +24,3 @@ $(document).ready(function () {
         viewModel.init();
         headerViewModel.init();
     });
-});
