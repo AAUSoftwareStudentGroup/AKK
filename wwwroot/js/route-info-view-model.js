@@ -4,10 +4,9 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.dialogService = dialogService;
     this.init = function () {
         self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
-                if (routeResponse.success) {
+            if (routeResponse.success) {
                     self.route = routeResponse.data;
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
-
                     self.client.routes.getImage(self.route.id, function(imageResponse) {
                         if (imageResponse.success) {
                             self.hasImage = true;
@@ -47,7 +46,6 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     };
     this.deleteRoute = function () {
         if (self.route != null && self.dialogService.confirm("Do you really want to delete this route?")) {
-            console.log(self);
             self.client.routes.deleteRoute(self.route.id, function (response) {
                 if (response.success) {
                     navigationService.toRoutes();

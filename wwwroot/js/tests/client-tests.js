@@ -15,7 +15,7 @@ QUnit.test("Client tests", function( assert ) {
         gradeClient.getAllGrades(function(gradesResponse) {
           assert.equal(gradesResponse.success, true, "getAllGrades success = " + true);
           var gradeId = gradesResponse.data[0].id;
-          var name = "T";
+          var name = "33";
           var author = "Morten";
           var holdColor = { r: 200, g: 200, b: 200, a: 99 };
           var tape = { r: 200, g: 200, b: 200, a: 55 };
@@ -23,8 +23,8 @@ QUnit.test("Client tests", function( assert ) {
           var note = "Test note";
           var onRouteAdded = function(route) {
             //Update route
-            routeId = route.id;
-            name = "T  test route";
+            var routeId = route.id;
+            name = "2";
             author = "Morten ";
             holdColor = { r: 201, g: 150, b: 99, a: 20 };
             tape = { r: 77, g: 66, b: 55, a: 30 };
@@ -79,8 +79,8 @@ QUnit.test("Client tests", function( assert ) {
                 onRouteAdded(routeAddedResponse.data);
               });
             }
-            else
-            {
+            else {
+                console.log("hej");
               onRouteAdded(testRoutes[0]);
             }
           });
