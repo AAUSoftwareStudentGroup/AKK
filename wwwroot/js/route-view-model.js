@@ -67,9 +67,7 @@ function RouteViewModel(client, navigationService) {
                 self.image.src = imageResponse.data.fileUrl;
                 self.HoldPositions = imageResponse.data.holds;
                 self.image.onload = function() {
-                    self.imageRotation = 0;
-                    self.trigger("imageUpdated");
-                    self.trigger("imageRotationUpdated");
+                    self.trigger("imageUpdated")
                 }
             } else {
                 self.trigger("imageUpdated");
@@ -128,23 +126,17 @@ function RouteViewModel(client, navigationService) {
     }
     
     this.rotateImageClockwise = function() {
-        self.imageRotation += 90;
-        self.imageRotation %= 360;
-        self.trigger("imageRotationUpdated");
-    }
-
-    this.rotateImage = function() {
-        resizeImage(self.image, function(rotatedImage) {
+        rotateImage(self.image, 1, function (rotatedImage) {
             self.changeImage(rotatedImage);
             self.HoldPositions = [];
-        });
+        })
     }
 
     this.UpdateCanvas = function(input) {
-        readURL(input, function(i) {
-            resizeImage(i, function(ni) {
-                viewModel.changeImage(ni);
-                viewModel.HoldPositions = [];
+        readURL(input, function(image) {
+            resizeImage(image, function(resizedImage) {
+                self.changeImage(resizedImage);
+                self.HoldPositions = [];
             });
         });
     }

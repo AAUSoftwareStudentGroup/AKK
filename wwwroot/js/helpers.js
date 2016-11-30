@@ -67,16 +67,20 @@ function resizeImage(image, callback) {
     }
 }
 
-function rotateImage(input, times, callback) {
+function rotateImage(image, times, callback) {
     var ratio = image.width / image.height;
     var newImageWidth = image.width;
     var newImageHeight = image.height;
-    if(times % 2 == 0)
+
+    if(times % 2 == 1)
     {
         ratio = image.height / image.width;
         newImageWidth = image.height;
         newImageHeight = image.width;
     }
+
+    console.log(newImageHeight);
+    console.log(newImageWidth);
 
     var canvas =  document.createElement('canvas');
     canvas.width = newImageWidth;
@@ -89,11 +93,11 @@ function rotateImage(input, times, callback) {
 
     context.rotate(times * 90 * (Math.PI * 2) / 360);
 
-    context.drawImage(this.image, -(canvas.width/2), -(canvas.height/2), canvas.width, canvas.height);
+    context.drawImage(image, -(image.width/2), -(image.height/2), image.width, image.height);
 
-    this.context.restore();
+    context.restore();
 
-    var newImageData = canvas.toDataURL();
+    var rotatedImageData = canvas.toDataURL();
 
     var rotatedImage = new Image();
     rotatedImage.src = rotatedImageData;
