@@ -205,21 +205,46 @@ input[type="checkbox"] {
     z-index: 1;
 }
 
-.nav-menu-toggle .burger {
+.nav-menu-toggle .transitioning-icon span,
+.nav-menu-toggle .transitioning-icon {
+    transition: 0.5s cubic-bezier(0.92, -0.45, 0.17, 1.46);
+}
+
+.nav-menu-toggle .transitioning-icon span {
+    background-color: #fff;
     display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 50%;
+}
+.nav-menu-toggle .transitioning-icon span {
+    height: 2px;
+    transform: translateY(0%);
 }
 
-    .nav-menu-toggle.open .burger {
-        display: none;
-    }
-
-.nav-menu-toggle .cross {
-    display: none;
+.nav-menu-toggle .transitioning-icon .second {
+    transform: translateY(-300%);
 }
 
-    .nav-menu-toggle.open .cross {
-        display: block;
-    }
+.nav-menu-toggle .transitioning-icon .third{
+    transform: translateY(300%);
+}
+
+.nav-menu-toggle.open .transitioning-icon .first {
+    transform: rotate(315deg);
+}
+
+.nav-menu-toggle.open .transitioning-icon .second {
+    transform: rotate(225deg);
+}
+
+.nav-menu-toggle.open .transitioning-icon .third {
+    transform: rotate(-135deg);
+}
 
 .nav-menu {
     left: 0;
@@ -381,9 +406,15 @@ input[type="checkbox"] {
 }
 
 .route-card-top {
-    height: 50px;
+    height: 66px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
+
+.route-icons {
+    float:right;
+    clear:right;
+}
+
 
 .route-grade-number {
     width: 42px;

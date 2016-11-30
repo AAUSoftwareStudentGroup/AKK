@@ -19,6 +19,7 @@ namespace AKK.Models
             CreatedDate = DateTime.Now.Date;
             Comments = new List<Comment>();
             Videos = new List<Video>();
+            Ratings = new List<Rating>();
         }
 
         public override bool Equals (object obj)
@@ -71,7 +72,11 @@ namespace AKK.Models
 
         public bool PendingDeletion { get; set; }
 
+        [JsonIgnore]
         public Image Image { get; set; }
+
+        [NotMapped]
+        public bool HasImage => Image != null;
 
         public List<Video> Videos { get; set; }    
 
