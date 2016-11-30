@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 
 namespace AKK.Services
 {
@@ -9,6 +10,9 @@ namespace AKK.Services
         void Logout(string token);
 
         bool HasRole(string token, Role role);
+
+        void ChangeRole(Guid id, Role role);
+
         IEnumerable<Role> GetRoles(string token);
     }
 }
