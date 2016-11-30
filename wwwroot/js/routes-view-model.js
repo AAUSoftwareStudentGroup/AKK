@@ -52,8 +52,12 @@ function RoutesViewModel(client) {
         }
         self.trigger("SearchMethodChanged");
     }
+    this.currentAjaxRequest = null;
     this.search = function (searchstring) {
-        this.client.routes.searchRoutes(searchstring, function (response) {
+        if (this.currentAjaxRequest != null) {
+            this.currentAjaxRequest.abort();
+        }
+        this.currentAjaxRequest = this.client.routes.searchRoutes(searchstring, function (response) {
             if (response.success) {
                 self.routes = response.data;
                 for (var i = 0; i < self.routes.length; i++) {
