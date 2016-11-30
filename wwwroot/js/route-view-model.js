@@ -33,8 +33,8 @@ function RouteViewModel(client, navigationService) {
     this.HoldPositions = [];
     this.hasImage = false;
     this.image = null;
+    this.imageRotation = 0;
     this.note = null;
-
     this.downloadSections = function(callback) {
         self.client.sections.getAllSections(function (response) {
             if (response.success) {
@@ -82,7 +82,7 @@ function RouteViewModel(client, navigationService) {
     this.toggleTape = function() {
         self.hasTape = !self.hasTape;
         if (!self.hasTape) {
-            self.selectedTapeColor = null;
+            self.selectedTape = null;
         }
         self.trigger("holdsUpdated");
     }
@@ -125,11 +125,18 @@ function RouteViewModel(client, navigationService) {
         self.note = note;
     }
     
+    this.rotateImageClockwise = function() {
+        rotateImage(self.image, 1, function (rotatedImage) {
+            self.changeImage(rotatedImage);
+            self.HoldPositions = [];
+        })
+    }
+
     this.UpdateCanvas = function(input) {
-        readURL(input, function(i) {
-            resizeImage(i, function(ni) {
-                viewModel.changeImage(ni);
-                viewModel.HoldPositions = [];
+        readURL(input, function(image) {
+            resizeImage(image, function(resizedImage) {
+                self.changeImage(resizedImage);
+                self.HoldPositions = [];
             });
         });
     }

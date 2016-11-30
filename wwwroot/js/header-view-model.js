@@ -19,7 +19,6 @@ function HeaderViewModel(title, client, returnPath) {
 
     this.getRoles = function () {
         client.members.getMemberInfo(function(response) {
-            console.log(response);
             if (response.success) {
                 self.isAdmin = response.data.isAdmin;
                 self.isAuthenticated = true;

@@ -66,33 +66,37 @@ namespace AKK.Controllers
             return new ApiSuccessResponse<Grade>(grade);
         }
 
-        // PATCH: /api/grade/{id}
-        [HttpPatch("{id}")]
-        public ApiResponse<Grade> UpdateGrade(string token, Guid id, int? difficulty, Color color) 
+        // PATCH: /api/grade/{gradeId}
+        [HttpPatch("{gradeId}")]
+        public ApiResponse<Grade> UpdateGrade(string token, Guid gradeId, Grade grade) 
         {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to change this grade");
             }
-            var oldGrade = _gradeRepository.Find(id);
+            Grade oldGrade = _gradeRepository.Find(gradeId);
             if (oldGrade == null)
             {
-                return new ApiErrorResponse<Grade>($"No grade exists with id {id}");
+                return new ApiErrorResponse<Grade>($"No grade exists with id {gradeId}");
+            }
+            if (grade == null)
+            {
+                return new ApiSuccessResponse<Grade>(oldGrade);
             }
 
-            if(difficulty != null) 
+            oldGrade.Name = grade.Name ?? oldGrade.Name;
+            oldGrade.Difficulty = grade.Difficulty ?? oldGrade.Difficulty;
+            oldGrade.Color = grade.Color ?? oldGrade.Color;
+
+
+            if (_gradeRepository.GetAll().Any(g => g.Id != oldGrade.Id && g.Difficulty == oldGrade.Difficulty ))
             {
-                if (_gradeRepository.GetAll().Count(g => g.Difficulty == difficulty) > 0)
-                {
-                    return new ApiErrorResponse<Grade>("A grade with this difficulty already exist");
-                }
-                    
-                oldGrade.Difficulty = (int)difficulty; 
+                return new ApiErrorResponse<Grade>("A grade with this difficulty already exists");
             }
 
-            if (color != null)
+            if (_gradeRepository.GetAll().Any(g => g.Id != oldGrade.Id && g.Name == oldGrade.Name ))
             {
-                oldGrade.Color = color;
+                return new ApiErrorResponse<Grade>("A grade with this name already exists");
             }
                 
             try

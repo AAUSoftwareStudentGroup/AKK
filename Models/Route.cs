@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace AKK.Models
 {
@@ -14,6 +17,8 @@ namespace AKK.Models
         public Route()
         {
             CreatedDate = DateTime.Now.Date;
+            Comments = new List<Comment>();
+            Ratings = new List<Rating>();
         }
 
         public override bool Equals (object obj)
@@ -66,7 +71,34 @@ namespace AKK.Models
 
         public bool PendingDeletion { get; set; }
 
+        [JsonIgnore]
         public Image Image { get; set; }
+
+        [NotMapped]
+        public bool HasImage => Image != null; 
+
+        public List<Comment> Comments { get; set; }
+
+        [NotMapped]
+        public bool HasBeta => Comments.Any(c => c.Video != null);
+
+        public List<Rating> Ratings { get; set; }
+
+        [NotMapped]
+        public float? AverageRating
+        {
+            get
+            {
+                //Checks if empty
+                if (Ratings == null || !Ratings.Any())
+                {
+                    return null;
+                }
+
+                //If not empty, return average of ratings. Typecasts to float to avoid integer division
+                return (float)Ratings.Sum(x => x.RatingValue) / Ratings.Count();
+            }
+        }
 
         [JsonIgnore]
         public uint? HexColorOfHolds { get; set; }

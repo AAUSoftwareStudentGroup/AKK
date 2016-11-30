@@ -7,6 +7,9 @@ using AKK.Controllers.ApiResponses;
 using AKK.Models;
 using AKK.Models.Repositories;
 using AKK.Services;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace AKK.Controllers
 {
@@ -66,6 +69,12 @@ namespace AKK.Controllers
                     break;
             }
 
+            //If searchStr is empty
+            if (string.IsNullOrEmpty(searchStr))
+            {
+                return new ApiSuccessResponse<IEnumerable<Route>>(routes);
+            }
+
             if (!string.IsNullOrEmpty(searchStr))
             {
                 //Initialize a RouteSearcher
@@ -103,6 +112,12 @@ namespace AKK.Controllers
             if (route.Name == null)
             {
                 return new ApiErrorResponse<Route>("A route number must be specified");
+            }
+
+            int temp;
+            if (!int.TryParse(route.Name, out temp) || temp<1)
+            {
+                return new ApiErrorResponse<Route>("Route number must be a positive integer");
             }
 
             if (route.Author == null)
@@ -223,6 +238,80 @@ namespace AKK.Controllers
             return new ApiSuccessResponse<Image>(image);
         }
 
+        //POST /api/route/beta
+        [HttpPost("comment")]
+        public async Task<ApiResponse<string>> AddComment(string token, IFormFile file, Guid id, string text) {
+            if (text == null && file == null) {
+                return new ApiErrorResponse<string>("You cannot add an empty comment");
+            }
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to add a comment");
+            }
+            var route = _routeRepository.Find(id);
+            if (route == null)
+            {
+                return new ApiErrorResponse<string>($"No route exists with id {id}");
+            }
+
+            var member = _memberRepository.GetAll()
+                                          .FirstOrDefault(m => m.Token == token);
+            var comment = new Comment {Member = member, Message = text ?? ""};
+            if (file != null) {
+                try {
+                    var fileExtension = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"')
+                        .Split('.')
+                        .Last();
+                    var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
+                    var path = "files/" + fileName;
+                    var savePath = "wwwroot/" + path;
+                        using (var fileStream = System.IO.File.Create(savePath)) {
+                                await file.CopyToAsync(fileStream);
+                        }
+                    var video = new Video {FileUrl = path};
+                    comment.Video = video;
+                } catch (System.OperationCanceledException) {
+                    //ASP.NET bug causes this exception to be thrown, even though it is not an error
+                }
+            }
+            
+            route.Comments.Add(comment);
+            System.Console.WriteLine(route.Comments.Count);
+            _routeRepository.Save();
+            
+            return new ApiSuccessResponse<string>("success");
+        }
+
+        [HttpPost("comment/remove")]
+        public ApiResponse<string> RemoveComment(string token, Guid id, Guid routeId) {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            }
+
+            bool isAdmin = _authenticationService.HasRole(token, Role.Admin);
+            
+            var user = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+
+            if (user == null)
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            
+            var route = _routeRepository.Find(routeId);
+            if (route == null) 
+                return new ApiErrorResponse<string>("Invalid route");
+
+            if (!route.Comments.Any(c => c.Id == id))   
+                return new ApiErrorResponse<string>("Invalid comment");
+
+            route.Comments.RemoveAll(c => c.Id == id);
+            _routeRepository.Save();                  
+            
+            return new ApiSuccessResponse<string>("Comment deleted");
+        }
+
         // PATCH: /api/route/{routeId}
         [HttpPatch("{routeId}")]
         public ApiResponse<Route> UpdateRoute(string token, Guid routeId, Route route)
@@ -263,8 +352,10 @@ namespace AKK.Controllers
                     _holdRepository.Save();
                     _imageRepository.Delete(img.Id);
                 }
-
+                // Console.WriteLine(JsonConvert.SerializeObject(route.Image));
+                route.Image.RouteId = routeToUpdate.Id;
                 routeToUpdate.Image = route.Image;
+                _imageRepository.Save();
             }
 
             if(route.GradeId != default(Guid))
@@ -322,6 +413,108 @@ namespace AKK.Controllers
             {
                 return new ApiErrorResponse<Route>($"Failed to remove routes with id {routeId}");
             }
+        }
+
+        // POST: /api/route/{routeId}/rating
+        [HttpPost("routeId/rating")]
+        public ApiResponse<Route> AddRating(string token, Guid routeId, int ratingValue)
+        {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to add a rating to this route");
+            }
+
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            var route = _routeRepository.Find(routeId);
+
+            //Checks if user already rated specific route
+            if (route.Ratings.FirstOrDefault(r => r.Member == member) != null)
+            {
+                return new ApiErrorResponse<Route>($"{member.DisplayName} already rated this route");
+            }
+
+            //Checks if route is the default value, which means Find found nothing
+            if (route.Equals(null))
+            {
+                return new ApiErrorResponse<Route>($"No route exists with id {routeId}");
+            }
+
+            if (ratingValue > 5 || ratingValue < 1)
+            {
+                return new ApiErrorResponse<Route>($"The given rating is not within the allowed spectrum, which is 5>=rating>=1");
+            }
+
+            var rating = new Rating
+            {
+                RatingValue = ratingValue,
+                Member = member,
+                RouteId = routeId
+            };
+
+            route.Ratings.Add(rating);
+
+            _routeRepository.Save();
+
+            return new ApiSuccessResponse<Route>(route);
+        }
+
+        // DELETE: /api/route/{routeId}/rating
+        [HttpDelete("routeId/rating")]
+        public ApiResponse<Route> DeleteRating(string token, Rating rating)
+        {
+            //Checks if user is logged in
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to delete this rating");
+            }
+
+            //Finds the member according to the token
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            var route = _routeRepository.Find(rating.RouteId);
+
+            if (route == null)
+            {
+                return new ApiErrorResponse<Route>($"No route exists with id {rating.RouteId}");
+            }
+
+            //If the person trying to delete is not the same as the one who created the rating, or if the member is not an admin
+            if (rating.Member != member && !_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<Route>($"User {member.DisplayName} is unauthenticated to delete this rating");
+            }
+
+            route.Ratings.Remove(rating);
+            _routeRepository.Save();
+
+            return new ApiSuccessResponse<Route>(route);
+        }
+
+        // PATCH: /api/route/{routeId}/rating
+        [HttpPatch("routeId/rating")]
+        public ApiResponse<Route> UpdateRating(string token, Rating rating, int ratingValue)
+        {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<Route>("You need to be logged in to change this rating");
+            }
+
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+            var route = _routeRepository.Find(rating.RouteId);
+
+            if (member != rating.Member)
+            {
+                return new ApiErrorResponse<Route>("Unauthenticated to change rating");
+            }
+
+            if (ratingValue > 5 || ratingValue < 1)
+            {
+                return new ApiErrorResponse<Route>($"The given rating is not within the allowed spectrum, which is 5>=rating>=1");
+            }
+
+            rating.RatingValue = ratingValue;
+            _routeRepository.Save();
+
+            return new ApiSuccessResponse<Route>(route);
         }
     }
 }

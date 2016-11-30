@@ -18,6 +18,12 @@ $(document).ready(function () {
             elementId: "cardtemplate", 
             event: "cardUpdated",
             viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/comment-picker-template.handlebars", 
+            elementId: "commenttemplate", 
+            event: "commentsUpdated",
+            viewmodel: viewModel
         }
     ];
 
@@ -38,6 +44,12 @@ $(document).ready(function () {
                 rc = new RouteCanvas($("#routeimage")[0], viewModel.route.image, viewModel, false);
                 rc.DrawCanvas();
             }
+        });
+        viewModel.addEventListener("imageUpdated", function() {
+            $("#comment-form").addClass("video-added");
+        });
+        viewModel.addEventListener("commentsUpdated", function() {
+            autosize($('textarea'));
         });
         viewModel.init();
         headerViewModel.init();

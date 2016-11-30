@@ -7,6 +7,29 @@ namespace AKK.Tests
     [TestFixture]
     public class TestRouteSearcher
     {
+        private TestDataFactory _dataFactory;
+        private RouteSearchService _searcher;
+
+        [OneTimeSetUp] // Runs once before first test
+        public void SetUpSuite() { }
+
+        [OneTimeTearDown] // Runs once after last test
+        public void TearDownSuite() { }
+
+        [SetUp] // Runs before each test
+        public void SetupTest () 
+        { 
+            _dataFactory = new TestDataFactory();
+            _searcher = new RouteSearchService(_dataFactory.Routes);
+        }
+
+        [TearDown] // Runs after each test
+        public void TearDownTest() 
+        {
+            _searcher = null;
+            _dataFactory = null;
+        }
+
         /*Since addition, deletion and substitution are all >1 when computing the Levenshtein distance, the length of
          * the distance should be greater than or equal to the length of the pattern.
          */
@@ -55,45 +78,39 @@ namespace AKK.Tests
          * routes that match the search term.
          */
         [Test]
-        public void Search_SearchFor10Green_RoutesWithGradeGreen()
+        public void Search_SearchForGreen_RoutesWithGradeGreen()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("green");
+            var searchResult = _searcher.Search("grade green");
 
-            foreach (var result in searchResult)
-                Assert.AreEqual("Green", result.Grade.Name);
+            var routes = searchResult.ToArray();
+            for (int i = 0; i < 4; i++)
+                Assert.AreEqual("Green", routes[i].Grade.Name);
         }
 
         [Test]
         public void Search_SearchFor3Red_RoutesWithGradeRed()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("red");
+            var searchResult = _searcher.Search("grade red").ToArray();
 
-            foreach (var result in searchResult)
-                Assert.AreEqual("Red", result.Grade.Name);
+            for (int i = 0; i < 3; i++)
+                Assert.AreEqual("Red", searchResult[i].Grade.Name);
         }
 
         [Test]
-        public void Search_SearchFor10Anto_RoutesWithAuthorAnton()
+        public void Search_SearchFor2Anto_RoutesWithAuthorAnton()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("anto");
+            var searchResult = _searcher.Search("anto");
 
-            foreach (var result in searchResult)
-                Assert.AreEqual("Anton", result.Author);
+            var routes = searchResult.ToArray();
+            for (int i = 0; i < 2; i++)
+                Assert.AreEqual("Anton", routes[i].Author);
         }
 
         //Asserts that by searching for 'Geo', the route made by Geo will show before the route made by Geogebra.
         [Test]
         public void Search_SearchFor10Geo_RoutesWithAuthorGeoAndGeogebraInOrder()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("geo");
+            var searchResult = _searcher.Search("geo");
 
             Assert.AreEqual("Geo", searchResult.ElementAt(0).Author);
             Assert.AreEqual("Geogebra", searchResult.ElementAt(1).Author);
@@ -105,9 +122,7 @@ namespace AKK.Tests
         [Test]
         public void Search_SearchFor10Gebra_RoutesWithAuthorGeogebraFirst()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("gebra");
+            var searchResult = _searcher.Search("gebra");
 
             if (!searchResult.Any())
             {
@@ -119,9 +134,7 @@ namespace AKK.Tests
         [Test]
         public void Search_10SearchForHelland_ExpectRouteWithTannerHellandAsAuthor()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("Helland");
+            var searchResult = _searcher.Search("Helland");
             if (!searchResult.Any())
             {
                 Assert.Fail($"  Expected occupied list\n  But was Empty");
@@ -131,14 +144,14 @@ namespace AKK.Tests
 
         //Asserts that the calculation of Levenshtein works. The black route is meant to show up since it's threshold is 2.
         [Test]
-        public void Search_SearchFor10Bl_8RoutesWithGradesBlueAndBlack()
+        public void Search_SearchFor8Bl_8RoutesWithGradesBlueAndBlack()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("Blu");
+            var searchResult = _searcher.Search("Blu");
 
-            foreach (var result in searchResult)
+            var routes = searchResult.ToArray();
+            for (int i = 0; i < 8; i++)
             {
+                var result = routes[i];
                 if (result.Grade.Name == "Black" || result.Grade.Name == "Blue")
                 {
                 }
@@ -149,46 +162,15 @@ namespace AKK.Tests
             }
         }
 
-        //With one route in section A with the route name 4, it should show up first when searching for A 4.
-        [Test]
-        public void Search_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4()
-        {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("A 4");
-
-            foreach (var result in searchResult)
-            {
-                Assert.AreEqual("A", result.Section.Name);
-                Assert.AreEqual("4", searchResult.ElementAt(0).Name);
-            }
-        }
-
         /*Tests if the regex split works as intended. Should identify A4 and split it to two search terms; A and 4.
          * Hereafter, it should work as the Search_3SearchForASPACE4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4 test.
          */
-        [Test]
-        public void Search_3SearchForA4_ExpectedRoutesFromSectionAWithRouteNumbersContaining4()
-        {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("A4");
 
-            foreach (var result in searchResult)
-            {
-                Assert.AreEqual("A", result.Section.Name);
-                Assert.AreEqual("4", searchResult.ElementAt(0).Name);
-            }
-        }
-
-        //Again tests the regex split function.
         [Test]
-        public void Search_3SearchForA4_ExpectedResultTheSameAsSearchForASPACE4()
+        public void Search_SearchForA4_ExpectedResultTheSameAsSearchForASPACE4()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResultWithSpace = searcher.Search("A 4");
-            var searchResultWithoutSpace = searcher.Search("A4");
+            var searchResultWithSpace = _searcher.Search("A 4");
+            var searchResultWithoutSpace = _searcher.Search("A4");
 
             int length = searchResultWithSpace.ToArray().Length;
 
@@ -207,14 +189,15 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void Search_10SearchForASPACE4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade()
+        public void Search_4SearchForASPACE4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("A 4 Gr");
+            var searchResult = _searcher.Search("A 4 Gr");
 
-            foreach (var result in searchResult)
+            var routes = searchResult.ToArray();
+
+            for (int i = 0; i < 4; i++)
             {
+                var result = routes[i];
                 if (result.Section.Name == "A" || result.Name.Contains("4") || result.Grade.Name == "Green")
                 {
 
@@ -227,32 +210,87 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void Search_10SearchForA4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade()
+        public void Search_4SearchForA4SPACEGr_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndGreenGrade()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("A4 Gr");
+            var searchResult = _searcher.Search("A4 Gr");
 
-            foreach (var result in searchResult)
+            var routes = searchResult.ToArray();
+            for (int i = 0; i < 4; i++)
             {
-                if (result.Section.Name == "A" || result.Name.Contains("4") || result.Grade.Name == "Green")
+
+                if (routes[i].Section.Name == "A" || routes[i].Name.Contains("4") || routes[i].Grade.Name == "Green")
                 {
 
                 }
                 else
                 {
-                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Grade Green\n  Was: {result.Section.Name}  {result.Name}  {result.Grade.Name}");
+                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Grade Green\n  Was: {routes[i].Section.Name}  {routes[i].Name}  {routes[i].Grade.Name}");
                 }
             }
         }
 
         [Test]
-        public void Search_10SearchForA4SPACEGr_ExpectedResultTheSameAsWithSpaceBetweenAAnd4()
+        public void Search_SearchForA4SPACEGr_ExpectedResultTheSameAsWithSpaceBetweenAAnd4()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResultWithoutSpace = searcher.Search("A4 Gr");
-            var searchResultWithSpace = searcher.Search("A 4 Gr");
+            var searchResultWithoutSpace = _searcher.Search("A4 Gr");
+            var searchResultWithSpace = _searcher.Search("A 4 Gr");
+
+            int length = searchResultWithoutSpace.ToArray().Length;
+
+            for (int i = 0; i < length; i++)
+            {
+                if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true)
+                {
+                    Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
+                }
+            }
+        }
+
+        [Test]
+        public void Search_4SearchForA4SPACEGru_Expected2RoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg()
+        {
+            var searchResult = _searcher.Search("A4 Gru");
+
+            var routes = searchResult.ToArray();
+            for (int i = 0; i < 4; i++)
+            {
+                var result = routes[i];
+                if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))
+                {
+
+                }
+                else
+                {
+                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Author containing Gru\n  Was: {result.Section.Name}  {result.Name}  {result.Author}");
+                }
+            }
+        }
+
+        [Test]
+        public void Search_4SearchForASPACE4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg()
+        {
+            var searchResult = _searcher.Search("A 4 Gru");
+
+            var routes = searchResult.ToArray();
+            for (int i = 0; i < 4; i++)
+            {
+                var result = routes[i];
+                if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))
+                {
+
+                }
+                else
+                {
+                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Author containing Gru\n  Was: {result.Section.Name}  {result.Name}  {result.Author}");
+                }
+            }
+        }
+
+        [Test]
+        public void Search_SearchForA4SPACEGru_ExpectedResultTheSameAsWithSpaceBetweenAAnd4()
+        {
+            var searchResultWithoutSpace = _searcher.Search("A4 Gru");
+            var searchResultWithSpace = _searcher.Search("A 4 Gru");
 
             int length = searchResultWithoutSpace.ToArray().Length;
 
@@ -271,66 +309,13 @@ namespace AKK.Tests
         }
 
         [Test]
-        public void Search_2SearchForA4SPACEGru_Expected2RoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg()
+        public void _Search_SearchForSectionSPACEC_ExpectTheFirstRoutesToBeOfSectionA()
         {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("A4 Gru");
+            var searchResult = _searcher.Search("section c").ToArray();
 
-            foreach (var result in searchResult)
+            for (int i = 0; i < 5; i++)
             {
-                if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))
-                {
-
-                }
-                else
-                {
-                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Author containing Gru\n  Was: {result.Section.Name}  {result.Name}  {result.Author}");
-                }
-            }
-        }
-
-        [Test]
-        public void Search_10SearchForASPACE4SPACEGru_ExpectedRoutesFromSectionAWithRouteNumbersContaining4AndAuthorGrunberg()
-        {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResult = searcher.Search("A 4 Gru");
-
-            foreach (var result in searchResult)
-            {
-                if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))
-                {
-
-                }
-                else
-                {
-                    Assert.Fail($"Expected: Section A, Route Number containing 4 or Author containing Gru\n  Was: {result.Section.Name}  {result.Name}  {result.Author}");
-                }
-            }
-        }
-
-        [Test]
-        public void Search_10SearchForA4SPACEGru_ExpectedResultTheSameAsWithSpaceBetweenAAnd4()
-        {
-            var testRepo = new TestDataFactory();
-            var searcher = new RouteSearchService(testRepo.Routes);
-            var searchResultWithoutSpace = searcher.Search("A4 Gru");
-            var searchResultWithSpace = searcher.Search("A 4 Gru");
-
-            int length = searchResultWithoutSpace.ToArray().Length;
-
-            if (searchResultWithSpace.ToArray().Length != length)
-            {
-                Assert.Fail($"  Expected: List have the same amount of items\n  Was: WithSpace: {searchResultWithSpace.ToArray().Length}  noSpace: {length}");
-            }
-
-            for (int i = 0; i < length; i++)
-            {
-                if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true)
-                {
-                    Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
-                }
+                Assert.AreEqual("C", searchResult[i].SectionName);
             }
         }
     }
