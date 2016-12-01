@@ -459,6 +459,9 @@ input:checked + .toggle-switch::before {
 .single-route .route-rating svg {
     width: 24px;
     height: 24px;
+}
+
+.route-rating.rated svg {
     fill: #FDD835;
 }
 
