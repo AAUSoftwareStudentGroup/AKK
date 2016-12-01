@@ -78,7 +78,7 @@ namespace AKK.Models
                 {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true}},
                 {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = "123", IsAdmin = false}},
                 {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = "adminadmin", IsAdmin = true}},
-                
+                {"AKK", new Member {DisplayName = "Testbruger", Username = "AKK", Password = "123", IsAdmin = true}},
             };
 
             var sections = new Dictionary<string, Section> {
