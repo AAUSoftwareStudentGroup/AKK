@@ -8,11 +8,11 @@ function CookieService() {
     }
 
     this.set = function(key, val) {
-        document.cookie = key+"="+val+"; expires=Fri, 31 Dec 2035 23:59:59 GMT";
+        document.cookie = key + "=" + val + "; expires=Fri, 31 Dec 2035 23:59:59 GMT";
     }
 
     this.expire = function(key) {
-        document.cookie = key+"=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+        document.cookie = key + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     }
 
     this.getToken = function() {

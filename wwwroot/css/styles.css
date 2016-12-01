@@ -458,9 +458,10 @@ input:checked + .toggle-switch::before {
 }
 
 .single-route .route-rating svg {
-    margin-right: -5px;
     width: 32px;
     height: 32px;
+    margin: 0 -5px 0 0;
+    cursor: pointer;
 }
 
 .route-rating.rated svg {
