@@ -418,15 +418,23 @@ input:checked + .toggle-switch::before {
     width: 100%;
     height: 24px;
     border: none;
-    text-indent: 8px;
     outline: none;
     color: #555555;
+    text-indent: 8px;
+    font-family: 'Roboto', sans-serif;
     background: #ddd;
     float: left;
     border-radius: 0;
     margin: 0;
     padding: 0;
     -webkit-appearance:none;
+    -moz-appearance:none;
+}
+
+@-moz-document url-prefix() {
+    .drop-down select {
+        text-indent: 2px;
+    }
 }
 
 .drop-down:before {
