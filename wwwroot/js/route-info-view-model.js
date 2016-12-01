@@ -19,9 +19,11 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.init = function () {
         self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
             if (routeResponse.success) {
+
                 self.route = routeResponse.data;
                 self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
                 self.downloadImage();
+                self.trigger("commentsChanged")
 
                 self.client.members.getMemberRatings(function(ratingResponse) {
                     var ratingValue = null;
@@ -42,6 +44,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.isAuthed = true;
                 self.member = response.data;
             }
+            self.trigger("commentsChanged")
         });
 
     };
@@ -65,9 +68,8 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
 
         rating = Math.round(rating);
         self.filledStars = rating;
-        self.trigger("filledStarsChanged");
         self.emptyStars = 5 - rating;
-        self.trigger("emptyStarsChanged");
+        self.trigger("cardChanged");
     };
 
     this.downloadImage = function() {
@@ -78,10 +80,10 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.route.image.src = imageResponse.data.fileUrl;
                 self.HoldPositions = imageResponse.data.holds;
                 self.route.image.onload = function() {
-                    self.trigger("imageChanged");
+                    self.trigger("cardChanged");
                 }
             } else {
-                self.trigger("imageChanged");
+                self.trigger("cardChanged");
             }
         });
     };

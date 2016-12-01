@@ -151,6 +151,10 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.deleteGrade = function()
     {
+        if(self.grades.length <= 1) {
+            alert("There must be at least on grade.");
+            return;
+        }
         if(self.selectedGrade != null && self.dialogService.confirm("Do you really want to permanently delete this difficulty?"))
         {
             self.client.grades.deleteGrade(self.selectedGrade.id, function(response) {
@@ -298,25 +302,38 @@ function AdminPanelViewModel(client, dialogService) {
         self.trigger("holdsChanged");
     }
 
-    this.addNewHold = function()
+    this.updateHold = function()
     {
         self.selectedHold.colorOfHolds.a = 255;
-        delete self.selectedHold.id;
-        self.client.holds.addHold(self.selectedHold, function(response) {
+        self.client.holds.deleteHold(self.selectedHold.id, function(response) {
             if(response.success) {
-                self.holds.push(response.data);
-                self.selectedHold = self.holds[self.grades.length-1];           
+
+                delete self.selectedHold.id;
+                self.client.holds.addHold(self.selectedHold, function(response) {
+                    if(response.success) {
+                        self.holds.push(response.data);
+                        self.selectedHold = self.holds[self.grades.length-1];           
+                    }
+                    else
+                        self.dialogService.showMessage(response.message);
+                    self.downloadHolds();
+                    self.selectedHold = null;
+                    self.trigger("holdsChanged");
+                });
+                
             }
-            else
+            else {
                 self.dialogService.showMessage(response.message);
-            self.downloadHolds();
-            self.selectedHold = null;
-            self.trigger("holdsChanged");
-        });
+            }
+        })
     }
 
     this.deleteHold = function()
     {
+        if(self.holds.length <= 1) {
+            alert("You can't have a climbing club without holds...");
+            return;
+        }
         if(self.selectedHold != null && self.dialogService.confirm("Do you really want to permanently delete this hold?"))
         {
             self.client.holds.deleteHold(self.selectedHold.id, function(response) {
