@@ -132,23 +132,22 @@ QUnit.test("admin panel viewModel renameSection", function (assert)
 	viewModel.init();
 
 	//Change to section C, save id to a variable
-	var sectionCId = TEST_SECTIONS[2].id;
+	var sectionCId = viewModel.sections[2].id;
 	viewModel.changeSection(sectionCId);
-
 	//Assert that the selected section is C
 	assert.equal(viewModel.selectedSection.name, viewModel.sections[2].name, "selectedSection.name sections[2].name = " + viewModel.sections[2].name);
 
 	//Save amount of routes in section C, to compare later
-	var routesInC = viewModel.sections[2].length;
+	var routesInC = viewModel.sections[2].routes.length;
 
 	dialogService.message = "X";
 	viewModel.renameSection();
 
 	//Assert that the section is now named X instead of C
-	assert.equal(viewModel.sections[2].name, "X", "sections[2].name = x = " + viewModel.sections[2].name);
+	assert.equal(viewModel.sections[2].name, "X", "sections[2].name = X = " + viewModel.sections[2].name);
 
 	//Assert that it has the same amount of routes
-	assert.equal(viewModel.sections[2].length, routesInC, "sections[2].length = routesInC = " + viewModel.sections[2].length);
+	assert.equal(viewModel.sections[2].routes.length, routesInC, "sections[2].length = routesInC = " + viewModel.sections[2].routes.length);
 });
 
 

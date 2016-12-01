@@ -44,7 +44,6 @@ function AdminPanelViewModel(client, dialogService) {
             });
         }
         else {
-            console.log("wat");
             self.routes = [];
             self.trigger("routesChanged");
         }
@@ -266,9 +265,9 @@ function AdminPanelViewModel(client, dialogService) {
 AdminPanelViewModel.prototype = new EventNotifier();
 
 
-
-    ;;;;;;;      ;;       ;;;;;;;  ;;;;;;;   ;;;;;;;  ;;;;;;
-   ;;;   ;;;     ;;       ;;       ;;   ;;;  ;;       ;;   ;;
+    
+      ;;;;       ;;       ;;;;;;;  ;;;;;;;   ;;;;;;;  ;;;;;;
+    ;;;  ;;;     ;;       ;;       ;;   ;;;  ;;       ;;   ;;
   ;;;     ;;;    ;;       ;;;;;    ;;;;;;;   ;;;;;    ;;    ;;
  ;;;;;;;;;;;;;   ;;       ;;       ;;  ;;;   ;;       ;;   ;;
 ;;;         ;;;  ;;;;;;;  ;;       ;;   ;;;  ;;;;;;;  ;;;;;;
