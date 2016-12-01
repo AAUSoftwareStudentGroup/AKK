@@ -897,6 +897,7 @@ input:checked + .toggle-switch::before {
 }
 
 .member-item h2,
+.hold-details h2,
 .grade-details > h2 {
     margin: 0;
 }

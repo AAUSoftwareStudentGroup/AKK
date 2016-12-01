@@ -1,5 +1,5 @@
 {{#if_eq selectedHold null}}
-<div class="orderable-list">
+<div class="nonorderable-list">
     {{#each holds}}
     <div class="orderable-item">
         <div class="order-content hold-{{value}} grade-item pressable" onclick="viewModel.selectHold({{value}})">

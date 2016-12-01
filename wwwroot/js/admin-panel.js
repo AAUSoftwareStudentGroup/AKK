@@ -69,8 +69,11 @@ $(document).ready(function () {
     });
     viewModel.addEventListener("holdsChanged", function(msg) {
         window.setTimeout(function() {
-            if(viewModel.selectedHold)
-                $('.orderable-list').scrollTop(61*viewModel.selectedHold.value-61*2);
+            if($("#hold-admin .expansion-panel").hasClass("expanded")) {
+                $("#hold-admin .expansion-panel").animate({
+                    height: $('#hold-admin .expansion-panel .expansion-panel-content').height(),
+                }, 500);
+            }
         },10);
     });
 

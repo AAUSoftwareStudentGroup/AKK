@@ -151,6 +151,10 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.deleteGrade = function()
     {
+        if(self.grades.length <= 1) {
+            alert("There must be at least on grade.");
+            return;
+        }
         if(self.selectedGrade != null && self.dialogService.confirm("Do you really want to permanently delete this difficulty?"))
         {
             self.client.grades.deleteGrade(self.selectedGrade.id, function(response) {
@@ -317,6 +321,10 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.deleteHold = function()
     {
+        if(self.holds.length <= 1) {
+            alert("You can't have a climbing club without holds...");
+            return;
+        }
         if(self.selectedHold != null && self.dialogService.confirm("Do you really want to permanently delete this hold?"))
         {
             self.client.holds.deleteHold(self.selectedHold.id, function(response) {
