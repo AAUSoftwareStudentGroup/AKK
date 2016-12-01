@@ -29,10 +29,12 @@ namespace AKK.Models
     {
         public static void Seed(this MainDbContext context)
         {
+            /*
             if (Environment.GetEnvironmentVariable("ASPNET_DATABASE_NOSEED") != null)
             {
                 return;
             }
+            */
             // Perform database delete and create
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();

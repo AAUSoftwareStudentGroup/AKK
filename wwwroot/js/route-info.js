@@ -20,9 +20,9 @@ $(document).ready(function () {
             viewmodel: viewModel
         },
         {
-            scriptSource: "js/templates/beta-picker-template.handlebars", 
-            elementId: "betatemplate", 
-            event: "betasUpdated",
+            scriptSource: "js/templates/comment-picker-template.handlebars", 
+            elementId: "commenttemplate", 
+            event: "commentsUpdated",
             viewmodel: viewModel
         }
     ];
@@ -30,7 +30,7 @@ $(document).ready(function () {
     $(document).on("click", "#routeimagecontainer", function(e) {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
-        $("#image-overlay").toggleClass("hidden");
+        $(".image-overlay").toggleClass("hidden");
 
         if(rc != null) {
             rc.resize();
@@ -45,7 +45,19 @@ $(document).ready(function () {
                 rc.DrawCanvas();
             }
         });
+        viewModel.addEventListener("imageUpdated", function() {
+            $("#comment-form").addClass("video-added");
+        });
+        viewModel.addEventListener("commentsUpdated", function() {
+            autosize($('textarea'));
+        });
         viewModel.init();
         headerViewModel.init();
     });
 });
+
+function addComment(form) {
+    if (viewModel.addingComment) return;
+    $(".editable").removeClass("editable");
+    viewModel.addComment(form);
+}

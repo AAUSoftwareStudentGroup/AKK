@@ -19,7 +19,7 @@ function RouteClient(url, cookieService)
     };
 
     this.searchRoutes = function(searchstring, success) {
-        $.ajax({
+       return $.ajax({
             type: "GET",
             dataType: "json",
             url: url,
@@ -55,18 +55,33 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addBeta = function(formdata, routeId, success) {
+    this.addComment = function(formdata, routeId, success) {
         formdata.append('token', self.cookieService.getToken());
         formdata.append('id', routeId);
 
         $.ajax({
-            url: url + "/beta", 
+            url: url + "/comment", 
             type: 'POST',
             success: success,
             data: formdata,
             cache: false,
             contentType: false,
             processData: false
+        });
+    }
+
+    this.removeComment = function(id, routeId, success) {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url + "/comment/remove",
+            data:
+            {
+                token: self.cookieService.getToken(),
+                id: id,
+                routeId: routeId,
+            },
+            success: success
         });
     }
 
@@ -263,6 +278,22 @@ function GradeClient(url, cookieService)
         });
     };
 
+
+    this.updateGrade = function(grade, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url+"/"+grade.id,
+            data:
+            {
+                token: self.cookieService.getToken(),
+                grade: grade
+            },
+            success: success
+        });
+    };
+
     this.deleteGrade = function(gradeId, success)
     {
         $.ajax({
@@ -349,6 +380,16 @@ function MemberClient(url, cookieService)
             success: success
         });
     };
+
+    this.getMemberRatings = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/" + self.cookieService.getToken() + "/ratings",
+            success: success
+        });
+    }
 
     this.getAllMembers = function(success)
     {

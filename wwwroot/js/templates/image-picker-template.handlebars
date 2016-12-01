@@ -1,9 +1,14 @@
 <div class="content-section image-picker">
     <h2>Route image (optional)</h2>
+    {{#if addingImage}}
+    <div class="progress">
+        <div class="indeterminate"></div>
+    </div>
+    {{/if}}
     <label for="files" class="submit-button neutral left no-select">{{#if_eq hasImage true}} Replace {{else}} Add {{/if_eq}} image</label>
     <input id="files" style="display:none;" type="file" accept="image/*" onchange="viewModel.UpdateCanvas(this);">
-
     {{#if_eq hasImage true}}
+    <input class="submit-button neutral right" type="button" onclick="viewModel.rotateImageClockwise()" value="rotate ↻">
         <div class="image-container" id="canvas-container">
             <canvas id="route-edit-image" width="{{image.width}}" height="{{image.height}}">Canvas not supported</canvas>
             <a class="undo-button" onclick="rc.undo()">

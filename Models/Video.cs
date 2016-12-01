@@ -1,14 +1,12 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace AKK.Models
 {
-    public class Video : Media
+    public class Video : Model
     {
         [JsonIgnore]
-        public Member Member { get; set; }
+        public string FilePath { get; set; }
 
-        public Guid MemberId { get; set; }
-
+        public string FileUrl { get; set; }
     }
 }
