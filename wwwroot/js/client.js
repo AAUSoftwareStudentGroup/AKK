@@ -381,6 +381,16 @@ function MemberClient(url, cookieService)
         });
     };
 
+    this.getMemberRatings = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/" + self.cookieService.getToken(),
+            success: success
+        });
+    }
+
     this.getAllMembers = function(success)
     {
         $.ajax({
