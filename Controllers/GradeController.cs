@@ -125,6 +125,12 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Grade>($"No grade exists with id {id}");
             }
 
+
+            if (grade.Routes == null)
+            {
+                return new ApiErrorResponse<Grade>("Not sure if this grade has any routes. If it has, deleting it would mean trouble!");
+            }
+
             if (grade.Routes.Count != 0)
             {
                 return new ApiErrorResponse<Grade>("Routes already exists with this grade. Remove those before you delete this grade");
