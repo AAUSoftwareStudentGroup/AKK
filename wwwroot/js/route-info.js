@@ -17,17 +17,14 @@ $(document).ready(function () {
             scriptSource: "js/templates/route-info-card-template.handlebars", 
             elementId: "cardtemplate", 
             event: [
-                "imageChanged",
-                "ratingsUpdated",
-                "filledStarsChanged",
-                "emptyStarsChanged"
+                "cardChanged"
             ],
             viewmodel: viewModel
         },
         {
             scriptSource: "js/templates/comment-picker-template.handlebars", 
             elementId: "commenttemplate", 
-            event: "commentsUpdated",
+            event: "commentsChanged",
             viewmodel: viewModel
         }
     ];
@@ -49,12 +46,11 @@ $(document).ready(function () {
     });
 
     setUpContentUpdater(content, function() {
-        viewModel.addEventListener("imageChanged", function() {
+        viewModel.addEventListener("cardChanged", function() {
             if (viewModel.hasImage) {
                 rc = new RouteCanvas($("#routeimage")[0], viewModel.route.image, viewModel, false);
                 rc.DrawCanvas();
             }
-            $("#comment-form").addClass("video-added");
         });
         viewModel.addEventListener("commentsUpdated", function() {
             autosize($('textarea'));

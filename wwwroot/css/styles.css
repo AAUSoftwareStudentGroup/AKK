@@ -1075,6 +1075,12 @@ input[type=range]::-ms-thumb {
 .comment-input.video-added .comment-add-button {
     fill:#2196F3;
 }
+.comment-input .comment-video-check {
+    display: none;
+}
+.comment-input.video-added .comment-video-check {
+    display: inline;
+}
     
 .comment-send {
     background-color: #4CAF50;
