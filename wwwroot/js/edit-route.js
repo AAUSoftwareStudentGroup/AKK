@@ -6,7 +6,7 @@ var rc;
 
 $(document).ready(function () {
     navigationService = new NavigationService();
-    client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+    client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
     headerViewModel = new HeaderViewModel("Edit Route", client, "/route-info?routeId=" + navigationService.getParameters()['routeId']);
     viewModel = new EditRouteViewModel(client, navigationService);
 

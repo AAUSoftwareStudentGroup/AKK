@@ -8,11 +8,6 @@ namespace AKK.Models
 {
     public class Media : Model
     {
-        [JsonIgnore]
-        public Route Route { get; set; }
-
-        public Guid RouteId { get; set; }
-
         public string FileUrl { get; set; }
     }
 }

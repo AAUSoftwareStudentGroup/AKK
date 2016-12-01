@@ -69,12 +69,6 @@ namespace AKK.Controllers
                     break;
             }
 
-            //If searchStr is empty
-            if (string.IsNullOrEmpty(searchStr))
-            {
-                return new ApiSuccessResponse<IEnumerable<Route>>(routes);
-            }
-
             if (!string.IsNullOrEmpty(searchStr))
             {
                 //Initialize a RouteSearcher

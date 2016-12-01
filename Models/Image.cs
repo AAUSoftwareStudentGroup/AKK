@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace AKK.Models
 {
@@ -9,6 +10,11 @@ namespace AKK.Models
         {
             Holds = new List<Hold>();
         }
+
+        [JsonIgnore]
+        public Route Route { get; set; }
+
+        public Guid RouteId { get; set; }
 
         public uint Width { get; set; }
 

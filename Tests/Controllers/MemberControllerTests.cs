@@ -176,18 +176,57 @@ namespace AKK.Tests.Controllers
             Assert.AreEqual(1, i);
         }
 
+        [Test]
         public void _GetRole_GetAllRolesOfGuest_ExpectUnauthorised()
         {
             var response = _controller.GetRole("123");
-            Assert.IsFalse(response.Success);
+            Assert.IsTrue(response.Success);
 
             int i = 0;
             foreach (Role role in response.Data)
             {
+                Assert.AreEqual(Role.Unauthenticated, role);
                 i++;
             }
 
-            Assert.AreEqual(0, i);
+            Assert.AreEqual(1, i);
+        }
+
+        [Test]
+        public void _ChangeRole_AdminChangesRoleOfAnotherMember_MemberBecomesAdmin()
+        {
+            Member adminMember = _memberRepo.GetAll().First(m => m.DisplayName == "TannerHelland");
+            _memberRepo.Add(_testMember);
+
+            var response = _controller.ChangeRole(_controller.Login(adminMember.Username, adminMember.Password).Data, _testMember.Id, Role.Admin);
+
+            Assert.IsTrue(response.Success);
+            Assert.IsTrue(_testMember.IsAdmin);
+        }
+
+        [Test]
+        public void _ChangeRole_AdminChangesRoleOfMemberThatDoesntExist_ExpectError()
+        {
+            Member adminMember = _memberRepo.GetAll().First(m => m.DisplayName == "TannerHelland");
+
+            var response = _controller.ChangeRole(_controller.Login(adminMember.Username, adminMember.Password).Data, _testMember.Id, Role.Admin);
+
+            Assert.IsFalse(response.Success);
+            Assert.IsFalse(_testMember.IsAdmin);
+        }
+
+        [Test]
+        public void _ChangeRole_AdminChangesRoleOfAdmin_AdminBecomesAuthenticated()
+        {
+            Member adminMember = _memberRepo.GetAll().First(m => m.DisplayName == "TannerHelland");
+            _memberRepo.Add(_testMember);
+
+            var token = _controller.Login(adminMember.Username, adminMember.Password).Data;
+            var response = _controller.ChangeRole(token, _testMember.Id, Role.Admin);
+            Assert.IsTrue(_testMember.IsAdmin);
+
+            response = _controller.ChangeRole(token, _testMember.Id, Role.Authenticated);
+            Assert.IsFalse(_testMember.IsAdmin);
         }
     }
 }
