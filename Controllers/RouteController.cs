@@ -335,7 +335,7 @@ namespace AKK.Controllers
             routeToUpdate.ColorOfTape = route.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
-            routeToUpdate.Note = route.Note ?? routeToUpdate.Note;
+            routeToUpdate.Note = route.Note;
             
             if(route.Image != null)
             {
