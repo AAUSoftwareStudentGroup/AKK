@@ -1,3 +1,8 @@
+function clone(obj)
+{
+    return jQuery.extend(true, {}, oldObject);
+}
+
 function TestRouteClient(url, cookieService)
 {
     var self = this;
@@ -8,12 +13,12 @@ function TestRouteClient(url, cookieService)
     };
 
     this.searchRoutes = function(searchstring, success) {
-        success({success: true, data: TEST_ROUTES});
+        success({success: true, data: clone(TEST_ROUTES)});
     }
 
     this.getRoute = function(id, success)
     {
-        success({success: true, data: TEST_ROUTES.filter(function(r){ return r.id == id })[0]});
+        success({success: true, data: clone(TEST_ROUTES.filter(function(r){ return r.id == id })[0])});
     };
 
     this.getImage = function(id, success) {
@@ -30,24 +35,47 @@ function TestRouteClient(url, cookieService)
 function TestSectionClient(url, cookieService)
 {
     var self = this;
+    var sections = TEST_SECTIONS;
+    var idCounter = 0;
     this.cookieService = cookieService;
     this.getAllSections = function(success)
     {
-        success({success: true, data: TEST_SECTIONS});
+        success({success: true, data: clone(TEST_SECTIONS)});
     };
 
     this.getSection = function(name, success)
     {
-        success({success: true, data: TEST_SECTIONS.filter(function(s) { return s.id == name; })});
+        success({success: true, data: clone(TEST_SECTIONS.filter(function(s) { return s.id == name; })[0])});
     };
 
-    this.addSection = function(name, success) { };
+    this.addSection = function(name, success) 
+    { 
+        var newSection = {id: idCounter++, name: name};
+        sections.push(newSection);
+        success({success: true, data: clone(newSection)});
+    };
 
-    this.deleteSection = function(name, success) { };
+    this.deleteSection = function(name, success) 
+    { 
+        var section = this.getSection(name);
+        sections.splice(sections.indexOf(section));
+        success({success: true, data: clone(section)});
+    };
 
-    this.deleteSectionRoutes = function(name, success) { };
+    this.deleteSectionRoutes = function(name, success) 
+    { 
+        var section = this.getSection(name);
+        var deletedRoutes = TEST_ROUTES.filter(function(route) { return route.sectionId == section.id; });
+        TEST_ROUTES = TEST_ROUTES.filter(function(route) { return route.sectionId != section.id; });
+        success({success: true, data: clone(deletedRoutes)});
+    };
 
-    this.renameSection = function(sectionId, newName, success) { };
+    this.renameSection = function(sectionId, newName, success) 
+    { 
+        var section = this.getSection(name);
+        section.name = newName;
+        success({success: true, data: clone(section)});
+    };
 }
 
 function TestGradeClient(url, cookieService)
