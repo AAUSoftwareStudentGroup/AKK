@@ -386,7 +386,7 @@ function MemberClient(url, cookieService)
         $.ajax({
             type: "GET",
             dataType: "json",
-            url: url + "/" + self.cookieService.getToken(),
+            url: url + "/" + self.cookieService.getToken() + "/ratings",
             success: success
         });
     }
