@@ -302,21 +302,30 @@ function AdminPanelViewModel(client, dialogService) {
         self.trigger("holdsChanged");
     }
 
-    this.addNewHold = function()
+    this.updateHold = function()
     {
         self.selectedHold.colorOfHolds.a = 255;
-        delete self.selectedHold.id;
-        self.client.holds.addHold(self.selectedHold, function(response) {
+        self.client.holds.deleteHold(self.selectedHold.id, function(response) {
             if(response.success) {
-                self.holds.push(response.data);
-                self.selectedHold = self.holds[self.grades.length-1];           
+
+                delete self.selectedHold.id;
+                self.client.holds.addHold(self.selectedHold, function(response) {
+                    if(response.success) {
+                        self.holds.push(response.data);
+                        self.selectedHold = self.holds[self.grades.length-1];           
+                    }
+                    else
+                        self.dialogService.showMessage(response.message);
+                    self.downloadHolds();
+                    self.selectedHold = null;
+                    self.trigger("holdsChanged");
+                });
+                
             }
-            else
+            else {
                 self.dialogService.showMessage(response.message);
-            self.downloadHolds();
-            self.selectedHold = null;
-            self.trigger("holdsChanged");
-        });
+            }
+        })
     }
 
     this.deleteHold = function()

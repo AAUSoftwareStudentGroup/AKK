@@ -67,8 +67,8 @@
 </div>
 
 <div class="button-group">
-    <input class="submit-button neutral" type="button" onclick="viewModel.addNewHold()" value="Add">
     <input class="submit-button negative" type="button" onclick="viewModel.deleteHold('{{selectedHold.id}}')" value="Delete">
+    <input class="submit-button neutral" type="button" onclick="viewModel.updateHold()" value="Save">
 </div>
 <div class="clear"></div>
 {{/if_eq}}
