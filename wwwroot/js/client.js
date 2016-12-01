@@ -462,7 +462,7 @@ function HoldClient(url, cookieService)
             data:
             {
                 token: self.cookieService.getToken(),
-                hold: hold
+                holdcolor: hold
             },
             success: success
         });

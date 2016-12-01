@@ -1,4 +1,4 @@
-var TEST_ROUTES = [
+var TEST_ROUTES_INIT = [
     {
       "memberId": "d346c25f-fb01-4b12-88ef-4fbe7c96f33d",
       "sectionId": "69a4472a-4997-47e0-a543-f40fdc015591",
@@ -502,7 +502,7 @@ var TEST_ROUTES = [
     }
   ];
 
-var TEST_SECTIONS = [
+var TEST_SECTIONS_INIT = [
     {
       "name": "A",
       "routes": [],
@@ -525,7 +525,7 @@ var TEST_SECTIONS = [
     }
   ]
 
-var TEST_GRADES = [
+var TEST_GRADES_INIT = [
     {
       "name": "Green",
       "difficulty": 0,
@@ -601,12 +601,50 @@ var TEST_GRADES = [
   ];
 
 
-var TEST_TOKEN = "qaAnSYFvk0ajbhBmnYzHpA==";
+var TEST_TOKEN_INIT = "qaAnSYFvk0ajbhBmnYzHpA==";
 
-var TEST_MEMBER = {
+var TEST_MEMBER_INIT = {
     "displayName": "test",
     "username": "testusername",
     "token": "qaAnSYFvk0ajbhBmnYzHpA==",
     "isAdmin": false,
     "id": "80de0476-ec3a-4ba9-8332-4dc8c994f2af"
   };
+
+var TEST_MEMBERS_INIT = [
+  {
+    "displayName": "test",
+    "username": "testusername",
+    "token": "qaAnSYFvk0ajbhBmnYzHpA==",
+    "isAdmin": false,
+    "id": "80de0476-ec3a-4ba9-8332-4dc8c994f2af"
+  },
+  {
+    "displayName": "Morten",
+    "username": "mortenrask",
+    "token": "asdnUSSABDbasduba0d313=",
+    "isAdmin": true,
+    "id": "sad8972-ec3a-4ba9-8332-4dc8c994f2af"
+  }
+];
+
+var TEST_HOLDS_INIT = [
+  
+];
+
+
+
+
+
+var TEST_ROUTES, TEST_SECTIONS, TEST_GRADES, TEST_TOKEN, TEST_MEMBER;
+function init (){
+  TEST_ROUTES = JSON.parse(JSON.stringify(TEST_ROUTES_INIT));
+  TEST_SECTIONS = JSON.parse(JSON.stringify(TEST_SECTIONS_INIT));
+  TEST_GRADES = JSON.parse(JSON.stringify(TEST_GRADES_INIT));
+  TEST_TOKEN = JSON.parse(JSON.stringify(TEST_TOKEN_INIT));
+  TEST_MEMBER = JSON.parse(JSON.stringify(TEST_MEMBER_INIT));
+  TEST_MEMBERS = JSON.parse(JSON.stringify(TEST_MEMBERS_INIT));
+  TEST_HOLDS = JSON.parse(JSON.stringify(TEST_HOLDS_INIT));
+}
+
+init();
