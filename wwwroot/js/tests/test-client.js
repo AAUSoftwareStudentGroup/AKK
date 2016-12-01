@@ -133,10 +133,21 @@ function TestMemberClient(url, cookieService)
     };
 }
 
-function TestClient(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)
+function TestHoldClient(url, cookieService)
+{
+    var self = this;
+    this.cookieService = cookieService;
+    this.getAllHolds = function(success) 
+    { 
+        success({success: true, data: TEST_HOLDS});
+    };
+}
+
+function TestClient(routeUrl, sectionUrl, gradeUrl, memberUrl, holdUrl, cookieService)
 {
     this.routes = new TestRouteClient(routeUrl, cookieService);
     this.sections = new TestSectionClient(sectionUrl, cookieService);
     this.grades = new TestGradeClient(gradeUrl, cookieService);
     this.members = new TestMemberClient(memberUrl, cookieService);
+    this.holds = new TestHoldClient(holdUrl, cookieService);
 }

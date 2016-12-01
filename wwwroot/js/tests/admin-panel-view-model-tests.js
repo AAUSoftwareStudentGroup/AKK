@@ -33,7 +33,7 @@ QUnit.test("admin panel viewModel downloadSections", function (assert)
 
 QUnit.test("admin panel viewModel changeSection", function (assert) 
 {
-	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), new TestDialogService());
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), new TestDialogService());
 
 	viewModel.downloadSections();
 	var selectedSection = viewModel.selectedSection;
@@ -53,7 +53,7 @@ QUnit.test("admin panel viewModel addNewSection", function (assert)
 	init();
 
 	var dialogService = new TestDialogService();
-	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), dialogService);
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
 
 	viewModel.downloadSections();
 	
@@ -72,7 +72,7 @@ QUnit.test("admin panel viewModel addNewSection", function (assert)
 QUnit.test("admin panel viewModel clearSection", function (assert) 
 {
 	var dialogService = new TestDialogService();
-	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), dialogService);
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
 
 	viewModel.downloadSections();
 	
@@ -95,7 +95,7 @@ QUnit.test("admin panel viewModel deleteSection", function (assert)
 {
 	init();
 	var dialogService = new TestDialogService();
-	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), dialogService);
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
 
 	viewModel.init();
 
@@ -127,7 +127,7 @@ QUnit.test("admin panel viewModel renameSection", function (assert)
 {
 	init();
 	var dialogService = new TestDialogService();
-	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), dialogService);
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
 
 	viewModel.init();
 
