@@ -1,6 +1,6 @@
 ﻿function TestDialogService() {
     var self = this;
-
+    this.message = "";
     self.confirm = function (message) {
         return true;
     };
@@ -9,6 +9,6 @@
     }
 
     self.prompt = function (message) {
-        return message;
+        return this.message;
     }
 }

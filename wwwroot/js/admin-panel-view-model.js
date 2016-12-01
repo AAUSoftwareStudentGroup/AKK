@@ -14,15 +14,20 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.downloadSections = function() {
         self.client.sections.getAllSections(function(response) {
-            if(response.success) {
+            if(response.success) 
+            {
                 self.sections = response.data;
                 self.trigger("sectionsChanged");
+            }
+            else
+            {
+                self.trigger("Error", response.message);
             }
         });
     }
 
     this.downloadRoutes = function() {
-        self.client.routes.getRoutes(null, self.selectedSection.id, null, function(response) {
+        self.client.routes.getRoutes("", self.selectedSection.id, "", function(response) {
             if(response.success) {
                 self.routes = response.data;
                 for(var i = 0; i < self.routes.length; i++) {
@@ -41,7 +46,6 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.addNewSection = function() {
         var name = self.dialogService.prompt("Enter name of new Section","");
-
         self.client.sections.addSection(name, function(response) {
             if(response.success) {
                 self.downloadSections();

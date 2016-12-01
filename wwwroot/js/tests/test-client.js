@@ -41,13 +41,25 @@ function TestSectionClient(url, cookieService)
         success({success: true, data: TEST_SECTIONS.filter(function(s) { return s.id == name; })});
     };
 
-    this.addSection = function(name, success) { };
+    this.addSection = function(name, success) 
+    {
+        success({success: true, data: TEST_SECTIONS[0]});
+    };
 
-    this.deleteSection = function(name, success) { };
+    this.deleteSection = function(name, success)
+    {
+        success({success: true, data: TEST_SECTIONS[0]});
+    };
 
-    this.deleteSectionRoutes = function(name, success) { };
+    this.deleteSectionRoutes = function(name, success)
+    {
+        success({success: true, data: null});
+    };
 
-    this.renameSection = function(sectionId, newName, success) { };
+    this.renameSection = function(sectionId, newName, success)
+    {
+        success({success: true, data: TEST_SECTIONS[0]});
+    };
 }
 
 function TestGradeClient(url, cookieService)
