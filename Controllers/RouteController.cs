@@ -271,7 +271,7 @@ namespace AKK.Controllers
                         using (var fileStream = System.IO.File.Create(savePath)) {
                                 await file.CopyToAsync(fileStream);
                         }
-                    var video = new Video {FileUrl = path};
+                    var video = new Video {FileUrl = path, FilePath = savePath};
                     comment.Video = video;
                 } catch (System.OperationCanceledException) {
                     //ASP.NET bug causes this exception to be thrown, even though it is not an error
@@ -305,7 +305,12 @@ namespace AKK.Controllers
             if (!route.Comments.Any(c => c.Id == id))   
                 return new ApiErrorResponse<string>("Invalid comment");
 
-            route.Comments.RemoveAll(c => c.Id == id);
+            var comment = route.Comments.FirstOrDefault(c => c.Id == id);
+            if (comment.Video != null) {
+                System.IO.File.Delete(comment.Video.FilePath);
+            }
+
+            route.Comments.Remove(comment);
             _routeRepository.Save();                  
             
             return new ApiSuccessResponse<string>("Comment deleted");
