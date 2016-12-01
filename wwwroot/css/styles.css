@@ -360,12 +360,13 @@ input:checked + .toggle-switch::before {
 
 .route-rating {
     float: left;
-    margin: 4px 0 0 -1px;
+    margin-left: 2px;
 }
 
 .route-rating svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+    margin-left: -4px;
     fill: #666;
 }
 
@@ -458,6 +459,7 @@ input:checked + .toggle-switch::before {
 }
 
 .by-line {
+    width: 48%;
     float: left;
 }
 
@@ -472,12 +474,12 @@ input:checked + .toggle-switch::before {
 
 .single-route .route-rating {
     float: right;
-    margin: 4px -1px 0 0px;
 }
 
 .single-route .route-rating svg {
-    width: 24px;
-    height: 24px;
+    margin-right: -5px;
+    width: 32px;
+    height: 32px;
 }
 
 .route-rating.rated svg {
@@ -485,7 +487,7 @@ input:checked + .toggle-switch::before {
 }
 
 .route-card-content {
-    margin-top: 8px;
+    margin-top: 6px;
     border-top: 1px solid rgba(0, 0, 0, 0.12)
 }
 

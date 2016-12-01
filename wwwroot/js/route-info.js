@@ -16,7 +16,12 @@ $(document).ready(function () {
         {
             scriptSource: "js/templates/route-info-card-template.handlebars", 
             elementId: "cardtemplate", 
-            event: "cardUpdated",
+            event: [
+                "imageUpdated",
+                "ratingsUpdated",
+                "filledStarsChanged",
+                "emptyStarsChanged"
+            ],
             viewmodel: viewModel
         },
         {
@@ -36,6 +41,11 @@ $(document).ready(function () {
             rc.resize();
             rc.DrawCanvas();
         }
+    });
+
+    $(document).on("click", ".route-rating svg", function(e) {
+        e.stopPropagation();
+        viewModel.changeRating($(this).index() + 1);
     });
 
     setUpContentUpdater(content, function() {
