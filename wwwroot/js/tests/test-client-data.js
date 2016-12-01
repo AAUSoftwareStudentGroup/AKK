@@ -611,6 +611,27 @@ var TEST_MEMBER_INIT = {
     "id": "80de0476-ec3a-4ba9-8332-4dc8c994f2af"
   };
 
+var TEST_MEMBERS_INIT = [
+  {
+    "displayName": "test",
+    "username": "testusername",
+    "token": "qaAnSYFvk0ajbhBmnYzHpA==",
+    "isAdmin": false,
+    "id": "80de0476-ec3a-4ba9-8332-4dc8c994f2af"
+  },
+  {
+    "displayName": "Morten",
+    "username": "mortenrask",
+    "token": "asdnUSSABDbasduba0d313=",
+    "isAdmin": true,
+    "id": "sad8972-ec3a-4ba9-8332-4dc8c994f2af"
+  }
+];
+
+
+
+
+
 var TEST_ROUTES, TEST_SECTIONS, TEST_GRADES, TEST_TOKEN, TEST_MEMBER;
 function init (){
   TEST_ROUTES = JSON.parse(JSON.stringify(TEST_ROUTES_INIT));
@@ -618,6 +639,7 @@ function init (){
   TEST_GRADES = JSON.parse(JSON.stringify(TEST_GRADES_INIT));
   TEST_TOKEN = JSON.parse(JSON.stringify(TEST_TOKEN_INIT));
   TEST_MEMBER = JSON.parse(JSON.stringify(TEST_MEMBER_INIT));
+  TEST_MEMBERS = JSON.parse(JSON.stringify(TEST_MEMBERS_INIT));
 }
 
 init();

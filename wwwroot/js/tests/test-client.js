@@ -126,6 +126,10 @@ function TestMemberClient(url, cookieService)
     this.getMemberInfo = function(success) {
         success({success: true, data: TEST_MEMBER});
     }
+
+    this.getAllMembers = function(success){ 
+        success({success: true, data: TEST_MEMBERS});
+    };
 }
 
 function TestClient(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)
