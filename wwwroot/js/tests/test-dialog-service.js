@@ -1,6 +1,7 @@
 ﻿function TestDialogService() {
     var self = this;
     this.message = "";
+    this.confirm = true;
     self.confirm = function (message) {
         return true;
     };

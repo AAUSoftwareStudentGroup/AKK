@@ -32,7 +32,7 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.downloadRoutes = function() {
         if(self.selectedSection != null || self.selectedGrade != null) {
-            self.client.routes.getRoutes((self.selectedGrade ? self.selectedGrade.id : null), (self.selectedSection ? self.selectedSection.id : null), null, function(response) {
+            self.client.routes.getRoutes((self.selectedGrade ? self.selectedGrade.id : ""), (self.selectedSection ? self.selectedSection.id : ""), "", function(response) {
                 if(response.success) {
                     self.routes = response.data;
                     for(var i = 0; i < self.routes.length; i++) {
@@ -43,6 +43,7 @@ function AdminPanelViewModel(client, dialogService) {
             });
         }
         else {
+            console.log("wat");
             self.routes = [];
             self.trigger("routesChanged");
         }
@@ -80,6 +81,7 @@ function AdminPanelViewModel(client, dialogService) {
             self.client.sections.deleteSection(self.selectedSection.id, function(response) {
                 if(response.success) {
                     self.downloadSections();
+                    self.downloadRoutes();
                 }
                 else
                     self.dialogService.showMessage(response.message);

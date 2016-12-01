@@ -1,6 +1,6 @@
 function clone(obj)
 {
-    return jQuery.extend(true, {}, oldObject);
+    return obj;
 }
 
 function TestRouteClient(url, cookieService)
@@ -45,7 +45,7 @@ function TestSectionClient(url, cookieService)
 
     this.getSection = function(name, success)
     {
-        success({success: true, data: clone(TEST_SECTIONS.filter(function(s) { return s.id == name; })[0])});
+        success({success: true, data: clone(TEST_SECTIONS.filter(function(s) { return s.name == name || s.id == name; })[0])});
     };
 
     this.addSection = function(name, success) 
@@ -57,22 +57,27 @@ function TestSectionClient(url, cookieService)
 
     this.deleteSection = function(name, success) 
     { 
-        var section = this.getSection(name);
-        sections.splice(sections.indexOf(section));
+        var section;
+        this.getSection(name, function(s) { section = s.data; });
+        this.deleteSectionRoutes(name, function(){});
+        sections.splice(sections.indexOf(section), 1);
         success({success: true, data: clone(section)});
     };
 
     this.deleteSectionRoutes = function(name, success) 
     { 
-        var section = this.getSection(name);
-        var deletedRoutes = TEST_ROUTES.filter(function(route) { return route.sectionId == section.id; });
-        TEST_ROUTES = TEST_ROUTES.filter(function(route) { return route.sectionId != section.id; });
+        var sectionId;
+        this.getSection(name, function(r) { sectionId = r.data.id; });
+        var deletedRoutes = TEST_ROUTES.filter(function(route) { return route.sectionId == sectionId; });
+        TEST_ROUTES = TEST_ROUTES.filter(function(route) { return route.sectionId != sectionId; });
         success({success: true, data: clone(deletedRoutes)});
     };
 
     this.renameSection = function(sectionId, newName, success) 
     { 
-        var section = this.getSection(name);
+        var section;
+        this.getSection(sectionId, function(s) { section = s.data; });
+        console.log(section.name);
         section.name = newName;
         success({success: true, data: clone(section)});
     };
