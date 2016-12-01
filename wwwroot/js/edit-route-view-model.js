@@ -17,7 +17,11 @@ function EditRouteViewModel(client, navigationService) {
                 });
 
                 self.downloadHolds(function() {
-                    self.changeHold(response.data.color);
+                    self.changeHold(response.data.colorOfHolds);
+                    if (response.data.colorOfTape) {
+                        self.changeTape(response.data.colorOfTape);
+                        self.toggleTape();
+                    }
                     self.trigger("holdsUpdated");
                 });
                 
@@ -26,13 +30,6 @@ function EditRouteViewModel(client, navigationService) {
 
                 self.changeAuthor(response.data.author);
                 self.trigger("authorUpdated");
-
-                self.changeHold(response.data);
-                if (response.data.colorOfTape) {
-                    self.changeTape(response.data);
-                    self.toggleTape();
-                }
-                self.trigger("holdsUpdated");
 
                 self.downloadImage();
 

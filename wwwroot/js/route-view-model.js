@@ -91,12 +91,16 @@ function RouteViewModel(client, navigationService) {
         self.selectedGrade = self.grades.filter(function (g) { return g.id == gradeId; })[0];
     };
 
-    this.changeHold = function (holdColorId) {
-        self.selectedHold = self.colors.filter(function (g) { return g.id == holdColorId; })[0];
+    this.changeHold = function (holdColor) {
+      //  console.log(holdColor);                   
+     //  self.toggleTape();
+
+        self.selectedHold = self.colors.filter(function (g) { return g.colorOfHolds.r == holdColor.r && g.colorOfHolds.g == holdColor.g && g.colorOfHolds.b == holdColor.b; })[0];
     };
     
-    this.changeTape = function (tapeColorId) {
-        self.selectedTape = self.colors.filter(function (g) { return g.id == tapeColorId; })[0];
+    this.changeTape = function (tapeColor) {
+    //    console.log(tapeColor);
+        self.selectedTape = self.colors.filter(function (g) { return g.colorOfHolds.r == tapeColor.r && g.colorOfHolds.g == tapeColor.g && g.colorOfHolds.b == tapeColor.b; })[0];
     };
 
     this.changeNumber = function (routeNumber) {

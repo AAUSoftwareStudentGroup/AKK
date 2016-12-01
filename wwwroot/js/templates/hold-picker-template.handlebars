@@ -3,7 +3,7 @@
     <div class="radio-inputs">
         {{#if_eq hasTape false}}
         {{#each colors}}
-        <input id="holdColor-input-{{id}}" onclick="viewModel.changeHold('{{id}}')" name="hold" type="radio" {{#if_eq ../selectedHold.colorOfHolds.r colorOfHolds.r}} {{#if_eq ../selectedHold.colorOfHolds.g colorOfHolds.g}} {{#if_eq ../selectedHold.colorOfHolds.b colorOfHolds.b}} checked {{/if_eq}}{{/if_eq}}{{/if_eq}}/>
+        <input id="holdColor-input-{{id}}" onclick="viewModel.changeHold({ r:{{colorOfHolds.r}}, g:{{colorOfHolds.g}}, b:{{colorOfHolds.b}} })" name="hold" type="radio" {{#if_eq ../selectedHold.colorOfHolds.r colorOfHolds.r}} {{#if_eq ../selectedHold.colorOfHolds.g colorOfHolds.g}} {{#if_eq ../selectedHold.colorOfHolds.b colorOfHolds.b}} checked {{/if_eq}}{{/if_eq}}{{/if_eq}}/>
         <label class="hold-box holdColor-{{id}}" for="holdColor-input-{{id}}">
             <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
                 <g>
@@ -25,7 +25,7 @@
         {{/each}}
         {{else}}
         {{#each colors}}
-        <input id="holdColor-input-{{id}}" onclick="viewModel.changeTape('{{id}}')" name="hold" type="radio" {{#if_eq ../selectedTape.colorOfHolds.r r}} checked {{/if_eq}}/>
+        <input id="holdColor-input-{{id}}" onclick="viewModel.changeTape({ r:{{colorOfHolds.r}}, g:{{colorOfHolds.g}}, b:{{colorOfHolds.b}} })" name="hold" type="radio" {{#if_eq ../selectedTape.colorOfHolds.r colorOfHolds.r}} {{#if_eq ../selectedTape.colorOfHolds.g colorOfHolds.g}} {{#if_eq ../selectedTape.colorOfHolds.b colorOfHolds.b}} checked {{/if_eq}}{{/if_eq}}{{/if_eq}}/>
         <label class="hold-box holdColor-{{id}}" for="holdColor-input-{{id}}">
             <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
                 <g>
