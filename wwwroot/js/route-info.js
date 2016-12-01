@@ -55,3 +55,9 @@ $(document).ready(function () {
         headerViewModel.init();
     });
 });
+
+function addComment(form) {
+    if (viewModel.addingComment) return;
+    $(".editable").removeClass("editable");
+    viewModel.addComment(form);
+}

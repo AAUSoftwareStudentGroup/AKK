@@ -3,7 +3,6 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.navigationService = navigationService;
     this.dialogService = dialogService;
 
-    this.routeId;
     this.member = null;
     this.image = null;
     this.hasImage = false;
@@ -18,9 +17,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.emptyStars;
 
     this.init = function () {
-        this.routeId = navigationService.getParameters()["routeId"];
-
-        self.client.routes.getRoute(this.routeId, function (routeResponse) {
+        self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
             if (routeResponse.success) {
                     self.route = routeResponse.data;
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
@@ -36,7 +33,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             }
         });
 
-        self.client.member.getMemberRatings(function(response) {
+        self.client.members.getMemberRatings(function(response) {
             if (response.success) {
                 console.log(response);
             }
@@ -83,9 +80,13 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         }
     };
 
+    this.addingComment = false;
+
     this.addComment = function(form) {
         var fd = new FormData(form);
+        this.addingComment = true;
         this.client.routes.addComment(fd, self.route.id, function(response) {
+            self.addingComment = false;
             self.init();
         });
     }
