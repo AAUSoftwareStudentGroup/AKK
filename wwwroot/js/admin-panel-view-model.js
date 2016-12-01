@@ -302,9 +302,18 @@ function AdminPanelViewModel(client, dialogService) {
         newHold.name = name;
         newHold.colorOfHolds = {r: 0x66, b: 0x66, g: 0x66};
         delete newHold.id;
-        self.holds[self.holds.length] = newHold;
-        self.selectedHold = self.holds[self.holds.length-1];
-        self.trigger("holdsChanged");
+        self.client.holds.addHold(newHold, function(response) {
+            if(response.success) {
+                self.holds.push(response.data);
+                self.selectedHold = self.holds[self.holds.length-1];           
+            }
+            else {
+                self.dialogService.showMessage(response.message);
+                self.downloadHolds();
+                self.selectedHold = null;
+            }
+            self.trigger("holdsChanged");
+        });
     }
 
     this.updateHold = function()
@@ -317,7 +326,7 @@ function AdminPanelViewModel(client, dialogService) {
                 self.client.holds.addHold(self.selectedHold, function(response) {
                     if(response.success) {
                         self.holds.push(response.data);
-                        self.selectedHold = self.holds[self.grades.length-1];           
+                        self.selectedHold = self.holds[self.holds.length-1];           
                     }
                     else
                         self.dialogService.showMessage(response.message);
