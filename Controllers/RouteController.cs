@@ -239,14 +239,14 @@ namespace AKK.Controllers
         }
 
         //POST /api/route/beta
-        [HttpPost("beta")]
-        public async Task<ApiResponse<string>> AddBeta(string token, IFormFile file, Guid id, string type) {
+        [HttpPost("comment")]
+        public async Task<ApiResponse<string>> AddComment(string token, IFormFile file, Guid id, string text) {
+            if (text == null && file == null) {
+                return new ApiErrorResponse<string>("You cannot add an empty comment");
+            }
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
-                return new ApiErrorResponse<string>("You need to be logged in to add a beta");
-            }
-            if (file == null) {
-                return new ApiErrorResponse<string>("File is not valid");
+                return new ApiErrorResponse<string>("You need to be logged in to add a comment");
             }
             var route = _routeRepository.Find(id);
             if (route == null)
@@ -254,26 +254,62 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<string>($"No route exists with id {id}");
             }
 
-            var fileExtension = ContentDispositionHeaderValue
-                .Parse(file.ContentDisposition)
-                .FileName
-                .Trim('"')
-                .Split('.')
-                .Last();
-            var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
-            var path = "files/" + fileName;
-            var savePath = "wwwroot/" + path;
-            using (var fileStream = System.IO.File.Create(savePath)) {
-                await file.CopyToAsync(fileStream);
-            }
             var member = _memberRepository.GetAll()
                                           .FirstOrDefault(m => m.Token == token);
-            var video = new Video {FileUrl = path, Member = member};
-
-            route.Videos.Add(video);
+            var comment = new Comment {Member = member, Message = text ?? ""};
+            if (file != null) {
+                try {
+                    var fileExtension = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"')
+                        .Split('.')
+                        .Last();
+                    var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
+                    var path = "files/" + fileName;
+                    var savePath = "wwwroot/" + path;
+                        using (var fileStream = System.IO.File.Create(savePath)) {
+                                await file.CopyToAsync(fileStream);
+                        }
+                    var video = new Video {FileUrl = path};
+                    comment.Video = video;
+                } catch (System.OperationCanceledException) {
+                    //ASP.NET bug causes this exception to be thrown, even though it is not an error
+                }
+            }
+            
+            route.Comments.Add(comment);
+            System.Console.WriteLine(route.Comments.Count);
             _routeRepository.Save();
             
             return new ApiSuccessResponse<string>("success");
+        }
+
+        [HttpPost("comment/remove")]
+        public ApiResponse<string> RemoveComment(string token, Guid id, Guid routeId) {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            }
+
+            bool isAdmin = _authenticationService.HasRole(token, Role.Admin);
+            
+            var user = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+
+            if (user == null)
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            
+            var route = _routeRepository.Find(routeId);
+            if (route == null) 
+                return new ApiErrorResponse<string>("Invalid route");
+
+            if (!route.Comments.Any(c => c.Id == id))   
+                return new ApiErrorResponse<string>("Invalid comment");
+
+            route.Comments.RemoveAll(c => c.Id == id);
+            _routeRepository.Save();                  
+            
+            return new ApiSuccessResponse<string>("Comment deleted");
         }
 
         // PATCH: /api/route/{routeId}
@@ -316,8 +352,10 @@ namespace AKK.Controllers
                     _holdRepository.Save();
                     _imageRepository.Delete(img.Id);
                 }
-
+                // Console.WriteLine(JsonConvert.SerializeObject(route.Image));
+                route.Image.RouteId = routeToUpdate.Id;
                 routeToUpdate.Image = route.Image;
+                _imageRepository.Save();
             }
 
             if(route.GradeId != default(Guid))
