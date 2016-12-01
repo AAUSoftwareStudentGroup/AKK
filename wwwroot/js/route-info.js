@@ -32,7 +32,7 @@ $(document).ready(function () {
         }
     ];
 
-    $(document).on("click", "#routeimagecontainer", function(e) {
+    $(document).on('click', '#routeimagecontainer', function(e) {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
         $(".image-overlay").toggleClass("hidden");

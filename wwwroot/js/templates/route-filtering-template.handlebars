@@ -13,27 +13,33 @@
         {{else}}
         <div class="drop-down-container left">
             <h2>Grade</h2>
-            <select class="drop-down" onchange="viewModel.changeGrade(this.value)" type="dropdown" name="grade">
-                {{#each grades}}
-                <option id="grade-{{id}}" value="{{id}}">{{name}}</option>
-                {{/each}}
-            </select>
+            <label class="drop-down">
+                <select onchange="viewModel.changeGrade(this.value)" type="dropdown" name="grade">
+                    {{#each grades}}
+                    <option id="grade-{{id}}" value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </label>
         </div>
         <div class="drop-down-container left">
             <h2>Section</h2>
-            <select class="drop-down" onchange="viewModel.changeSection(this.value)" type="dropdown" name="section">
-                {{#each sections}}
-                <option id="section-{{name}}" value="{{id}}">{{name}}</option>
-                {{/each}}
-            </select>
+            <label class="drop-down">
+                <select onchange="viewModel.changeSection(this.value)" type="dropdown" name="section">
+                    {{#each sections}}
+                    <option id="section-{{name}}" value="{{id}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </label>
         </div>
         <div class="drop-down-container left">
             <h2>Sort by</h2>
-            <select class="drop-down" onchange="viewModel.changeSortBy(this.value)" type="dropdown" name="sortBy">
-                {{#each sortOptions}}
-                <option id="sortby-{{value}}" value="{{value}}">{{name}}</option>
-                {{/each}}
-            </select>
+            <label class="drop-down">
+                <select onchange="viewModel.changeSortBy(this.value)" type="dropdown" name="sortBy">
+                    {{#each sortOptions}}
+                    <option id="sortby-{{value}}" value="{{value}}">{{name}}</option>
+                    {{/each}}
+                </select>
+            </label>
         </div>
         <div class="right">
             <h2>Search</h2>
