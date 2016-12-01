@@ -3,6 +3,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.navigationService = navigationService;
     this.dialogService = dialogService;
 
+    this.routeId;
     this.member = null;
     this.image = null;
     this.hasImage = false;
@@ -11,11 +12,15 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.grade = null;
     this.route = null;
     this.isAuthed = false;
+
+    this.hasRated = false;
     this.filledStars;
     this.emptyStars;
 
     this.init = function () {
-        self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
+        this.routeId = navigationService.getParameters()["routeId"];
+
+        self.client.routes.getRoute(this.routeId, function (routeResponse) {
             if (routeResponse.success) {
                     self.route = routeResponse.data;
                     self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
@@ -25,16 +30,21 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             }
         );
         self.client.members.getMemberInfo(function(response) {
-            if(response.success) {
+            if (response.success) {
                 self.isAuthed = true;
                 self.member = response.data;
+            }
+        });
+
+        self.client.member.getMemberRatings(function(response) {
+            if (response.success) {
+                console.log(response);
             }
         });
     };
 
     this.parseRating = function() {
-        self.route.rating = 3.74;
-        var temp = Math.round(self.route.rating);
+        var temp = Math.round(self.route.averageRating || "0.0");
         self.filledStars = temp;
         self.emptyStars = 5 - temp;
     }
