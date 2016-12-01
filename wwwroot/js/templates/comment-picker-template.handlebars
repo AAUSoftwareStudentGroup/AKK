@@ -19,7 +19,10 @@
     </div>
     {{/each}}
     {{#if isAuthed}}
-    <div class="route-card">
+    <div class="route-card comment-card editable">
+        <div class="progress">
+            <div class="indeterminate"></div>
+        </div>
         <form id="comment-form" class="comment-input" enctype="multipart/form-data">
             <textarea type="text" name="text" class="comment-text-input" placeholder="Write comment"></textarea>
             <label for="files" id ="select-video-button" class="comment-clickable left">
@@ -28,7 +31,7 @@
                 </svg>
             </label>
             <input class="hidden" id="files" name="file" type="file" accept="video/*" onchange="viewModel.imageAdded();">
-            <div class="comment-clickable right comment-send " onclick="viewModel.addComment($(this).parent()[0]);">
+            <div class="comment-clickable right comment-send " onclick="addComment($(this).parent()[0]);">
                 <svg style="width:24px;height:24px" viewBox="0 0 24 24">
                     <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
                 </svg>

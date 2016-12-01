@@ -80,9 +80,13 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         }
     };
 
+    this.addingComment = false;
+
     this.addComment = function(form) {
         var fd = new FormData(form);
+        this.addingComment = true;
         this.client.routes.addComment(fd, self.route.id, function(response) {
+            self.addingComment = false;
             self.init();
         });
     }
