@@ -200,7 +200,8 @@ function AdminPanelViewModel(client, dialogService) {
     this.gradesSwap = function(diff, change) {
         if(diff+change < 0 || diff+change >= self.grades.length)
             return;
-        
+        self.swapdisable = true;
+
         var gradeA = self.grades[diff];
         var gradeB = self.grades[diff+change];
         var gradeBCopy = JSON.parse(JSON.stringify(gradeB));
