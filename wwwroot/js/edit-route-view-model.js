@@ -27,9 +27,9 @@ function EditRouteViewModel(client, navigationService) {
                 self.changeAuthor(response.data.author);
                 self.trigger("authorUpdated");
 
-                self.changeHold(response.data.colorOfHolds);
+                self.changeHold(response.data);
                 if (response.data.colorOfTape) {
-                    self.changeTape(response.data.colorOfTape);
+                    self.changeTape(response.data);
                     self.toggleTape();
                 }
                 self.trigger("holdsUpdated");
@@ -53,11 +53,14 @@ function EditRouteViewModel(client, navigationService) {
                 holds : this.HoldPositions || []
             }
         }
+        if (this.selectedTape != null) {
+            this.selectedTape = this.selectedTape.colorOfHolds;
+        }
         self.client.routes.updateRoute( this.routeId, 
                                         this.selectedSection.id, 
                                         this.author, 
                                         this.routeNumber, 
-                                        this.selectedHold, 
+                                        this.selectedHold.colorOfHolds, 
                                         this.selectedGrade.id, 
                                         this.selectedTape,
                                         this.note,

@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -93,21 +95,7 @@ namespace AKK.Models
 
             var holdColors = new List<HoldColor>
             {
-                new HoldColor {HexColorOfHolds = 4278190335},
-                new HoldColor {HexColorOfHolds = 4280441343},
-                new HoldColor {HexColorOfHolds = 2065045247},
-                new HoldColor {HexColorOfHolds = 4278255615},
-                new HoldColor {HexColorOfHolds = 2852927231},
-                new HoldColor {HexColorOfHolds = 1684301055},
-                new HoldColor {HexColorOfHolds = 2065071103},
-                new HoldColor {HexColorOfHolds = 1459455},
-                new HoldColor {HexColorOfHolds = 2080315135},
-                new HoldColor {HexColorOfHolds = 587208447},
-                new HoldColor {HexColorOfHolds = 4286251263},
-                new HoldColor {HexColorOfHolds = 16711935},
-                new HoldColor {HexColorOfHolds = 1473535},
-                new HoldColor {HexColorOfHolds = 4294902015},
-                new HoldColor {HexColorOfHolds = 3907585535},
+
             };
 
             var routes = new List<Route>
@@ -400,6 +388,14 @@ namespace AKK.Models
                     CreatedDate = new DateTime(2016, 4, 10),
                 },
             };
+
+            foreach (var color in colors)
+            {
+                HoldColor newColor = new HoldColor();
+                newColor.HexColorOfHolds = color.Value.ToUint();
+                newColor.Name = color.Key;
+                holdColors.Add(newColor);
+            }
 
             context.HoldColors.AddRange(holdColors);
             context.Grades.AddRange(grades.Select(x => x.Value));
