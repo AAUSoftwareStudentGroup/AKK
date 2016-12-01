@@ -278,6 +278,22 @@ function GradeClient(url, cookieService)
         });
     };
 
+
+    this.updateGrade = function(grade, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url+"/"+grade.id,
+            data:
+            {
+                token: self.cookieService.getToken(),
+                grade: grade
+            },
+            success: success
+        });
+    };
+
     this.deleteGrade = function(gradeId, success)
     {
         $.ajax({
