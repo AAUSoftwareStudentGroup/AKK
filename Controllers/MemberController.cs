@@ -49,6 +49,20 @@ namespace AKK.Controllers
             return new ApiSuccessResponse<Member>(member);
         }
 
+        // GET: /api/member/{token}/ratings
+        [HttpGet("{token}/ratings")]
+        public ApiResponse<IEnumerable<Rating>> GetMemberRatings(string token)
+        {
+            var member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
+
+            if (member == null || token == null)
+            {
+                return new ApiErrorResponse<IEnumerable<Rating>>("Invalid token");
+            }
+
+            return new ApiSuccessResponse<IEnumerable<Rating>>(member.Ratings);
+        }
+
         // GET: /api/member/login
         [HttpGet("login")]
         public ApiResponse<string> Login(string username, string password)

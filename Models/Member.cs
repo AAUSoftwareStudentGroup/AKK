@@ -18,6 +18,7 @@ namespace AKK.Models
 
         [JsonIgnore]
         public List<Route> Routes { get; set; }
+        [JsonIgnore]
         public List<Rating> Ratings { get; set; }
     }
 }
