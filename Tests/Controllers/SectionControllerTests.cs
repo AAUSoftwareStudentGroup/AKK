@@ -223,7 +223,7 @@ namespace AKK.Tests.Controllers
         public void _DeleteSectionRoutes_DeleteSectionRoutesOfSectionThatExists_EmptySection()
         {
             var response = _controller.DeleteSectionRoutes(token, "A");
-            Assert.AreEqual(true, response.Success);
+            Assert.IsTrue(response.Success);
             Assert.IsEmpty(_sectionRepo.GetAll().FirstOrDefault().Routes);
         }
 

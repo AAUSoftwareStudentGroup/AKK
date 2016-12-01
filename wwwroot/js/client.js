@@ -439,10 +439,56 @@ function MemberClient(url, cookieService)
     }; 
 }
 
-function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)
+function HoldClient(url, cookieService)
+{
+    var self = this;
+    this.cookieService = cookieService;
+    this.getAllHolds = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            success: success
+        });
+    };
+
+    this.addHold = function(hold, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                token: self.cookieService.getToken(),
+                hold: hold
+            },
+            success: success
+        });
+    };
+
+    this.deleteHold = function(holdId, success)
+    {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: url + "/" + holdId,
+            data:
+            {
+                token: self.cookieService.getToken(),
+                id: holdId
+            },
+            success: success
+        });
+    };
+}
+
+function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, holdUrl, cookieService)
 {
     this.routes = new RouteClient(routeUrl, cookieService);
     this.sections = new SectionClient(sectionUrl, cookieService);
     this.grades = new GradeClient(gradeUrl, cookieService);
     this.members = new MemberClient(memberUrl, cookieService);
+    this.holds = new HoldClient(holdUrl, cookieService);
 }

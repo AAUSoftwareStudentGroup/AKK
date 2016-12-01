@@ -47,6 +47,7 @@ namespace AKK
             services.AddScoped<IRepository<Image>, ImageRepository>();
             services.AddScoped<IRepository<Hold>, HoldRepository>();
             services.AddScoped<IRepository<Member>, MemberRepository>();
+            services.AddScoped<IRepository<HoldColor>, HoldColorRepository>();
             services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 

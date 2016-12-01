@@ -217,7 +217,7 @@ namespace AKK.Controllers {
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section.Routes)) as IEnumerable<Route>;
-           // section.Routes.RemoveAll(r => true);
+            section.Routes.RemoveAll(r => true);
             var routes = _routeRepository.GetAll().Where(r => r.SectionName == section.Name);
             foreach (var item in routes)
             {

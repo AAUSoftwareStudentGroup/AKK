@@ -90,6 +90,7 @@ namespace AKK.Services
                     member.IsAdmin = false;
                     break;
             }
+            _memberRepository.Save();
         }
 
         public IEnumerable<Role> GetRoles(string token)

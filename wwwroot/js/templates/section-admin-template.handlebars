@@ -6,7 +6,7 @@
             <span class="second"></span>
         </div>
     </div>
-    <div class="content-section section-picker">
+    <div class="content-section section-picker expansion-panel-content">
         <div class="radio-inputs">
             {{#each sections}}
             <input id="section-input-{{name}}" onclick="viewModel.changeSection('{{id}}')" name="section" type="radio" {{#if_eq ../selectedSection.id id}} checked {{/if_eq}}>
