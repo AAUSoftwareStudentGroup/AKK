@@ -17,7 +17,7 @@ $(document).ready(function () {
             scriptSource: "js/templates/route-info-card-template.handlebars", 
             elementId: "cardtemplate", 
             event: [
-                "imageUpdated",
+                "imageChanged",
                 "ratingsUpdated",
                 "filledStarsChanged",
                 "emptyStarsChanged"
@@ -49,13 +49,11 @@ $(document).ready(function () {
     });
 
     setUpContentUpdater(content, function() {
-        viewModel.addEventListener("cardUpdated", function() {
+        viewModel.addEventListener("imageChanged", function() {
             if (viewModel.hasImage) {
                 rc = new RouteCanvas($("#routeimage")[0], viewModel.route.image, viewModel, false);
                 rc.DrawCanvas();
             }
-        });
-        viewModel.addEventListener("imageUpdated", function() {
             $("#comment-form").addClass("video-added");
         });
         viewModel.addEventListener("commentsUpdated", function() {
