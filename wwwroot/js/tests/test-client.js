@@ -106,6 +106,7 @@ function TestMemberClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+    this.members = TEST_MEMBERS;
     this.logIn = function(username, password, success)
     {
         self.cookieService.setToken("TESTTOKEN");
