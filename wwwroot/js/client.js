@@ -106,6 +106,7 @@ function RouteClient(url, cookieService)
             success: success
         });
     };
+
     this.updateRoute = function(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, success)
     {
         $.ajax({
@@ -143,6 +144,22 @@ function RouteClient(url, cookieService)
             success: success
         });
     };
+
+    this.setRating = function(routeId, ratingValue, success)
+    {
+        $.ajax({
+            type: "PUT", 
+            dataType: "json",
+            url: url + "/" + routeId + "/rating",
+            data:
+            {
+                routeId: routeId,
+                token: self.cookieService.getToken(),
+                ratingValue: ratingValue
+            },
+            success: success
+        });
+    }
 }
 
 function SectionClient(url, cookieService)

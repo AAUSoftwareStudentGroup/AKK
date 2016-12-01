@@ -53,13 +53,18 @@ $(document).ready(function () {
     viewModel.addEventListener("gradeColorChanged", function(msg) {
         $('.color-select-preview').css('background-color', 'rgb('+viewModel.selectedGrade.color.r+','+viewModel.selectedGrade.color.g+','+viewModel.selectedGrade.color.b+')');
     });
+
     viewModel.addEventListener("holdColorChanged", function(msg) {
         $('#grip-midtone').css('fill', 'rgb('+viewModel.selectedHold.colorOfHolds.r+','+viewModel.selectedHold.colorOfHolds.g+','+viewModel.selectedHold.colorOfHolds.b+')');
     });
+
     viewModel.addEventListener("gradesChanged", function(msg) {
         window.setTimeout(function() {
-            if(viewModel.selectedGrade)
-                $('.orderable-list').scrollTop(61*viewModel.selectedGrade.difficulty-61*2);
+            if($("#grade-admin .expansion-panel").hasClass("expanded")) {
+                $("#grade-admin .expansion-panel").animate({
+                    height: $('#grade-admin .expansion-panel .expansion-panel-content').height(),
+                }, 500);
+            }
         },10);
     });
     viewModel.addEventListener("holdsChanged", function(msg) {
@@ -74,6 +79,14 @@ $(document).ready(function () {
         viewModel.changeSection();
         viewModel.selectGrade();
         viewModel.selectHold();
+
+        
+        $(element).animate({
+            height: element.find('.expansion-panel-content').height(),
+        }, 500);
+        $(".expansion-panel.expanded").animate({
+            height: 0,
+        }, 500);
 
         if(element.hasClass('expanded'))
             element.removeClass('expanded');

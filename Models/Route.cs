@@ -69,6 +69,8 @@ namespace AKK.Models
 
         public Guid GradeId { get; set; }
 
+        //This should be removed from DB
+        [JsonIgnore]
         public bool PendingDeletion { get; set; }
 
         [JsonIgnore]
@@ -82,6 +84,7 @@ namespace AKK.Models
         [NotMapped]
         public bool HasBeta => Comments.Any(c => c.Video != null);
 
+        [JsonIgnore]
         public List<Rating> Ratings { get; set; }
 
         [NotMapped]

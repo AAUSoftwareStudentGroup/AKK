@@ -212,7 +212,8 @@ function AdminPanelViewModel(client, dialogService) {
     this.gradesSwap = function(diff, change) {
         if(diff+change < 0 || diff+change >= self.grades.length)
             return;
-        
+        self.swapdisable = true;
+
         var gradeA = self.grades[diff];
         var gradeB = self.grades[diff+change];
         var gradeBCopy = JSON.parse(JSON.stringify(gradeB));
@@ -300,6 +301,7 @@ function AdminPanelViewModel(client, dialogService) {
     this.addNewHold = function()
     {
         self.selectedHold.colorOfHolds.a = 255;
+        delete self.selectedHold.id;
         self.client.holds.addHold(self.selectedHold, function(response) {
             if(response.success) {
                 self.holds.push(response.data);
