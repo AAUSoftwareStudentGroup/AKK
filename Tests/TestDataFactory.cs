@@ -13,6 +13,7 @@ namespace AKK.Tests
         private List<Route> _routes;
         public List<Image> _images;
         public List<Hold> _holds;
+        public List<HoldColor> _holdColors;
         public List<Member> Members {
             get { return _members; }
             set { _members = value; }
@@ -41,6 +42,11 @@ namespace AKK.Tests
         public List<Hold> Holds {
             get { return _holds; }
             set { _holds = value; }
+        }
+
+        public List<HoldColor> HoldColors {
+            get { return _holdColors; }
+            set { _holdColors = value; }
         }
 
         public TestDataFactory()
@@ -284,6 +290,34 @@ namespace AKK.Tests
                         route.Grade = grade;
                     }
                 }
+            }
+
+            var colors = new Dictionary<string, Color> {
+                {"Cyan", new Color(0, 200, 200)},
+                {"Azure", new Color(1, 126, 255)},
+                {"Blue", new Color(60, 60, 255)},
+                {"Violet", new Color(27, 0, 255)},
+                {"Magenta", new Color(200, 50, 200)},
+                {"Rose", new Color(210, 25, 120)},
+                {"Red", new Color(200, 30, 30)},
+                {"Orange", new Color(255, 127, 00)},
+                {"Yellow", new Color(220, 200, 30)},
+                {"Light Green", new Color(110, 210, 20)},
+                {"Green", new Color(20, 150, 20)},
+                {"Black", new Color(0, 0, 0)},
+                {"Brown", new Color(126, 54, 15)},
+                {"Grey", new Color(92, 89, 89)},
+                {"White", new Color(205, 205, 205)},
+            };
+
+            _holdColors = new List<HoldColor>();
+            
+            foreach (var color in colors)
+            {
+                HoldColor newColor = new HoldColor();
+                newColor.HexColorOfHolds = color.Value.ToUint();
+                newColor.Name = color.Key;
+                _holdColors.Add(newColor);
             }
 
             _images = new List<Image>();
