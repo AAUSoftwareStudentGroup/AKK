@@ -11,33 +11,64 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.grade = null;
     this.route = null;
     this.isAuthed = false;
+
+    this.hasRated = false;
     this.filledStars;
     this.emptyStars;
 
     this.init = function () {
         self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
             if (routeResponse.success) {
-                    self.route = routeResponse.data;
-                    self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
-                    self.parseRating();
-                    self.downloadImage();
-                }
+                self.route = routeResponse.data;
+                self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
+                self.downloadImage();
+
+                self.client.members.getMemberRatings(function(ratingResponse) {
+                    var ratingValue = null;
+                    if (ratingResponse.success) {
+                        var memberRating = ratingResponse.data.filter(function(r) { return r.routeId == self.route.id; })[0];
+                        if (memberRating) {
+                            ratingValue = memberRating.ratingValue;
+                        }
+                    }
+
+                    self.updateRating(self.route.averageRating, ratingValue);
+                });
             }
-        );
+        });
+
         self.client.members.getMemberInfo(function(response) {
-            if(response.success) {
+            if (response.success) {
                 self.isAuthed = true;
                 self.member = response.data;
             }
         });
+
     };
 
-    this.parseRating = function() {
-        self.route.rating = 3.74;
-        var temp = Math.round(self.route.rating);
-        self.filledStars = temp;
-        self.emptyStars = 5 - temp;
-    }
+    this.updateRating = function(averageRating, memberRating) {
+        var rating;
+
+        if (memberRating) {
+            this.hasRated = true;
+            rating = memberRating;
+            self.client.routes.setRating(self.route.id, rating, function(response) {
+                if (!response.success) {
+                    self.trigger("Error", response.message)
+                }
+            });
+        } else {
+            this.hasRated = false
+            rating = averageRating;
+        }
+
+
+        rating = Math.round(rating);
+        self.filledStars = rating;
+        self.trigger("filledStarsChanged");
+        self.emptyStars = 5 - rating;
+        self.trigger("emptyStarsChanged");
+    };
 
     this.downloadImage = function() {
         self.client.routes.getImage(self.route.id, function(imageResponse) {
@@ -47,15 +78,19 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.route.image.src = imageResponse.data.fileUrl;
                 self.HoldPositions = imageResponse.data.holds;
                 self.route.image.onload = function() {
-                    self.trigger("cardUpdated");
-                    self.trigger("commentsUpdated");
+                    self.trigger("imageChanged");
                 }
             } else {
-                self.trigger("cardUpdated");
-                self.trigger("commentsUpdated");
+                self.trigger("imageChanged");
             }
         });
-    }
+    };
+
+    this.changeRating = function(rating) {
+        if (this.isAuthed) {
+            this.updateRating(self.route.averageRating, rating);
+        }
+    };
 
     this.editRoute = function () {
         if (self.route != null) {
@@ -73,16 +108,16 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         }
     };
 
+    this.addingComment = false;
+
     this.addComment = function(form) {
         var fd = new FormData(form);
+        this.addingComment = true;
         this.client.routes.addComment(fd, self.route.id, function(response) {
+            self.addingComment = false;
             self.init();
         });
-    }
-
-    this.imageAdded = function() {
-        this.trigger("imageUpdated");
-    }
+    };
 
     this.removeComment = function (id, routeId) {
         if (!self.dialogService.confirm("Are you sure that you want to remove the comment?")) return;
@@ -91,14 +126,15 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
                     if (routeResponse.success) {
                         self.route.comments = routeResponse.data.comments;
-                        self.trigger("commentsUpdated");
+                        self.trigger("commentsChanged");
                     }
                 });
             } else {
                 self.trigger("Error", response.message);
             }
         });
-    }
+    };
+
 }
 
 RouteInfoViewModel.prototype = new EventNotifier();

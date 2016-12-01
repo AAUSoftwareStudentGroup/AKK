@@ -79,6 +79,7 @@ input[type="checkbox"] {
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
     outline: none;
     cursor: pointer;
+    -webkit-appearance: none;
 }
 
 .submit-button.positive {
@@ -359,12 +360,13 @@ input:checked + .toggle-switch::before {
 
 .route-rating {
     float: left;
-    margin: 4px 0 0 -1px;
+    margin-left: 2px;
 }
 
 .route-rating svg {
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
+    margin-left: -4px;
     fill: #666;
 }
 
@@ -404,7 +406,7 @@ input:checked + .toggle-switch::before {
 }
 
 .drop-down-container {
-    width: 72px;
+    width: 71px;
     margin-right: 16px;
 }
 
@@ -412,12 +414,30 @@ input:checked + .toggle-switch::before {
     margin-right: 0px;
 }
 
-.drop-down {
+.drop-down select {
     width: 100%;
     height: 24px;
     border: none;
+    text-indent: 8px;
     outline: none;
     color: #555555;
+    background: #ddd;
+    float: left;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    -webkit-appearance:none;
+}
+
+.drop-down:before {
+    content:'\25BC';
+    display: inline-block;
+    color: #666;
+    margin-left: -14px;   /* remove the damn :after space */
+    height: 24px;
+    line-height: 24px;
+    pointer-events:none; /* let the click pass trough */
+    font-size: 12px;
 }
 
 .search-bar {
@@ -439,6 +459,7 @@ input:checked + .toggle-switch::before {
 }
 
 .by-line {
+    width: 48%;
     float: left;
 }
 
@@ -453,17 +474,21 @@ input:checked + .toggle-switch::before {
 
 .single-route .route-rating {
     float: right;
-    margin: 4px -1px 0 0px;
 }
 
 .single-route .route-rating svg {
-    width: 24px;
-    height: 24px;
+    width: 32px;
+    height: 32px;
+    margin: 0 -5px 0 0;
+    cursor: pointer;
+}
+
+.route-rating.rated svg {
     fill: #FDD835;
 }
 
 .route-card-content {
-    margin-top: 8px;
+    margin-top: 6px;
     border-top: 1px solid rgba(0, 0, 0, 0.12)
 }
 
@@ -473,6 +498,7 @@ input:checked + .toggle-switch::before {
     float: right;
     position: relative;
     margin-top: 8px;
+    cursor: pointer;
 }
 
 .route-image.small {
@@ -725,13 +751,13 @@ input:checked + .toggle-switch::before {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20);
     padding: 45px 10px 0px 10px;
     overflow: hidden;
-    max-height: 0px;
+    height: 0px;
     position: relative;
-    transition: .5s;
+    transition: margin .5s;
 }
 
 .expansion-panel.expanded {
-    max-height: 286px;
+    /*max-height: 286px;*/
     margin: 20px 0;
 }
 /*.expansion-panel.expanded:first-child {margin-top: 0}*/
@@ -794,10 +820,13 @@ input:checked + .toggle-switch::before {
     transform: translateX(-40%) rotate(-30deg);
 }
 
+.expansion-panel-content {
+    overflow: hidden;
+}
+
+.nonorderable-list,
 .orderable-list {
     width: 100%;
-    height: 230px;
-    overflow-y: scroll;
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30);
     margin-bottom: 8px;
 }
@@ -812,7 +841,7 @@ input:checked + .toggle-switch::before {
 
 .order-controls {
     float: left;
-    width: 24px;
+    width: 32px;
     position: absolute;
     top: 0;
     bottom: 0;
@@ -841,7 +870,7 @@ input:checked + .toggle-switch::before {
 
 .order-content {
     position: absolute;
-    left: 25px;
+    left: 34px;
     right: 0;
     top: 0;
     bottom: 0;
@@ -850,6 +879,9 @@ input:checked + .toggle-switch::before {
     overflow: hidden;
 }
 
+.nonorderable-list .order-content {
+    left: 0;
+}
 
 
 /*///////////////////*/
@@ -863,9 +895,31 @@ input:checked + .toggle-switch::before {
     margin-left: 8px;
 }
 
+.member-item h2,
 .grade-details > h2 {
     margin: 0;
 }
+
+.isAdminButton {
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    position: absolute;
+    margin: auto;
+    right: 18px;
+    top: 0;
+    bottom: 0;
+}
+
+.isAdminButton svg {
+    fill: #DDD;
+}
+
+.isAdminButton.isAdmin svg {
+    fill: #2196f3;
+}
+
+/* ******************************* */
 
 .color-select-input {
     width: 100%;
@@ -893,6 +947,8 @@ input:checked + .toggle-switch::before {
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30);
     user-select: none;
     border: 0;
+    border-radius: 0;
+    -webkit-appearance: none;
 }
 
 .color-select-input .predefines .set-white {
@@ -934,13 +990,13 @@ input[type=range]::-webkit-slider-runnable-track {
 input[type=range]::-webkit-slider-thumb {
   box-shadow: 0px 2px 6px -3px #000000, 0px 0px 0px #0d0d0d;
   border: 1px solid rgba(0,0,0,0.2);
-  height: 16px;
-  width: 16px;
-  border-radius: 20px;
+  height: 24px;
+  width: 24px;
+  border-radius: 24px;
   background: #2196f3;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -4px;
+  margin-top: -8px;
 }
 input[type=range]::-moz-range-track {
   width: 100%;
@@ -953,13 +1009,13 @@ input[type=range]::-moz-range-track {
 input[type=range]::-moz-range-thumb {
   box-shadow: 0px 2px 6px -3px #000000, 0px 0px 0px #0d0d0d;
   border: 1px solid rgba(0,0,0,0.2);
-  height: 16px;
-  width: 16px;
-  border-radius: 20px;
+  height: 24px;
+  width: 24px;
+  border-radius: 24px;
   background: #2196f3;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -4px;
+  margin-top: -8px;
 }
 input[type=range]::-ms-track {
   width: 100%;
@@ -972,13 +1028,13 @@ input[type=range]::-ms-track {
 input[type=range]::-ms-thumb {
   box-shadow: 0px 2px 6px -3px #000000, 0px 0px 0px #0d0d0d;
   border: 1px solid rgba(0,0,0,0.2);
-  height: 16px;
-  width: 16px;
-  border-radius: 20px;
+  height: 24px;
+  width: 24px;
+  border-radius: 24px;
   background: #2196f3;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -4px;
+  margin-top: -8px;
 }
 
 /* COMMENTS AND BETAS */
@@ -1036,4 +1092,108 @@ input[type=range]::-ms-thumb {
     margin-top:8px;
     margin-left:6px;
     fill:white;
+}
+
+.comment-card:not(.editable), .comment-card:not(.editable) .comment-text-input {
+    background-color:#eee;
+}
+.comment-card:not(.editable) .comment-send {
+    background-color:#bbb;
+}
+
+
+/* Progress Bar  from http://materializecss.com/preloader.html*/
+.editable>.progress {
+    display: none;
+}
+
+.comment-card .progress {
+    position: absolute;
+}
+
+.progress {
+    position: relative;
+    top: 0;
+    left: 0;
+    height: 4px;
+    display: block;
+    width: 100%;
+    background-color: #B1CFF3;
+    background-clip: padding-box;
+    margin: 0 0 1rem 0;
+    overflow: hidden; 
+}
+
+.progress .indeterminate {
+    background-color: #4C89E0; 
+}
+
+.progress .indeterminate:before {
+    content: '';
+    position: absolute;
+    background-color: inherit;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    will-change: left, right;
+    -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+            animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite; 
+}
+.progress .indeterminate:after {
+    content: '';
+    position: absolute;
+    background-color: inherit;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    will-change: left, right;
+    -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+            animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+    -webkit-animation-delay: 1.15s;
+            animation-delay: 1.15s; 
+}
+
+@-webkit-keyframes indeterminate {
+  0% {
+    left: -35%;
+    right: 100%; }
+  60% {
+    left: 100%;
+    right: -90%; }
+  100% {
+    left: 100%;
+    right: -90%; } }
+@keyframes indeterminate {
+  0% {
+    left: -35%;
+    right: 100%; }
+  60% {
+    left: 100%;
+    right: -90%; }
+  100% {
+    left: 100%;
+    right: -90%; } }
+@-webkit-keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%; }
+  60% {
+    left: 107%;
+    right: -8%; }
+  100% {
+    left: 107%;
+    right: -8%; } }
+@keyframes indeterminate-short {
+  0% {
+    left: -200%;
+    right: 100%; }
+  60% {
+    left: 107%;
+    right: -8%; }
+  100% {
+    left: 107%;
+    right: -8%; } }
+
+.route-card.comment-card {
+    position: relative;
 }

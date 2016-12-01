@@ -8,12 +8,13 @@ function AdminPanelViewModel(client, dialogService) {
     this.gradeName = "";
     this.sections = [];
     this.routes = [];
+    this.members = [];
     this.editingGrades = false;
 
     this.init = function() {
         self.downloadSections();
         self.downloadGrades();
-        self.selectedSection = self.sections[0];
+        self.downloadMembers();
     }
 
     this.downloadSections = function() {
@@ -126,7 +127,6 @@ function AdminPanelViewModel(client, dialogService) {
         delete newGrade.id;
         self.client.grades.addGrade(newGrade, function(response) {
             if(response.success) {
-                console.log(response.data);
                 self.grades.push(response.data);
                 self.selectedGrade = self.grades[self.grades.length-1];           
                 self.trigger("gradesChanged");
@@ -140,6 +140,7 @@ function AdminPanelViewModel(client, dialogService) {
     {
         self.client.grades.updateGrade(self.selectedGrade, function(response) {
             if(response.success) {
+                self.grades[self.selectedGrade.difficulty] = self.selectedGrade;
                 self.selectedGrade = null;
                 self.trigger("gradesChanged");
                 self.downloadRoutes();
@@ -155,8 +156,10 @@ function AdminPanelViewModel(client, dialogService) {
         if(self.selectedGrade != null && self.dialogService.confirm("Do you really want to permanently delete this difficulty?"))
         {
             self.client.grades.deleteGrade(self.selectedGrade.id, function(response) {
-                if(response.success)
-                    self.trigger("gradesChanged");
+                if(response.success) {
+                    self.selectedGrade = null;
+                    self.downloadGrades();
+                }
                 else {
                     self.dialogService.showMessage(response.message);
                 }
@@ -188,6 +191,7 @@ function AdminPanelViewModel(client, dialogService) {
         }
         else {
             self.selectedGrade = self.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
+            self.selectedGrade = JSON.parse(JSON.stringify(self.selectedGrade));
         }
         self.trigger("gradesChanged");
         self.downloadRoutes();
@@ -202,7 +206,8 @@ function AdminPanelViewModel(client, dialogService) {
     this.gradesSwap = function(diff, change) {
         if(diff+change < 0 || diff+change >= self.grades.length)
             return;
-        
+        self.swapdisable = true;
+
         var gradeA = self.grades[diff];
         var gradeB = self.grades[diff+change];
         var gradeBCopy = JSON.parse(JSON.stringify(gradeB));
@@ -226,6 +231,32 @@ function AdminPanelViewModel(client, dialogService) {
                     else
                         self.dialogService.showMessage(response.message);
                 });
+            }
+            else
+                self.dialogService.showMessage(response.message);
+        });
+    }
+
+    this.downloadMembers = function() {
+        self.client.members.getAllMembers(function(response) {
+            if(response.success) {
+                self.members = response.data;
+                self.members.sort(function(a,b) {return a.displayName > b.displayName});
+                self.trigger("membersChanged");
+            }
+        });
+    }
+
+    this.selectMember = function(id) {
+        // how do we lookup member on a route?
+    }
+
+    this.toggleAdmin = function(id, isAdmin) {
+        self.client.members.changeRole(id, (isAdmin ? "Authenticated" : "Admin"), function(response) {
+            if(response.success) {
+                var member = self.members.filter(function (s) { return s.id == id; })[0];
+                member.isAdmin = !member.isAdmin;
+                self.trigger("membersChanged");
             }
             else
                 self.dialogService.showMessage(response.message);

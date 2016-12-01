@@ -106,6 +106,7 @@ function RouteClient(url, cookieService)
             success: success
         });
     };
+
     this.updateRoute = function(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, success)
     {
         $.ajax({
@@ -143,6 +144,22 @@ function RouteClient(url, cookieService)
             success: success
         });
     };
+
+    this.setRating = function(routeId, ratingValue, success)
+    {
+        $.ajax({
+            type: "PUT", 
+            dataType: "json",
+            url: url + "/" + routeId + "/rating",
+            data:
+            {
+                routeId: routeId,
+                token: self.cookieService.getToken(),
+                ratingValue: ratingValue
+            },
+            success: success
+        });
+    }
 }
 
 function SectionClient(url, cookieService)
@@ -381,6 +398,16 @@ function MemberClient(url, cookieService)
         });
     };
 
+    this.getMemberRatings = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url + "/" + self.cookieService.getToken() + "/ratings",
+            success: success
+        });
+    }
+
     this.getAllMembers = function(success)
     {
         $.ajax({
@@ -412,10 +439,56 @@ function MemberClient(url, cookieService)
     }; 
 }
 
-function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, cookieService)
+function HoldClient(url, cookieService)
+{
+    var self = this;
+    this.cookieService = cookieService;
+    this.getAllHolds = function(success)
+    {
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: url,
+            success: success
+        });
+    };
+
+    this.addHold = function(hold, success)
+    {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: url,
+            data:
+            {
+                token: self.cookieService.getToken(),
+                hold: hold
+            },
+            success: success
+        });
+    };
+
+    this.deleteHold = function(holdId, success)
+    {
+        $.ajax({
+            type: "DELETE",
+            dataType: "json",
+            url: url + "/" + holdId,
+            data:
+            {
+                token: self.cookieService.getToken(),
+                id: holdId
+            },
+            success: success
+        });
+    };
+}
+
+function Client(routeUrl, sectionUrl, gradeUrl, memberUrl, holdUrl, cookieService)
 {
     this.routes = new RouteClient(routeUrl, cookieService);
     this.sections = new SectionClient(sectionUrl, cookieService);
     this.grades = new GradeClient(gradeUrl, cookieService);
     this.members = new MemberClient(memberUrl, cookieService);
+    this.holds = new HoldClient(holdUrl, cookieService);
 }

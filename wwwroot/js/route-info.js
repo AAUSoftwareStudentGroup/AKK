@@ -2,7 +2,7 @@
 var headerViewModel;
 var rc;
 $(document).ready(function () {
-    var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new CookieService());
+    var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
     headerViewModel = new HeaderViewModel("Route Info", client, "/");
     viewModel = new RouteInfoViewModel(client, new NavigationService(), new DialogService());
 
@@ -16,7 +16,12 @@ $(document).ready(function () {
         {
             scriptSource: "js/templates/route-info-card-template.handlebars", 
             elementId: "cardtemplate", 
-            event: "cardUpdated",
+            event: [
+                "imageUpdated",
+                "ratingsUpdated",
+                "filledStarsChanged",
+                "emptyStarsChanged"
+            ],
             viewmodel: viewModel
         },
         {
@@ -27,7 +32,7 @@ $(document).ready(function () {
         }
     ];
 
-    $(document).on("click", "#routeimagecontainer", function(e) {
+    $(document).on('click', '#routeimagecontainer', function(e) {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
         $(".image-overlay").toggleClass("hidden");
@@ -36,6 +41,11 @@ $(document).ready(function () {
             rc.resize();
             rc.DrawCanvas();
         }
+    });
+
+    $(document).on("click", ".route-rating svg", function(e) {
+        e.stopPropagation();
+        viewModel.changeRating($(this).index() + 1);
     });
 
     setUpContentUpdater(content, function() {
@@ -55,3 +65,9 @@ $(document).ready(function () {
         headerViewModel.init();
     });
 });
+
+function addComment(form) {
+    if (viewModel.addingComment) return;
+    $(".editable").removeClass("editable");
+    viewModel.addComment(form);
+}

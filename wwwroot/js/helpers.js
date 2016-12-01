@@ -57,9 +57,17 @@ function setUpContentUpdater(objs, callback) {
         var obj = objs.shift();
         $.get(obj.scriptSource, function(response) {
             templates[obj.elementId] = Handlebars.compile(response);
-            obj.viewmodel.addEventListener(obj.event, function() {
-                $("#" + obj.elementId).html(templates[obj.elementId](obj.viewmodel));
-            });
+            if (Array.isArray(obj.event)) {
+                for (var i = 0; i < obj.event.length; i++) {
+                    obj.viewmodel.addEventListener(obj.event[i], function() {
+                        $("#" + obj.elementId).html(templates[obj.elementId](obj.viewmodel));
+                    });
+                }
+            } else {
+                obj.viewmodel.addEventListener(obj.event, function() {
+                    $("#" + obj.elementId).html(templates[obj.elementId](obj.viewmodel));
+                });
+            }
             loop();
         });
     },

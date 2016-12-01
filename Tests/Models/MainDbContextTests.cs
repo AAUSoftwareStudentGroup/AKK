@@ -44,6 +44,11 @@ namespace AKK.Tests.Models
         public void TearDown()
         {
             _mainDbContext.Dispose();
+            _members = null;
+            _sections = null;
+            _grades = null;
+            _routes = null;
+            _dataFactory = null;
         }
 
         [Test]
