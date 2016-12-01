@@ -146,6 +146,10 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Member>("Invalid member, cannot change role");
             }
 
+            if(GetMemberInfo(token).Data.Id == memberId) {
+                return new ApiErrorResponse<Member>("You cannot change your own role");
+            }
+
             if (role == Role.Unauthenticated)
             {
                 return new ApiErrorResponse<Member>("Cannot change role to unauthenticated");
