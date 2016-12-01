@@ -42,25 +42,25 @@ function EditRouteViewModel(client, navigationService) {
     }
     this.UpdateRoute = function() {
         var imgObject = null;
-        if (this.image != null) {
+        if (self.image != null) {
             imgObject = {
-                fileUrl : this.image.src,
-                width : this.image.width,
-                height : this.image.height,
-                holds : this.HoldPositions || []
+                fileUrl : self.image.src,
+                width : self.image.width,
+                height : self.image.height,
+                holds : self.HoldPositions || []
             }
         }
-        if (this.selectedTape != null) {
-            this.selectedTape = this.selectedTape.colorOfHolds;
+        if (self.selectedTape != null) {
+            self.selectedTape = self.selectedTape.colorOfHolds;
         }
-        self.client.routes.updateRoute( this.routeId, 
-                                        this.selectedSection.id, 
-                                        this.author, 
-                                        this.routeNumber, 
-                                        this.selectedHold.colorOfHolds, 
-                                        this.selectedGrade.id, 
-                                        this.selectedTape,
-                                        this.note,
+        self.client.routes.updateRoute( self.routeId, 
+                                        self.selectedSection.id, 
+                                        self.author, 
+                                        self.number, 
+                                        self.selectedHold.colorOfHolds, 
+                                        self.selectedGrade.id, 
+                                        self.selectedTape,
+                                        self.note,
                                         imgObject, function(response) {
             if(response.success)
             {
