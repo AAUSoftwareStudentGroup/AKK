@@ -273,10 +273,36 @@ namespace AKK.Controllers
             }
             
             route.Comments.Add(comment);
-            System.Console.WriteLine(route.Comments.Count);
             _routeRepository.Save();
             
             return new ApiSuccessResponse<string>("success");
+        }
+
+        [HttpPost("comment/remove")]
+        public ApiResponse<string> RemoveComment(string token, Guid id, Guid routeId) {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            }
+
+            bool isAdmin = _authenticationService.HasRole(token, Role.Admin);
+            
+            var user = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+
+            if (user == null)
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            
+            var route = _routeRepository.Find(routeId);
+            if (route == null) 
+                return new ApiErrorResponse<string>("Invalid route");
+
+            if (!route.Comments.Any(c => c.Id == id))   
+                return new ApiErrorResponse<string>("Invalid comment");
+
+            route.Comments.RemoveAll(c => c.Id == id);
+            _routeRepository.Save();                  
+            
+            return new ApiSuccessResponse<string>("Comment deleted");
         }
 
         // PATCH: /api/route/{routeId}
@@ -319,8 +345,10 @@ namespace AKK.Controllers
                     _holdRepository.Save();
                     _imageRepository.Delete(img.Id);
                 }
-
+                // Console.WriteLine(JsonConvert.SerializeObject(route.Image));
+                route.Image.RouteId = routeToUpdate.Id;
                 routeToUpdate.Image = route.Image;
+                _imageRepository.Save();
             }
 
             if(route.GradeId != default(Guid))

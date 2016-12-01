@@ -19,6 +19,18 @@ $(document).ready(function () {
             viewmodel: viewModel
         },
         {
+            scriptSource: "js/templates/grade-admin-template.handlebars", 
+            elementId: "content-grade",
+            event: "gradesChanged",
+            viewmodel: viewModel
+        },
+        {
+            scriptSource: "js/templates/member-admin-template.handlebars", 
+            elementId: "content-member",
+            event: "membersChanged",
+            viewmodel: viewModel
+        },
+        {
             scriptSource: "js/templates/route-list-template.handlebars", 
             elementId: "routes-content", 
             event: "routesChanged",
@@ -29,5 +41,31 @@ $(document).ready(function () {
     setUpContentUpdater(content, function() {
         viewModel.init();
         headerViewModel.init();
+    });
+
+
+    viewModel.addEventListener("gradeColorChanged", function(msg) {
+        $('.color-select-preview').css('background-color', 'rgb('+viewModel.selectedGrade.color.r+','+viewModel.selectedGrade.color.g+','+viewModel.selectedGrade.color.b+')');
+    });
+    viewModel.addEventListener("gradesChanged", function(msg) {
+        window.setTimeout(function() {
+            if(viewModel.selectedGrade)
+                $('.orderable-list').scrollTop(61*viewModel.selectedGrade.difficulty-61*2);
+        },10);
+    });
+
+    $(document).on('click','.expansion-panel-header', function (event) {
+        var element = $(this).closest('.expansion-panel');
+        viewModel.changeSection();
+        viewModel.selectGrade();
+        
+        if(element.hasClass('expanded'))
+            element.removeClass('expanded');
+        else {
+            $('.expansion-panel.expanded').removeClass('expanded');
+            $('[type="radio"]').prop('checked', false);
+
+            element.addClass('expanded');
+        }
     });
 });

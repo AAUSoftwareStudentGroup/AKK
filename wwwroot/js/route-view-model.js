@@ -4,6 +4,7 @@ function RouteViewModel(client, navigationService) {
     this.navigationService = navigationService;
     this.client = client;
     
+    this.addingImage = false;
     this.sections = [];
     this.selectedSection = null;
     this.grades = [];
@@ -132,9 +133,13 @@ function RouteViewModel(client, navigationService) {
         })
     }
 
+
     this.UpdateCanvas = function(input) {
+        this.addingImage = true;
+        this.trigger("imageUpdated");
         readURL(input, function(image) {
             resizeImage(image, function(resizedImage) {
+                self.addingImage = false;
                 self.changeImage(resizedImage);
                 self.HoldPositions = [];
             });
