@@ -25,6 +25,12 @@ $(document).ready(function () {
             viewmodel: viewModel
         },
         {
+            scriptSource: "js/templates/member-admin-template.handlebars", 
+            elementId: "content-member",
+            event: "membersChanged",
+            viewmodel: viewModel
+        },
+        {
             scriptSource: "js/templates/route-list-template.handlebars", 
             elementId: "routes-content", 
             event: "routesChanged",
