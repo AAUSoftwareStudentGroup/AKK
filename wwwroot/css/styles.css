@@ -738,7 +738,8 @@ input:checked + .toggle-switch::before {
     float: right;
 }
 
-.content-grade .close-button {
+.content-grade .close-button,
+.content-hold .close-button {
     float: right;
     width: 24px;
     height: 24px;
@@ -929,7 +930,7 @@ input:checked + .toggle-switch::before {
 }
 
 .color-select-input .color-select-preview {
-    background-color: hsl(180,70%,60%);
+   /* background-color: hsl(180,70%,60%);*/
     float: left;
 }
 
