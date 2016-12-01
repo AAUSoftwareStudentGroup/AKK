@@ -64,9 +64,9 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
 
 
         rating = Math.round(rating);
-        self.filledStars = rating,
+        self.filledStars = rating;
         self.trigger("filledStarsChanged");
-        self.emptyStars = 5 - rating,
+        self.emptyStars = 5 - rating;
         self.trigger("emptyStarsChanged");
     };
 
