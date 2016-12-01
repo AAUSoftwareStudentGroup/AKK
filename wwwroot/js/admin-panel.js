@@ -35,12 +35,6 @@ $(document).ready(function () {
             elementId: "routes-content", 
             event: "routesChanged",
             viewmodel: viewModel
-        },
-        {
-            scriptSource: "js/templates/hold-admin-template.handlebars",
-            elementId: "hold-content",
-            event: "holdChanged",
-            viewModel: viewModel
         }
     ];
 

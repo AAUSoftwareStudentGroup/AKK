@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System;
 using System.Linq;
@@ -20,6 +22,7 @@ namespace AKK.Models
         public DbSet<Video> Videos { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Rating> Rating { get; set; }
+        public DbSet<HoldColor> HoldColors { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -90,6 +93,11 @@ namespace AKK.Models
                 new Comment {Message = "Dette er en kommentar", Member = members["Anton"]},
                 new Comment {Message = "Dette er en anden kommentar", Member = members["Jakobsen"]},
                 new Comment{Message = "Dette er en trejde kommentar", Member = members["Grunberg"]}
+            };
+
+            var holdColors = new List<HoldColor>
+            {
+
             };
 
             var routes = new List<Route>
@@ -383,6 +391,15 @@ namespace AKK.Models
                 },
             };
 
+            foreach (var color in colors)
+            {
+                HoldColor newColor = new HoldColor();
+                newColor.HexColorOfHolds = color.Value.ToUint();
+                newColor.Name = color.Key;
+                holdColors.Add(newColor);
+            }
+
+            context.HoldColors.AddRange(holdColors);
             context.Grades.AddRange(grades.Select(x => x.Value));
             context.Routes.AddRange(routes);
             context.Sections.AddRange(sections.Select(x => x.Value));

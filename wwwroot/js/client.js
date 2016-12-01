@@ -436,16 +436,6 @@ function HoldClient(url, cookieService)
         });
     };
 
-    this.getAllTapes = function(success)
-    {
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: url,
-            success: success
-        });
-    };
-
     this.addHold = function(hold, success)
     {
         $.ajax({
@@ -461,21 +451,6 @@ function HoldClient(url, cookieService)
         });
     };
 
-    this.addTape = function(tape, success)
-    {
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: url,
-            data:
-            {
-                token: self.cookieService.getToken(),
-                tape: tape
-            },
-            success: success
-        });
-    };
-
     this.deleteHold = function(holdId, success)
     {
         $.ajax({
@@ -486,21 +461,6 @@ function HoldClient(url, cookieService)
             {
                 token: self.cookieService.getToken(),
                 id: holdId
-            },
-            success: success
-        });
-    };
-
-    this.deleteTape = function(tapeId, success)
-    {
-        $.ajax({
-            type: "DELETE",
-            dataType: "json",
-            url: url + "/" + tapeId,
-            data:
-            {
-                token: self.cookieService.getToken(),
-                id: tapeId
             },
             success: success
         });
