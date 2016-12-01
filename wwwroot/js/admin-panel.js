@@ -25,6 +25,12 @@ $(document).ready(function () {
             viewmodel: viewModel
         },
         {
+            scriptSource: "js/templates/hold-admin-template.handlebars", 
+            elementId: "content-hold",
+            event: "holdsChanged",
+            viewmodel: viewModel
+        },
+        {
             scriptSource: "js/templates/member-admin-template.handlebars", 
             elementId: "content-member",
             event: "membersChanged",
@@ -47,10 +53,19 @@ $(document).ready(function () {
     viewModel.addEventListener("gradeColorChanged", function(msg) {
         $('.color-select-preview').css('background-color', 'rgb('+viewModel.selectedGrade.color.r+','+viewModel.selectedGrade.color.g+','+viewModel.selectedGrade.color.b+')');
     });
+    viewModel.addEventListener("holdColorChanged", function(msg) {
+        $('#grip-midtone').css('fill', 'rgb('+viewModel.selectedHold.colorOfHolds.r+','+viewModel.selectedHold.colorOfHolds.g+','+viewModel.selectedHold.colorOfHolds.b+')');
+    });
     viewModel.addEventListener("gradesChanged", function(msg) {
         window.setTimeout(function() {
             if(viewModel.selectedGrade)
                 $('.orderable-list').scrollTop(61*viewModel.selectedGrade.difficulty-61*2);
+        },10);
+    });
+    viewModel.addEventListener("holdsChanged", function(msg) {
+        window.setTimeout(function() {
+            if(viewModel.selectedHold)
+                $('.orderable-list').scrollTop(61*viewModel.selectedHold.value-61*2);
         },10);
     });
 
@@ -58,7 +73,8 @@ $(document).ready(function () {
         var element = $(this).closest('.expansion-panel');
         viewModel.changeSection();
         viewModel.selectGrade();
-        
+        viewModel.selectHold();
+
         if(element.hasClass('expanded'))
             element.removeClass('expanded');
         else {
