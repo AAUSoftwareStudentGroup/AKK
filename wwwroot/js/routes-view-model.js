@@ -1,6 +1,7 @@
-function RoutesViewModel(client) {
+function RoutesViewModel(client, loadingService) {
     var self = this;
     this.client = client;
+    this.loadingService = loadingService;
 
     this.routes = [ ];
     this.grades = [ ];
@@ -53,12 +54,15 @@ function RoutesViewModel(client) {
 
     this.currentAjaxRequest = null;
     this.search = function (searchstring) {
+        this.loadingService.load();
+
         if (this.currentAjaxRequest != null) {
             this.currentAjaxRequest.abort();
         }
         this.currentAjaxRequest = this.client.routes.searchRoutes(searchstring, function (response) {
             self.parseRoutes(response);
             self.trigger("routesChanged");
+            self.loadingService.stopLoad();
         });
     };
 
