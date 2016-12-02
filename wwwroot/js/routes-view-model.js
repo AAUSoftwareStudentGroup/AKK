@@ -1,14 +1,11 @@
-function RoutesViewModel(client) {
+function RoutesViewModel(client, loadingService) {
     var self = this;
     this.client = client;
+    this.loadingService = loadingService;
 
-    this.routes = [];
-    this.grades = [
-        { id: "", name: "All" }
-    ];
-    this.sections = [
-        { id: "", name: "All" }
-    ];
+    this.routes = [ ];
+    this.grades = [ ];
+    this.sections = [ ];
     this.sortOptions = [
         { value: 0, name: "Newest" },
         { value: 1, name: "Oldest" },
@@ -26,6 +23,8 @@ function RoutesViewModel(client) {
         self.client.grades.getAllGrades(function (gradesResponse) {
             self.client.sections.getAllSections(function (sectionsResponse) {
                 if (gradesResponse.success && sectionsResponse.success) {
+                    self.sections = [ { id: "", name: "All" } ];
+                    self.grades = [ { id: "", name: "All" } ];
                     self.sections = self.sections.concat(sectionsResponse.data);
                     self.grades = self.grades.concat(gradesResponse.data);
                     self.selectedGrade = self.grades[0];
@@ -55,6 +54,8 @@ function RoutesViewModel(client) {
 
     this.currentAjaxRequest = null;
     this.search = function (searchstring) {
+        this.loadingService.load();
+
         if (this.currentAjaxRequest != null) {
             this.currentAjaxRequest.abort();
         }
@@ -65,6 +66,7 @@ function RoutesViewModel(client) {
             }
             self.parseRoutes(response);
             self.trigger("routesChanged");
+            self.loadingService.stopLoad();
         });
     };
 

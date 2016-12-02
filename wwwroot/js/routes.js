@@ -3,7 +3,7 @@ var headerViewModel;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
     headerViewModel = new HeaderViewModel("Find Route", client);
-    viewModel = new RoutesViewModel(client);
+    viewModel = new RoutesViewModel(client, new LoadingService());
 
     var content = [
         {
@@ -35,7 +35,13 @@ $(document).ready(function () {
         $('#search-field').focus();
     });
 
-    $(document).on("input", "#search-field", function() {
+    $(document).on("input", "#search-field", function(e) {
         viewModel.search($("#search-field").val());
+    });
+
+    $(document).on("keyup", "#search-field", function(e) {
+        if (e.keyCode == 13) {//Enter
+            $("#search-field").blur();
+        }
     });
 });

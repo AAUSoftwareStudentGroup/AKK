@@ -30,6 +30,10 @@
         <script src="js/route-info.js"></script>
         <div id="header"></div>
         <div id="cardtemplate"></div>
+        <div class="error-content content">
+            <div id="error-message" class="message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+            <div id="info-message" class="message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+        </div>
         <div id="commenttemplate"></div>
     </body>
 </html>

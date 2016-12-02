@@ -55,6 +55,9 @@ $(document).ready(function () {
         viewModel.addEventListener("commentsUpdated", function() {
             autosize($('textarea'));
         });
+        viewModel.addEventListener("info", function(response) {
+            $("#info-message").html(response).show();
+        });
         viewModel.init();
         headerViewModel.init();
     });
