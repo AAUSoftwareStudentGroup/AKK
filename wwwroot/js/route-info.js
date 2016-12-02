@@ -58,6 +58,9 @@ $(document).ready(function () {
         viewModel.addEventListener("info", function(response) {
             $("#info-message").html(response).show();
         });
+        viewModel.addEventListener("error", function(response) {
+            $("#error-message").html(response).show();
+        });
         viewModel.init();
         headerViewModel.init();
     });
