@@ -118,8 +118,13 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         var fd = new FormData(form);
         this.addingComment = true;
         this.client.routes.addComment(fd, self.route.id, function(response) {
-            self.addingComment = false;
-            self.getComments();
+            if (response.success) {
+                self.addingComment = false;
+                self.getComments();
+            } else {
+                self.trigger("error", response.message);
+                self.trigger("commentsChanged");
+            }
         }, function(response) {
             self.trigger("error", "Failed adding comment. The video added is probably too large.");
             self.trigger("commentsChanged");
