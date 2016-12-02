@@ -70,7 +70,6 @@ namespace AKK.Controllers
                     break;
             }
 
-            Stopwatch s = Stopwatch.StartNew();
             if (!string.IsNullOrEmpty(searchStr))
             {
                 //Initialize a RouteSearcher
@@ -82,11 +81,9 @@ namespace AKK.Controllers
                 //If no routes were found.
                 if (!routes.Any())
                 {
-                    Console.WriteLine($"Search for \"{searchStr}\" took {s.ElapsedMilliseconds} ms on {Environment.ProcessorCount} logical cores");
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
-            Console.WriteLine($"Search for \"{searchStr}\" took {s.ElapsedMilliseconds} ms on {Environment.ProcessorCount} logical cores");
 
             return new ApiSuccessResponse<IEnumerable<Route>>(routes.Take(maxResults));
         }
