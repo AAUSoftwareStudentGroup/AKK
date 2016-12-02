@@ -2,13 +2,9 @@ function RoutesViewModel(client) {
     var self = this;
     this.client = client;
 
-    this.routes = [];
-    this.grades = [
-        { id: "", name: "All" }
-    ];
-    this.sections = [
-        { id: "", name: "All" }
-    ];
+    this.routes = [ ];
+    this.grades = [ ];
+    this.sections = [ ];
     this.sortOptions = [
         { value: 0, name: "Newest" },
         { value: 1, name: "Oldest" },
@@ -26,6 +22,8 @@ function RoutesViewModel(client) {
         self.client.grades.getAllGrades(function (gradesResponse) {
             self.client.sections.getAllSections(function (sectionsResponse) {
                 if (gradesResponse.success && sectionsResponse.success) {
+                    self.sections = [ { id: "", name: "All" } ];
+                    self.grades = [ { id: "", name: "All" } ];
                     self.sections = self.sections.concat(sectionsResponse.data);
                     self.grades = self.grades.concat(gradesResponse.data);
                     self.selectedGrade = self.grades[0];

@@ -10,6 +10,9 @@ function LogInViewModel(client, navigationService, cookieService) {
     
     this.init = function () {
         var getTarget = navigationService.getParameters()["target"];
+        if (getTarget) {
+            self.trigger("info", "You need to be logged in to use this feature");
+        }
         self.target = (getTarget == undefined ? self.target : getTarget);
         self.trigger('loginChanged')
     };
@@ -19,7 +22,7 @@ function LogInViewModel(client, navigationService, cookieService) {
             if (response.success) {
                 navigationService.to(self.target);
             } else {
-                $("#error-message").html(response.message).show();
+                self.trigger("error", response.message);
             }
         });
     };
