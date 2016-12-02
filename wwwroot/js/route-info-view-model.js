@@ -93,7 +93,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             self.updateRating(self.route.averageRating, rating);
         }
         else
-            self.dialogService.showMessage("You must be logged in to rate");
+            self.trigger("info", "You need to log in to rate routes");
     };
 
     this.editRoute = function () {

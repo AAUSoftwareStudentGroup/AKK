@@ -319,6 +319,10 @@ input:checked + .toggle-switch::before {
     overflow: hidden;
 }
 
+.error-content {
+    padding-top:0;
+}
+
 .content-section {
     width: 100%;
     display: block;

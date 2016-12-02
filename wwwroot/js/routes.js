@@ -35,7 +35,13 @@ $(document).ready(function () {
         $('#search-field').focus();
     });
 
-    $(document).on("input", "#search-field", function() {
+    $(document).on("input", "#search-field", function(e) {
         viewModel.search($("#search-field").val());
+    });
+
+    $(document).on("keyup", "#search-field", function(e) {
+        if (e.keyCode == 13) {//Enter
+            $("#search-field").blur();
+        }
     });
 });
