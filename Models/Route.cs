@@ -134,5 +134,8 @@ namespace AKK.Models
                 HexColorOfTape = value?.ToUint();
             }
         }
+
+        //[NotMapped]
+        //public 
     }
 }
