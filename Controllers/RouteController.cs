@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using AKK.Controllers.ApiResponses;
@@ -40,6 +41,8 @@ namespace AKK.Controllers
         [HttpGet]
         public ApiResponse<IEnumerable<Route>> GetRoutes(Guid? gradeId, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
         {
+            var sw = new Stopwatch();
+            sw.Start();
             var routes = _routeRepository.GetAll();
             var numRoutes = routes.Count();
             maxResults = maxResults <= 0 ? numRoutes : Math.Min(maxResults, numRoutes);
@@ -83,7 +86,9 @@ namespace AKK.Controllers
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
-
+            Console.WriteLine(sw.ElapsedMilliseconds);
+            sw.Stop();
+            sw.Reset();
             return new ApiSuccessResponse<IEnumerable<Route>>(routes.Take(maxResults));
         }
 

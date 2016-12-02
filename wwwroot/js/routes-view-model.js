@@ -59,6 +59,10 @@ function RoutesViewModel(client) {
             this.currentAjaxRequest.abort();
         }
         this.currentAjaxRequest = this.client.routes.searchRoutes(searchstring, function (response) {
+            console.log(self.currentAjaxRequest);
+            if (response.success) {
+                self.currentAjaxRequest = null;
+            }
             self.parseRoutes(response);
             self.trigger("routesChanged");
         });
