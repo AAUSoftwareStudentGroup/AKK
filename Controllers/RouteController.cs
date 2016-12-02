@@ -41,6 +41,8 @@ namespace AKK.Controllers
         [HttpGet]
         public ApiResponse<IEnumerable<Route>> GetRoutes(Guid? gradeId, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
         {
+            var sw = new Stopwatch();
+            sw.Start();
             var routes = _routeRepository.GetAll();
             var numRoutes = routes.Count();
             maxResults = maxResults <= 0 ? numRoutes : Math.Min(maxResults, numRoutes);
@@ -70,7 +72,6 @@ namespace AKK.Controllers
                     break;
             }
 
-            Stopwatch s = Stopwatch.StartNew();
             if (!string.IsNullOrEmpty(searchStr))
             {
                 //Initialize a RouteSearcher
@@ -82,12 +83,12 @@ namespace AKK.Controllers
                 //If no routes were found.
                 if (!routes.Any())
                 {
-                    Console.WriteLine($"Search for \"{searchStr}\" took {s.ElapsedMilliseconds} ms on {Environment.ProcessorCount} logical cores");
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
-            Console.WriteLine($"Search for \"{searchStr}\" took {s.ElapsedMilliseconds} ms on {Environment.ProcessorCount} logical cores");
-
+            Console.WriteLine(sw.ElapsedMilliseconds);
+            sw.Stop();
+            sw.Reset();
             return new ApiSuccessResponse<IEnumerable<Route>>(routes.Take(maxResults));
         }
 

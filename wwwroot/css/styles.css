@@ -1223,3 +1223,10 @@ input[type=range]::-ms-thumb {
 .route-card.comment-card {
     position: relative;
 }
+
+#image-placeholder-text {    
+    width: 100%;
+    padding-top: 10px;
+    position: absolute;
+    bottom: 0;
+}
