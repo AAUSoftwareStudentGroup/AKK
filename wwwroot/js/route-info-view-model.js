@@ -89,9 +89,11 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     };
 
     this.changeRating = function(rating) {
-        if (this.isAuthed) {
-            this.updateRating(self.route.averageRating, rating);
+        if (self.isAuthed) {
+            self.updateRating(self.route.averageRating, rating);
         }
+        else
+            self.dialogService.showMessage("You must be logged in to rate");
     };
 
     this.editRoute = function () {

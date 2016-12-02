@@ -26,7 +26,7 @@ function RouteClient(url, cookieService)
             data: 
             {
                 searchstr: searchstring,
-                maxresults: 10
+                maxresults: 0
             },
             success : success
         });

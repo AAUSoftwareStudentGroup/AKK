@@ -23,16 +23,21 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.downloadSections = function() {
         self.client.sections.getAllSections(function(response) {
-            if(response.success) {
+            if(response.success) 
+            {
                 self.sections = response.data;
                 self.trigger("sectionsChanged");
+            }
+            else
+            {
+                self.trigger("Error", response.message);
             }
         });
     }
 
     this.downloadRoutes = function() {
         if(self.selectedSection != null || self.selectedGrade != null) {
-            self.client.routes.getRoutes((self.selectedGrade ? self.selectedGrade.id : null), (self.selectedSection ? self.selectedSection.id : null), null, function(response) {
+            self.client.routes.getRoutes((self.selectedGrade ? self.selectedGrade.id : ""), (self.selectedSection ? self.selectedSection.id : ""), "", function(response) {
                 if(response.success) {
                     self.routes = response.data;
                     for(var i = 0; i < self.routes.length; i++) {
@@ -56,7 +61,6 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.addNewSection = function() {
         var name = self.dialogService.prompt("Enter name of new Section","");
-
         self.client.sections.addSection(name, function(response) {
             if(response.success) {
                 self.downloadSections();
@@ -81,6 +85,7 @@ function AdminPanelViewModel(client, dialogService) {
             self.client.sections.deleteSection(self.selectedSection.id, function(response) {
                 if(response.success) {
                     self.downloadSections();
+                    self.downloadRoutes();
                 }
                 else
                     self.dialogService.showMessage(response.message);
@@ -297,9 +302,18 @@ function AdminPanelViewModel(client, dialogService) {
         newHold.name = name;
         newHold.colorOfHolds = {r: 0x66, b: 0x66, g: 0x66};
         delete newHold.id;
-        self.holds[self.holds.length] = newHold;
-        self.selectedHold = self.holds[self.holds.length-1];
-        self.trigger("holdsChanged");
+        self.client.holds.addHold(newHold, function(response) {
+            if(response.success) {
+                self.holds.push(response.data);
+                self.selectedHold = self.holds[self.holds.length-1];           
+            }
+            else {
+                self.dialogService.showMessage(response.message);
+                self.downloadHolds();
+                self.selectedHold = null;
+            }
+            self.trigger("holdsChanged");
+        });
     }
 
     this.updateHold = function()
@@ -312,7 +326,7 @@ function AdminPanelViewModel(client, dialogService) {
                 self.client.holds.addHold(self.selectedHold, function(response) {
                     if(response.success) {
                         self.holds.push(response.data);
-                        self.selectedHold = self.holds[self.grades.length-1];           
+                        self.selectedHold = self.holds[self.holds.length-1];           
                     }
                     else
                         self.dialogService.showMessage(response.message);
@@ -367,9 +381,9 @@ function AdminPanelViewModel(client, dialogService) {
 AdminPanelViewModel.prototype = new EventNotifier();
 
 
-
-    ;;;;;;;      ;;       ;;;;;;;  ;;;;;;;   ;;;;;;;  ;;;;;;
-   ;;;   ;;;     ;;       ;;       ;;   ;;;  ;;       ;;   ;;
+    
+      ;;;;       ;;       ;;;;;;;  ;;;;;;;   ;;;;;;;  ;;;;;;
+    ;;;  ;;;     ;;       ;;       ;;   ;;;  ;;       ;;   ;;
   ;;;     ;;;    ;;       ;;;;;    ;;;;;;;   ;;;;;    ;;    ;;
  ;;;;;;;;;;;;;   ;;       ;;       ;;  ;;;   ;;       ;;   ;;
 ;;;         ;;;  ;;;;;;;  ;;       ;;   ;;;  ;;;;;;;  ;;;;;;

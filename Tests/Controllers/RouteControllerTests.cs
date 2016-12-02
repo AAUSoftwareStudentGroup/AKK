@@ -483,18 +483,6 @@ namespace AKK.Tests.Controllers
         }
 
         [Test]
-        public void _SetRating_SetRatingAsAdminWhoDidntAddIt_RatingDoesntGetChanged()
-        {
-            Route route = _routeRepo.GetAll().First();
-            var tokenForMember = _auth.Login("Tanner", "Helland");
-            _controller.SetRating(tokenForMember, route.Id, 5);
-            var response = _controller.SetRating(token, route.Id, 2);
-
-            Assert.IsFalse(response.Success);
-            Assert.AreEqual(5, route.Ratings.First().RatingValue);
-        }
-
-        [Test]
         public void _SetRating_SetRatingAsGuest_RatingDoesntGetChanged()
         {
             Route route = _routeRepo.GetAll().First();
@@ -503,18 +491,6 @@ namespace AKK.Tests.Controllers
 
             Assert.IsFalse(response.Success);
             Assert.AreEqual(5, route.Ratings.First().RatingValue);
-        }
-
-        [Test]
-        public void _SetRating_SetRatingThatDoesntExist_RatingDoesntGetChanged()
-        {
-            Route route = _routeRepo.GetAll().First();
-            var tokenForMember = _auth.Login("Tanner", "Helland");
-            _controller.SetRating(tokenForMember, route.Id, 5);
-            var response = _controller.SetRating(token, route.Id, 2);
-
-            Assert.IsFalse(response.Success);
-            Assert.AreEqual(1, route.Ratings.Count);
         }
     }
 }
