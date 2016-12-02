@@ -55,9 +55,8 @@ input[type="checkbox"] {
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30);
 }
 
-#error-message {
+.message {
     display: none;
-    background-color: #F44336;
     padding: 11px 18px 10px 18px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -67,6 +66,13 @@ input[type="checkbox"] {
     font-size: 14px;
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
     text-align: center;
+}
+#error-message {
+    background-color: #F44336;
+}
+
+#info-message {
+    background-color: #2196F3;
 }
 
 .submit-button {
