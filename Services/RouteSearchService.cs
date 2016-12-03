@@ -24,11 +24,7 @@ namespace AKK.Services
             var searchTerms = _splitSearchStr(searchStr);
 
             //Binds all routes together with an int value representing the Levenshtein distance.
-            List<Tuple<Route, float>> routesWithDist = new List<Tuple<Route, float>>();
-            for (int i = 0; i < _numRoutes; i++)
-            {
-                routesWithDist.Add(new Tuple<Route, float>(_allRoutes.ElementAt(i), 0));
-            }
+            var routesWithDist = _allRoutes.Select(x => new Tuple<Route, float>(x, 0f)).ToList();
 
             //Calculates the Levenshtein distance for each search term and adds it to each route's specific Levenshtein distance value.
             string specialization = null;

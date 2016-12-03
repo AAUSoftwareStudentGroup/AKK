@@ -23,7 +23,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.route = routeResponse.data;
                 self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
                 self.downloadImage();
-                self.trigger("commentsChanged")
+                self.trigger("commentsChanged");
 
                 self.client.members.getMemberRatings(function(ratingResponse) {
                     var ratingValue = null;
@@ -93,7 +93,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             self.updateRating(self.route.averageRating, rating);
         }
         else
-            self.dialogService.showMessage("You must be logged in to rate");
+            self.trigger("info", "You need to log in to rate routes");
     };
 
     this.editRoute = function () {
@@ -118,10 +118,27 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         var fd = new FormData(form);
         this.addingComment = true;
         this.client.routes.addComment(fd, self.route.id, function(response) {
-            self.addingComment = false;
-            self.init();
+            if (response.success) {
+                self.addingComment = false;
+                self.getComments();
+            } else {
+                self.trigger("error", response.message);
+                self.trigger("commentsChanged");
+            }
+        }, function(response) {
+            self.trigger("error", "Failed adding comment. The video added is probably too large.");
+            self.trigger("commentsChanged");
         });
     };
+
+    this.getComments = function(callback) {
+        self.client.routes.getRoute(navigationService.getParameters()["routeId"], function (routeResponse) {
+            if (routeResponse.success) {
+                self.route.comments = routeResponse.data.comments;
+                self.trigger("commentsChanged")
+            }
+        });
+    }
 
     this.removeComment = function (id, routeId) {
         if (!self.dialogService.confirm("Are you sure that you want to remove the comment?")) return;

@@ -55,7 +55,7 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addComment = function(formdata, routeId, success) {
+    this.addComment = function(formdata, routeId, success, error) {
         formdata.append('token', self.cookieService.getToken());
         formdata.append('id', routeId);
 
@@ -63,6 +63,7 @@ function RouteClient(url, cookieService)
             url: url + "/comment", 
             type: 'POST',
             success: success,
+            error: error,
             data: formdata,
             cache: false,
             contentType: false,
