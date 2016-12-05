@@ -70,6 +70,9 @@ namespace AKK.Controllers
                 case SortOrder.Grading:
                     routes = routes.OrderBy(p => p.Grade.Difficulty);
                     break;
+                case SortOrder.Rating:
+                    routes = routes.OrderByDescending(p => p.AverageRating);
+                    break;
             }
 
             if (!string.IsNullOrEmpty(searchStr))
@@ -264,7 +267,7 @@ namespace AKK.Controllers
                         .Trim('"')
                         .Split('.')
                         .Last();
-                    if (fileExtension != "mp4") {
+                    if (fileExtension != "mp4" && fileExtension != "webm" && fileExtension != "ogg") {
                         return new ApiErrorResponse<string>("File is not a valid video file");
                     }
                     var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";

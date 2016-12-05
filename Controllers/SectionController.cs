@@ -125,7 +125,12 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse<Section>("No section exists with name/id "+sectionId);
                 
             if(sectionPatch.Name != null)
-            section.Name = sectionPatch.Name;
+                if(!_sectionRepository.GetAll().Any(s => s.Name == sectionPatch.Name))
+                    section.Name = sectionPatch.Name;
+                else
+                    return new ApiErrorResponse<Section>("A section with this name already exists");
+            else
+                return new ApiErrorResponse<Section>("Section name cannot be null");
 
             try
             {
