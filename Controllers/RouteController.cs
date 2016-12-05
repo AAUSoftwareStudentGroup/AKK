@@ -264,7 +264,7 @@ namespace AKK.Controllers
                         .Trim('"')
                         .Split('.')
                         .Last();
-                    if (fileExtension != "mp4") {
+                    if (fileExtension != "mp4" && fileExtension != "webm" && fileExtension != "ogg") {
                         return new ApiErrorResponse<string>("File is not a valid video file");
                     }
                     var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
