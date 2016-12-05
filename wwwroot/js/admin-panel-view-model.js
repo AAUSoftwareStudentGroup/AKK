@@ -223,33 +223,16 @@ function AdminPanelViewModel(client, dialogService) {
     }
 
     this.gradesSwap = function(diff, change) {
-        if(diff+change < 0 || diff+change >= self.grades.length)
+        var index = viewModel.grades.findIndex(function(elm) {return elm.difficulty == diff});
+        if(index < 0 || index+change < 0 || index+change >= self.grades.length)
             return;
-        self.swapdisable = true;
+        
+        var gradeAid = self.grades[index].id;
+        var gradeBid = self.grades[index+change].id;
 
-        var gradeA = self.grades[diff];
-        var gradeB = self.grades[diff+change];
-        var gradeBCopy = JSON.parse(JSON.stringify(gradeB));
-
-        gradeB.difficulty = gradeA.difficulty;
-        gradeA.difficulty = 999;
-
-        self.client.grades.updateGrade(gradeA, function(response) {
+        self.client.grades.swapGrades(gradeAid, gradeBid, function(response) {
             if(response.success) {
-                self.client.grades.updateGrade(gradeB, function(response) {
-                    if(response.success) {
-                        gradeA.difficulty = gradeBCopy.difficulty
-                        self.client.grades.updateGrade(gradeA, function(response) {
-                            if(response.success) {
-                                self.downloadGrades();
-                            }
-                            else
-                                self.dialogService.showMessage(response.message);
-                        });
-                    }
-                    else
-                        self.dialogService.showMessage(response.message);
-                });
+                self.downloadGrades();
             }
             else
                 self.dialogService.showMessage(response.message);
