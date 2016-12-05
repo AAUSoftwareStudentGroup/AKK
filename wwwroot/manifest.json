@@ -1,0 +1,9 @@
+{
+  "name": "Aalborg Climbing Club Route System",
+  "short_name": "AKK Routes",
+  "theme_color": "#424242",
+  "background_color": "#424242",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "."  
+}

@@ -312,6 +312,20 @@ function GradeClient(url, cookieService)
         });
     };
 
+    this.swapGrades = function(gradeAId, gradeBId, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url+`/${gradeAId}/swap/${gradeBId}`,
+            data:
+            {
+                token: self.cookieService.getToken(),
+            },
+            success: success
+        });
+    };
+
     this.deleteGrade = function(gradeId, success)
     {
         $.ajax({
