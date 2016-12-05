@@ -1,8 +1,7 @@
-﻿
 ﻿using System;
- using System.Collections;
- using System.Collections.Generic;
- using System.Linq;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using AKK.Controllers.ApiResponses;
 using AKK.Models;
 using AKK.Models.Repositories;

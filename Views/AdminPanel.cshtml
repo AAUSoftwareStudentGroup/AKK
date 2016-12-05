@@ -10,6 +10,7 @@
         <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
         <meta http-equiv="pragma" content="no-cache" />
         <!-- --------------- -->
+        <link rel="manifest" href="manifest.json">
         <title>AKK - Find Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -28,7 +29,19 @@
     <body>
         <div id="header"></div>
         <div class="content admin">
-            <div id="section-admin"></div>
+            <div id="section-admin">
+                <div class="expansion-panel {{#if_be selectedSection}}expanded{{/if_be}}">
+                    <div class="expansion-panel-header">
+                        <h2 class="title">Sections</h2>
+                        <div class="arrow transitioning-icon">
+                            <span class="first"></span>
+                            <span class="second"></span>
+                        </div>
+                    </div>
+                    <div id="content-section" class="section-picker expansion-panel-content">
+                    </div>
+                </div>
+            </div>
             <div id="grade-admin">
                 <div class="expansion-panel">
                     <div class="expansion-panel-header">

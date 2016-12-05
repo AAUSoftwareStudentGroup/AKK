@@ -42,7 +42,7 @@ namespace AKK.Controllers
         {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
-                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to add a new grade");
+                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to add a new holdcolor");
             }
             if (holdcolor.ColorOfHolds == default(Color))
             {
@@ -66,7 +66,7 @@ namespace AKK.Controllers
         {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
-                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to add a new grade");
+                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to delete this holdcolor");
             }
             var holdColor = _holdColorRepository.Find(id);
             if (holdColor == null)
@@ -82,7 +82,7 @@ namespace AKK.Controllers
             }
             catch
             {            
-               return new ApiErrorResponse<HoldColor>("Failed to delete Holdcolor");
+               return new ApiErrorResponse<HoldColor>("Failed to delete holdcolor");
             }
         }
     }

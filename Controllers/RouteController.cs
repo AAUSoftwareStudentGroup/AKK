@@ -86,7 +86,7 @@ namespace AKK.Controllers
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
-            Console.WriteLine(sw.ElapsedMilliseconds);
+         //   Console.WriteLine(sw.ElapsedMilliseconds);
             sw.Stop();
             sw.Reset();
             return new ApiSuccessResponse<IEnumerable<Route>>(routes.Take(maxResults));
@@ -264,7 +264,7 @@ namespace AKK.Controllers
                         .Trim('"')
                         .Split('.')
                         .Last();
-                    if (fileExtension != "mp4") {
+                    if (fileExtension != "mp4" && fileExtension != "webm" && fileExtension != "ogg") {
                         return new ApiErrorResponse<string>("File is not a valid video file");
                     }
                     var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";

@@ -183,7 +183,7 @@ namespace AKK.Tests
             {
                 if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true)
                 {
-                    Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
+                    Assert.Fail($"  Expected Author: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace AKK.Tests
 
             var routes = searchResult.ToArray();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
                 var result = routes[i];
                 if (result.Section.Name == "A" || result.Name.Contains("4") || result.Grade.Name == "Green")
@@ -215,7 +215,7 @@ namespace AKK.Tests
             var searchResult = _searcher.Search("A4 Gr");
 
             var routes = searchResult.ToArray();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
 
                 if (routes[i].Section.Name == "A" || routes[i].Name.Contains("4") || routes[i].Grade.Name == "Green")
@@ -252,7 +252,7 @@ namespace AKK.Tests
             var searchResult = _searcher.Search("A4 Gru");
 
             var routes = searchResult.ToArray();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
                 var result = routes[i];
                 if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))
@@ -272,7 +272,7 @@ namespace AKK.Tests
             var searchResult = _searcher.Search("A 4 Gru");
 
             var routes = searchResult.ToArray();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
                 var result = routes[i];
                 if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))
