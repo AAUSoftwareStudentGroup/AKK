@@ -1,5 +1,6 @@
 ﻿var viewModel;
 var headerViewModel;
+var searchTimeout = null;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
     headerViewModel = new HeaderViewModel("Find Route", client);
@@ -36,7 +37,13 @@ $(document).ready(function () {
     });
 
     $(document).on("input", "#search-field", function(e) {
-        viewModel.search($("#search-field").val());
+        if (searchTimeout != null) {
+            window.clearTimeout(searchTimeout);
+        }
+
+        searchTimeout = setTimeout(function() {
+            viewModel.search($("#search-field").val());
+        }, 300);
     });
 
     $(document).on("keyup", "#search-field", function(e) {
