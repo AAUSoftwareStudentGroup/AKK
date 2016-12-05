@@ -77,7 +77,6 @@ function TestSectionClient(url, cookieService)
     { 
         var section;
         this.getSection(sectionId, function(s) { section = s.data; });
-        console.log(section.name);
         section.name = newName;
         success({success: true, data: clone(section)});
     };

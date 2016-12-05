@@ -47,7 +47,6 @@ QUnit.test("Client tests", function( assert ) {
                 assert.equal(routesResponse.data.filter(function(r) { return r.id == routeId; }).length, 1, "getRoutes contains added route");
                 //Get added route
                 routeClient.getRoute(routeId, function (getRouteResponse) {
-                  console.log(getRouteResponse);
                   assert.equal(getRouteResponse.success, true, "getRoute success = " + true);
                   assert.equal(getRouteResponse.data.id, routeId, "getRoute id = " + routeId);
                   assert.equal(getRouteResponse.data.gradeId, gradeId, "getRoute gradeId = " + gradeId);
@@ -70,17 +69,14 @@ QUnit.test("Client tests", function( assert ) {
           routeClient.getRoutes(null, null, null, function (allRoutesResponse) {
             assert.equal(allRoutesResponse.success, true, "" +
                 "getRoutes success =" + true);
-                console.log(note);
             var testRoutes = allRoutesResponse.data.filter(function(route) { return route.name == "T" });
             if(testRoutes.length == 0)
             {
               routeClient.addRoute(sectionId, name, author, holdColor, gradeId, tape, note, image, function (routeAddedResponse) {
-                console.log(routeAddedResponse);
                 onRouteAdded(routeAddedResponse.data);
               });
             }
             else {
-                console.log("hej");
               onRouteAdded(testRoutes[0]);
             }
           });
