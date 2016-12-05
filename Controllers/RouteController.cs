@@ -86,7 +86,7 @@ namespace AKK.Controllers
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
-            Console.WriteLine(sw.ElapsedMilliseconds);
+         //   Console.WriteLine(sw.ElapsedMilliseconds);
             sw.Stop();
             sw.Reset();
             return new ApiSuccessResponse<IEnumerable<Route>>(routes.Take(maxResults));
