@@ -14,5 +14,9 @@ namespace AKK.Services
         void ChangeRole(Guid id, Role role);
 
         IEnumerable<Role> GetRoles(string token);
+
+        string HashPassword(string password);
+
+        bool TestPassword(string password, string hashedPass);
     }
 }

@@ -77,7 +77,6 @@ function TestSectionClient(url, cookieService)
     { 
         var section;
         this.getSection(sectionId, function(s) { section = s.data; });
-        console.log(section.name);
         section.name = newName;
         success({success: true, data: clone(section)});
     };
@@ -126,7 +125,11 @@ function TestMemberClient(url, cookieService)
 
     this.getMemberInfo = function(success) {
         success({success: true, data: TEST_MEMBER});
-    }
+    };
+
+    this.getMemberRatings = function(success) {
+        success({TEST_RATINGS});
+    };
 
     this.getAllMembers = function(success){ 
         success({success: true, data: TEST_MEMBERS});

@@ -123,6 +123,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.getComments();
             } else {
                 self.trigger("error", response.message);
+                self.addingComment = false;
                 self.trigger("commentsChanged");
             }
         }, function(response) {

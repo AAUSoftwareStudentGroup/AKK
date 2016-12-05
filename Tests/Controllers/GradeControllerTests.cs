@@ -31,9 +31,9 @@ namespace AKK.Tests.Controllers
             _dataFactory = new TestDataFactory();
             _repo = new TestRepository<Grade>(_dataFactory.Grades);
             var memberRepo = new TestRepository<Member>();
-            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = "Helland", IsAdmin = false, Token = "TannerHelland"});
-            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = "Rask", IsAdmin = true, Token = "AdminTestToken"});
             _auth = new AuthenticationService(memberRepo);
+            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = _auth.HashPassword("Helland"), IsAdmin = false, Token = "TannerHelland"});
+            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = _auth.HashPassword("Rask"), IsAdmin = true, Token = "AdminTestToken"});
             _controller = new GradeController(_repo, _auth);
         }
 

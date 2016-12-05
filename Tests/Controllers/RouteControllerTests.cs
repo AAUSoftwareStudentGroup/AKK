@@ -45,9 +45,9 @@ namespace AKK.Tests.Controllers
             _holdRepo = new TestRepository<Hold>(_dataFactory._holds);
 
             _memberRepo = new TestRepository<Member>();
-            _memberRepo.Add(new Member {Id = Guid.NewGuid(), DisplayName = "TannerHelland", Username = "Tanner", Password = "Helland", IsAdmin = false, Token = "TannerHelland"});
-            _memberRepo.Add(new Member {Id = Guid.NewGuid(), DisplayName = "Morten Rask", Username = "Morten", Password = "Rask", IsAdmin = true, Token = "AdminTestToken"});
             _auth = new AuthenticationService(_memberRepo);
+            _memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = _auth.HashPassword("Helland"), IsAdmin = false, Token = "TannerHelland"});
+            _memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = _auth.HashPassword("Rask"), IsAdmin = true, Token = "AdminTestToken"});
             _controller = new RouteController(_routeRepo, _sectionRepo, _gradeRepo, _imageRepo, _holdRepo, _memberRepo, _auth);
             
             testRoute = new Route();

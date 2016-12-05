@@ -49,6 +49,7 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<HoldColor>("A color must be selected");
             }
 
+            //Add the holdcolor if the caller is an administrator and the color is specified
             try
             {
                 _holdColorRepository.Add(holdcolor);
@@ -74,9 +75,11 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<HoldColor>("Could not find holdColor");
             }
             HoldColor holdColorCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(holdColor)) as HoldColor;
-            _holdColorRepository.Delete(id);
+            
+            //Delete the holdcolor matching the given id, if the caller is an administrator
             try
             {
+                 _holdColorRepository.Delete(id);
                 _holdColorRepository.Save();
                 return new ApiSuccessResponse<HoldColor>(holdColorCopy);
             }

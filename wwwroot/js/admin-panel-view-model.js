@@ -1,4 +1,4 @@
-function AdminPanelViewModel(client, dialogService) {
+    function AdminPanelViewModel(client, dialogService) {
     var self = this;
     this.client = client;
     this.dialogService = dialogService;
@@ -12,6 +12,7 @@ function AdminPanelViewModel(client, dialogService) {
     this.routes = [];
     this.members = [];
     this.holds = [];
+    this.grades = [];
     this.editingGrades = false;
 
     this.init = function() {
@@ -132,7 +133,7 @@ function AdminPanelViewModel(client, dialogService) {
         newGrade = JSON.parse(JSON.stringify(newGrade));
         newGrade.name = name;
         newGrade.difficulty = self.grades.length;
-        newGrade.color = {r: 0x66, b: 0x66, g: 0x66};
+        newGrade.color = {r: 99, b: 99, g: 99};
         delete newGrade.id;
         self.client.grades.addGrade(newGrade, function(response) {
             if(response.success) {

@@ -9,6 +9,7 @@ namespace AKK.Models
         public Image()
         {
             Holds = new List<Hold>();
+            Id = Guid.NewGuid();
         }
 
         [JsonIgnore]

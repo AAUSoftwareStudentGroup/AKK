@@ -93,28 +93,29 @@ QUnit.test("route viewModel change attributes", function (assert) {
     //initialize stuff in viewModel
     viewModel.downloadSections();
     viewModel.downloadGrades();
+    viewModel.downloadHolds();
 
     var section = TEST_SECTIONS[2];
     var grade = TEST_GRADES[1];
     var author = "Mathias";
     var number = 4;
     var note = "Test note";
-    var color = { r: 0, g: 200, b: 200 };
+    var color = TEST_HOLDS[0];
 
     viewModel.changeSection(section.id);
     viewModel.changeGrade(grade.id);
-    viewModel.changeHold(color);
+    viewModel.changeHold(color.colorOfHolds);
     viewModel.changeNumber(number);
     viewModel.changeAuthor(author);
     viewModel.changeNote(note);
-    viewModel.changeTape(color);
+    viewModel.changeTape(color.colorOfHolds);
 
     assert.equal(viewModel.selectedSection, section);
     assert.equal(viewModel.selectedGrade, grade, "route viewModel chamge grade");
-    assert.equal(viewModel.selectedHold.r == color.r && viewModel.selectedHold.g == color.g && viewModel.selectedHold.b == color.b, true, "route viewModel change hold");
+    assert.equal(viewModel.selectedHold.colorOfHolds.r == color.colorOfHolds.r && viewModel.selectedHold.colorOfHolds.g == color.colorOfHolds.g && viewModel.selectedHold.colorOfHolds.b == color.colorOfHolds.b, true, "route viewModel change hold");
     assert.equal(viewModel.number, number, "route viewModel change number");
     assert.equal(viewModel.author, author, "route viewModel change author");
-    assert.equal(viewModel.selectedTape.r == color.r && viewModel.selectedTape.b == color.b  && viewModel.selectedTape.g == color.g, true, "route viewModel  change tape");
+    assert.equal(viewModel.selectedTape.colorOfHolds.r == color.colorOfHolds.r && viewModel.selectedTape.colorOfHolds.b == color.colorOfHolds.b  && viewModel.selectedTape.colorOfHolds.g == color.colorOfHolds.g, true, "route viewModel  change tape");
     assert.equal(viewModel.note, note, "route viewModel change note");
 });
 

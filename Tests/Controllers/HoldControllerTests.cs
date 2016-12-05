@@ -31,9 +31,9 @@ namespace AKK.Tests.Controllers
             _dataFactory = new TestDataFactory();
             _repo = new TestRepository<HoldColor>(_dataFactory.HoldColors);
             var memberRepo = new TestRepository<Member>();
-            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = "Helland", IsAdmin = false, Token = "TannerHelland"});
-            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = "Rask", IsAdmin = true, Token = "AdminTestToken"});
             _auth = new AuthenticationService(memberRepo);
+            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = _auth.HashPassword("Helland"), IsAdmin = false, Token = "TannerHelland"});
+            memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = _auth.HashPassword("Rask"), IsAdmin = true, Token = "AdminTestToken"});
             _controller = new HoldColorController(_repo, _auth);
             token = _auth.Login("Morten", "Rask");
         }

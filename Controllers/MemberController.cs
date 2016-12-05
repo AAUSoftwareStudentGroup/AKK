@@ -103,10 +103,11 @@ namespace AKK.Controllers
             {
                 return new ApiErrorResponse<string>("Username is already in use");
             }
-
+            
+            //Adds a new member to the system with the inputted values, except for the password which we hash first for security reasons
             _memberRepository.Add(new Member 
             {
-                DisplayName = displayName, Username = username, Password = password
+                DisplayName = displayName, Username = username, Password = _authenticator.HashPassword(password)
             });
             _memberRepository.Save();
 
@@ -133,7 +134,7 @@ namespace AKK.Controllers
         public ApiResponse<Member> ChangeRole(string token, Guid memberId, Role role)
         {
             //Token is from the admin user wanting to change another person's (memberId) role (role)
-            //Chekcs if current user is admin, otherwise the person is not allowed to change other people's roles
+            //Checks if current user is admin, otherwise the person is not allowed to change other people's roles
             if (!_authenticator.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Member>($"Not authenticated to change roles");

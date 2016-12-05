@@ -68,17 +68,18 @@ namespace AKK.Models
                 {"White", new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }}
             };
 
+            AKK.Services.AuthenticationService s = new AKK.Services.AuthenticationService(new AKK.Models.Repositories.MemberRepository(context));
             var members = new Dictionary<string, Member>
             {
-                {"Anton", new Member {DisplayName = "Anton", Username = "anton123", Password = "123", IsAdmin = true}},
-                {"Grunberg", new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = true}},
-                {"Jacob", new Member {DisplayName = "Jacob Svenningsen", Username = "jacob123", Password = "123", IsAdmin = true}},
-                {"Morten", new Member {DisplayName = "Morten", Username = "morten123", Password = "123", IsAdmin = true}},
-                {"Ibsen", new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = "123", IsAdmin = true}},
-                {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true}},
-                {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = "123", IsAdmin = false}},
-                {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = "adminadmin", IsAdmin = true}},
-                {"AKK", new Member {DisplayName = "Testbruger", Username = "AKK", Password = "123", IsAdmin = true}},
+                {"Anton", new Member {DisplayName = "Anton", Username = "anton123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Grunberg", new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Jacob", new Member {DisplayName = "Jacob Svenningsen", Username = "jacob123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Morten", new Member {DisplayName = "Morten", Username = "morten123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Ibsen", new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = s.HashPassword("123"), IsAdmin = false}},
+                {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = s.HashPassword("adminadmin"), IsAdmin = true}},
+                {"AKK", new Member {DisplayName = "Testbruger", Username = "AKK", Password = s.HashPassword("123"), IsAdmin = true}},
             };
 
             var sections = new Dictionary<string, Section> {
