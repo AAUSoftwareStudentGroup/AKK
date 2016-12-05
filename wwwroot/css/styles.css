@@ -611,6 +611,9 @@ input:checked + .toggle-switch::before {
     margin: 0 12px 12px 0;
     display: inline-block;
 }
+.radio-inputs.slim label {
+    margin-right: 7px;
+}
 
 .radio-inputs label:nth-child(5n+5) {
     margin-right: 0px;
