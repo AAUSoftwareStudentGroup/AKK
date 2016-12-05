@@ -41,6 +41,7 @@ namespace AKK.Controllers
             if(_gradeRepository.GetAll().Count(g => g.Difficulty == grade.Difficulty) != 0)
                 return new ApiErrorResponse<Grade>("A grade already exists with the given difficulty");
 
+            //Add the grade to the grade repository, if the caller of the method is an administrator and the grade doesn't already exist
             _gradeRepository.Add(grade);
             try
             {
@@ -84,16 +85,18 @@ namespace AKK.Controllers
                 return new ApiSuccessResponse<Grade>(oldGrade);
             }
 
+            //Update the existing grade with the changed values. If some of the values of the new grade is null, keep the existing ones
             oldGrade.Name = grade.Name ?? oldGrade.Name;
             oldGrade.Difficulty = grade.Difficulty ?? oldGrade.Difficulty;
             oldGrade.Color = grade.Color ?? oldGrade.Color;
 
-
+            //If a grade exists with the same difficulty as the one we are about to save, don't add it and return an error 
             if (_gradeRepository.GetAll().Any(g => g.Id != oldGrade.Id && g.Difficulty == oldGrade.Difficulty ))
             {
                 return new ApiErrorResponse<Grade>("A grade with this difficulty already exists");
             }
 
+            //If a grade exists with the same name as the one we are about to save, don't add it and return an error 
             if (_gradeRepository.GetAll().Any(g => g.Id != oldGrade.Id && g.Name == oldGrade.Name ))
             {
                 return new ApiErrorResponse<Grade>("A grade with this name already exists");
@@ -129,6 +132,7 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<IEnumerable<Grade>>($"No grade exists with id {grade2Id}");
             }
 
+            //Swap the difficulty of the found grades, to swap them in the database
             var tmpDiff = grade1.Difficulty;
             grade1.Difficulty = grade2.Difficulty;
             grade2.Difficulty = tmpDiff;
@@ -175,8 +179,8 @@ namespace AKK.Controllers
 
             // create copy that can be sent as result
             Grade resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade)) as Grade;
-            //resultCopy = new Grade();
-            //System.Console.WriteLine(resultCopy.Color.R);
+
+            //Delete the grade from the repository if the caller of the method is an administrator and no routes exists with this grade
             _gradeRepository.Delete(grade.Id);
 
             try
