@@ -190,19 +190,5 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Grade>("Failed to remove grade from database");
             }
         }
-
-        // GET: /api/grade/{id}/routes
-        [HttpGet("{id}/routes")]
-        public ApiResponse<IEnumerable<Route>> GetGradeRoutes(Guid id)
-        {
-            var grade = _gradeRepository.Find(id);
-
-            if (grade == null)
-            {
-                return new ApiErrorResponse<IEnumerable<Route>>("No grades with given id exists");
-            }
-
-            return new ApiSuccessResponse<IEnumerable<Route>>(grade.Routes);
-        }
     }
 }
