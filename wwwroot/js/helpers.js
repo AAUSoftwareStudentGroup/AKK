@@ -89,6 +89,11 @@ var asyncLoop = function(o){
     loop();//init
 }
 
+function hideOnClick(obj)
+{
+    obj.style.display = "none";
+}
+
 function resizeImage(image, callback) {
     var maxWidth = 500;
     if (image.width < maxWidth) callback(image);

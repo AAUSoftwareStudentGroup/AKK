@@ -9,15 +9,24 @@
     <input id="files" style="display:none;" type="file" accept="image/*" onchange="viewModel.UpdateCanvas(this);">
     {{#if_eq hasImage true}}
     <input class="submit-button neutral right" type="button" onclick="viewModel.rotateImageClockwise()" value="rotate ↻">
-        <div class="image-container" id="canvas-container">
-            <canvas id="route-edit-image" width="{{image.width}}" height="{{image.height}}">Canvas not supported</canvas>
-            <a class="undo-button" onclick="rc.undo()">
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path fill="#000000" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z" />
-                </svg>Undo
+    <div class="image-container" id="canvas-container">
+        <canvas id="route-edit-image" width="{{image.width}}" height="{{image.height}}">Canvas not supported</canvas>
+        <a class="undo-button" onclick="rc.undo()">
+            <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+                <path fill="#000000" d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z" />
+            </svg>Undo
+        </a>
+        <div class="hold-watermark" onclick="hideOnClick(this);">
+            <a class="hold-pointer">
+                <svg viewBox="0 0 24 24">
+                   <path fill="#000000 " d="M21,9A1,1 0 0,1 22,10A1,1 0 0,1 21,11H16.53L16.4,12.21L14.2,17.15C14,17.65 13.47,18 12.86,18H8.5C7.7,18 7,17.27 7,16.5V10C7,9.61 7.16,9.26 7.43,9L11.63,4.1L12.4,4.84C12.6,5.03 12.72,5.29 12.72,5.58L12.69,5.8L11,9H21M2,18V10H5V18H2Z" />
+                </svg>
+                <br>
+                Select holds by tapping the image.
             </a>
         </div>
+    </div>
     {{else}}
-        <div class="no-image"></div>
+    <div class="no-image"></div>
     {{/if_eq}}
 </div>
