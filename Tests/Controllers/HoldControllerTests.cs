@@ -143,7 +143,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void DeleteHoldColor_DeleteHoldThatDoesntExistAsAdmin_ExpectError()
         {
-            var response = _controller.DeleteHoldColor(token, new Guid());
+            var response = _controller.DeleteHoldColor(token, Guid.NewGuid());
             Assert.IsFalse(response.Success);
             Assert.AreEqual(15, _dataFactory.HoldColors.Count);
         }
