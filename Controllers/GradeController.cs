@@ -110,6 +110,43 @@ namespace AKK.Controllers
             }
         }
 
+        // PATCH: /api/grade/{grade1Id}/swap/{grade2Id}
+        [HttpPatch("{grade1Id}/swap/{grade2Id}")]
+        public ApiResponse<IEnumerable<Grade>> SwapGrades(string token, Guid grade1Id, Guid grade2Id) 
+        {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>("You need to be logged in as an administrator to change this grade");
+            }
+            Grade grade1 = _gradeRepository.Find(grade1Id);
+            Grade grade2 = _gradeRepository.Find(grade2Id);
+            if (grade1 == null)
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>($"No grade exists with id {grade1Id}");
+            }
+            if (grade2 == null)
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>($"No grade exists with id {grade2Id}");
+            }
+
+            var tmpDiff = grade1.Difficulty;
+            grade1.Difficulty = grade2.Difficulty;
+            grade2.Difficulty = tmpDiff;
+
+            try
+            {
+                var result = new List<Grade>();
+                result.Add(grade1);
+                result.Add(grade2);
+                _gradeRepository.Save();
+                return new ApiSuccessResponse<IEnumerable<Grade>>(result);
+            }
+            catch
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>("Failed to save swapped grades to database");
+            }
+        }
+
         // DELETE: /api/grade/{id}
         [HttpDelete("{id}")]
         public ApiResponse<Grade> DeleteGrade(string token, Guid id) 
