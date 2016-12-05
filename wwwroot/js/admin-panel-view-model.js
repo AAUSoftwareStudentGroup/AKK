@@ -65,7 +65,9 @@ function AdminPanelViewModel(client, dialogService) {
             self.client.sections.addSection(name, function(response) {
                 if(response.success) {
                     self.downloadSections();
-                }
+                } 
+                else
+                    self.dialogService.showMessage(response.message);
             });
         }
     }
