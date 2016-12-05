@@ -10,7 +10,8 @@ function RoutesViewModel(client, loadingService) {
         { value: 0, name: "Newest" },
         { value: 1, name: "Oldest" },
         { value: 2, name: "Grading" },
-        { value: 3, name: "Author" },
+        { value: 3, name: "Rating" },
+        { value: 4, name: "Author" },
     ];
 
     this.selectedGrade = this.grades[0];

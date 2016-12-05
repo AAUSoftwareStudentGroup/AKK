@@ -9,7 +9,7 @@ namespace AKK.Models
 {
     public enum SortOrder
     {
-        Newest, Oldest, Grading, Author
+        Newest, Oldest, Grading, Rating, Author
     }
 
     public class Route : Model, ICloneable<Route>
