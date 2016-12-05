@@ -103,10 +103,10 @@ namespace AKK.Controllers
             {
                 return new ApiErrorResponse<string>("Username is already in use");
             }
-
+            
             _memberRepository.Add(new Member 
             {
-                DisplayName = displayName, Username = username, Password = password
+                DisplayName = displayName, Username = username, Password = _authenticator.HashPassword(password)
             });
             _memberRepository.Save();
 

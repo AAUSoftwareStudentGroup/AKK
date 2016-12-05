@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using AKK.Models;
 using AKK.Models.Repositories;
 
@@ -24,7 +26,7 @@ namespace AKK.Services
 
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Username == username);
 
-            if (member != default(Member) && member.Password == password)
+            if (member != default(Member) && TestPassword(password, member.Password))
             {
                 if(member.Token != null) {
                     return member.Token;
@@ -103,5 +105,34 @@ namespace AKK.Services
                 }
             }
         }
+
+        private byte[] Hash(string value, string salt)
+        {
+            return Hash(Encoding.UTF8.GetBytes(value), Encoding.UTF8.GetBytes(salt));
+        }
+
+        private byte[] Hash(byte[] value, byte[] salt)
+        {
+            byte[] saltedValue = value.Concat(salt).ToArray();
+            return SHA256.Create().ComputeHash(saltedValue);
+        }
+
+        private string GenerateSalt() {
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+        }
+
+        public string HashPassword(string password)
+        {
+            string salt = GenerateSalt();
+            string hash = Convert.ToBase64String(Hash(password, salt));
+            return salt+":"+hash;
+        }
+        
+        public bool TestPassword(string testPass, string hashedPass) {
+            string salt = (hashedPass.Substring(0, 24));
+            string hash = (hashedPass.Substring(25));
+            string confirmPass = Convert.ToBase64String( Hash(testPass, salt) );
+            return string.Compare(confirmPass, hash) == 0;
+        } 
     }
 }
