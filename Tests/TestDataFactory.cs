@@ -317,6 +317,7 @@ namespace AKK.Tests
                 HoldColor newColor = new HoldColor();
                 newColor.HexColorOfHolds = color.Value.ToUint();
                 newColor.Name = color.Key;
+                newColor.Id = Guid.NewGuid();
                 _holdColors.Add(newColor);
             }
 

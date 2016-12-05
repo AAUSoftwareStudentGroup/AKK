@@ -38,7 +38,7 @@ function NewRouteViewModel(client, navigationService) {
         var author = self.author;
         self.client.routes.addRoute(sectionId, routeNumber, author, holdColor.colorOfHolds, gradeId, tapeColor, this.note, imgObject, function(response) {
             if (response.success) {
-                self.navigationService.toRoutes();
+                self.navigationService.toRouteInfo(response.data.id);
             } else {
                 self.trigger("Error", response.message);
             }
