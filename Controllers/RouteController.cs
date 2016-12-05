@@ -367,7 +367,10 @@ namespace AKK.Controllers
             if(route.GradeId != default(Guid))
             {
                 routeToUpdate.Grade = _gradeRepository.Find(route.GradeId);
-                routeToUpdate.GradeId = routeToUpdate.Grade.Id;
+                if (routeToUpdate.Grade != null)
+                    routeToUpdate.GradeId = routeToUpdate.Grade.Id;
+                else
+                    return new ApiErrorResponse<Route>("The specified grade does not exist");
             }
 
             if(route.SectionId != default(Guid))
@@ -429,13 +432,19 @@ namespace AKK.Controllers
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to change ratings");
             }
-
+            
             //Make sure ratingvalue is between 1 and 5
             ratingValue = Math.Max(1, Math.Min(5, ratingValue));
 
             var route = _routeRepository.Find(routeId);
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
             var previousRating = route.Ratings.FirstOrDefault(r => r.Member.Token == token);
+
+            if (route == null)
+                return new ApiErrorResponse<Route>("No route with this id exists");
+
+            if (member == default(Member))
+                return new ApiErrorResponse<Route>("No member with this token exists. Are you logged in?");
 
             if (previousRating == default(Rating))
             {
