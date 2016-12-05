@@ -12,6 +12,7 @@
     this.routes = [];
     this.members = [];
     this.holds = [];
+    this.grades = [];
     this.editingGrades = false;
 
     this.init = function() {
@@ -132,7 +133,7 @@
         newGrade = JSON.parse(JSON.stringify(newGrade));
         newGrade.name = name;
         newGrade.difficulty = self.grades.length;
-        newGrade.color = {r: 0x66, b: 0x66, g: 0x66};
+        newGrade.color = {r: 99, b: 99, g: 99};
         delete newGrade.id;
         self.client.grades.addGrade(newGrade, function(response) {
             if(response.success) {
