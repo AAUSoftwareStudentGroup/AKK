@@ -70,6 +70,9 @@ namespace AKK.Controllers
                 case SortOrder.Grading:
                     routes = routes.OrderBy(p => p.Grade.Difficulty);
                     break;
+                case SortOrder.Rating:
+                    routes = routes.OrderByDescending(p => p.AverageRating);
+                    break;
             }
 
             if (!string.IsNullOrEmpty(searchStr))

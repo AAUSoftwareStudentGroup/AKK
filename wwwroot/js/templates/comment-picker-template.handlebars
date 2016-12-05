@@ -12,7 +12,7 @@
         {{#if_eq video null}}
         {{else}}
         <video class="video-beta" controls>
-            <source src="{{video.fileUrl}}" type="video/mp4">
+            <source src="{{video.fileUrl}}" preload="metadata" type="video/mp4">
         </video>
         {{/if_eq}}
         {{breaklines message}}

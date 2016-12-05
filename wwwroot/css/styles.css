@@ -739,6 +739,40 @@ input:checked + .toggle-switch::before {
     margin-top: 6px;
 }
 
+.hold-watermark:visited {
+    visibility: hidden;
+}
+
+.hold-watermark {
+    position: absolute;
+    background-color: rgba(255,255,255,.5);
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.hold-pointer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 20%;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.hold-pointer > svg {
+    transform: rotate(250deg);
+    width: 30%;
+    display: inline-block;
+}
+
+
+
 #search-field {
     outline: none;
     width: calc(100% - 50px);
