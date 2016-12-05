@@ -629,10 +629,20 @@ var TEST_MEMBERS_INIT = [
 ];
 
 var TEST_HOLDS_INIT = [
-  
+  {
+    "colorOfHolds": 
+    {
+      "a": "255",
+      "r": "205",
+      "g": "205",
+      "b": "205"
+    }
+  }
 ];
 
-
+var TEST_RATINGS_INIT = {
+  "routeId": "92cc529e-52d3-4b1a-a365-da63d96e740e"
+}
 
 
 
@@ -645,6 +655,7 @@ function init (){
   TEST_MEMBER = JSON.parse(JSON.stringify(TEST_MEMBER_INIT));
   TEST_MEMBERS = JSON.parse(JSON.stringify(TEST_MEMBERS_INIT));
   TEST_HOLDS = JSON.parse(JSON.stringify(TEST_HOLDS_INIT));
+  TEST_RATINGS = JSON.parse(JSON.stringify(TEST_RATINGS_INIT));
 }
 
 init();

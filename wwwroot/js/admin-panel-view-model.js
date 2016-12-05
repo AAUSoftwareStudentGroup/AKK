@@ -1,4 +1,4 @@
-function AdminPanelViewModel(client, dialogService) {
+    function AdminPanelViewModel(client, dialogService) {
     var self = this;
     this.client = client;
     this.dialogService = dialogService;
