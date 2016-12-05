@@ -61,11 +61,13 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.addNewSection = function() {
         var name = self.dialogService.prompt("Enter name of new Section","");
-        self.client.sections.addSection(name, function(response) {
-            if(response.success) {
-                self.downloadSections();
-            }
-        });
+        if(name != null) {
+            self.client.sections.addSection(name, function(response) {
+                if(response.success) {
+                    self.downloadSections();
+                }
+            });
+        }
     }
 
     this.clearSection = function() {
@@ -95,14 +97,16 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.renameSection = function() {
         var newName = self.dialogService.prompt("Enter the new name","");
-        if(self.selectedSection != null && self.dialogService.confirm("Do you really want to rename this section?")) {
-            self.client.sections.renameSection(self.selectedSection.id, newName, function(response) {
-                if(response.success) {
-                    self.downloadSections();
-                }
-                else
-                    self.dialogService.showMessage(response.message);
-            });
+        if (newName != null) {
+            if(self.selectedSection != null && self.dialogService.confirm("Do you really want to rename this section?")) {
+                self.client.sections.renameSection(self.selectedSection.id, newName, function(response) {
+                    if(response.success) {
+                        self.downloadSections();
+                    }
+                    else
+                        self.dialogService.showMessage(response.message);
+                });
+            }
         }
     }
 ///////////////////////////////////
@@ -301,10 +305,12 @@ function AdminPanelViewModel(client, dialogService) {
         newHold = JSON.parse(JSON.stringify(newHold));
         newHold.name = name;
         newHold.colorOfHolds = {r: 0x66, b: 0x66, g: 0x66};
+        newHold.value = self.holds.length;
         delete newHold.id;
         self.client.holds.addHold(newHold, function(response) {
             if(response.success) {
                 self.holds.push(response.data);
+                self.holds[self.holds.length-1].value = self.holds.length-1;
                 self.selectedHold = self.holds[self.holds.length-1];           
             }
             else {
