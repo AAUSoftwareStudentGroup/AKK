@@ -710,7 +710,7 @@ input:checked + .toggle-switch::before {
     width: 100%;
     clear: both;
     position: relative;
-    padding: 20px 0 12px 0;
+    margin: 20px 0 12px 0;
     outline: none;
 }
 
@@ -759,10 +759,12 @@ input:checked + .toggle-switch::before {
     position: absolute;
     left: 0;
     right: 0;
-    top: 20%;
+    top: 0;
+    bottom: 0;
     padding: 0;
-    margin: 0;
+    margin: auto;
     text-align: center;
+    height: 120px;
 }
 
 .hold-pointer > svg {
