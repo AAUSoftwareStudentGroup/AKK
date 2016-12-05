@@ -61,7 +61,7 @@ function RoutesViewModel(client, loadingService) {
             this.currentAjaxRequest.abort();
         }
         this.currentAjaxRequest = this.client.routes.searchRoutes(searchstring, function (response) {
-            console.log(self.currentAjaxRequest);
+        //    console.log(self.currentAjaxRequest);
             if (response.success) {
                 self.currentAjaxRequest = null;
             }
