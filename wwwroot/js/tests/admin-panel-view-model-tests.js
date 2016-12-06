@@ -176,9 +176,11 @@ QUnit.test("admin panel viewModel downloadGrades", function (assert)
 
 QUnit.test("admin panel viewModel addNewGrade", function (assert) 
 {
-	init();
 	var dialogService = new TestDialogService();
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
+
+	init();
+	viewModel.init();
 
 	var gradeChangedTriggered = false;
 
@@ -187,10 +189,38 @@ QUnit.test("admin panel viewModel addNewGrade", function (assert)
         gradeChangedTriggered = true;
     });
 
+	var tempGradeCount = viewModel.grades.length;
+
+	assert.equal(tempGradeCount, TEST_GRADES.length, "");
+
     viewModel.addNewGrade();
 
 	assert.equal(gradeChangedTriggered, true, "admin panel ViewModel gradesChanged triggered");
-	//Assert grades.length er en længere 
-	//Assert grades.length-1, r=r, g=g, b=b
+	assert.equal(viewModel.grades[viewModel.grades.length-1].name, "New Grade", "");
+	assert.equal(tempGradeCount+1, TEST_GRADES.length, "");
+	assert.equal(viewModel.grades[viewModel.grades.length-1].color.r == TEST_GRADES[TEST_GRADES.length-1].color.r && viewModel.grades[viewModel.grades.length-1].color.g == TEST_GRADES[TEST_GRADES.length-1].color.g && viewModel.grades[viewModel.grades.length-1].color.b == TEST_GRADES[TEST_GRADES.length-1].color.b, true, "");
 });
 
+QUnit.test("admin panel viewModel updateGrade", function (assert) 
+{
+	var dialogService = new TestDialogService();
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
+
+	init();
+	viewModel.init();
+
+	var gradeChangedTriggered = false;
+
+	viewModel.addEventListener("gradesChanged", function () 
+	{
+        gradeChangedTriggered = true;
+    });
+
+
+    viewModel.updateGrade();
+
+	assert.equal(gradeChangedTriggered, true, "admin panel ViewModel gradesChanged triggered");
+
+
+
+});
