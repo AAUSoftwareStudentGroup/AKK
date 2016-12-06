@@ -86,12 +86,17 @@ function TestGradeClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+    var grades = TEST_GRADES;
     this.getAllGrades = function(success)
     {
         success({success: true, data: TEST_GRADES});
     };
 
-    this.addGrade = function(grade, success) { };
+    this.addGrade = function(grade, success) { 
+        var newGrade = {name: grade.name, difficulty: grade.difficulty, color: grade.color};
+        grades.push(newGrade);
+        success({success: true, data: clone(newGrade)});
+    };
 
     this.getGrade = function(gradeId, success)
     {
