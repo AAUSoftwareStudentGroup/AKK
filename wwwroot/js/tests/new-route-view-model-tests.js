@@ -1,6 +1,5 @@
 ﻿var viewModel;
 
-var viewModel;
 QUnit.test("NewRoute ViewModel init test", function (assert) {
     viewModel = new NewRouteViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()), new TestNavigationService());
 

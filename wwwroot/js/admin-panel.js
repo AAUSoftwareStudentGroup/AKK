@@ -5,7 +5,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Admin Panel", client, "/");
     viewModel = new AdminPanelViewModel(client, new DialogService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -44,7 +44,7 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
     });
