@@ -157,6 +157,48 @@ namespace AKK.Tests.Controllers
         }
 
         [Test]
+        public void SwapGrades_SwapTwoExistingGradesAsAdmin_GradesGetSwapped()
+        {
+            var grade1 = _repo.GetAll().FirstOrDefault(g => g.Difficulty == 0);
+            var grade2 = _repo.GetAll().FirstOrDefault(g => g.Difficulty == 2);
+
+            _controller.SwapGrades("AdminTestToken", grade1.Id, grade2.Id);
+
+            Assert.AreEqual(2, grade1.Difficulty);
+            Assert.AreEqual(0, grade2.Difficulty);
+            Assert.IsTrue(_controller.GetAllGrades().Data.FirstOrDefault().Name == "Red");
+        }
+
+        [Test]
+        public void SwapGrades_SwapTwoExistingGradesAsMember_GradesDoesntGetSwapped()
+        {
+            var grade1 = _repo.GetAll().FirstOrDefault(g => g.Difficulty == 0);
+            var grade2 = _repo.GetAll().FirstOrDefault(g => g.Difficulty == 2);
+
+            _controller.SwapGrades("TannerHelland", grade1.Id, grade2.Id);
+
+            Assert.AreEqual(0, grade1.Difficulty);
+            Assert.AreEqual(2, grade2.Difficulty);
+            Assert.IsTrue(_controller.GetAllGrades().Data.FirstOrDefault().Name == "Green");
+        }
+
+        [Test]
+        public void SwapGrades_SwapGradeWithOneThatDoesntExistAsAdmin_ExpectFalse()
+        {
+            var grade1 = _repo.GetAll().FirstOrDefault(g => g.Difficulty == 0);
+            Grade testGrade = new Grade();
+            testGrade.Name = "Magic";
+            testGrade.Difficulty = 5;
+
+            var response = _controller.SwapGrades("TannerHelland", grade1.Id, testGrade.Id);
+
+            Assert.IsFalse(response.Success);
+            Assert.AreEqual(0, grade1.Difficulty);
+            Assert.AreEqual(5, testGrade.Difficulty);
+            Assert.IsTrue(_controller.GetAllGrades().Data.FirstOrDefault().Name == "Green");
+        }
+
+        [Test]
         public void DeleteGrade_RoutesWithGrade_FailsToDeleteGrade() {
             var grade = _repo.GetAll().First();
             var result = _controller.DeleteGrade("AdminTestToken", grade.Id);

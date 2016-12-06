@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AKK.Models.Repositories
 {
+    //The repository class which implements the IRepository interface, and which all repositories inherit from
     public class DbSetRepository<TEntity> : IRepository<TEntity> where TEntity : class, IIdentifyable
     {
         private MainDbContext _dbContext;

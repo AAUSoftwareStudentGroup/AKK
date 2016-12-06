@@ -5,6 +5,7 @@ using AKK.Models;
 
 
 namespace AKK.Controllers {
+    //html view navigator. Loads the right cshtml document depending on what method is called
     [Route("")]
     public class ViewController : Controller {
         public IAuthenticationService AuthenticationService;
