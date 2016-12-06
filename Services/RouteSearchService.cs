@@ -70,7 +70,7 @@ namespace AKK.Services
                 for (int i = 0; i < _numRoutes; i++)
                 {
                     var route = routesWithDist[i].Item1;
-                    float dist = _getSmallestDistance(route, searchStr, specialization);
+                    float dist = _getSmallestDistance(route, searchStr, null);
                     if (dist < routesWithDist[i].Item2)
                     {
                         routesWithDist[i] = new Tuple<Route, float>(route, dist); ;
