@@ -2,13 +2,13 @@
     {{#each route.comments}}
     <div class="route-card">
     {{#if_eq_or ../member.id member.id ../member.isAdmin}}
-    <span class="comment-remove right">
-        <svg onclick="viewModel.removeComment('{{id}}','{{routeId}}');" style="width:24px;height:24px" viewBox="0 0 24 24">
+    <span class="remove right">
+        <svg onclick="viewModel.removeComment('{{id}}','{{routeId}}');" viewBox="0 0 24 24">
             <path fill="#ccc" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
         </svg>
     </span>
     {{/if_eq_or}}
-    <span class="comment-author">{{{member.displayName}}} on {{formatdate date}}:</span>
+    <span class="author">{{{member.displayName}}} on {{formatdate date}}:</span>
         {{#if_eq video null}}
         {{else}}
         <video class="video-beta" controls>
@@ -19,28 +19,27 @@
     </div>
     {{/each}}
     {{#if isAuthed}}
+
     <div class="route-card comment-card editable">
         <div class="progress">
             <div class="indeterminate"></div>
         </div>
         <form id="comment-form" class="comment-input" enctype="multipart/form-data">
-            <textarea type="text" name="text" class="comment-text-input" placeholder="Write comment"></textarea>
-            <label for="files" id ="select-video-button" class="comment-clickable left">
-                <svg style="width:36px;height:36px" viewBox="0 0 24 24">
-                    <path class="comment-add-button" d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" />
+            <textarea type="text" name="text" placeholder="Write comment"></textarea>
+            <label for="files" id="select-video-button" class="video left">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z" />
                 </svg>
             </label>
-            <span class="left comment-video-check" style="line-height:36px;">
-                <svg style="width:36px;height:36px" viewBox="0 0 24 24">
+            <input class="hidden" id="files" name="file" type="file" accept="video/*" onchange="$('#comment-form').addClass('video-added');">
+            <span class="left video-check">
+                <svg viewBox="0 0 24 24">
                     <path fill="#2196F3" d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
                 </svg>
             </span>
-            <input class="hidden" id="files" name="file" type="file" accept="video/*" onchange="$('#comment-form').addClass('video-added');">
-            <div class="comment-clickable right comment-send " onclick="addComment($(this).parent()[0]);">
-                <svg style="width:24px;height:24px" viewBox="0 0 24 24">
-                    <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
-                </svg>
-            </div>
+            <svg viewBox="0 0 24 24" class="send-button right" onclick="addComment($(this).parent()[0]);">
+                <path d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+            </svg>
         </form>
         <div style="clear:both;height:0;width:100%;"></div>
     </div>
