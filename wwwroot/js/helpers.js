@@ -1,5 +1,5 @@
-﻿Handlebars.registerHelper('ifCond', function (v1, v2, options) {
-    if (v1.g <= v2) {
+﻿Handlebars.registerHelper('if_light', function (v1, options) {
+    if (v1.r + v1.g + v1.b > 600) {
         return options.fn(this);
     }
     return options.inverse(this);

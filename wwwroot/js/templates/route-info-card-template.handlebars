@@ -2,13 +2,10 @@
     <div class="route-card">
         <div class="route-card-top">
             <div class="route-grade-number grade-{{route.grade.difficulty}}">
-                <span class="number"
-                    {{#ifCond route.grade.color 200}}
-                        style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}})">
-                    {{else}}
-                        style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}}); color: black">
-                    {{/ifCond}}
+                <span class="number" style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}})">
+                    <div style="{{#if_light route.grade.color}}; color: black{{/if_light}}">
                     {{route.name}}
+                    </div>
                 </span>
             </div>
             <span class="route-section"></span>
