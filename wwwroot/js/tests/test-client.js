@@ -104,6 +104,8 @@ function TestGradeClient(url, cookieService)
     };
 
     this.deleteGrade = function(gradeId, success) { };
+
+    this.updateGrade = function(grade, success) {};
 }
 
 function TestMemberClient(url, cookieService)

@@ -201,6 +201,7 @@ QUnit.test("admin panel viewModel addNewGrade", function (assert)
 	assert.equal(viewModel.grades[viewModel.grades.length-1].color.r == TEST_GRADES[TEST_GRADES.length-1].color.r && viewModel.grades[viewModel.grades.length-1].color.g == TEST_GRADES[TEST_GRADES.length-1].color.g && viewModel.grades[viewModel.grades.length-1].color.b == TEST_GRADES[TEST_GRADES.length-1].color.b, true, "");
 });
 
+/*
 QUnit.test("admin panel viewModel updateGrade", function (assert) 
 {
 	var dialogService = new TestDialogService();
@@ -223,4 +224,4 @@ QUnit.test("admin panel viewModel updateGrade", function (assert)
 
 
 
-});
+}); */
