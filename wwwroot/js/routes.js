@@ -16,7 +16,12 @@ $(document).ready(function () {
         {
             scriptSource: "js/templates/route-filtering-template.handlebars", 
             elementId: "filter-content", 
-            event: "filteringChanged",
+            event: [
+                "sectionsChanged", 
+                "gradesChanged", 
+                "sortOptionsChanged", 
+                "isSearchingChanged"
+            ],
             viewmodel: viewModel
         },
         {
