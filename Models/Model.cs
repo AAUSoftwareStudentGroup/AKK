@@ -2,7 +2,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using AKK.Models.Repositories;
-using Newtonsoft.Json;
 
 namespace AKK.Models
 {

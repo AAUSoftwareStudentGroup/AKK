@@ -1,4 +1,6 @@
 namespace AKK.Controllers.ApiResponses {
+    //The object which is returned if the request failed
+    //This object also contains an error message
     public class ApiErrorResponse<T> : ApiResponse<T> {
         
         public string ErrorMessage {get; set;}
