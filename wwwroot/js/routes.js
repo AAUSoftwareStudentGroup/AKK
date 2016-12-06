@@ -20,6 +20,9 @@ $(document).ready(function () {
                 "sectionsChanged", 
                 "gradesChanged", 
                 "sortOptionsChanged", 
+                "selectedSectionChanged", 
+                "selectedGradeChanged", 
+                "selectedSortByChanged", 
                 "isSearchingChanged"
             ],
             viewmodel: viewModel

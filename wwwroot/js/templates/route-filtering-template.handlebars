@@ -16,9 +16,11 @@
             <h2>Grade</h2>
             <label class="drop-down">
                 <select onchange="viewModel.changeGrade(this.value)" type="dropdown" name="grade">
-                    {{#each grades}}
-                    <option id="grade-{{id}}" value="{{id}}">{{name}}</option>
-                    {{/each}}
+                {{#each grades}}
+                    <option id="grade-{{id}}" value="{{id}}" {{#if_eq ../selectedGrade.id id}}selected{{/if_eq}}>
+                    {{name}}
+                    </option>
+                {{/each}}
                 </select>
             </label>
         </div>
@@ -27,7 +29,9 @@
             <label class="drop-down">
                 <select onchange="viewModel.changeSection(this.value)" type="dropdown" name="section">
                     {{#each sections}}
-                    <option id="section-{{name}}" value="{{id}}">{{name}}</option>
+                    <option id="section-{{name}}" value="{{id}}" {{#if_eq ../selectedSection.id this.id}}selected{{/if_eq}}>
+                        {{name}}
+                    </option>
                     {{/each}}
                 </select>
             </label>
@@ -37,7 +41,7 @@
             <label class="drop-down">
                 <select onchange="viewModel.changeSortBy(this.value)" type="dropdown" name="sortBy">
                     {{#each sortOptions}}
-                    <option id="sortby-{{value}}" value="{{value}}">{{name}}</option>
+                    <option id="sortby-{{value}}" value="{{value}}" {{#if_eq ../selectedSortBy.value this.value}}selected{{/if_eq}}>{{name}}</option>
                     {{/each}}
                 </select>
             </label>

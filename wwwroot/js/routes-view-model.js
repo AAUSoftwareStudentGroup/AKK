@@ -15,6 +15,7 @@ function RoutesViewModel(client, loadingService) {
             self.trigger("routesChanged");
         } else {
             self.routes = [];
+            self.trigger("routesChanged");
         }
     };
 
@@ -75,8 +76,7 @@ function RoutesViewModel(client, loadingService) {
     this.toggleIsSearching = function() {
         this.isSearching = !this.isSearching;
         self.trigger("isSearchingChanged");
-        if(!this.isSearching)
-        {
+        if(!this.isSearching) {
             self.changeGrade(self.grades[0].id);
             self.changeSection(self.sections[0].id);
             self.changeSortBy(self.sortOptions[0].value);
