@@ -1,4 +1,4 @@
-function EditRouteViewModel(client, navigationService) {
+function EditRouteViewModel(client, navigationService, dialogService) {
     RouteViewModel.apply (this, arguments);
     this.routeId = "";
     var self = this;
@@ -39,7 +39,7 @@ function EditRouteViewModel(client, navigationService) {
                 self.changeNote(response.data.note);
                 self.trigger("noteUpdated");
             } else {
-                self.trigger("Error", response.message);
+                this.dialogService.showError(response.message);
             }
         });
     }
@@ -73,7 +73,7 @@ function EditRouteViewModel(client, navigationService) {
             }
             else
             {
-                self.trigger("Error", response.message);
+                this.dialogService.showError(response.message);
             }
         });
     }

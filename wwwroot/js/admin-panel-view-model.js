@@ -67,8 +67,7 @@
                 self.sections = response.data;
                 self.trigger("sectionsChanged");
             }
-            else
-            {
+            else {
                 self.trigger("Error", response.message);
             }
         });
@@ -88,8 +87,9 @@
                 if(response.success) {
                     self.downloadSections();
                 } 
-                else
-                    self.dialogService.showMessage(response.message);
+                else {
+                    self.trigger("Error", response.message);
+                }
             });
         }
     }
@@ -101,8 +101,9 @@
                 if(response.success) {
                     self.downloadRoutes();
                 }
-                else
-                    self.dialogService.showMessage(response.message);
+                else {
+                    self.trigger("Error", response.message);
+                }
             });
         }
     }
@@ -115,8 +116,9 @@
                     self.downloadSections();
                     self.downloadRoutes();
                 }
-                else
-                    self.dialogService.showMessage(response.message);
+                else {
+                    self.trigger("Error", response.message);
+                }
             });
         }
     }
@@ -130,8 +132,9 @@
                     if(response.success) {
                         self.downloadSections();
                     }
-                    else
-                        self.dialogService.showMessage(response.message);
+                    else {
+                        self.trigger("Error", response.message);
+                    }
                 });
             }
         }
@@ -146,8 +149,9 @@
                 self.grades = response.data;
                 self.trigger("gradesChanged");
             }
-            else
-                self.dialogService.showMessage(response.message);
+            else {
+                self.trigger("Error", response.message);
+            }
         })
     }
 
@@ -169,8 +173,8 @@
                 self.selectedGrade = self.grades[self.grades.length-1];           
                 self.trigger("gradesChanged");
             }
-            else{
-                self.dialogService.showMessage(response.message);
+            else {
+                self.trigger("Error", response.message);
             }
         });
     }
@@ -187,7 +191,7 @@
                 self.downloadRoutes();
             }
             else {
-                self.dialogService.showMessage(response.message);
+                self.trigger("Error", response.message);
             }
         });
     }
@@ -211,7 +215,7 @@
                     self.downloadGrades();
                 }
                 else {
-                    self.dialogService.showMessage(response.message);
+                    self.trigger("Error", response.message);
                 }
             });
         }
@@ -281,7 +285,7 @@
                 self.downloadGrades();
             }
             else
-                self.dialogService.showMessage(response.message);
+                self.trigger("Error", response.message);
         });
     }
 
@@ -334,7 +338,7 @@
                 self.trigger("holdsChanged");
             }
             else
-                self.dialogService.showMessage(response.message);
+                self.trigger("Error", response.message);
         })
     }
 
@@ -355,7 +359,7 @@
                 self.selectedHold = self.holds[self.holds.length-1];           
             }
             else {
-                self.dialogService.showMessage(response.message);
+                self.trigger("Error", response.message);
                 self.downloadHolds();
                 self.selectedHold = null;
             }
@@ -377,8 +381,9 @@
                         self.holds.push(response.data);
                         self.selectedHold = self.holds[self.holds.length-1];           
                     }
-                    else
-                        self.dialogService.showMessage(response.message);
+                    else {
+                        self.trigger("Error", response.message);
+                    }
                     self.downloadHolds();
                     self.selectedHold = null;
                     self.trigger("holdsChanged");
@@ -386,7 +391,7 @@
                 
             }
             else {
-                self.dialogService.showMessage(response.message);
+                self.trigger("Error", response.message);
             }
         })
     }
@@ -407,7 +412,7 @@
                     self.downloadHolds();
                 }
                 else {
-                    self.dialogService.showMessage(response.message);
+                    self.trigger("Error", response.message);
                 }
             });
         }
@@ -451,8 +456,9 @@
                 member.isAdmin = !member.isAdmin;
                 self.trigger("membersChanged");
             }
-            else
-                self.dialogService.showMessage(response.message);
+            else {
+                self.trigger("Error", response.message);
+            }
         });
     }
 }

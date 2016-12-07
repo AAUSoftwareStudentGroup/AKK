@@ -1,8 +1,9 @@
-function RouteViewModel(client, navigationService) {
+function RouteViewModel(client, navigationService, dialogService) {
     EventNotifier.apply(this);
     var self = this;
-    this.navigationService = navigationService;
     this.client = client;
+    this.navigationService = navigationService;
+    this.dialogService = dialogService;
     
     this.addingImage = false;
     this.sections = [];
@@ -26,7 +27,7 @@ function RouteViewModel(client, navigationService) {
                 self.sections = response.data;
                 self.trigger("sectionsUpdated");
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
             if (callback) callback();
         });
@@ -38,7 +39,7 @@ function RouteViewModel(client, navigationService) {
                 self.grades = response.data;
                 self.trigger("gradesUpdated");
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
             if (callback) callback();
         });
@@ -53,7 +54,7 @@ function RouteViewModel(client, navigationService) {
                 };
                 self.trigger("holdsUpdated");
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
             if (callback) callback();
         });
@@ -131,7 +132,6 @@ function RouteViewModel(client, navigationService) {
             self.HoldPositions = [];
         })
     }
-
 
     this.UpdateCanvas = function(input) {
         this.addingImage = true;

@@ -3,7 +3,7 @@ var headerViewModel;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
     headerViewModel = new HeaderViewModel("New Route", client, "/");
-    viewModel = new NewRouteViewModel(client, new NavigationService());
+    viewModel = new NewRouteViewModel(client, new NavigationService(), new DialogService());
 
     var configurations = [
         {
@@ -63,9 +63,6 @@ $(document).ready(function () {
                 rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);
                 rc.DrawCanvas();
             }
-        });
-        viewModel.addEventListener("Error", function(msg) {
-            $("#error-message").html(msg).show();
         });
         viewModel.init();
         headerViewModel.init();

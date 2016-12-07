@@ -57,7 +57,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             rating = memberRating;
             self.client.routes.setRating(self.route.id, rating, function(response) {
                 if (!response.success) {
-                    self.trigger("Error", response.message)
+                    self.dialogService.showError(response.message);
                 }
             });
         } else {
@@ -93,7 +93,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             self.updateRating(self.route.averageRating, rating);
         }
         else
-            self.trigger("Info", "You need to log in to rate routes");
+            self.dialogService.showInfo("You need to log in to rate routes");
     };
 
     this.editRoute = function () {
@@ -122,12 +122,12 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.addingComment = false;
                 self.getComments();
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
                 self.addingComment = false;
                 self.trigger("commentsChanged");
             }
         }, function(response) {
-            self.trigger("Error", "Failed adding comment. The video added is probably too large.");
+            self.dialogService.showError("Failed adding comment. The video added is probably too large.");
             self.trigger("commentsChanged");
         });
     };
@@ -152,7 +152,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                     }
                 });
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     };

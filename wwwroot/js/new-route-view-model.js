@@ -1,4 +1,4 @@
-function NewRouteViewModel(client, navigationService) {
+function NewRouteViewModel(client, navigationService, dialogService) {
     RouteViewModel.apply (this, arguments);
     var self = this;
     this.init = function() {
@@ -45,7 +45,7 @@ function NewRouteViewModel(client, navigationService) {
             if (response.success) {
                 self.navigationService.toRouteInfo(response.data.id);
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     };

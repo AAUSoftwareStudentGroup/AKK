@@ -37,12 +37,6 @@ $(document).ready(function () {
         viewModel.addEventListener("commentsChanged", function() {
             autosize($('textarea'));
         });
-        viewModel.addEventListener("Error", function(response) {
-            $("#error-message").html(response).show();
-        });
-        viewModel.addEventListener("Info", function(response) {
-            $("#info-message").html(response).show();
-        });
         viewModel.init();
         headerViewModel.init();
     });

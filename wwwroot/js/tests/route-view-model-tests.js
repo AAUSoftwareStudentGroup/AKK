@@ -53,7 +53,7 @@ QUnit.test("route viewModel add holds", function (assert) {
 
     var holdsUpdatedtriggered = false;
 
-    viewModel.addEventListener("HoldsUpdated",
+    viewModel.addEventListener("holdsUpdated",
         function () {
             holdsUpdatedtriggered = true;
         });
