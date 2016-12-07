@@ -104,11 +104,16 @@ function TestGradeClient(url, cookieService)
         success({success: true, data: TEST_GRADES.filter(function(r) { return r.id == gradeId; })});
     };
 
-    this.deleteGrade = function(gradeId, success) { };
+    this.deleteGrade = function(gradeId, success) 
+    {
+        var grade;
+        this.getGrade(gradeId, function(g) { grade = g.data });
+        grades.splice(grades.indexOf(grade), 1);
+        success({success: true, data: clone(grade)});
+    };
 
     this.updateGrade = function(grade, success) 
     {
-        
     };
 }
 

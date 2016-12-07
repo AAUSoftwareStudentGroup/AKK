@@ -1,5 +1,11 @@
 var viewModel;
 
+//Routes
+/*
+//downloadRoutes cannot be tested, since it cannot read property null of selectedSection.id
+*/
+
+//Sections
 QUnit.test("admin panel viewModel downloadSections", function (assert) 
 {
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), new TestDialogService());
@@ -26,10 +32,6 @@ QUnit.test("admin panel viewModel downloadSections", function (assert)
     }
     assert.equal(sectionChangedTriggered, true, "admin panel ViewModel sectionsChanged triggered");
 });
-
-/*
-//downloadRoutes cannot be tested, since it cannot read property null of selectedSection.id
-*/
 
 QUnit.test("admin panel viewModel changeSection", function (assert) 
 {
@@ -150,6 +152,7 @@ QUnit.test("admin panel viewModel renameSection", function (assert)
 	assert.equal(viewModel.sections[2].routes.length, routesInC, "sections[2].length = routesInC = " + viewModel.sections[2].routes.length);
 });
 
+//Grades
 QUnit.test("admin panel viewModel downloadGrades", function (assert) 
 {
 	init();
@@ -201,3 +204,54 @@ QUnit.test("admin panel viewModel addNewGrade", function (assert)
 	assert.equal(viewModel.grades[viewModel.grades.length-1].color.r == TEST_GRADES[TEST_GRADES.length-1].color.r && viewModel.grades[viewModel.grades.length-1].color.g == TEST_GRADES[TEST_GRADES.length-1].color.g && viewModel.grades[viewModel.grades.length-1].color.b == TEST_GRADES[TEST_GRADES.length-1].color.b, true, "");
 });
 
+QUnit.test("admin panel viewModel deleteGrade", function (assert) 
+{
+	var dialogService = new TestDialogService();
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
+
+	init();
+	viewModel.init();
+
+	//Add grade to delete, since a grade with routes cannot be deleted
+	viewModel.addNewGrade();
+
+	//Select grade
+	viewModel.selectGrade(viewModel.grades.length-1);
+
+	//Id is by default undefined, to delete a grade it needs an id, which will be set here
+	viewModel.selectedGrade.id = "99xx529e-52d3-4b1a-a365-da63d96e888x"
+
+	var gradeId = viewModel.selectedGrade.id;
+	var numOfGrades = viewModel.grades.length;
+
+	//Assert that the correct grade was selected
+	assert.equal(viewModel.selectedGrade.name, viewModel.grades[viewModel.grades.length-1].name, "");
+
+	viewModel.deleteGrade();
+
+	//Assert that the grade has now been deselected
+	assert.equal(viewModel.selectedGrade, null, "");
+
+	//Assert that no grade exists with the same id
+	for(var i = 0; i<=numOfGrades-1; i++){
+		assert.notEqual(viewModel.grades[i].id, gradeId);
+	}
+});
+
+QUnit.test("admin panel viewModel changeGradeName", function (assert) 
+{
+	var dialogService = new TestDialogService();
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
+
+	init();
+	viewModel.init();
+
+	//Select first grade (has name green)
+	viewModel.selectGrade(0);
+
+	//Assert that selected grade has name green and id '5b314675-435f-49bb-8fae-44c1567f9e69'
+	assert.equal(viewModel.selectedGrade.id == "5b314675-435f-49bb-8fae-44c1567f9e69" && viewModel.selectedGrade.name == "Green", true, "");
+
+
+	assert.equal(true, true, "");
+});
