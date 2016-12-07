@@ -67,13 +67,6 @@ input[type="checkbox"] {
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
     text-align: center;
 }
-#error-message {
-    background-color: #F44336;
-}
-
-#info-message {
-    background-color: #2196F3;
-}
 
 .submit-button {
     padding: 10px 18px 10px 18px;
@@ -110,6 +103,12 @@ input[type="checkbox"] {
 
 .submit-button.negative:active {
     background-color: #D32F2F;
+}
+
+.card {
+    margin-top: 16px;
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20);
 }
 
 .action-button {
@@ -320,8 +319,17 @@ input:checked + .toggle-switch::before {
 }
 
 .error-content {
-    padding-top:0;
+    margin-top: 16px;
 }
+
+#error-message {
+    background-color: #F44336;
+}
+
+#info-message {
+    background-color: #2196F3;
+}
+
 
 .content-section {
     width: 100%;
@@ -344,12 +352,6 @@ input:checked + .toggle-switch::before {
 }
 
 /** ROUTE CARD **/
-.route-card {
-    margin-top: 16px;
-    padding: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20);
-}
-
 .route-card-top {
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -556,17 +558,18 @@ input:checked + .toggle-switch::before {
 }
 
 .image-overlay {
-    height: 50px;
     width: 50px;
+    height: 50px;
     padding: 10px;
-    background-color: rgba(255,255,255,0.4);
-    border-radius: 100px;
+    margin: auto auto;
     position: absolute;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
-    margin: auto;
+    border-radius: 100px;
+    background-color: rgba(255,255,255,0.4);
+    fill: #666;
 }
 
 .no-image-added {
@@ -1123,74 +1126,82 @@ input[type=range]::-ms-thumb {
     padding-top:0;
 }
 
-.comment-author {
-    color:#424242;
-    font-size: 14px;
+.comment-card .by-line {
     display: block;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
 }
 
-.comment-input {
-    width:100%;
+.comment-card .remove {
+    width: 24px;
+    height: 24px;
+    margin: -4px;
 }
 
-.comment-text-input {
+.comment-field {
+    margin-top: 16px;
+    fill: #999;
+}
+
+.comment-field form {
+    width: 100%;
+}
+
+.comment-field svg {
+    width: 24px;
+    height: 24px;
+    display: block;   
+}
+
+.comment-field textarea {
     width:100%;
     font-size: 16px;
     line-height: 24px;
     font-family: 'Roboto', sans-serif;
     border:0;
     resize: none;
+}
+
+.comment-field .video {
+    margin-top: 20px;
     overflow: hidden;
 }
 
-.comment-clickable {
-    text-align: center;
+.comment-field .video label {
+    cursor: pointer;
 }
 
-.comment-input .comment-add-button {
-    fill:#999;
-    margin-top:8px;
+.comment-field .video svg {
+    fill: #666;
 }
 
-.comment-input.video-added .comment-add-button {
-    fill:#2196F3;
+.comment-field .video-check {  
+    display: none; 
 }
-.comment-input .comment-video-check {
-    display: none;
+
+.comment-field.video-added .video svg,
+.comment-field.video-added .video-check {
+    display: block;
+    fill: #2196F3;
 }
-.comment-input.video-added .comment-video-check {
-    display: inline;
-}
-    
-.comment-send {
+
+.comment-field .send-button {
+    padding: 10px;
+    fill: white;
+    border-radius: 24px;
     background-color: #4CAF50;
-    border-radius: 100px;
-    width:42px;
-    height:42px;
-    line-height: 32px;
-    top:0;
+    cursor: pointer;
 }
 
-.comment-send:active {
-    background-color: #388E3C;
-}
-
-.comment-send>svg {
-    margin-top:8px;
-    margin-left:6px;
-    fill:white;
-}
-
-.comment-card:not(.editable), .comment-card:not(.editable) .comment-text-input {
+.comment-field:not(.editable), .comment-field:not(.editable) .comment-text-input {
     background-color:#eee;
 }
-.comment-card:not(.editable) .comment-send {
+.comment-field:not(.editable) .comment-send {
     background-color:#bbb;
 }
 
-
 /* Progress Bar  from http://materializecss.com/preloader.html*/
-.editable>.progress {
+.editable > .progress {
     display: none;
 }
 
@@ -1226,6 +1237,7 @@ input[type=range]::-ms-thumb {
     -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
             animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite; 
 }
+
 .progress .indeterminate:after {
     content: '';
     position: absolute;
@@ -1279,11 +1291,9 @@ input[type=range]::-ms-thumb {
     right: -8%; }
   100% {
     left: 107%;
-    right: -8%; } }
-
-.route-card.comment-card {
-    position: relative;
+    right: -8%; } 
 }
+
 
 #image-placeholder-text {    
     width: 100%;

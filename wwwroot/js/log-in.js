@@ -21,10 +21,10 @@ $(document).ready(function () {
     ];
 
     setUpContentUpdater(configurations, function() {
-        viewModel.addEventListener("error", function(response) {
+        viewModel.addEventListener("Error", function(response) {
             $("#error-message").html(response).show();
         });
-        viewModel.addEventListener("info", function(response) {
+        viewModel.addEventListener("Info", function(response) {
             $("#info-message").html(response).show();
         });
         viewModel.init();
