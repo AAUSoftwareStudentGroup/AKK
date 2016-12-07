@@ -15,15 +15,13 @@ $(document).ready(function () {
         },
         {
             scriptSource: "js/templates/route-info-card-template.handlebars", 
-            elementId: "cardtemplate", 
-            event: [
-                "cardChanged"
-            ],
+            elementId: "route-content", 
+            event: "cardChanged",
             viewmodel: viewModel
         },
         {
             scriptSource: "js/templates/comment-picker-template.handlebars", 
-            elementId: "commenttemplate", 
+            elementId: "comment-content", 
             event: "commentsChanged",
             viewmodel: viewModel
         }
@@ -36,14 +34,14 @@ $(document).ready(function () {
                 rc.DrawCanvas();
             }
         });
-        viewModel.addEventListener("commentsUpdated", function() {
+        viewModel.addEventListener("commentsChanged", function() {
             autosize($('textarea'));
         });
-        viewModel.addEventListener("info", function(response) {
-            $("#info-message").html(response).show();
-        });
-        viewModel.addEventListener("error", function(response) {
+        viewModel.addEventListener("Error", function(response) {
             $("#error-message").html(response).show();
+        });
+        viewModel.addEventListener("Info", function(response) {
+            $("#info-message").html(response).show();
         });
         viewModel.init();
         headerViewModel.init();

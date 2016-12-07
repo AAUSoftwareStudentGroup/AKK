@@ -97,6 +97,7 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<string>("Failed to create user. Missing username, password or display name");
             }
             username = username.ToLower();
+
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Username == username);
             if (member != default(Member))
             {

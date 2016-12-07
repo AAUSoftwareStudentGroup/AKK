@@ -27,10 +27,12 @@
     </head>
     <body>
         <div id="header"></div>
-        <div id="register-content" class="content register"></div>
-        <div class="error-content content">
-            <div id="error-message" class="message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-            <div id="info-message" class="message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
-        </div>       
+        <div class="content register">
+            <div id="register-content" class="register"></div>
+            <div class="clear"></div>
+            <div class="error-content content-section">
+                <div id="error-message" class="message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+            </div>
+        </div>
     </body>
 </html>

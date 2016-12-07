@@ -76,7 +76,7 @@ function RouteViewModel(client, navigationService) {
     }
     this.addHold = function(hold) {
         this.HoldPositions.push(hold);
-        this.trigger("HoldsUpdated");
+        this.trigger("holdsUpdated");
     }
     
     this.toggleTape = function() {

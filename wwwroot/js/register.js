@@ -23,5 +23,10 @@ $(document).ready(function () {
     setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
+
+        viewModel.addEventListener("Error", function(msg) {
+            console.log(msg);
+            $("#error-message").html(msg).show();
+        });
     });
 });
