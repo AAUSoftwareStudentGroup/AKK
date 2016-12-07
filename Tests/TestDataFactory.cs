@@ -279,7 +279,7 @@ namespace AKK.Tests
             for(int i = 0; i< _routes.Count; i++)
             {
                 _routes[i].Author = _routes[i].Member.DisplayName;
-                _routes[i].ColorOfHolds = _holdColors.ElementAt(i%15).ColorOfHolds;
+                _routes[i].ColorOfHolds = _holdColors.ElementAt(i%HoldColors.Count).ColorOfHolds;
             }
 
             foreach (var section in _sections)

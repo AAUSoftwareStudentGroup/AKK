@@ -17,8 +17,8 @@ QUnit.test("Client tests", function( assert ) {
           var gradeId = gradesResponse.data[0].id;
           var name = "33";
           var author = "Morten";
-          var holdColor = { r: 200, g: 200, b: 200, a: 99 };
-          var tape = { r: 200, g: 200, b: 200, a: 55 };
+          var holdColor = { r: 220, g: 200, b: 30, a: 255 };
+          var tape = holdColor;
           var image = { fileUrl: TEST_IMAGE, width: TEST_IMAGE_WIDTH, height: TEST_IMAGE_HEIGHT };
           var note = "Test note";
           var onRouteAdded = function(route) {
@@ -26,8 +26,8 @@ QUnit.test("Client tests", function( assert ) {
             var routeId = route.id;
             name = "2";
             author = "Morten ";
-            holdColor = { r: 201, g: 150, b: 99, a: 20 };
-            tape = { r: 77, g: 66, b: 55, a: 30 };
+            holdColor = { r: 220, g: 200, b: 30, a: 255 };
+            tape = holdColor;
             image = { fileUrl: TEST_IMAGE, width: TEST_IMAGE_WIDTH / 2, height: TEST_IMAGE_HEIGHT / 2 };
             note = "Test note ";
             routeClient.updateRoute(route.id, sectionId, author, name, holdColor, gradeId, tape, note, image, function (routeResponse) {
@@ -73,6 +73,7 @@ QUnit.test("Client tests", function( assert ) {
             if(testRoutes.length == 0)
             {
               routeClient.addRoute(sectionId, name, author, holdColor, gradeId, tape, note, image, function (routeAddedResponse) {
+                console.log(routeAddedResponse);
                 onRouteAdded(routeAddedResponse.data);
               });
             }

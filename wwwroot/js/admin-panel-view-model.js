@@ -3,6 +3,7 @@
     this.client = client;
     this.dialogService = dialogService;
 
+    //Initialise each variable
     this.selectedSection = null;
     this.selectedGrade = null;
     this.selectedHold = null;
@@ -15,6 +16,7 @@
     this.grades = [];
     this.editingGrades = false;
 
+    //When initialised, download everything needed from the database
     this.init = function() {
         self.downloadSections();
         self.downloadGrades();
@@ -22,9 +24,25 @@
         self.downloadHolds();
     }
 
-    //Routes
+    //Updates the sections HTML section of the admin panel after getting all sections from the server
+    this.downloadSections = function() {
+        self.client.sections.getAllSections(function(response) {
+            if(response.success) 
+            {
+                self.sections = response.data;
+                self.trigger("sectionsChanged");
+            }
+            else
+            {
+                self.trigger("Error", response.message);
+            }
+        });
+    }
+
+    //Updates the routes HTML section of the admin panel after getting all routes from the server, fitting the requirements
     this.downloadRoutes = function() {
         if(self.selectedSection != null || self.selectedGrade != null) {
+            //Gets the routes matching the specified grade and section. If the grade or section isn't specified, then send null
             self.client.routes.getRoutes((self.selectedGrade ? self.selectedGrade.id : ""), (self.selectedSection ? self.selectedSection.id : ""), "", function(response) {
                 if(response.success) {
                     self.routes = response.data;
@@ -41,10 +59,7 @@
         }
     }
 
-    this.addNewRoute = function(){     
-    }
-
-    //Sections
+    //Change the selected section when clicking one
     this.downloadSections = function() {
         self.client.sections.getAllSections(function(response) {
             if(response.success) 
@@ -64,6 +79,7 @@
         self.downloadRoutes();
     };
 
+    //Adds a new section if the name is not null, and if the controller completes the request successfully
     this.addNewSection = function() {
         var name = self.dialogService.prompt("Enter name of new Section","");
         if(name != null) {
@@ -78,6 +94,7 @@
         }
     }
 
+    //Clears the section of routes
     this.clearSection = function() {
         if(self.selectedSection != null && self.dialogService.confirm("Do you really want to remove all routes from this section?")) {
             self.client.sections.deleteSectionRoutes(self.selectedSection.name, function(response) {
@@ -91,6 +108,7 @@
         }
     }
 
+    //Deletes the section, and with it, its routes
     this.deleteSection = function() {
         if(self.selectedSection != null && self.dialogService.confirm("Do you really want permanently delete this section?")) {
             self.client.sections.deleteSection(self.selectedSection.id, function(response) {
@@ -105,6 +123,7 @@
         }
     }
 
+    //Renames a section if one is selected and the new name is not null
     this.renameSection = function() {
         var newName = self.dialogService.prompt("Enter the new name","");
         if (newName != null) {
@@ -120,8 +139,8 @@
             }
         }
     }
-
-    //Grades
+///////////////////////////////////
+    //Updates the grades HTML of the admin panel after getting all grades from the server
     this.downloadGrades = function()
     {
         self.client.grades.getAllGrades(function(response) {
@@ -136,6 +155,8 @@
         })
     }
 
+    /*Adds a new grade with a the name "New Grade" and a color of rgb(97, 98, 99),
+        then updates the grades html after getting every grade from the server */
     this.addNewGrade = function()
     {
         self.downloadGrades();
@@ -158,6 +179,8 @@
         });
     }
 
+    //Gets called after the addNewGrade() function, and when a grade is clicked
+    //Changes the selected grade on the server with its new values
     this.updateGrade = function()
     {
         self.client.grades.updateGrade(self.selectedGrade, function(response) {
@@ -173,8 +196,13 @@
         });
     }
 
+    //Deletes a grade from the server
     this.deleteGrade = function()
     {
+        /*If no grades exists, a new one cannot be created,
+            since a new grade in the viewmodel is created from either the selected grade
+            or the first grade in the grades array.
+            If no grades exists, then both are null, and the new grade, will therefore also be null */
         if(self.grades.length <= 1) {
             alert("There must be at least on grade.");
             return;
@@ -192,32 +220,31 @@
             });
         }
     }
-
-    this.changeGradeName = function(name) {
+////////////////
+    //Changes the color of a grade or hold to the input parameters
+    this.setColor = function(r, g, b) {
         if(self.selectedGrade) {
-            self.selectedGrade.name = name;
+            self.selectedGrade.color = {r: r, g: g, b: b};
+            self.trigger("gradeColorChanged");
         } else {
-            self.selectedHold.name = name;
+            self.selectedHold.colorOfHolds = {r: r, g: g, b: b};
+            self.trigger("holdColorChanged");
         }
     }
 
-    this.gradesSwap = function(diff, change) {
-        var index = viewModel.grades.findIndex(function(elm) {return elm.difficulty == diff});
-        if(index < 0 || index+change < 0 || index+change >= self.grades.length)
-            return;
-        
-        var gradeAid = self.grades[index].id;
-        var gradeBid = self.grades[index+change].id;
-
-        self.client.grades.swapGrades(gradeAid, gradeBid, function(response) {
-            if(response.success) {
-                self.downloadGrades();
-            }
-            else
-                self.trigger("Error", response.message);
-        });
+    //Changes the hue of a grade or hold with the deg input parameter
+    this.setHue = function(deg) {
+        if(self.selectedGrade) {
+            // hue to rgb hsl (deg, 70%, 60%)
+            self.selectedGrade.color = hslToRgb(deg/360, 0.7, 0.6);
+            self.trigger("gradeColorChanged");
+        } else {
+            self.selectedHold.colorOfHolds = hslToRgb(deg/360, 0.7, 0.6);
+            self.trigger("holdColorChanged");
+        }
     }
 
+    //Selects a grade based on the input parameter, which is expected to be a difficulty
     this.selectGrade = function(gradeValue)
     {
         self.selectedSection = null;
@@ -233,6 +260,46 @@
         self.downloadRoutes();
     }
 
+    //Changes the name of a grade or hold
+    this.changeGradeName = function(name) {
+        if(self.selectedGrade) {
+            self.selectedGrade.name = name;
+        } else {
+            self.selectedHold.name = name;
+        }
+    }
+
+    //Swaps two grades in the database
+    this.gradesSwap = function(diff, change) {
+        //Finds a grade by its difficulty, then assigns its index to index 
+        var index = viewModel.grades.findIndex(function(elm) {return elm.difficulty == diff});
+        //We don't want to swap two elements if it means swapping them outside the boundaries of the array
+        if(index < 0 || index+change < 0 || index+change >= self.grades.length)
+            return;
+        
+        var gradeAid = self.grades[index].id;
+        var gradeBid = self.grades[index+change].id;
+
+        self.client.grades.swapGrades(gradeAid, gradeBid, function(response) {
+            if(response.success) {
+                self.downloadGrades();
+            }
+            else
+                self.trigger("Error", response.message);
+        });
+    }
+
+    //Download all members and sort them by their displayname alphabetically 
+    this.downloadMembers = function() {
+        self.client.members.getAllMembers(function(response) {
+            if(response.success) {
+                self.members = response.data;
+                self.members.sort(function(a,b) {return a.displayName > b.displayName});
+                self.trigger("membersChanged");
+            }
+        });
+    }
+
     //Holds
     this.setColor = function(r, g, b) {
         if(self.selectedGrade) {
@@ -244,23 +311,27 @@
         }
     }
 
-    this.setHue = function(deg) {
-        if(self.selectedGrade) {
-            // hue to rgb hsl (deg, 70%, 60%)
-            self.selectedGrade.color = hslToRgb(deg/360, 0.7, 0.6);
-            self.trigger("gradeColorChanged");
-        } else {
-            self.selectedHold.colorOfHolds = hslToRgb(deg/360, 0.7, 0.6);
-            self.trigger("holdColorChanged");
-        }
+    //When pressing the AdminButton, toggle the privilege of the member
+    this.toggleAdmin = function(id, isAdmin) {
+        self.client.members.changeRole(id, (isAdmin ? "Authenticated" : "Admin"), function(response) {
+            if(response.success) {
+                var member = self.members.filter(function (s) { return s.id == id; })[0];
+                member.isAdmin = !member.isAdmin;
+                self.trigger("membersChanged");
+            }
+            else
+                self.dialogService.showMessage(response.message);
+        });
     }
-
+///////////////////////////////////
+    //Downloads all holdColors from the server
     this.downloadHolds = function()
     {
         self.client.holds.getAllHolds(function(response) {
             if(response.success)
             {
                 self.holds = response.data;
+                //Assigns a value to each holdColor for a much shorter id selector
                 for (var i = self.holds.length - 1; i >= 0; i--) {
                     self.holds[i].value = i;
                 };
@@ -271,6 +342,7 @@
         })
     }
 
+    //Similar to AddNewGrade, creates a new holdColor with the name "New Hold/Tape" and the color rgb(102, 102, 102)
     this.createHold = function()
     {
         var name = "New Hold/Tape";
@@ -295,6 +367,8 @@
         });
     }
 
+    //Gets called after the CreateHold() function, and when a holdColor is clicked
+    //Deletes the current holdColor from the database and adds a new one with updated values
     this.updateHold = function()
     {
         self.selectedHold.colorOfHolds.a = 255;
@@ -322,8 +396,10 @@
         })
     }
 
+    //Deletes the selected holdColor
     this.deleteHold = function()
     {
+        //A holdColor is created from an existing one, so if no holdColors exists, it's impossible to create a new one
         if(self.holds.length <= 1) {
             alert("You can't have a climbing club without holds...");
             return;
@@ -342,6 +418,7 @@
         }
     }   
 
+    //change selectedHold to the holdColor pressed
     this.selectHold = function(holdValue)
     {
         self.selectedSection = null;

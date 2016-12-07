@@ -252,6 +252,7 @@ QUnit.test("admin panel viewModel changeGradeName", function (assert)
 	//Assert that selected grade has name green and id '5b314675-435f-49bb-8fae-44c1567f9e69'
 	assert.equal(viewModel.selectedGrade.id == "5b314675-435f-49bb-8fae-44c1567f9e69" && viewModel.selectedGrade.name == "Green", true, "");
 
+	viewModel.changeGradeName("CAMO");
 
-	assert.equal(true, true, "");
+	assert.equal(viewModel.selectedGrade.id == "5b314675-435f-49bb-8fae-44c1567f9e69" && viewModel.selectedGrade.name == "CAMO", true, "");
 });
