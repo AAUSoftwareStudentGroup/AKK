@@ -93,11 +93,10 @@ namespace AKK.Controllers
         [HttpPost]
         public ApiResponse<string> AddMember(string username, string password, string displayName)
         {
-            username = username.ToLower();
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(displayName)) {
                 return new ApiErrorResponse<string>("Failed to create user. Missing username, password or display name");
             }
-
+            username = username.ToLower();
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Username == username);
             if (member != default(Member))
             {
