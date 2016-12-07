@@ -77,6 +77,9 @@ namespace AKK.Controllers
                 case SortOrder.Rating:
                     routes = routes.OrderByDescending(p => p.AverageRating);
                     break;
+                default:
+                    routes = routes.OrderByDescending(p => p.CreatedDate);
+                    break;
             }
 
             if (!string.IsNullOrEmpty(searchStr))
