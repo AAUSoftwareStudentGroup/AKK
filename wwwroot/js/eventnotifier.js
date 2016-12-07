@@ -1,10 +1,13 @@
 function EventNotifier() {
     this.listeners = []
+
+    //The function which will add newly created events
     this.addEventListener = function(event, callback) {
         this.listeners[event] = this.listeners[event] || [];
         this.listeners[event].push(callback);
     }
 
+    //When called, execute the event
     this.trigger = function(event, arguments) {
         arguments = arguments || {};
         var currentEvent = this.listeners[event];
@@ -15,6 +18,7 @@ function EventNotifier() {
         }
     }
 
+    //Removes the event from the listen
     this.removeEventListener = function(event, callback) {
         if (!this.listeners[event]) return false;
         var eventListeners = this.listeners[event];

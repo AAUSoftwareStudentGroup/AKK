@@ -53,12 +53,13 @@ namespace AKK.Tests.Controllers
             _controller = new RouteController(_routeRepo, _sectionRepo, _gradeRepo, _imageRepo, _holdRepo, _holdColorRepo, _memberRepo, _auth);
             
             testRoute = new Route();
-            testRoute.GradeId = _gradeRepo.GetAll().First().Id;
-            testRoute.SectionId = _sectionRepo.GetAll().First().Id;
-            testRoute.Name = "50";
-            testRoute.Member = _memberRepo.GetAll().First();
-            testRoute.Author = testRoute.Member.DisplayName;
-            testRoute.ColorOfHolds = _routeRepo.GetAll().First().ColorOfHolds;
+            Route temp = _routeRepo.GetAll().First();
+            testRoute.GradeId = temp.GradeId;
+            testRoute.SectionId = temp.SectionId;
+            testRoute.Name = temp.Name;
+            testRoute.Member = temp.Member;
+            testRoute.Author = temp.Author;
+            testRoute.ColorOfHolds = temp.ColorOfHolds;
 
             token = _auth.Login("Morten", "Rask");
         }
@@ -134,6 +135,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _AddRoute_NewRouteGetsAdded_RouteGetsAdded()
         {
+            testRoute.Name = "50";
             var response = _controller.AddRoute(token, testRoute);
 
             Assert.AreEqual(true, response.Success, (response as ApiErrorResponse<Route>)?.ErrorMessage + "\n" + testRoute.SectionId);
@@ -162,11 +164,23 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _AddRoute_NewRouteWithAnExistingID_RouteGetsAdded()
         {
-            testRoute.SectionId = _sectionRepo.GetAll().First().Id;
-
+            testRoute.SectionId = _sectionRepo.GetAll().ElementAt(1).Id;
+            testRoute.Name = "15";
             var response = _controller.AddRoute(token, testRoute);
 
             Assert.AreEqual(true, response.Success);
+        }
+
+        [Test]
+        public void _AddRoute_NewRouteWithAnExistingNameAndGrade_RouteDoesntGetAdded()
+        {
+            testRoute.Name = _routeRepo.GetAll().First().Name;
+            testRoute.Grade = _routeRepo.GetAll().First().Grade;
+            testRoute.GradeId = _routeRepo.GetAll().First().GradeId;
+
+            var response = _controller.AddRoute(token, testRoute);
+
+            Assert.IsFalse(response.Success);
         }
 
         [Test]
@@ -245,9 +259,9 @@ namespace AKK.Tests.Controllers
         public void _UpdateRoute_UpdateNameOnRoute_NameGetsUpdated()
         {
             Route routeToUpdate = _routeRepo.GetAll().First();
-            routeToUpdate.Name = "40";
+            testRoute.Name = "40";
 
-            var response = _controller.UpdateRoute(token, routeToUpdate.Id, routeToUpdate);
+            var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
             Assert.AreEqual(true, response.Success);
 
@@ -259,28 +273,27 @@ namespace AKK.Tests.Controllers
         public void _UpdateRoute_UpdateGradeIdOnRoute_GradeGetsUpdated()
         {
             Route routeToUpdate = _routeRepo.GetAll().First();
-            Guid gradeId = _gradeRepo.GetAll().First(g => g.Difficulty == 3).Id;
-            routeToUpdate.GradeId = gradeId;
+            testRoute.GradeId = _gradeRepo.GetAll().First(g => g.Difficulty == 3).Id;
 
-            var response = _controller.UpdateRoute(token, routeToUpdate.Id, routeToUpdate);
+            var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
             Assert.AreEqual(true, response.Success);
-            Assert.AreEqual(response.Data.GradeId, gradeId);
-            Assert.AreEqual(_routeRepo.Find(routeToUpdate.Id).GradeId, gradeId);
+            Assert.AreEqual(response.Data.GradeId, testRoute.GradeId);
+            Assert.AreEqual(_routeRepo.Find(routeToUpdate.Id).GradeId, testRoute.GradeId);
         }
 
         [Test]
         public void _UpdateRoute_UpdateNameAndId_NameGetsUpdatedAndIdDoesNotUpdate() 
         {
-            Route routeToUpdate = _routeRepo.Find(_routeRepo.GetAll().First().Id).Clone();
-            Assert.AreNotEqual(routeToUpdate, null);
+            Route routeToUpdate = _routeRepo.GetAll().First();
+            
             Guid oldId = routeToUpdate.Id;
-            routeToUpdate.Name = "40";
-            routeToUpdate.Id = Guid.NewGuid();
+            testRoute.Name = "40";
+            testRoute.Id = Guid.NewGuid();
 
             Assert.AreNotEqual(_routeRepo.Find(oldId), null);
 
-            var response = _controller.UpdateRoute(token, oldId, routeToUpdate);
+            var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
             Assert.AreEqual(true, response.Success);
 
@@ -293,9 +306,9 @@ namespace AKK.Tests.Controllers
         public void _UpdateRoute_UpdateSectionId_SectionIdGetsUpdated() 
         {
             Route routeToUpdate = _routeRepo.GetAll().First();
-            routeToUpdate.SectionId = _routeRepo.GetAll().First(s => s.Section.Name == "C").SectionId;
+            testRoute.SectionId = _routeRepo.GetAll().First(s => s.SectionId != routeToUpdate.SectionId).SectionId;
 
-            var response = _controller.UpdateRoute(token, routeToUpdate.Id, routeToUpdate);
+            var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
             Assert.AreEqual(true, response.Success);
             Assert.AreEqual(routeToUpdate.SectionId, response.Data.SectionId);
@@ -308,10 +321,10 @@ namespace AKK.Tests.Controllers
             Route routeToUpdate = _routeRepo.GetAll().First();
             Guid gradeId = _gradeRepo.GetAll().First(g => g.Difficulty == 3).Id;
             Guid sectionId = _routeRepo.GetAll().First(s => s.Section.Name == "C").SectionId;
-            routeToUpdate.GradeId = gradeId;
-            routeToUpdate.SectionId = sectionId;
+            testRoute.GradeId = gradeId;
+            testRoute.SectionId = sectionId;
 
-            var response = _controller.UpdateRoute(token, routeToUpdate.Id, routeToUpdate);
+            var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
             Assert.AreEqual(true, response.Success);
             Assert.AreEqual(response.Data.GradeId, gradeId);
@@ -321,18 +334,25 @@ namespace AKK.Tests.Controllers
         }
 
         [Test]
+        public void _UpdateRoute_UpdateRouteNumberAndGradeToRouteThatExistsWithThoseValues_RouteDoesntGetUpdated() 
+        {
+            Route routeToUpdate = _routeRepo.GetAll().First();
+            testRoute.Name = _routeRepo.GetAll().ElementAt(1).Name;
+            testRoute.Grade = _routeRepo.GetAll().ElementAt(1).Grade;
+            testRoute.GradeId = _routeRepo.GetAll().ElementAt(1).GradeId;
+            
+
+            var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
+
+            Assert.IsFalse(response.Success);
+        }
+
+        [Test]
         public void _UpdateRoute_UpdateHoldOnRoute_HoldGetsUpdated()
         {
             Route Origroute = _routeRepo.GetAll().First();
-            testRoute.ColorOfHolds = _routeRepo.GetAll().First(s => s.Section.Name == "C").ColorOfHolds;
-            
-            if(Origroute.ColorOfHolds == testRoute.ColorOfHolds)
-            {
-                if(testRoute.ColorOfHolds.R < 255)
-                    testRoute.ColorOfHolds.R++;
-                else
-                    testRoute.ColorOfHolds.R--;
-            }
+            testRoute.ColorOfHolds = _holdColorRepo.GetAll().ElementAt(4).ColorOfHolds;
+
             var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
 
             Assert.AreEqual(testRoute.ColorOfHolds.R, Origroute.ColorOfHolds.R);
@@ -379,7 +399,7 @@ namespace AKK.Tests.Controllers
             test.HexColorOfHolds = Origroute.HexColorOfHolds;
             test.HexColorOfTape = null;
 
-            var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
+            var response = _controller.UpdateRoute(token, Origroute.Id, test);
 
             Assert.IsNull(Origroute.ColorOfTape);
         }

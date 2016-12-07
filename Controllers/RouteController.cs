@@ -373,7 +373,7 @@ namespace AKK.Controllers
             {
                 return new ApiSuccessResponse<Route>(routeToUpdate);
             }
-            
+
             //Update the existing route with the changed values. 
             //If some of the values of the new route is null, keep the existing ones, except for ColorOfTape, which is allowed to be null
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
@@ -381,7 +381,7 @@ namespace AKK.Controllers
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
             routeToUpdate.Note = route.Note;
-            
+
             //If the new route's image is not null, then replace the existing image with the new one
             if(route.Image != null)
             {
@@ -434,6 +434,12 @@ namespace AKK.Controllers
                     return new ApiErrorResponse<Route>("The specified tape color doesn't exist. Choose a valid one, or none at all");
             } 
 
+            var routes = _routeRepository.GetAll().Where(r => r.Name == routeToUpdate.Name && r.Grade.Difficulty == routeToUpdate.Grade.Difficulty);
+            if(routes.Count() > 1)
+            {
+                return new ApiErrorResponse<Route>("A route with this grade and number already exists");
+            }
+            
             try
             {
                 _routeRepository.Save();

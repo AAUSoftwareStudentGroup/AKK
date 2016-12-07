@@ -2,6 +2,8 @@ function RouteClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+
+    //AKK.Controllers.RouteController.GetRoutes
     this.getRoutes = function(grade, sectionId, sortBy, success)
     {
         $.ajax({
@@ -18,6 +20,7 @@ function RouteClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.RouteController.GetRoutes
     this.searchRoutes = function(searchstring, success) {
        return $.ajax({
             type: "GET",
@@ -32,6 +35,7 @@ function RouteClient(url, cookieService)
         });
     }
 
+    //AKK.Controllers.RouteController.GetRoute
     this.getRoute = function(id, success)
     {
         $.ajax({
@@ -46,6 +50,7 @@ function RouteClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.RouteController.GetImage
     this.getImage = function(id, success) {
         $.ajax({
             type: "GET",
@@ -55,6 +60,7 @@ function RouteClient(url, cookieService)
         });
     }
 
+    //AKK.Controllers.RouteController.AddComment
     this.addComment = function(formdata, routeId, success, error) {
         formdata.append('token', self.cookieService.getToken());
         formdata.append('id', routeId);
@@ -71,6 +77,7 @@ function RouteClient(url, cookieService)
         });
     }
 
+    //AKK.Controllers.RouteController.RemoveComment
     this.removeComment = function(id, routeId, success) {
         $.ajax({
             type: "POST",
@@ -86,6 +93,7 @@ function RouteClient(url, cookieService)
         });
     }
 
+    //AKK.Controllers.RouteController.AddRoute
     this.addRoute = function(sectionId, name, author, holdColor, gradeId, tape,note,image, success)
     {
         $.ajax({
@@ -108,6 +116,7 @@ function RouteClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.RouteController.UpdateRoute
     this.updateRoute = function(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, success)
     {
         $.ajax({
@@ -131,6 +140,7 @@ function RouteClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.RouteController.DeleteRoute
     this.deleteRoute = function(id, success)
     {
         $.ajax({
@@ -146,6 +156,7 @@ function RouteClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.RouteController.SetRating
     this.setRating = function(routeId, ratingValue, success)
     {
         $.ajax({
@@ -167,6 +178,8 @@ function SectionClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+
+    //AKK.Controllers.SectionController.GetAllSections
     this.getAllSections = function(success)
     {
         $.ajax({
@@ -177,6 +190,7 @@ function SectionClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.SectionController.GetSection
     this.getSection = function(name, success)
     {
         $.ajax({
@@ -191,7 +205,7 @@ function SectionClient(url, cookieService)
         });
     };
 
-
+    //AKK.Controllers.SectionController.AddSection
     this.addSection = function(name, success)
     {
         $.ajax({
@@ -207,6 +221,7 @@ function SectionClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.SectionController.DeleteSection
     this.deleteSection = function(name, success)
     {
         $.ajax({
@@ -222,6 +237,7 @@ function SectionClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.SectionController.DeleteSectionRoutes
     this.deleteSectionRoutes = function(name, success)
     {
         $.ajax({
@@ -237,6 +253,7 @@ function SectionClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.SectionController.UpdateSection
     this.renameSection = function(sectionId, newName, success)
     {
         $.ajax({
@@ -257,6 +274,8 @@ function GradeClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+
+    //AKK.Controllers.GradeController.GetAllGrades
     this.getAllGrades = function(success)
     {
         $.ajax({
@@ -267,6 +286,7 @@ function GradeClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.GradeController.AddGrade
     this.addGrade = function(grade, success)
     {
         $.ajax({
@@ -282,6 +302,7 @@ function GradeClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.GradeController.GetGrade
     this.getGrade = function(gradeId, success)
     {
         $.ajax({
@@ -296,7 +317,7 @@ function GradeClient(url, cookieService)
         });
     };
 
-
+    //AKK.Controllers.GradeController.UpdateGrade
     this.updateGrade = function(grade, success)
     {
         $.ajax({
@@ -312,6 +333,7 @@ function GradeClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.GradeController.SwapGrades
     this.swapGrades = function(gradeAId, gradeBId, success)
     {
         $.ajax({
@@ -326,6 +348,7 @@ function GradeClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.GradeController.DeleteGrade
     this.deleteGrade = function(gradeId, success)
     {
         $.ajax({
@@ -346,6 +369,8 @@ function MemberClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+
+    //AKK.Controllers.MemberController.Login
     this.logIn = function(username, password, success)
     {
         $.ajax({
@@ -365,6 +390,7 @@ function MemberClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.MemberController.Logout
     this.logOut = function(success)
     {
         $.ajax({
@@ -383,6 +409,7 @@ function MemberClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.MemberController.AddMember
     this.register = function(displayname, username, password, success)
     {
         $.ajax({
@@ -403,6 +430,7 @@ function MemberClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.MemberController.GetMemberInfo
     this.getMemberInfo = function(success) 
     {
         $.ajax({
@@ -413,6 +441,7 @@ function MemberClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.MemberController.GetMemberRatings
     this.getMemberRatings = function(success)
     {
         $.ajax({
@@ -423,6 +452,7 @@ function MemberClient(url, cookieService)
         });
     }
 
+    //AKK.Controllers.MemberController.GetAllMembers
     this.getAllMembers = function(success)
     {
         $.ajax({
@@ -437,6 +467,7 @@ function MemberClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.MemberController.ChangeRole
     this.changeRole = function(memberid, role, success)
     {
         $.ajax({
@@ -458,6 +489,8 @@ function HoldClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+
+    //AKK.Controllers.HoldColorController.GetAllHoldColors
     this.getAllHolds = function(success)
     {
         $.ajax({
@@ -468,6 +501,7 @@ function HoldClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.HoldColorController.AddHoldColor
     this.addHold = function(hold, success)
     {
         $.ajax({
@@ -483,6 +517,7 @@ function HoldClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.HoldColorController.DeleteHoldColor
     this.deleteHold = function(holdId, success)
     {
         $.ajax({
