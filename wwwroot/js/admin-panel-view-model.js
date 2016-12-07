@@ -22,20 +22,7 @@
         self.downloadHolds();
     }
 
-    this.downloadSections = function() {
-        self.client.sections.getAllSections(function(response) {
-            if(response.success) 
-            {
-                self.sections = response.data;
-                self.trigger("sectionsChanged");
-            }
-            else
-            {
-                self.trigger("Error", response.message);
-            }
-        });
-    }
-
+    //Routes
     this.downloadRoutes = function() {
         if(self.selectedSection != null || self.selectedGrade != null) {
             self.client.routes.getRoutes((self.selectedGrade ? self.selectedGrade.id : ""), (self.selectedSection ? self.selectedSection.id : ""), "", function(response) {
@@ -52,6 +39,24 @@
             self.routes = [];
             self.trigger("routesChanged");
         }
+    }
+
+    this.addNewRoute = function(){     
+    }
+
+    //Sections
+    this.downloadSections = function() {
+        self.client.sections.getAllSections(function(response) {
+            if(response.success) 
+            {
+                self.sections = response.data;
+                self.trigger("sectionsChanged");
+            }
+            else
+            {
+                self.trigger("Error", response.message);
+            }
+        });
     }
 
     this.changeSection = function (sectionId) {
@@ -112,7 +117,8 @@
             }
         }
     }
-///////////////////////////////////
+
+    //Grades
     this.downloadGrades = function()
     {
         self.client.grades.getAllGrades(function(response) {
@@ -182,42 +188,6 @@
             });
         }
     }
-////////////////
-    this.setColor = function(r, g, b) {
-        if(self.selectedGrade) {
-            self.selectedGrade.color = {r: r, g: g, b: b};
-            self.trigger("gradeColorChanged");
-        } else {
-            self.selectedHold.colorOfHolds = {r: r, g: g, b: b};
-            self.trigger("holdColorChanged");
-        }
-    }
-
-    this.setHue = function(deg) {
-        if(self.selectedGrade) {
-            // hue to rgb hsl (deg, 70%, 60%)
-            self.selectedGrade.color = hslToRgb(deg/360, 0.7, 0.6);
-            self.trigger("gradeColorChanged");
-        } else {
-            self.selectedHold.colorOfHolds = hslToRgb(deg/360, 0.7, 0.6);
-            self.trigger("holdColorChanged");
-        }
-    }
-
-    this.selectGrade = function(gradeValue)
-    {
-        self.selectedSection = null;
-        if(gradeValue === undefined || gradeValue === null) {
-            self.selectedGrade = null;
-            self.gradeName = "";
-        }
-        else {
-            self.selectedGrade = self.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
-            self.selectedGrade = JSON.parse(JSON.stringify(self.selectedGrade));
-        }
-        self.trigger("gradesChanged");
-        self.downloadRoutes();
-    }
 
     this.changeGradeName = function(name) {
         if(self.selectedGrade) {
@@ -244,32 +214,43 @@
         });
     }
 
-    this.downloadMembers = function() {
-        self.client.members.getAllMembers(function(response) {
-            if(response.success) {
-                self.members = response.data;
-                self.members.sort(function(a,b) {return a.displayName > b.displayName});
-                self.trigger("membersChanged");
-            }
-        });
+    this.selectGrade = function(gradeValue)
+    {
+        self.selectedSection = null;
+        if(gradeValue === undefined || gradeValue === null) {
+            self.selectedGrade = null;
+            self.gradeName = "";
+        }
+        else {
+            self.selectedGrade = self.grades.filter(function(g) { return g.difficulty == gradeValue; })[0];
+            self.selectedGrade = JSON.parse(JSON.stringify(self.selectedGrade));
+        }
+        self.trigger("gradesChanged");
+        self.downloadRoutes();
     }
 
-    this.selectMember = function(id) {
-        // how do we lookup member on a route?
+    //Holds
+    this.setColor = function(r, g, b) {
+        if(self.selectedGrade) {
+            self.selectedGrade.color = {r: r, g: g, b: b};
+            self.trigger("gradeColorChanged");
+        } else {
+            self.selectedHold.colorOfHolds = {r: r, g: g, b: b};
+            self.trigger("holdColorChanged");
+        }
     }
 
-    this.toggleAdmin = function(id, isAdmin) {
-        self.client.members.changeRole(id, (isAdmin ? "Authenticated" : "Admin"), function(response) {
-            if(response.success) {
-                var member = self.members.filter(function (s) { return s.id == id; })[0];
-                member.isAdmin = !member.isAdmin;
-                self.trigger("membersChanged");
-            }
-            else
-                self.dialogService.showMessage(response.message);
-        });
+    this.setHue = function(deg) {
+        if(self.selectedGrade) {
+            // hue to rgb hsl (deg, 70%, 60%)
+            self.selectedGrade.color = hslToRgb(deg/360, 0.7, 0.6);
+            self.trigger("gradeColorChanged");
+        } else {
+            self.selectedHold.colorOfHolds = hslToRgb(deg/360, 0.7, 0.6);
+            self.trigger("holdColorChanged");
+        }
     }
-///////////////////////////////////
+
     this.downloadHolds = function()
     {
         self.client.holds.getAllHolds(function(response) {
@@ -371,6 +352,32 @@
         self.downloadRoutes();
     } 
 
+    //Members
+    this.downloadMembers = function() {
+        self.client.members.getAllMembers(function(response) {
+            if(response.success) {
+                self.members = response.data;
+                self.members.sort(function(a,b) {return a.displayName > b.displayName});
+                self.trigger("membersChanged");
+            }
+        });
+    }
+
+    this.selectMember = function(id) {
+        // how do we lookup member on a route?
+    }
+
+    this.toggleAdmin = function(id, isAdmin) {
+        self.client.members.changeRole(id, (isAdmin ? "Authenticated" : "Admin"), function(response) {
+            if(response.success) {
+                var member = self.members.filter(function (s) { return s.id == id; })[0];
+                member.isAdmin = !member.isAdmin;
+                self.trigger("membersChanged");
+            }
+            else
+                self.dialogService.showMessage(response.message);
+        });
+    }
 }
 AdminPanelViewModel.prototype = new EventNotifier();
 
