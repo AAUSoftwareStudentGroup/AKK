@@ -55,19 +55,6 @@ input[type="checkbox"] {
     box-shadow: inset 0px 0px 6px 0px rgba(0, 0, 0, 0.30);
 }
 
-.message {
-    display: none;
-    padding: 11px 18px 10px 18px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 2px;
-    color: white;
-    font-size: 14px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
-    text-align: center;
-}
-
 .submit-button {
     padding: 10px 18px 10px 18px;
     border: none;
@@ -318,18 +305,35 @@ input:checked + .toggle-switch::before {
     overflow: hidden;
 }
 
-.error-content {
-    margin-top: 16px;
+.message {
+    position: fixed;
+    width: 304px;
+    bottom: 24px;
+    left: 0;
+    right: 0;
+    margin: auto; 
+    padding: 8px 0;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
 }
 
-#error-message {
+.message.error {
     background-color: #F44336;
 }
 
-#info-message {
+.message.info {
     background-color: #2196F3;
 }
 
+.message span {
+    width: 100%;
+    padding: 10px 18px;
+    color: white;
+    font-size: 14px;
+}
 
 .content-section {
     width: 100%;
@@ -591,6 +595,13 @@ input:checked + .toggle-switch::before {
     margin: auto;
     left: 0;
     right: 0;
+}
+
+#image-placeholder-text {    
+    width: 100%;
+    padding-top: 10px;
+    position: absolute;
+    bottom: 0;
 }
 
 .note {
@@ -1292,12 +1303,4 @@ input[type=range]::-ms-thumb {
   100% {
     left: 107%;
     right: -8%; } 
-}
-
-
-#image-placeholder-text {    
-    width: 100%;
-    padding-top: 10px;
-    position: absolute;
-    bottom: 0;
 }

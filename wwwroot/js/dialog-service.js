@@ -5,11 +5,16 @@ function DialogService() {
         return confirm(message);
     };
 
-    self.showMessage = function(message) {
-        alert(message);
-    }
 
     self.prompt = function(message) {
         return prompt(message);
+    }
+
+    self.showMessage = function(message) {
+        $("body").append(`<div class="message info" onclick="$(this).fadeOut(function() {$(this).remove()})"><span>${message}</span></div>`)
+    }
+
+    self.showError = function(message) {
+        $("body").append(`<div class="message error" onclick="$(this).fadeOut(function() {$(this).remove()})"><span>${message}</span></div>`)
     }
 }
