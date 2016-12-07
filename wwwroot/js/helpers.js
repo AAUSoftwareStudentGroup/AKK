@@ -1,4 +1,5 @@
-﻿Handlebars.registerHelper('if_light', function (v1, opts) {
+﻿//A colour is considered light, if g is more than 190
+Handlebars.registerHelper('if_light', function (v1, opts) {
     if (v1.g > 190)
         return opts.fn(this);
     else

@@ -79,7 +79,7 @@ namespace AKK.Controllers
             //Delete the holdcolor matching the given id, if the caller is an administrator
             try
             {
-                 _holdColorRepository.Delete(id);
+                _holdColorRepository.Delete(id);
                 _holdColorRepository.Save();
                 return new ApiSuccessResponse<HoldColor>(holdColorCopy);
             }

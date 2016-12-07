@@ -11,6 +11,7 @@
         self.getRoles();
     }
 
+    //Gets the roles of the current user, so we know what to render in the navigation menu
     this.getRoles = function () {
         client.members.getMemberInfo(function(response) {
             if (response.success) {

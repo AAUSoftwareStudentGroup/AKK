@@ -10,6 +10,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Edit Route", client, "/route-info?routeId=" + navigationService.getParameters()['routeId']);
     viewModel = new EditRouteViewModel(client, navigationService);
 
+    //Sets up the edit-route page with each section of the edit-route page, and the corresponding events, which will change each section when called
     var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
@@ -67,7 +68,7 @@ $(document).ready(function () {
         }
     ];
 
-
+    //Adds the new events
     setUpContentUpdater(configurations, function() {
         viewModel.addEventListener("imageUpdated", function() {
             if (viewModel.hasImage) {
