@@ -122,12 +122,12 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.addingComment = false;
                 self.getComments();
             } else {
-                self.trigger("error", response.message);
+                self.trigger("Error", response.message);
                 self.addingComment = false;
                 self.trigger("commentsChanged");
             }
         }, function(response) {
-            self.trigger("error", "Failed adding comment. The video added is probably too large.");
+            self.trigger("Error", "Failed adding comment. The video added is probably too large.");
             self.trigger("commentsChanged");
         });
     };
