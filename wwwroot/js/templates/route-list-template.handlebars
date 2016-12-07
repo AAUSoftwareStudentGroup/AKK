@@ -1,5 +1,4 @@
 <div class="content-section route-list">
-
     <div>
         <h2>Number of Routes: {{routes.length}}</h2>
     </div>
@@ -7,14 +6,12 @@
     <a href="route-info?routeId={{id}}">
         <div class="route-card">
             <div class="route-card-top">
-                <div class="route-grade-number grade-{{grade.difficulty}}">
-                    {{#ifCond grade.color 200}}
-                    <span class="number" style="background-color: rgb({{grade.color.r}},{{grade.color.g}},{{grade.color.b}})">{{name}}</span>
-                    {{else}}
-                    <span class="number" style="background-color: rgb({{grade.color.r}},{{grade.color.g}},{{grade.color.b}}); color: black">
-                    {{name}}
+                <div class="route-grade-number">
+                    <span class="number" style="background-color: rgb({{grade.color.r}},{{grade.color.g}},{{grade.color.b}})">
+                        <div style="{{#if_light grade.color}}color: black{{/if_light}}">
+                        {{name}}
+                        </div>
                     </span>
-                    {{/ifCond}}
                 </div>
                 <span class="route-section">Section: {{sectionName}}</span>
                 <div class="route-grip">

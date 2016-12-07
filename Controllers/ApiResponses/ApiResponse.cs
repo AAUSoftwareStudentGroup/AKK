@@ -2,6 +2,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AKK.Controllers.ApiResponses {
+    //The base-object which is returned in each public controller method
+    //Contains Data which is of an object specified in each method
+    //Contains a boolean called Success, which is true if the request was handled successfully, false otherwise
     public class ApiResponse<T> : IActionResult {
 
         public T Data {get; set;}

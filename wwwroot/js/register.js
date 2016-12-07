@@ -5,7 +5,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Register", client, "/login");
     viewModel = new RegisterViewModel(client, new NavigationService(), new CookieService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
     });

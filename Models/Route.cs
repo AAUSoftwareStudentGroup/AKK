@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Newtonsoft.Json;
-using NUnit.Framework;
 
 namespace AKK.Models
 {
+    //The possible sort orders for routes when the getRoutes method is called in the controller
     public enum SortOrder
     {
         Newest, Oldest, Grading, Rating, Author
@@ -21,6 +21,7 @@ namespace AKK.Models
             Ratings = new List<Rating>();
         }
 
+        //Compares two routes and returns true if they contain the exact same information, false otherwise
         public override bool Equals (object obj)
         {
             Route route = obj as Route;
@@ -109,6 +110,7 @@ namespace AKK.Models
         [JsonIgnore]
         public uint? HexColorOfTape { get; set; }
 
+        //Stores the Color in the database as a uint, and returns a Color based on that value
         [NotMapped]
         public Color ColorOfHolds
         {
@@ -122,6 +124,7 @@ namespace AKK.Models
             }
         }
 
+        //Stores the Color in the database as a uint, and returns a Color based on that value
         [NotMapped]
         public Color ColorOfTape
         {
@@ -134,8 +137,5 @@ namespace AKK.Models
                 HexColorOfTape = value?.ToUint();
             }
         }
-
-        //[NotMapped]
-        //public 
     }
 }

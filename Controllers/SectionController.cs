@@ -36,14 +36,16 @@ namespace AKK.Controllers {
             {
                 return new ApiErrorResponse<Section>("You need to be logged in as an administrator to add a new section");
             }
-            var sectionExsits = _sectionRepository.GetAll().Where(s => s.Name == name);
-            if(sectionExsits.Any()) {
+
+            if(_sectionRepository.GetAll().Any(s => s.Name == name)) {
                 return new ApiErrorResponse<Section>("A section with name "+name+" already exist");
             }
             if (name == null)
             {
                 return new ApiErrorResponse<Section>("Name must have a value");
             }
+
+            //Create a new section and add it to the repository if no esction with the name exists, and the caller of the method, is an administrator
             Section section = new Section() {Name=name};
             _sectionRepository.Add(section);
             try
@@ -71,6 +73,7 @@ namespace AKK.Controllers {
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(sections)) as IEnumerable<Section>;
 
+            //Deletes every section in the repository
             for(int index = 0; index < sections.Count; index++)
             {
                 _sectionRepository.Delete(sections[index].Id);
@@ -92,6 +95,7 @@ namespace AKK.Controllers {
         public ApiResponse<Section> GetSection(string name) {
             var sections = _sectionRepository.GetAll();
             
+            //Get a section no matter if the input is the id or name of the section wished for
             try {
                 Guid id = new Guid(name);
                 sections = sections.Where(s => s.Id == id);
@@ -114,6 +118,7 @@ namespace AKK.Controllers {
             }
             Section section;
             
+            //Get a section no matter if sectionId is the id or name of the section wished for
             try {
                 Guid id = new Guid(sectionId);
                 section = _sectionRepository.Find(id);
@@ -123,7 +128,8 @@ namespace AKK.Controllers {
 
             if(section == null)
                 return new ApiErrorResponse<Section>("No section exists with name/id "+sectionId);
-                
+
+            //Change the name of the section if the input name is not null, and if no section exists with the new name    
             if(sectionPatch.Name != null)
                 if(!_sectionRepository.GetAll().Any(s => s.Name == sectionPatch.Name))
                     section.Name = sectionPatch.Name;
@@ -151,7 +157,8 @@ namespace AKK.Controllers {
                 return new ApiErrorResponse<Section>("You need to be logged in as an administrator to delete this section");
             }
             Section section;
-            
+
+            //Get a section no matter if the input is the id or name of the section wished for
             try {
                 Guid id = new Guid(name);
                 section = _sectionRepository.Find(id);
@@ -161,21 +168,19 @@ namespace AKK.Controllers {
 
             if(section == null)
                 return new ApiErrorResponse<Section>("No section exists with name/id "+name);
-            else {
-                // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
-                var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section)) as Section;
-        
-                _sectionRepository.Delete(section.Id);
 
-                try
-                {
-                    _sectionRepository.Save();
-                    return new ApiSuccessResponse<Section>(resultCopy);
-                }
-                catch
-                {
-                    return new ApiErrorResponse<Section>("Failed to delete section with name/id " + name);
-                }
+            // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
+            var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section)) as Section;
+    
+            _sectionRepository.Delete(section.Id);
+            try
+            {
+                _sectionRepository.Save();
+                return new ApiSuccessResponse<Section>(resultCopy);
+            }
+            catch
+            {
+                return new ApiErrorResponse<Section>("Failed to delete section with name/id " + name);
             }
         }
 
@@ -185,6 +190,7 @@ namespace AKK.Controllers {
         {
             Section section;
 
+            //Get a section no matter if the input is the id or name of the section wished for
             try {
                 Guid id = new Guid(name);
                 section = _sectionRepository.Find(id);
@@ -207,6 +213,7 @@ namespace AKK.Controllers {
             }
             Section section;
 
+            //Get a section no matter if the input is the id or name of the section wished for
             try
             {
                 Guid id = new Guid(name);
@@ -222,6 +229,8 @@ namespace AKK.Controllers {
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section.Routes)) as IEnumerable<Route>;
+
+            //Deletes all routes from the section and route repositories
             section.Routes.RemoveAll(r => true);
             var routes = _routeRepository.GetAll().Where(r => r.SectionName == section.Name).ToList();
             for (int index = 0; index < routes.Count; index++)
@@ -234,7 +243,6 @@ namespace AKK.Controllers {
                 _sectionRepository.Save();
                 _routeRepository.Save();
                 return new ApiSuccessResponse<IEnumerable<Route>>(resultCopy);
-
             }
             catch
             {

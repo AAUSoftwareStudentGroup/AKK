@@ -79,7 +79,7 @@ function RouteClient(url, cookieService)
             data:
             {
                 token: self.cookieService.getToken(),
-                id: id,
+                commentId: id,
                 routeId: routeId,
             },
             success: success

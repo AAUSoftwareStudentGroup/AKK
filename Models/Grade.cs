@@ -10,8 +10,10 @@ namespace AKK.Models
 
         public int? Difficulty { get; set; }
 
+        [JsonIgnore]
         public uint? HexColor { get; set; }
 
+        //Stores the Color in the database as a uint, and returns a Color based on that value
         [NotMapped]
         public Color Color 
         {

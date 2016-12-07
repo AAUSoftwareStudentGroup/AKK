@@ -128,12 +128,13 @@
 
     this.addNewGrade = function()
     {
+        self.downloadGrades();
         var name = "New Grade";
         var newGrade = (self.selectedGrade ? self.selectedGrade : self.grades[0]);
         newGrade = JSON.parse(JSON.stringify(newGrade));
         newGrade.name = name;
         newGrade.difficulty = self.grades.length;
-        newGrade.color = {r: 99, b: 99, g: 99};
+        newGrade.color = {r: 97, b: 98, g: 99};
         delete newGrade.id;
         self.client.grades.addGrade(newGrade, function(response) {
             if(response.success) {
@@ -141,8 +142,9 @@
                 self.selectedGrade = self.grades[self.grades.length-1];           
                 self.trigger("gradesChanged");
             }
-            else
+            else{
                 self.dialogService.showMessage(response.message);
+            }
         });
     }
 

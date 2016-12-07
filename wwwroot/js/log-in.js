@@ -5,7 +5,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Log In", client, "/");
     viewModel = new LogInViewModel(client, new NavigationService(), new CookieService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -20,7 +20,7 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.addEventListener("error", function(response) {
             $("#error-message").html(response).show();
         });

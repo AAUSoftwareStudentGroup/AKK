@@ -20,6 +20,7 @@ namespace AKK.Models
         public Color()
         { }
 
+        //Converts the Color object to an unsigned integer based on the Color object's R, G, B and A values
         public uint? ToUint()
         {
             uint? col = 0;
@@ -30,6 +31,7 @@ namespace AKK.Models
             return col;
         }
         
+        //Converts an unsigned integer to a Color object with R, G, B and A values
         public static Color FromUint(uint? col)
         {
             if (col == null) return null;

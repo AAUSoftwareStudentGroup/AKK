@@ -1,21 +1,4 @@
 var viewModel;
-QUnit.test("Route ViewModel SearchMethod triggered", function (assert) {
-    viewModel = new RoutesViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()));
-
-    viewModel.init();
-
-    var searchMethodChangedTriggered = false;
-
-
-    viewModel.addEventListener("SearchMethodChanged", function () {
-        searchMethodChangedTriggered = true;
-    });
-    viewModel.searchClicked();
-
-    assert.equal(searchMethodChangedTriggered, true, "SearchClick SearchMethodChanged triggered");
-
-});
-
 QUnit.test("Change Section in Route ViewModel", function (assert) {
     viewModel = new RoutesViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()));
     var routesChangedTriggered = false;
@@ -67,19 +50,19 @@ QUnit.test("Change Grade in RouteViewmodel", function (assert) {
 });
 
 
-QUnit.test("RouteViewmodel ToggleSearch Triggered", function (assert) {
+QUnit.test("RouteViewmodel ToggleIsSearching Triggered", function (assert) {
     viewModel = new RoutesViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()));
     viewModel.init();
 
     var filteringChangedTriggered = false;
 
-    viewModel.addEventListener("filteringChanged", function () {
+    viewModel.addEventListener("isSearchingChanged", function () {
         filteringChangedTriggered = true;
     });
 
-    viewModel.toggleSearch();
+    viewModel.toggleIsSearching();
 
-    assert.equal(filteringChangedTriggered, true, "ToggleSearch filteringChanged triggered");
+    assert.equal(filteringChangedTriggered, true, "ToggleSearch isSearchingChanged triggered");
 
 });
 
