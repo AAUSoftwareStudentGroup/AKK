@@ -628,16 +628,7 @@ var TEST_MEMBERS_INIT = [
   }
 ];
 
-var TEST_HOLDS_INIT = [
-  {
-    "colorOfHolds": 
-    {
-      "a": "255",
-      "r": "205",
-      "g": "205",
-      "b": "205"
-    }
-  }
+var TEST_HOLDS_INIT = [{"colorOfHolds":{"r":205,"g":205,"b":205,"a":255},"name":"White","id":"8ce08159-c70d-4bb3-a5d2-0a8732032a0a"},{"colorOfHolds":{"r":92,"g":89,"b":89,"a":255},"name":"Grey","id":"621cbe3f-6704-4043-83ac-da2658c8c287"},{"colorOfHolds":{"r":126,"g":54,"b":15,"a":255},"name":"Brown","id":"309a2bd4-369f-4c0c-b324-ac27a5341799"},{"colorOfHolds":{"r":0,"g":0,"b":0,"a":255},"name":"Black","id":"0737baf8-d07f-41af-aaea-2a592631b330"},{"colorOfHolds":{"r":20,"g":150,"b":20,"a":255},"name":"Green","id":"ffc44380-7d57-4268-adf0-a731c1b58026"},{"colorOfHolds":{"r":0,"g":200,"b":200,"a":255},"name":"Cyan","id":"78ba403c-4d80-463e-9950-d593a8b9fc2f"},{"colorOfHolds":{"r":220,"g":200,"b":30,"a":255},"name":"Yellow","id":"c190c4dc-84cc-4f30-947a-f9538f1c488d"},{"colorOfHolds":{"r":255,"g":127,"b":0,"a":255},"name":"Orange","id":"374829cd-8fb9-42c5-be1d-64a5088e7f5c"},{"colorOfHolds":{"r":200,"g":30,"b":30,"a":255},"name":"Red","id":"8f2e423c-ff08-4606-af16-a9eea6077f0e"},{"colorOfHolds":{"r":210,"g":25,"b":120,"a":255},"name":"Rose","id":"c61efc91-bc8d-42dc-8a1f-e8b1a395253f"},{"colorOfHolds":{"r":200,"g":50,"b":200,"a":255},"name":"Magenta","id":"5ead61e9-2bfd-4e6e-b873-4b4b6628786b"},{"colorOfHolds":{"r":27,"g":0,"b":255,"a":255},"name":"Violet","id":"5596bd73-c9b2-4c77-9022-deaeb5fa224e"},{"colorOfHolds":{"r":60,"g":60,"b":255,"a":255},"name":"Blue","id":"8cfbda52-668a-4915-a5f5-4e6928d91cbb"},{"colorOfHolds":{"r":1,"g":126,"b":255,"a":255},"name":"Azure","id":"466d4ca8-2b5e-4361-8502-0313f17e0fa1"},{"colorOfHolds":{"r":110,"g":210,"b":20,"a":255},"name":"Light Green","id":"e44edb29-3d91-444a-b007-366b4cfd0888"}
 ];
 
 var TEST_RATINGS_INIT = {

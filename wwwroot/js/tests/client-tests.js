@@ -1,3 +1,9 @@
+QUnit.test("TestClient tests", function( assert ) {
+  var client = new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new TestCookieService());
+  var done = assert.async();
+  register(assert, done, client);
+});
+
 QUnit.test("Client tests", function( assert ) {
   var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
   var done = assert.async();
@@ -75,6 +81,7 @@ function updateRoute(routeId, sectionId, gradeId, assert, done, client)
     assert.equal(routeResponse.success, true, "updateRoute success = " + true + " message = " + routeResponse.message);
     assert.equal(routeResponse.data.id, routeId, "updateRoute id = " + routeId);
     assert.equal(routeResponse.data.gradeId, gradeId, "updateRoute gradeId = " + gradeId);
+    console.log(routeResponse.data);
     assert.equal(routeResponse.data.colorOfHolds.r, holdColor.r, "updateRoute colorOfHolds.r = " + holdColor.r);
     assert.equal(routeResponse.data.colorOfTape.a, tape.a, "updateRoute colorOfTape.a = " + tape.a);
     assert.equal(routeResponse.data.name, name, "updateRoute name = " + name);
