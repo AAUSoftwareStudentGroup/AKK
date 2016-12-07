@@ -6,7 +6,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Find Route", client);
     viewModel = new RoutesViewModel(client, new LoadingService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -16,7 +16,15 @@ $(document).ready(function () {
         {
             scriptSource: "js/templates/route-filtering-template.handlebars", 
             elementId: "filter-content", 
-            event: "filteringChanged",
+            event: [
+                "sectionsChanged", 
+                "gradesChanged", 
+                "sortOptionsChanged", 
+                "selectedSectionChanged", 
+                "selectedGradeChanged", 
+                "selectedSortByChanged", 
+                "isSearchingChanged"
+            ],
             viewmodel: viewModel
         },
         {
@@ -27,7 +35,7 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
     });
