@@ -92,7 +92,8 @@ function TestGradeClient(url, cookieService)
         success({success: true, data: TEST_GRADES});
     };
 
-    this.addGrade = function(grade, success) { 
+    this.addGrade = function(grade, success) 
+    { 
         var newGrade = {name: grade.name, difficulty: grade.difficulty, color: grade.color};
         grades.push(newGrade);
         success({success: true, data: clone(newGrade)});
@@ -104,6 +105,11 @@ function TestGradeClient(url, cookieService)
     };
 
     this.deleteGrade = function(gradeId, success) { };
+
+    this.updateGrade = function(grade, success) 
+    {
+        
+    };
 }
 
 function TestMemberClient(url, cookieService)
