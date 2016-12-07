@@ -220,7 +220,7 @@ namespace AKK.Models
                     Section = sections["A"],
                     ColorOfHolds = colors["Yellow"],
                     Member = members["Anton"],
-                    Author = "Føuss",
+                    Author = "Føns",
                     CreatedDate = new DateTime(2016, 7, 3),
                 },
                 new Route
@@ -271,7 +271,7 @@ namespace AKK.Models
                     Section = sections["A"],
                     ColorOfHolds = colors["Rose"],
                     Member = members["Anton"],
-                    Author = "Føuss",
+                    Author = "Føns",
                     CreatedDate = new DateTime(2016, 7, 26),
                 },
                 new Route
@@ -333,7 +333,7 @@ namespace AKK.Models
                     Section = sections["A"],
                     ColorOfHolds = colors["Blue"],
                     Member = members["Anton"],
-                    Author = "Føuss",
+                    Author = "Føns",
                     CreatedDate = new DateTime(2016, 10, 21),
                     Note = "Only holds with screws"
                 },
@@ -374,7 +374,7 @@ namespace AKK.Models
                     Section = sections["A"],
                     ColorOfHolds = colors["Green"],
                     Member = members["Anton"],
-                    Author = "Føuss",
+                    Author = "Føns",
                     CreatedDate = new DateTime(2016, 7, 3),
                 },
                 new Route
@@ -405,7 +405,7 @@ namespace AKK.Models
                     Section = sections["B"],
                     ColorOfHolds = colors["Red"],
                     Member = members["Anton"],
-                    Author = "Føuss",
+                    Author = "Føns",
                     CreatedDate = new DateTime(2016, 4, 10),
                 },
             };
