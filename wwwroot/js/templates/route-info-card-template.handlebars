@@ -1,13 +1,10 @@
-<div class="route-card">
+<div class="card route-card">
     <div class="route-card-top">
         <div class="route-grade-number grade-{{route.grade.difficulty}}">
-            <span class="number"
-                {{#ifCond route.grade.color 200}}
-                    style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}})">
-                {{else}}
-                    style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}}); color: black">
-                {{/ifCond}}
+            <span class="number" style="background-color: rgb({{route.grade.color.r}},{{route.grade.color.g}},{{route.grade.color.b}})">
+                <div style="{{#if_light route.grade.color}}; color: black{{/if_light}}">
                 {{route.name}}
+                </div>
             </span>
         </div>
         <span class="route-section"></span>
@@ -63,7 +60,7 @@
         <div class="route-image small" id="routeimagecontainer">
             <canvas id="routeimage" class="route-canvas" width="{{route.image.width}}" height="{{route.image.height}}">canvas not supported</canvas>
             <svg class="image-overlay" viewBox="0 0 24 24">
-                <path d="M7 10l5 5 5-5z" />
+                <path fill="#000000" d="M10,21V19H6.41L10.91,14.5L9.5,13.09L5,17.59V14H3V21H10M14.5,10.91L19,6.41V10H21V3H14V5H17.59L13.09,9.5L14.5,10.91Z"></path>
             </svg>
         </div>
         {{else}}
@@ -72,6 +69,7 @@
                     <circle cx="12" cy="12" r="3.2"/>
                     <path d="M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/>
                 </svg>
+                <div id="image-placeholder-text"><p>Click to add image</p></div>
             </div>
         {{/if_eq}}
         <p class="note">{{route.note}} </p>
@@ -82,3 +80,4 @@
 <input class="submit-button negative left" type="button" onclick="viewModel.deleteRoute()" value="Delete"></input>
 {{/if}}
 <input class="submit-button neutral right" type="button" onclick="viewModel.editRoute()" value="Edit"></input>
+<div class="clear"></div>

@@ -30,10 +30,10 @@ namespace AKK.Tests.Controllers
         { 
             _dataFactory = new TestDataFactory();
             _memberRepo = new TestRepository<Member>(_dataFactory.Members);
-
+            AuthenticationService _auth = new AuthenticationService(_memberRepo);
             _testMember = new Member();
             _testMember.Username = "Test";
-            _testMember.Password = "Member";
+            _testMember.Password = _auth.HashPassword("Member");
             _testMember.DisplayName = _testMember.Username + _testMember.Password;
             _testMember.IsAdmin = false;
             _testMember.Token = null;
@@ -55,7 +55,7 @@ namespace AKK.Tests.Controllers
         {
             var member = _dataFactory.Members.First();
 
-            var response = _controller.Login(member.Username, member.Password);
+            var response = _controller.Login(member.Username, "123");
 
             Assert.IsTrue(response.Success);
             Assert.IsNotNull(response.Data);
@@ -84,7 +84,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _GetMemberInfo_GetMemberThatExist_MemberIsReturned()
         {
-            var member = _controller.GetMemberInfo(_controller.Login(_memberRepo.GetAll().First().Username, _memberRepo.GetAll().First().Password).Data).Data;
+            var member = _controller.GetMemberInfo(_controller.Login(_memberRepo.GetAll().First().Username, "123").Data).Data;
 
             Assert.AreEqual(_memberRepo.GetAll().First(), member);
         }
@@ -92,7 +92,7 @@ namespace AKK.Tests.Controllers
         [Test]
         public void _GetMemberInfo_GetMemberThatDoesntExist_ExpectError()
         {
-            var response = _controller.GetMemberInfo(_controller.Login(_testMember.Username, _testMember.Password).Data);
+            var response = _controller.GetMemberInfo(_controller.Login(_testMember.Username, "123").Data);
 
             Assert.IsFalse(response.Success);
         }
@@ -101,7 +101,7 @@ namespace AKK.Tests.Controllers
         public void _Logout_MemberThatIsLoggedInLogsOut_MemberLogsOut()
         {
             var member = _dataFactory.Members.First();
-            var response = _controller.Logout(_controller.Login(member.Username, member.Password).Data);
+            var response = _controller.Logout(_controller.Login(member.Username, "123").Data);
 
             Assert.IsTrue(response.Success);
             Assert.IsNull(member.Token);
@@ -148,7 +148,7 @@ namespace AKK.Tests.Controllers
         public void _GetRole_GetAllRolesOfAdmin_ExpectTwoRoles()
         {
             var member = _memberRepo.GetAll().First(m => m.IsAdmin == true);
-            string token = _controller.Login(member.Username, member.Password).Data;
+            string token = _controller.Login(member.Username, "123").Data;
 
             var roles = _controller.GetRole(token).Data;
             int i = 0;
@@ -164,7 +164,7 @@ namespace AKK.Tests.Controllers
         public void _GetRole_GetAllRolesOfMember_ExpectOnlyOneRole()
         {
             var member = _memberRepo.GetAll().First();
-            string token = _controller.Login(member.Username, member.Password).Data;
+            string token = _controller.Login(member.Username, "123").Data;
 
             var roles = _controller.GetRole(token).Data;
             int i = 0;
@@ -198,7 +198,7 @@ namespace AKK.Tests.Controllers
             Member adminMember = _memberRepo.GetAll().First(m => m.DisplayName == "TannerHelland");
             _memberRepo.Add(_testMember);
 
-            var response = _controller.ChangeRole(_controller.Login(adminMember.Username, adminMember.Password).Data, _testMember.Id, Role.Admin);
+            var response = _controller.ChangeRole(_controller.Login(adminMember.Username, "123").Data, _testMember.Id, Role.Admin);
 
             Assert.IsTrue(response.Success);
             Assert.IsTrue(_testMember.IsAdmin);
@@ -209,7 +209,7 @@ namespace AKK.Tests.Controllers
         {
             Member adminMember = _memberRepo.GetAll().First(m => m.DisplayName == "TannerHelland");
 
-            var response = _controller.ChangeRole(_controller.Login(adminMember.Username, adminMember.Password).Data, _testMember.Id, Role.Admin);
+            var response = _controller.ChangeRole(_controller.Login(adminMember.Username, "123").Data, _testMember.Id, Role.Admin);
 
             Assert.IsFalse(response.Success);
             Assert.IsFalse(_testMember.IsAdmin);
@@ -221,7 +221,7 @@ namespace AKK.Tests.Controllers
             Member adminMember = _memberRepo.GetAll().First(m => m.DisplayName == "TannerHelland");
             _memberRepo.Add(_testMember);
 
-            var token = _controller.Login(adminMember.Username, adminMember.Password).Data;
+            var token = _controller.Login(adminMember.Username, "123").Data;
             var response = _controller.ChangeRole(token, _testMember.Id, Role.Admin);
             Assert.IsTrue(_testMember.IsAdmin);
 

@@ -8,6 +8,7 @@ namespace AKK.Models
         [JsonIgnore]
         public uint? HexColorOfHolds { get; set; }
 
+        //Stores the Color in the database as a uint, and returns a Color based on that value
         [NotMapped]
         public Color ColorOfHolds
         {

@@ -1,4 +1,4 @@
-function AdminPanelViewModel(client, dialogService) {
+    function AdminPanelViewModel(client, dialogService) {
     var self = this;
     this.client = client;
     this.dialogService = dialogService;
@@ -12,6 +12,7 @@ function AdminPanelViewModel(client, dialogService) {
     this.routes = [];
     this.members = [];
     this.holds = [];
+    this.grades = [];
     this.editingGrades = false;
 
     this.init = function() {
@@ -61,11 +62,15 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.addNewSection = function() {
         var name = self.dialogService.prompt("Enter name of new Section","");
-        self.client.sections.addSection(name, function(response) {
-            if(response.success) {
-                self.downloadSections();
-            }
-        });
+        if(name != null) {
+            self.client.sections.addSection(name, function(response) {
+                if(response.success) {
+                    self.downloadSections();
+                } 
+                else
+                    self.dialogService.showMessage(response.message);
+            });
+        }
     }
 
     this.clearSection = function() {
@@ -95,14 +100,16 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.renameSection = function() {
         var newName = self.dialogService.prompt("Enter the new name","");
-        if(self.selectedSection != null && self.dialogService.confirm("Do you really want to rename this section?")) {
-            self.client.sections.renameSection(self.selectedSection.id, newName, function(response) {
-                if(response.success) {
-                    self.downloadSections();
-                }
-                else
-                    self.dialogService.showMessage(response.message);
-            });
+        if (newName != null) {
+            if(self.selectedSection != null && self.dialogService.confirm("Do you really want to rename this section?")) {
+                self.client.sections.renameSection(self.selectedSection.id, newName, function(response) {
+                    if(response.success) {
+                        self.downloadSections();
+                    }
+                    else
+                        self.dialogService.showMessage(response.message);
+                });
+            }
         }
     }
 ///////////////////////////////////
@@ -121,12 +128,13 @@ function AdminPanelViewModel(client, dialogService) {
 
     this.addNewGrade = function()
     {
+        self.downloadGrades();
         var name = "New Grade";
         var newGrade = (self.selectedGrade ? self.selectedGrade : self.grades[0]);
         newGrade = JSON.parse(JSON.stringify(newGrade));
         newGrade.name = name;
         newGrade.difficulty = self.grades.length;
-        newGrade.color = {r: 0x66, b: 0x66, g: 0x66};
+        newGrade.color = {r: 97, b: 98, g: 99};
         delete newGrade.id;
         self.client.grades.addGrade(newGrade, function(response) {
             if(response.success) {
@@ -134,8 +142,9 @@ function AdminPanelViewModel(client, dialogService) {
                 self.selectedGrade = self.grades[self.grades.length-1];           
                 self.trigger("gradesChanged");
             }
-            else
+            else{
                 self.dialogService.showMessage(response.message);
+            }
         });
     }
 
@@ -219,33 +228,16 @@ function AdminPanelViewModel(client, dialogService) {
     }
 
     this.gradesSwap = function(diff, change) {
-        if(diff+change < 0 || diff+change >= self.grades.length)
+        var index = viewModel.grades.findIndex(function(elm) {return elm.difficulty == diff});
+        if(index < 0 || index+change < 0 || index+change >= self.grades.length)
             return;
-        self.swapdisable = true;
+        
+        var gradeAid = self.grades[index].id;
+        var gradeBid = self.grades[index+change].id;
 
-        var gradeA = self.grades[diff];
-        var gradeB = self.grades[diff+change];
-        var gradeBCopy = JSON.parse(JSON.stringify(gradeB));
-
-        gradeB.difficulty = gradeA.difficulty;
-        gradeA.difficulty = 999;
-
-        self.client.grades.updateGrade(gradeA, function(response) {
+        self.client.grades.swapGrades(gradeAid, gradeBid, function(response) {
             if(response.success) {
-                self.client.grades.updateGrade(gradeB, function(response) {
-                    if(response.success) {
-                        gradeA.difficulty = gradeBCopy.difficulty
-                        self.client.grades.updateGrade(gradeA, function(response) {
-                            if(response.success) {
-                                self.downloadGrades();
-                            }
-                            else
-                                self.dialogService.showMessage(response.message);
-                        });
-                    }
-                    else
-                        self.dialogService.showMessage(response.message);
-                });
+                self.downloadGrades();
             }
             else
                 self.dialogService.showMessage(response.message);
@@ -301,10 +293,12 @@ function AdminPanelViewModel(client, dialogService) {
         newHold = JSON.parse(JSON.stringify(newHold));
         newHold.name = name;
         newHold.colorOfHolds = {r: 0x66, b: 0x66, g: 0x66};
+        newHold.value = self.holds.length;
         delete newHold.id;
         self.client.holds.addHold(newHold, function(response) {
             if(response.success) {
                 self.holds.push(response.data);
+                self.holds[self.holds.length-1].value = self.holds.length-1;
                 self.selectedHold = self.holds[self.holds.length-1];           
             }
             else {

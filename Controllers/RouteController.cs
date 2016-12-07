@@ -41,10 +41,14 @@ namespace AKK.Controllers
         [HttpGet]
         public ApiResponse<IEnumerable<Route>> GetRoutes(Guid? gradeId, Guid? sectionId, string searchStr, int maxResults, SortOrder sortBy)
         {
+            //Get all routes from the repository and assign a new value to maxResults which determines how many routes to return to the caller
+            //Return the inputted value given to maxResults if that value is smaller than the amount of routes in the repository
+            //Else, return all routes in the repository
             var routes = _routeRepository.GetAll();
             var numRoutes = routes.Count();
             maxResults = maxResults <= 0 ? numRoutes : Math.Min(maxResults, numRoutes);
 
+            //Filters the found routes based on the grade and/or section, if the values aren't null
             if (gradeId != null)
             {
                 routes = routes.Where(r => r.GradeId == gradeId);
@@ -68,6 +72,9 @@ namespace AKK.Controllers
                 case SortOrder.Grading:
                     routes = routes.OrderBy(p => p.Grade.Difficulty);
                     break;
+                case SortOrder.Rating:
+                    routes = routes.OrderByDescending(p => p.AverageRating);
+                    break;
             }
 
             if (!string.IsNullOrEmpty(searchStr))
@@ -84,7 +91,7 @@ namespace AKK.Controllers
                     return new ApiErrorResponse<IEnumerable<Route>>("No routes matched your search");
                 }
             }
-
+            //Return the amount of routes asked for if that amount exists, with the given sort-order and with the applied filters
             return new ApiSuccessResponse<IEnumerable<Route>>(routes.Take(maxResults));
         }
 
@@ -149,7 +156,7 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Route>("A route with this grade and number already exists");
             }
 
-
+            //Add the route to the repository if the member is authorised to do so, and only if all the required information is given
             route.CreatedDate = DateTime.Now; 
             _routeRepository.Add(route);
 
@@ -251,7 +258,10 @@ namespace AKK.Controllers
 
             var member = _memberRepository.GetAll()
                                           .FirstOrDefault(m => m.Token == token);
+            //Create a new comment and assign a member to it, with the inputted text if the text-field isn't empty
             var comment = new Comment {Member = member, Message = text ?? ""};
+
+            //Create a new Video object if the file extension is supported, then saves it to wwwroot/files/{fileName}
             if (file != null) {
                 try {
                     var fileExtension = ContentDispositionHeaderValue
@@ -259,7 +269,11 @@ namespace AKK.Controllers
                         .FileName
                         .Trim('"')
                         .Split('.')
-                        .Last();
+                        .Last()
+                        .ToLower();
+                    if (fileExtension != "mp4" && fileExtension != "webm" && fileExtension != "ogg") {
+                        return new ApiErrorResponse<string>("File is not a valid video file");
+                    }
                     var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
                     var path = "files/" + fileName;
                     var savePath = "wwwroot/" + path;
@@ -267,12 +281,14 @@ namespace AKK.Controllers
                                 await file.CopyToAsync(fileStream);
                         }
                     var video = new Video {FileUrl = path, FilePath = savePath};
+                    //Adds the Video to the created Comment object
                     comment.Video = video;
                 } catch (System.OperationCanceledException) {
                     //ASP.NET bug causes this exception to be thrown, even though it is not an error
                 }
             }
             
+            //Adds the comment to the route
             route.Comments.Add(comment);
             _routeRepository.Save();
             
@@ -280,7 +296,7 @@ namespace AKK.Controllers
         }
 
         [HttpPost("comment/remove")]
-        public ApiResponse<string> RemoveComment(string token, Guid id, Guid routeId) {
+        public ApiResponse<string> RemoveComment(string token, Guid commentId, Guid routeId) {
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
@@ -297,10 +313,15 @@ namespace AKK.Controllers
             if (route == null) 
                 return new ApiErrorResponse<string>("Invalid route");
 
-            if (!route.Comments.Any(c => c.Id == id))   
+            var comment = route.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)   
                 return new ApiErrorResponse<string>("Invalid comment");
 
-            var comment = route.Comments.FirstOrDefault(c => c.Id == id);
+            //Only the creater of a comment can delete it, unless they're an administrator
+            if (user.Id != comment.MemberId && !isAdmin)
+                return new ApiErrorResponse<string>("You cannot delete a comment you haven't made yourself");
+
+            //Deletes the video from the database if such a video exists
             if (comment.Video != null) {
                 System.IO.File.Delete(comment.Video.FilePath);
             }
@@ -332,12 +353,15 @@ namespace AKK.Controllers
                 return new ApiSuccessResponse<Route>(routeToUpdate);
             }
             
+            //Update the existing route with the changed values. 
+            //If some of the values of the new route is null, keep the existing ones, except for ColorOfTape, which is allowed to be null
             routeToUpdate.ColorOfHolds = route.ColorOfHolds ?? routeToUpdate.ColorOfHolds;
             routeToUpdate.ColorOfTape = route.ColorOfTape;
             routeToUpdate.Name = route.Name ?? routeToUpdate.Name;
             routeToUpdate.Author = route.Author ?? routeToUpdate.Author;
             routeToUpdate.Note = route.Note;
             
+            //If the new route's image is not null, then replace the existing image with the new one
             if(route.Image != null)
             {
                 if (_imageRepository.GetAll().Any(i => i.RouteId == routeId))
@@ -352,6 +376,7 @@ namespace AKK.Controllers
                     _imageRepository.Delete(img.Id);
                 }
                 // Console.WriteLine(JsonConvert.SerializeObject(route.Image));
+                
                 route.Image.RouteId = routeToUpdate.Id;
                 routeToUpdate.Image = route.Image;
                 _imageRepository.Save();
@@ -360,7 +385,10 @@ namespace AKK.Controllers
             if(route.GradeId != default(Guid))
             {
                 routeToUpdate.Grade = _gradeRepository.Find(route.GradeId);
-                routeToUpdate.GradeId = routeToUpdate.Grade.Id;
+                if (routeToUpdate.Grade != null)
+                    routeToUpdate.GradeId = routeToUpdate.Grade.Id;
+                else
+                    return new ApiErrorResponse<Route>("The specified grade does not exist");
             }
 
             if(route.SectionId != default(Guid))
@@ -401,6 +429,8 @@ namespace AKK.Controllers
 
             // Create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(route)) as Route;
+
+            //Delete route if member is authorised to do so, and if the specified route exists
             _routeRepository.Delete(route.Id);
 
             try
@@ -422,7 +452,7 @@ namespace AKK.Controllers
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to change ratings");
             }
-
+            
             //Make sure ratingvalue is between 1 and 5
             ratingValue = Math.Max(1, Math.Min(5, ratingValue));
 
@@ -430,6 +460,13 @@ namespace AKK.Controllers
             var member = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
             var previousRating = route.Ratings.FirstOrDefault(r => r.Member.Token == token);
 
+            if (route == null)
+                return new ApiErrorResponse<Route>("No route with this id exists");
+
+            if (member == default(Member))
+                return new ApiErrorResponse<Route>("No member with this token exists. Are you logged in?");
+
+            //Add a new rating if a rating by this member doesn't exist for the given route
             if (previousRating == default(Rating))
             {
                 route.Ratings.Add(new Rating
@@ -441,6 +478,7 @@ namespace AKK.Controllers
                     RatingValue = ratingValue
                 });
             }
+            //Else, change the value of the rating
             else
             {
                 route.Ratings.FirstOrDefault(r => r.Member.Token == token).RatingValue = ratingValue;

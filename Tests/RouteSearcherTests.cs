@@ -5,7 +5,7 @@ using AKK.Services;
 namespace AKK.Tests
 {
     [TestFixture]
-    public class TestRouteSearcher
+    public class RouteSearcherTests
     {
         private TestDataFactory _dataFactory;
         private RouteSearchService _searcher;
@@ -169,21 +169,21 @@ namespace AKK.Tests
         [Test]
         public void Search_SearchForA4_ExpectedResultTheSameAsSearchForASPACE4()
         {
-            var searchResultWithSpace = _searcher.Search("A 4");
-            var searchResultWithoutSpace = _searcher.Search("A4");
+            var searchResultWithSpace = _searcher.Search("A 4").ToList();
+            var searchResultWithoutSpace = _searcher.Search("A4").ToList();
 
-            int length = searchResultWithSpace.ToArray().Length;
+            int length = searchResultWithSpace.Count;
 
-            if (searchResultWithoutSpace.ToArray().Length != length)
+            if (searchResultWithoutSpace.Count != length)
             {
                 Assert.Fail($"  Expected: List have the same amount of items\n  Was: with space: {length}  without space: {searchResultWithoutSpace.ToArray().Length}");
             }
 
             for (int i = 0; i < length; i++)
             {
-                if (searchResultWithSpace.ElementAt(i).Equals(searchResultWithoutSpace.ElementAt(i)) != true)
+                if (searchResultWithSpace[i].Equals(searchResultWithoutSpace[i]) != true)
                 {
-                    Assert.Fail($"  Expected Id: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
+                    Assert.Fail($"  Expected Author: {searchResultWithSpace.ElementAt(i).Author}\n  Was: {searchResultWithoutSpace.ElementAt(i).Author}");
                 }
             }
         }
@@ -195,7 +195,7 @@ namespace AKK.Tests
 
             var routes = searchResult.ToArray();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
                 var result = routes[i];
                 if (result.Section.Name == "A" || result.Name.Contains("4") || result.Grade.Name == "Green")
@@ -215,7 +215,7 @@ namespace AKK.Tests
             var searchResult = _searcher.Search("A4 Gr");
 
             var routes = searchResult.ToArray();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
 
                 if (routes[i].Section.Name == "A" || routes[i].Name.Contains("4") || routes[i].Grade.Name == "Green")
@@ -252,7 +252,7 @@ namespace AKK.Tests
             var searchResult = _searcher.Search("A4 Gru");
 
             var routes = searchResult.ToArray();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
                 var result = routes[i];
                 if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))
@@ -272,7 +272,7 @@ namespace AKK.Tests
             var searchResult = _searcher.Search("A 4 Gru");
 
             var routes = searchResult.ToArray();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < routes.Length; i++)
             {
                 var result = routes[i];
                 if (result.Section.Name == "A" || result.Name.Contains("4") || result.Author.Contains("Gru"))

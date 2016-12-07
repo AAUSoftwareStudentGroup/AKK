@@ -1,11 +1,12 @@
 ﻿var viewModel;
 var headerViewModel;
+var searchTimeout = null;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
     headerViewModel = new HeaderViewModel("Find Route", client);
     viewModel = new RoutesViewModel(client, new LoadingService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -15,7 +16,15 @@ $(document).ready(function () {
         {
             scriptSource: "js/templates/route-filtering-template.handlebars", 
             elementId: "filter-content", 
-            event: "filteringChanged",
+            event: [
+                "sectionsChanged", 
+                "gradesChanged", 
+                "sortOptionsChanged", 
+                "selectedSectionChanged", 
+                "selectedGradeChanged", 
+                "selectedSortByChanged", 
+                "isSearchingChanged"
+            ],
             viewmodel: viewModel
         },
         {
@@ -26,7 +35,7 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
     });
@@ -36,7 +45,13 @@ $(document).ready(function () {
     });
 
     $(document).on("input", "#search-field", function(e) {
-        viewModel.search($("#search-field").val());
+        if (searchTimeout != null) {
+            window.clearTimeout(searchTimeout);
+        }
+
+        searchTimeout = setTimeout(function() {
+            viewModel.search($("#search-field").val());
+        }, 300);
     });
 
     $(document).on("keyup", "#search-field", function(e) {

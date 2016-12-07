@@ -317,6 +317,7 @@ namespace AKK.Tests
                 HoldColor newColor = new HoldColor();
                 newColor.HexColorOfHolds = color.Value.ToUint();
                 newColor.Name = color.Key;
+                newColor.Id = Guid.NewGuid();
                 _holdColors.Add(newColor);
             }
 
@@ -333,10 +334,11 @@ namespace AKK.Tests
             _holds[0].Image = _images[0];
             _images[0].Holds = _holds;
 
+            AKK.Services.AuthenticationService s = new AKK.Services.AuthenticationService(new AKK.Models.Repositories.TestRepository<Member>(_members));
             foreach (Member member in _members)
             {
                 member.Username = member.DisplayName.ToLower();
-                member.Password = "123";
+                member.Password = s.HashPassword("123");
             }
         }
     }

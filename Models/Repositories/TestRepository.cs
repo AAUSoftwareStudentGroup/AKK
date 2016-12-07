@@ -4,6 +4,7 @@ using System.Linq;
 
 namespace AKK.Models.Repositories
 {
+    //The database used for the controller tests, since we aren't testing the database
     public class TestRepository<TEntity> : IRepository<TEntity> where TEntity : class, IIdentifyable
     {
         private List<TEntity> _entities;

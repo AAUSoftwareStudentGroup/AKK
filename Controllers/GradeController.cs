@@ -41,6 +41,7 @@ namespace AKK.Controllers
             if(_gradeRepository.GetAll().Count(g => g.Difficulty == grade.Difficulty) != 0)
                 return new ApiErrorResponse<Grade>("A grade already exists with the given difficulty");
 
+            //Add the grade to the grade repository, if the caller of the method is an administrator and the grade doesn't already exist
             _gradeRepository.Add(grade);
             try
             {
@@ -84,16 +85,18 @@ namespace AKK.Controllers
                 return new ApiSuccessResponse<Grade>(oldGrade);
             }
 
+            //Update the existing grade with the changed values. If some of the values of the new grade is null, keep the existing ones
             oldGrade.Name = grade.Name ?? oldGrade.Name;
             oldGrade.Difficulty = grade.Difficulty ?? oldGrade.Difficulty;
             oldGrade.Color = grade.Color ?? oldGrade.Color;
 
-
+            //If a grade exists with the same difficulty as the one we are about to save, don't add it and return an error 
             if (_gradeRepository.GetAll().Any(g => g.Id != oldGrade.Id && g.Difficulty == oldGrade.Difficulty ))
             {
                 return new ApiErrorResponse<Grade>("A grade with this difficulty already exists");
             }
 
+            //If a grade exists with the same name as the one we are about to save, don't add it and return an error 
             if (_gradeRepository.GetAll().Any(g => g.Id != oldGrade.Id && g.Name == oldGrade.Name ))
             {
                 return new ApiErrorResponse<Grade>("A grade with this name already exists");
@@ -107,6 +110,44 @@ namespace AKK.Controllers
             catch
             {
                 return new ApiErrorResponse<Grade>("Failed to update grade to database");
+            }
+        }
+
+        // PATCH: /api/grade/{grade1Id}/swap/{grade2Id}
+        [HttpPatch("{grade1Id}/swap/{grade2Id}")]
+        public ApiResponse<IEnumerable<Grade>> SwapGrades(string token, Guid grade1Id, Guid grade2Id) 
+        {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>("You need to be logged in as an administrator to change this grade");
+            }
+            Grade grade1 = _gradeRepository.Find(grade1Id);
+            Grade grade2 = _gradeRepository.Find(grade2Id);
+            if (grade1 == null)
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>($"No grade exists with id {grade1Id}");
+            }
+            if (grade2 == null)
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>($"No grade exists with id {grade2Id}");
+            }
+
+            //Swap the difficulty of the found grades, to swap them in the database
+            var tmpDiff = grade1.Difficulty;
+            grade1.Difficulty = grade2.Difficulty;
+            grade2.Difficulty = tmpDiff;
+
+            try
+            {
+                var result = new List<Grade>();
+                result.Add(grade1);
+                result.Add(grade2);
+                _gradeRepository.Save();
+                return new ApiSuccessResponse<IEnumerable<Grade>>(result);
+            }
+            catch
+            {
+                return new ApiErrorResponse<IEnumerable<Grade>>("Failed to save swapped grades to database");
             }
         }
 
@@ -138,8 +179,8 @@ namespace AKK.Controllers
 
             // create copy that can be sent as result
             Grade resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(grade)) as Grade;
-            //resultCopy = new Grade();
-            //System.Console.WriteLine(resultCopy.Color.R);
+
+            //Delete the grade from the repository if the caller of the method is an administrator and no routes exists with this grade
             _gradeRepository.Delete(grade.Id);
 
             try
@@ -152,20 +193,6 @@ namespace AKK.Controllers
             {
                 return new ApiErrorResponse<Grade>("Failed to remove grade from database");
             }
-        }
-
-        // GET: /api/grade/{id}/routes
-        [HttpGet("{id}/routes")]
-        public ApiResponse<IEnumerable<Route>> GetGradeRoutes(Guid id)
-        {
-            var grade = _gradeRepository.Find(id);
-
-            if (grade == null)
-            {
-                return new ApiErrorResponse<IEnumerable<Route>>("No grades with given id exists");
-            }
-
-            return new ApiSuccessResponse<IEnumerable<Route>>(grade.Routes);
         }
     }
 }

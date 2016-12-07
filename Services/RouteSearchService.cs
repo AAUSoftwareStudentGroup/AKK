@@ -7,7 +7,7 @@ using AKK.Models;
 
 namespace AKK.Services
 {
-    public class RouteSearchService:ISearchService<Route>
+    public class RouteSearchService : ISearchService<Route>
     {
         private readonly IEnumerable<Route> _allRoutes;
         private readonly int _numRoutes;
@@ -19,6 +19,18 @@ namespace AKK.Services
         }
 
         public IEnumerable<Route> Search(string searchStr)
+        {
+            // Calculate levenstein distance
+            var routeDistances = DistanceOfRoutes(searchStr);
+            //Sorts routes by their Levenshtein distance.
+            var sortedRoutes = routeDistances.OrderBy(x => x.Item2).ToList();
+
+            //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
+            var threshold = 10;
+            return GetRoutesInThreshold(sortedRoutes, threshold, _numRoutes);
+        }
+
+        private List<Tuple<Route, float>> DistanceOfRoutes(string searchStr)
         {
             //Split search string into searchterms
             var searchTerms = _splitSearchStr(searchStr);
@@ -48,30 +60,41 @@ namespace AKK.Services
                 {
                     var route = routesWithDist[i].Item1;
                     float dist = routesWithDist[i].Item2 + _getSmallestDistance(route, searchTerm, specialization);
-
                     routesWithDist[i] = new Tuple<Route, float>(route, dist);
                 }
             }
 
-            //Sorts routes by their Levenshtein distance.
-            var sortedRoutes = routesWithDist.OrderBy(x => x.Item2).ToList();
+            // if string was splitted compare the distance of the sum of the splitted parts to the original input and take the lowest distance
+            if (searchTerms.Count() != 1)
+            {
+                for (int i = 0; i < _numRoutes; i++)
+                {
+                    var route = routesWithDist[i].Item1;
+                    float dist = _getSmallestDistance(route, searchStr, null);
+                    if (dist < routesWithDist[i].Item2)
+                    {
+                        routesWithDist[i] = new Tuple<Route, float>(route, dist); ;
+                    }
+                }
+            }
+            return routesWithDist;
+        }
 
-            //Returns a specific amount of routes and changes it from a list of Tuples to a list of routes.
-            var threshold = 20;
-            var foundRoutes = new List<Route>();
+        private List<Route> GetRoutesInThreshold(List<Tuple<Route, float>> routes, int threshold, int count)
+        {
+            var result = new List<Route>();
 
             for (int i = 0; i < _numRoutes; i++)
             {
-                var el = sortedRoutes.ElementAt(i);
+                var el = routes[i];
                 if (el.Item2 > threshold)
                 {
                     break;
                 }
 
-                foundRoutes.Add(el.Item1);
+                result.Add(el.Item1);
             }
-
-            return foundRoutes;
+            return result;
         }
 
         private IEnumerable<string> _splitSearchStr(string searchStr)
@@ -104,7 +127,8 @@ namespace AKK.Services
                         return _computeLevenshtein(searchStr, route.SectionName);
                     case "author":
                         return _computeLevenshtein(searchStr, route.Author);
-                    case "difficulty": case "grade":
+                    case "difficulty":
+                    case "grade":
                         return _computeLevenshtein(searchStr, route.Grade.Name);
                 }
             }

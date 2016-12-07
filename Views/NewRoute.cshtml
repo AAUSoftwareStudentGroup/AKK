@@ -10,6 +10,7 @@
         <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
         <meta http-equiv="pragma" content="no-cache" />
         <!-- --------------- -->
+        <link rel="manifest" href="manifest.json">
         <title>AKK - New Route</title>
         <link rel="stylesheet" type="text/css" href="css/styles.css">
         <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
@@ -37,8 +38,11 @@
             <div id="image-picker-content"></div>
             <div id="image-picker-content"></div>
             <div id="note-picker-content"></div>
-            <div id="error-message" class="message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
             <input class="submit-button neutral right" type="button" onclick="viewModel.addRoute()" value="Create" />
+            <div class="clear"></div>
+            <div class="error-content content-section">
+                <div id="error-message" class="message" onclick="$(this).fadeOut(function() {$(this).empty()})"></div>
+            </div>
         </div>
     </body>
 </html>

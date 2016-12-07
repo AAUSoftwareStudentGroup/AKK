@@ -42,13 +42,14 @@ namespace AKK.Controllers
         {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
-                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to add a new grade");
+                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to add a new holdcolor");
             }
             if (holdcolor.ColorOfHolds == default(Color))
             {
                 return new ApiErrorResponse<HoldColor>("A color must be selected");
             }
 
+            //Add the holdcolor if the caller is an administrator and the color is specified
             try
             {
                 _holdColorRepository.Add(holdcolor);
@@ -66,7 +67,7 @@ namespace AKK.Controllers
         {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
-                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to add a new grade");
+                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to delete this holdcolor");
             }
             var holdColor = _holdColorRepository.Find(id);
             if (holdColor == null)
@@ -74,15 +75,17 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<HoldColor>("Could not find holdColor");
             }
             HoldColor holdColorCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(holdColor)) as HoldColor;
-            _holdColorRepository.Delete(id);
+            
+            //Delete the holdcolor matching the given id, if the caller is an administrator
             try
             {
+                 _holdColorRepository.Delete(id);
                 _holdColorRepository.Save();
                 return new ApiSuccessResponse<HoldColor>(holdColorCopy);
             }
             catch
             {            
-               return new ApiErrorResponse<HoldColor>("Failed to delete Holdcolor");
+               return new ApiErrorResponse<HoldColor>("Failed to delete holdcolor");
             }
         }
     }

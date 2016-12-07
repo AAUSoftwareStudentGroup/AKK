@@ -55,7 +55,7 @@ function RouteClient(url, cookieService)
         });
     }
 
-    this.addComment = function(formdata, routeId, success) {
+    this.addComment = function(formdata, routeId, success, error) {
         formdata.append('token', self.cookieService.getToken());
         formdata.append('id', routeId);
 
@@ -63,6 +63,7 @@ function RouteClient(url, cookieService)
             url: url + "/comment", 
             type: 'POST',
             success: success,
+            error: error,
             data: formdata,
             cache: false,
             contentType: false,
@@ -78,7 +79,7 @@ function RouteClient(url, cookieService)
             data:
             {
                 token: self.cookieService.getToken(),
-                id: id,
+                commentId: id,
                 routeId: routeId,
             },
             success: success
@@ -306,6 +307,20 @@ function GradeClient(url, cookieService)
             {
                 token: self.cookieService.getToken(),
                 grade: grade
+            },
+            success: success
+        });
+    };
+
+    this.swapGrades = function(gradeAId, gradeBId, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url+`/${gradeAId}/swap/${gradeBId}`,
+            data:
+            {
+                token: self.cookieService.getToken(),
             },
             success: success
         });

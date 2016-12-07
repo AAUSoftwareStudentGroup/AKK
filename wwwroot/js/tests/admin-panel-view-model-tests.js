@@ -1,5 +1,5 @@
 var viewModel;
-//Update all tests to include init(); in the beginning of each document
+
 QUnit.test("admin panel viewModel downloadSections", function (assert) 
 {
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), new TestDialogService());
@@ -150,8 +150,77 @@ QUnit.test("admin panel viewModel renameSection", function (assert)
 	assert.equal(viewModel.sections[2].routes.length, routesInC, "sections[2].length = routesInC = " + viewModel.sections[2].routes.length);
 });
 
+QUnit.test("admin panel viewModel downloadGrades", function (assert) 
+{
+	init();
+	var dialogService = new TestDialogService();
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
+
+	var gradeChangedTriggered = false;
+
+	viewModel.addEventListener("gradesChanged", function () 
+	{
+        gradeChangedTriggered = true;
+    });
+
+	//Not equal before downloading grades
+	assert.notEqual(viewModel.grades, TEST_GRADES, "");
+
+	//Download grades
+	viewModel.downloadGrades();
+
+	//Equal after downloading grades, also event triggered
+	assert.equal(viewModel.grades, TEST_GRADES, "");
+	assert.equal(gradeChangedTriggered, true, "admin panel ViewModel gradesChanged triggered");
+});
+
+QUnit.test("admin panel viewModel addNewGrade", function (assert) 
+{
+	var dialogService = new TestDialogService();
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
+
+	init();
+	viewModel.init();
+
+	var gradeChangedTriggered = false;
+
+	viewModel.addEventListener("gradesChanged", function () 
+	{
+        gradeChangedTriggered = true;
+    });
+
+	var tempGradeCount = viewModel.grades.length;
+
+	assert.equal(tempGradeCount, TEST_GRADES.length, "");
+
+    viewModel.addNewGrade();
+
+	assert.equal(gradeChangedTriggered, true, "admin panel ViewModel gradesChanged triggered");
+	assert.equal(viewModel.grades[viewModel.grades.length-1].name, "New Grade", "");
+	assert.equal(tempGradeCount+1, TEST_GRADES.length, "");
+	assert.equal(viewModel.grades[viewModel.grades.length-1].color.r == TEST_GRADES[TEST_GRADES.length-1].color.r && viewModel.grades[viewModel.grades.length-1].color.g == TEST_GRADES[TEST_GRADES.length-1].color.g && viewModel.grades[viewModel.grades.length-1].color.b == TEST_GRADES[TEST_GRADES.length-1].color.b, true, "");
+});
+
+QUnit.test("admin panel viewModel updateGrade", function (assert) 
+{
+	var dialogService = new TestDialogService();
+	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
+
+	init();
+	viewModel.init();
+
+	var gradeChangedTriggered = false;
+
+	viewModel.addEventListener("gradesChanged", function () 
+	{
+        gradeChangedTriggered = true;
+    });
+
+
+    viewModel.updateGrade();
+
+	assert.equal(gradeChangedTriggered, true, "admin panel ViewModel gradesChanged triggered");
 
 
 
-
-//dialogService.message = "X";
+});

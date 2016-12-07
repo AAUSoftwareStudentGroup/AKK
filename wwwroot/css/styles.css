@@ -67,13 +67,6 @@ input[type="checkbox"] {
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.40);
     text-align: center;
 }
-#error-message {
-    background-color: #F44336;
-}
-
-#info-message {
-    background-color: #2196F3;
-}
 
 .submit-button {
     padding: 10px 18px 10px 18px;
@@ -110,6 +103,12 @@ input[type="checkbox"] {
 
 .submit-button.negative:active {
     background-color: #D32F2F;
+}
+
+.card {
+    margin-top: 16px;
+    padding: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20);
 }
 
 .action-button {
@@ -320,21 +319,39 @@ input:checked + .toggle-switch::before {
 }
 
 .error-content {
-    padding-top:0;
+    margin-top: 20px;
 }
+
+#error-message {
+    background-color: #F44336;
+}
+
+#info-message {
+    background-color: #2196F3;
+}
+
 
 .content-section {
     width: 100%;
     display: block;
 }
 
-/** ROUTE CARD **/
-.route-card {
-    margin-top: 16px;
-    padding: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20);
+#filter-content {
+    position: fixed;
+    background-color: white;
+    padding-top: 10px;
+    margin: -10px 0 0 -20px;
+    padding: 10px 20px;
+    width: 306px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 6px -6px rgba(0, 0, 0, 0.20);
 }
 
+#routes-content {
+    margin-top: 75px;
+}
+
+/** ROUTE CARD **/
 .route-card-top {
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
@@ -517,22 +534,10 @@ input:checked + .toggle-switch::before {
     position: relative;
     margin-top: 8px;
     cursor: pointer;
-    transition: height 1s;
 }
 
 .route-image.small {
-    height: 160px;
-    overflow: hidden;
-}
-
-.route-image.small:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-image: linear-gradient(to bottom,rgba(0, 0, 0, 0.35),rgba(255, 255, 255, 0.8));
+    width: 50%;
 }
 
 .video-beta {
@@ -555,9 +560,10 @@ input:checked + .toggle-switch::before {
 .image-overlay {
     width: 50px;
     height: 50px;
-    padding: 2px;
-    margin: 0 auto;
-    position: absolute;    
+    padding: 10px;
+    margin: auto auto;
+    position: absolute;
+    top: 0;
     right: 0;
     left: 0;
     bottom: 0;
@@ -607,6 +613,9 @@ input:checked + .toggle-switch::before {
     height: 48px;
     margin: 0 12px 12px 0;
     display: inline-block;
+}
+.radio-inputs.slim label {
+    margin-right: 7px;
 }
 
 .radio-inputs label:nth-child(5n+5) {
@@ -704,7 +713,7 @@ input:checked + .toggle-switch::before {
     width: 100%;
     clear: both;
     position: relative;
-    padding: 20px 0 12px 0;
+    margin: 20px 0 12px 0;
     outline: none;
 }
 
@@ -712,15 +721,58 @@ input:checked + .toggle-switch::before {
     width: 100%;
 }
 
+
 .undo-button {
-    line-height: 24px;
+    width:42px;
+    height:42px;
     position: absolute;
     right: 10px;
-    top: 30px;
+    top: 10px;
     background-color: rgba(255,255,255,.7);
+    border-radius: 100px;
+    text-align: center;
     padding: 0;
     margin: 0;
 }
+.undo-button svg {
+    margin-top: 6px;
+}
+
+.hold-watermark:visited {
+    visibility: hidden;
+}
+
+.hold-watermark {
+    position: absolute;
+    background-color: rgba(255,255,255,.5);
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.hold-pointer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 0;
+    margin: auto;
+    text-align: center;
+    height: 120px;
+}
+
+.hold-pointer > svg {
+    transform: rotate(250deg);
+    width: 30%;
+    display: inline-block;
+}
+
+
 
 #search-field {
     outline: none;
@@ -1085,17 +1137,22 @@ input[type=range]::-ms-thumb {
     height: 24px;
 }
 
-.comment-card form {
+.comment-field {
+    margin-top: 16px;
+    fill: #999;
+}
+
+.comment-field form {
     width: 100%;
 }
 
-.comment-card svg {
+.comment-field svg {
     width: 24px;
     height: 24px;
     display: block;   
 }
 
-.comment-card textarea {
+.comment-field textarea {
     width:100%;
     font-size: 16px;
     line-height: 24px;
@@ -1104,30 +1161,30 @@ input[type=range]::-ms-thumb {
     resize: none;
 }
 
-.comment-card .video {
+.comment-field .video {
     margin-top: 20px;
+    overflow: hidden;
+}
+
+.comment-field .video label {
     cursor: pointer;
 }
 
-.comment-card {
-    fill: #999;
-    margin-top: 8px;
+.comment-field .video svg {
+    fill: #666;
 }
 
-.comment-input .video-check {
-    margin: 20px 0 0 2px;
-    display: none;
+.comment-field .video-check {  
+    display: none; 
 }
 
-.comment-input.video-added .video-check {
-    display: inline;
+.comment-field.video-added .video svg,
+.comment-field.video-added .video-check {
+    display: block;
+    fill: #2196F3;
 }
 
-.comment-card.video-added .comment-video-check {
-    
-}
-
-.comment-card .send-button {
+.comment-field .send-button {
     padding: 10px;
     fill: white;
     border-radius: 24px;
@@ -1135,16 +1192,15 @@ input[type=range]::-ms-thumb {
     cursor: pointer;
 }
 
-.comment-card:not(.editable), .comment-card:not(.editable) .comment-text-input {
+.comment-field:not(.editable), .comment-field:not(.editable) .comment-text-input {
     background-color:#eee;
 }
-.comment-card:not(.editable) .comment-send {
+.comment-field:not(.editable) .comment-send {
     background-color:#bbb;
 }
 
-
 /* Progress Bar  from http://materializecss.com/preloader.html*/
-.editable>.progress {
+.editable > .progress {
     display: none;
 }
 
@@ -1234,4 +1290,16 @@ input[type=range]::-ms-thumb {
     right: -8%; }
   100% {
     left: 107%;
-    right: -8%; } }
+    right: -8%; } 
+}
+
+.route-card.comment-card {
+    position: relative;
+}
+
+#image-placeholder-text {    
+    width: 100%;
+    padding-top: 10px;
+    position: absolute;
+    bottom: 0;
+}

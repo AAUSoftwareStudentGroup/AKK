@@ -77,7 +77,6 @@ function TestSectionClient(url, cookieService)
     { 
         var section;
         this.getSection(sectionId, function(s) { section = s.data; });
-        console.log(section.name);
         section.name = newName;
         success({success: true, data: clone(section)});
     };
@@ -87,12 +86,17 @@ function TestGradeClient(url, cookieService)
 {
     var self = this;
     this.cookieService = cookieService;
+    var grades = TEST_GRADES;
     this.getAllGrades = function(success)
     {
         success({success: true, data: TEST_GRADES});
     };
 
-    this.addGrade = function(grade, success) { };
+    this.addGrade = function(grade, success) { 
+        var newGrade = {name: grade.name, difficulty: grade.difficulty, color: grade.color};
+        grades.push(newGrade);
+        success({success: true, data: clone(newGrade)});
+    };
 
     this.getGrade = function(gradeId, success)
     {
@@ -126,7 +130,11 @@ function TestMemberClient(url, cookieService)
 
     this.getMemberInfo = function(success) {
         success({success: true, data: TEST_MEMBER});
-    }
+    };
+
+    this.getMemberRatings = function(success) {
+        success({TEST_RATINGS});
+    };
 
     this.getAllMembers = function(success){ 
         success({success: true, data: TEST_MEMBERS});

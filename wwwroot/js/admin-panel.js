@@ -5,7 +5,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Admin Panel", client, "/");
     viewModel = new AdminPanelViewModel(client, new DialogService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -14,7 +14,7 @@ $(document).ready(function () {
         },
         {
             scriptSource: "js/templates/section-admin-template.handlebars", 
-            elementId: "section-admin", 
+            elementId: "content-section", 
             event: "sectionsChanged",
             viewmodel: viewModel
         },
@@ -44,11 +44,21 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
     });
 
+
+    viewModel.addEventListener("sectionsChanged", function(msg) {
+        window.setTimeout(function() {
+            if($("#section-admin .expansion-panel").hasClass("expanded")) {
+                $("#section-admin .expansion-panel").animate({
+                    height: $('#section-admin .expansion-panel .expansion-panel-content').height(),
+                }, 500);
+            }
+        },10);
+    });
 
     viewModel.addEventListener("gradeColorChanged", function(msg) {
         $('.color-select-preview').css('background-color', 'rgb('+viewModel.selectedGrade.color.r+','+viewModel.selectedGrade.color.g+','+viewModel.selectedGrade.color.b+')');

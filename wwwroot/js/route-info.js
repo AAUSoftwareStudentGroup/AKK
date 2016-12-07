@@ -6,7 +6,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Route Info", client, "/");
     viewModel = new RouteInfoViewModel(client, new NavigationService(), new DialogService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -27,6 +27,26 @@ $(document).ready(function () {
         }
     ];
 
+    setUpContentUpdater(configurations, function() {
+        viewModel.addEventListener("cardChanged", function() {
+            if (viewModel.hasImage) {
+                rc = new RouteCanvas($("#routeimage")[0], viewModel.route.image, viewModel, false);
+                rc.DrawCanvas();
+            }
+        });
+        viewModel.addEventListener("commentsChanged", function() {
+            autosize($('textarea'));
+        });
+        viewModel.addEventListener("Error", function(response) {
+            $("#error-message").html(response).show();
+        });
+        viewModel.addEventListener("Info", function(response) {
+            $("#info-message").html(response).show();
+        });
+        viewModel.init();
+        headerViewModel.init();
+    });
+
     $(document).on('click', '#routeimagecontainer', function(e) {
         e.stopPropagation();
         $("#routeimagecontainer").toggleClass("small");
@@ -41,23 +61,6 @@ $(document).ready(function () {
     $(document).on("click", ".route-rating svg", function(e) {
         e.stopPropagation();
         viewModel.changeRating($(this).index() + 1);
-    });
-
-    setUpContentUpdater(content, function() {
-        viewModel.addEventListener("cardChanged", function() {
-            if (viewModel.hasImage) {
-                rc = new RouteCanvas($("#routeimage")[0], viewModel.route.image, viewModel, false);
-                rc.DrawCanvas();
-            }
-        });
-        viewModel.addEventListener("commentsUpdated", function() {
-            autosize($('textarea'));
-        });
-        viewModel.addEventListener("info", function(response) {
-            $("#info-message").html(response).show();
-        });
-        viewModel.init();
-        headerViewModel.init();
     });
 });
 

@@ -7,6 +7,8 @@ using System.Linq;
 
 namespace AKK.Models
 {
+    //The database context we use to seed out database with sections, routes, grades and everything else
+    //The data here won't be part of the solution intended for AKK, as the routes and members have nothing to do with them
     public class MainDbContext : DbContext
     {
         public MainDbContext(DbContextOptions<MainDbContext> options)
@@ -30,6 +32,7 @@ namespace AKK.Models
     }
     public static class DbContextExtensions
     {
+        //Seeds the database
         public static void Seed(this MainDbContext context)
         {
             /*
@@ -42,6 +45,7 @@ namespace AKK.Models
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
+            //The colors used for the holdcolors
             var colors = new Dictionary<string, Color> {
                 {"Cyan", new Color(0, 200, 200)},
                 {"Azure", new Color(1, 126, 255)},
@@ -60,6 +64,7 @@ namespace AKK.Models
                 {"White", new Color(205, 205, 205)},
             };
 
+            //The default Dictionary of grades
             var grades = new Dictionary<string, Grade> {
                 {"Green", new Grade {Name = "Green", Difficulty = 0, Color = new Color(67, 160, 71), Id = Guid.NewGuid(), Routes = new List<Route>() }},
                 {"Blue", new Grade {Name = "Blue", Difficulty = 1, Color = new Color(33, 150, 254), Id = Guid.NewGuid(), Routes = new List<Route>() }},
@@ -68,19 +73,22 @@ namespace AKK.Models
                 {"White", new Grade {Name = "White", Difficulty = 4, Color = new Color(251, 251, 251), Id = Guid.NewGuid(), Routes = new List<Route>() }}
             };
 
+            //The default Dictionary of setters and administrators
+            AKK.Services.AuthenticationService s = new AKK.Services.AuthenticationService(new AKK.Models.Repositories.MemberRepository(context));
             var members = new Dictionary<string, Member>
             {
-                {"Anton", new Member {DisplayName = "Anton", Username = "anton123", Password = "123", IsAdmin = true}},
-                {"Grunberg", new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = "123", IsAdmin = true}},
-                {"Jacob", new Member {DisplayName = "Jacob Svenningsen", Username = "jacob123", Password = "123", IsAdmin = true}},
-                {"Morten", new Member {DisplayName = "Morten", Username = "morten123", Password = "123", IsAdmin = true}},
-                {"Ibsen", new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = "123", IsAdmin = true}},
-                {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = "123", IsAdmin = true}},
-                {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = "123", IsAdmin = false}},
-                {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = "adminadmin", IsAdmin = true}},
-                {"AKK", new Member {DisplayName = "Testbruger", Username = "AKK", Password = "123", IsAdmin = true}},
+                {"Anton", new Member {DisplayName = "Anton", Username = "anton123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Grunberg", new Member {DisplayName = "Grunberg", Username = "grunberg123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Jacob", new Member {DisplayName = "Jacob Svenningsen", Username = "jacob123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Morten", new Member {DisplayName = "Morten", Username = "morten123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Ibsen", new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = s.HashPassword("123"), IsAdmin = false}},
+                {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = s.HashPassword("adminadmin"), IsAdmin = true}},
+                {"AKK", new Member {DisplayName = "Testbruger", Username = "AKK", Password = s.HashPassword("123"), IsAdmin = true}},
             };
 
+            //The default Dictionary of sections
             var sections = new Dictionary<string, Section> {
                 {"A", new Section{Name = "A"}},
                 {"B", new Section{Name = "B"}},
@@ -88,18 +96,29 @@ namespace AKK.Models
                 {"D", new Section{Name = "D"}},
             };
 
+            //The comments previously used for testing 
             var comments = new List<Comment>
             {
                 new Comment {Message = "Dette er en kommentar", Member = members["Anton"]},
                 new Comment {Message = "Dette er en anden kommentar", Member = members["Jakobsen"]},
-                new Comment{Message = "Dette er en trejde kommentar", Member = members["Grunberg"]}
+                new Comment {Message = "Dette er en trejde kommentar", Member = members["Grunberg"]}
             };
 
+            //The default list of Holdcolors that will be populated in the following foreach loop
             var holdColors = new List<HoldColor>
             {
 
             };
 
+            foreach (var color in colors)
+            {
+                HoldColor newColor = new HoldColor();
+                newColor.HexColorOfHolds = color.Value.ToUint();
+                newColor.Name = color.Key;
+                holdColors.Add(newColor);
+            }
+
+            //The default list of routes with all the information required
             var routes = new List<Route>
             {
                 new Route
@@ -391,14 +410,9 @@ namespace AKK.Models
                 },
             };
 
-            foreach (var color in colors)
-            {
-                HoldColor newColor = new HoldColor();
-                newColor.HexColorOfHolds = color.Value.ToUint();
-                newColor.Name = color.Key;
-                holdColors.Add(newColor);
-            }
 
+
+            //Add everything in this file to the database to populate it
             context.HoldColors.AddRange(holdColors);
             context.Grades.AddRange(grades.Select(x => x.Value));
             context.Routes.AddRange(routes);

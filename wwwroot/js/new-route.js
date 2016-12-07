@@ -5,7 +5,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("New Route", client, "/");
     viewModel = new NewRouteViewModel(client, new NavigationService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -57,7 +57,7 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.addEventListener("imageUpdated", function() {
             if (viewModel.hasImage) {
                 rc = new RouteCanvas($("#route-edit-image")[0], viewModel.image, viewModel, true);

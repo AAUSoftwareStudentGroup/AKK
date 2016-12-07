@@ -41,6 +41,7 @@ namespace AKK
                 options.MultipartBodyLengthLimit = 1000000000;
             });
 
+            //Adds each repository
             services.AddScoped<IRepository<Route>, RouteRepository>();
             services.AddScoped<IRepository<Section>, SectionRepository>();
             services.AddScoped<IRepository<Grade>, GradeRepository>();
