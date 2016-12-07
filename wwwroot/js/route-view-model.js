@@ -48,6 +48,9 @@ function RouteViewModel(client, navigationService) {
         self.client.holds.getAllHolds(function (response) {
             if (response.success) {
                 self.colors = response.data;
+                for (var i = self.colors.length - 1; i >= 0; i--) {
+                    self.colors[i].value = i;
+                };
                 self.trigger("holdsUpdated");
             } else {
                 self.trigger("Error", response.message);
