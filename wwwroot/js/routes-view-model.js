@@ -61,6 +61,8 @@ function RoutesViewModel(client, loadingService) {
 
     this.search = function (searchstring) {
         loadingService.load();
+        /*If more input has been put into the search-field before an ajax request has been answered, cancel it
+          else, the screen looks like it's flickering, has deprecated results from previous searches gets returned */
         if (this.currentAjaxRequest != null) {
             this.currentAjaxRequest.abort();
         }
@@ -73,6 +75,7 @@ function RoutesViewModel(client, loadingService) {
         });
     };
 
+    //When searching, we want to be able to search on all routes, not just on some of a specific grade or section
     this.toggleIsSearching = function() {
         this.isSearching = !this.isSearching;
         self.trigger("isSearchingChanged");

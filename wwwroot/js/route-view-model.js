@@ -49,6 +49,7 @@ function RouteViewModel(client, navigationService, dialogService) {
         self.client.holds.getAllHolds(function (response) {
             if (response.success) {
                 self.colors = response.data;
+                //Adds a value property so each hold has a short unique css ID
                 for (var i = self.colors.length - 1; i >= 0; i--) {
                     self.colors[i].value = i;
                 };
