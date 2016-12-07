@@ -5,7 +5,8 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Admin Panel", client, "/");
     viewModel = new AdminPanelViewModel(client, new DialogService());
 
-    var content = [
+    //Sets up the admin panel with each section, and the corresponding events, which will change each section when called
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -44,12 +45,14 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    //Initialise the viewmodels
+    setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
     });
 
-
+    //The events that'll be triggered when the corresponding event gets called
+    //Add an additional css class to the section panel when triggered, then animate the transition when it expands
     viewModel.addEventListener("sectionsChanged", function(msg) {
         window.setTimeout(function() {
             if($("#section-admin .expansion-panel").hasClass("expanded")) {
@@ -60,10 +63,12 @@ $(document).ready(function () {
         },10);
     });
 
+    //Changes the color of the grade when triggered
     viewModel.addEventListener("gradeColorChanged", function(msg) {
         $('.color-select-preview').css('background-color', 'rgb('+viewModel.selectedGrade.color.r+','+viewModel.selectedGrade.color.g+','+viewModel.selectedGrade.color.b+')');
     });
 
+    //Changes the color of the hold when triggered
     viewModel.addEventListener("holdColorChanged", function(msg) {
         $('#grip-midtone').css('fill', 'rgb('+viewModel.selectedHold.colorOfHolds.r+','+viewModel.selectedHold.colorOfHolds.g+','+viewModel.selectedHold.colorOfHolds.b+')');
     });

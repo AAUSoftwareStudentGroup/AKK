@@ -3,8 +3,8 @@
     <div class="radio-inputs">
         {{#if_eq hasTape false}}
         {{#each colors}}
-        <input id="holdColor-input-{{id}}" onclick="viewModel.changeHold({ r:{{colorOfHolds.r}}, g:{{colorOfHolds.g}}, b:{{colorOfHolds.b}} })" name="hold" type="radio" {{#if_eq ../selectedHold.colorOfHolds.r colorOfHolds.r}} {{#if_eq ../selectedHold.colorOfHolds.g colorOfHolds.g}} {{#if_eq ../selectedHold.colorOfHolds.b colorOfHolds.b}} checked {{/if_eq}}{{/if_eq}}{{/if_eq}}/>
-        <label class="hold-box holdColor-{{id}}" for="holdColor-input-{{id}}">
+        <input id="holdColor-input-{{value}}" onclick="viewModel.changeHold({ r:{{colorOfHolds.r}}, g:{{colorOfHolds.g}}, b:{{colorOfHolds.b}} })" name="hold" type="radio" {{#if_eq ../selectedHold.colorOfHolds.r colorOfHolds.r}} {{#if_eq ../selectedHold.colorOfHolds.g colorOfHolds.g}} {{#if_eq ../selectedHold.colorOfHolds.b colorOfHolds.b}} checked {{/if_eq}}{{/if_eq}}{{/if_eq}}/>
+        <label class="hold-box holdColor-{{value}}" for="holdColor-input-{{value}}">
             <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
                 <g>
                     <path id="grip-midtone" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="rgba({{colorOfHolds.r}}, {{colorOfHolds.g}}, {{colorOfHolds.b}}, {{colorOfHolds.a}})"></path>
@@ -25,8 +25,8 @@
         {{/each}}
         {{else}}
         {{#each colors}}
-        <input id="holdColor-input-{{id}}" onclick="viewModel.changeTape({ r:{{colorOfHolds.r}}, g:{{colorOfHolds.g}}, b:{{colorOfHolds.b}} })" name="hold" type="radio" {{#if_eq ../selectedTape.colorOfHolds.r colorOfHolds.r}} {{#if_eq ../selectedTape.colorOfHolds.g colorOfHolds.g}} {{#if_eq ../selectedTape.colorOfHolds.b colorOfHolds.b}} checked {{/if_eq}}{{/if_eq}}{{/if_eq}}/>
-        <label class="hold-box holdColor-{{id}}" for="holdColor-input-{{id}}">
+        <input id="holdColor-input-{{value}}" onclick="viewModel.changeTape({ r:{{colorOfHolds.r}}, g:{{colorOfHolds.g}}, b:{{colorOfHolds.b}} })" name="hold" type="radio" {{#if_eq ../selectedTape.colorOfHolds.r colorOfHolds.r}} {{#if_eq ../selectedTape.colorOfHolds.g colorOfHolds.g}} {{#if_eq ../selectedTape.colorOfHolds.b colorOfHolds.b}} checked {{/if_eq}}{{/if_eq}}{{/if_eq}}/>
+        <label class="hold-box holdColor-{{value}}" for="holdColor-input-{{value}}">
             <svg viewBox="0 0 132 108" xmlns="http://www.w3.org/2000/svg">
                 <g>
                     <path id="grip-midtone" d="m77.3,6.65c-10.7,5.3 -33.1,15.5 -56.8,20.5c-7.6,1.6 -13.5,7.5 -14.8,15.2c-1.1,6.2 -1.7,14 -0.6,22c1.2,8.9 8.6,15.6 17.6,16.1c13.7,0.8 36.5,4.8 55.2,21.6c5.7,5.1 14.1,6.1 20.9,2.6c8.3,-4.2 19,-11.2 27.7,-22.4c5,-6.5 5.5,-15.5 0.8,-22.2c-4.4,-6.3 -9.3,-15.9 -10.3,-28.7c-0.4,-4.5 -2.2,-8.7 -5.4,-11.8c-4.1,-4.1 -10.3,-9.4 -17.6,-13c-5.3,-2.5 -11.5,-2.5 -16.7,0.1z" fill="rgba({{../selectedHold.colorOfHolds.r}}, {{../selectedHold.colorOfHolds.g}}, {{../selectedHold.colorOfHolds.b}}, {{../selectedHold.colorOfHolds.a}})"></path>

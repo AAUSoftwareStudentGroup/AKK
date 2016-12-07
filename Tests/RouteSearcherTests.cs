@@ -167,7 +167,7 @@ namespace AKK.Tests
          */
 
         [Test]
-        public void Search_SearchForA4_ExpectedResultTheSameAsSearchForASPACE4()
+        public void Search_SearchForA4_ExpectedTheFirstSixResultsTheSameAsSearchForASPACE4()
         {
             var searchResultWithSpace = _searcher.Search("A 4").ToList();
             var searchResultWithoutSpace = _searcher.Search("A4").ToList();
@@ -177,6 +177,11 @@ namespace AKK.Tests
             if (searchResultWithoutSpace.Count != length)
             {
                 Assert.Fail($"  Expected: List have the same amount of items\n  Was: with space: {length}  without space: {searchResultWithoutSpace.ToArray().Length}");
+            }
+
+            if(length > 6)
+            {
+                length = 6;
             }
 
             for (int i = 0; i < length; i++)

@@ -1,7 +1,10 @@
-function EditRouteViewModel(client, navigationService) {
+function EditRouteViewModel(client, navigationService, dialogService) {
     RouteViewModel.apply (this, arguments);
     this.routeId = "";
     var self = this;
+
+    //Initialise the edit-route page and assigns the variables with the values the route, has
+    //grade gets the grade the route has, route number is the route's number, etc.
     this.init = function() {
         this.routeId = this.navigationService.getParameters()["routeId"];
         this.client.routes.getRoute(this.routeId, function(response) {
@@ -36,10 +39,12 @@ function EditRouteViewModel(client, navigationService) {
                 self.changeNote(response.data.note);
                 self.trigger("noteUpdated");
             } else {
-                self.trigger("Error", response.message);
+                this.dialogService.showError(response.message);
             }
         });
     }
+
+    //Updates the existing route with the new values
     this.UpdateRoute = function() {
         var imgObject = null;
         if (self.image != null) {
@@ -68,7 +73,7 @@ function EditRouteViewModel(client, navigationService) {
             }
             else
             {
-                self.trigger("Error", response.message);
+                this.dialogService.showError(response.message);
             }
         });
     }

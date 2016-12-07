@@ -1,7 +1,9 @@
-function RegisterViewModel(client, navigationService, cookieService) {
+function RegisterViewModel(client, navigationService, cookieService, dialogService) {
     var self = this
     this.navigationService = navigationService;
     this.cookieService = cookieService;
+    this.dialogService = dialogService;
+
     this.target = "/";
     this.fullName = "";
     this.username = "";
@@ -32,7 +34,7 @@ function RegisterViewModel(client, navigationService, cookieService) {
 
     this.register = function () {
         if(self.password != self.passwordConfirm) {
-            $("#error-message").html("The passwords you entered are not the same!").show();
+            self.dialogService.showError("The passwords you entered are not the same");
             return;
         }
         client.members.register(self.fullName, self.username, self.password, function(response) {
@@ -42,7 +44,7 @@ function RegisterViewModel(client, navigationService, cookieService) {
                 }
                 self.navigationService.to(self.target);
             } else {
-                $("#error-message").html(response.message).show();
+                self.dialogService.showError(response.message);
             }
         });        
     };

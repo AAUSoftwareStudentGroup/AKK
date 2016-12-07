@@ -1,8 +1,9 @@
-function RouteViewModel(client, navigationService) {
+function RouteViewModel(client, navigationService, dialogService) {
     EventNotifier.apply(this);
     var self = this;
-    this.navigationService = navigationService;
     this.client = client;
+    this.navigationService = navigationService;
+    this.dialogService = dialogService;
     
     this.addingImage = false;
     this.sections = [];
@@ -26,7 +27,7 @@ function RouteViewModel(client, navigationService) {
                 self.sections = response.data;
                 self.trigger("sectionsUpdated");
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
             if (callback) callback();
         });
@@ -38,7 +39,7 @@ function RouteViewModel(client, navigationService) {
                 self.grades = response.data;
                 self.trigger("gradesUpdated");
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
             if (callback) callback();
         });
@@ -48,9 +49,13 @@ function RouteViewModel(client, navigationService) {
         self.client.holds.getAllHolds(function (response) {
             if (response.success) {
                 self.colors = response.data;
+                //Adds a value property so each hold has a short unique css ID
+                for (var i = self.colors.length - 1; i >= 0; i--) {
+                    self.colors[i].value = i;
+                };
                 self.trigger("holdsUpdated");
             } else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
             if (callback) callback();
         });
@@ -73,7 +78,7 @@ function RouteViewModel(client, navigationService) {
     }
     this.addHold = function(hold) {
         this.HoldPositions.push(hold);
-        this.trigger("HoldsUpdated");
+        this.trigger("holdsUpdated");
     }
     
     this.toggleTape = function() {
@@ -128,7 +133,6 @@ function RouteViewModel(client, navigationService) {
             self.HoldPositions = [];
         })
     }
-
 
     this.UpdateCanvas = function(input) {
         this.addingImage = true;

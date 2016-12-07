@@ -1,19 +1,20 @@
-﻿Handlebars.registerHelper('if_light', function (v1, options) {
-    if (v1.g > 190) {
-        return options.fn(this);
-    }
-    return options.inverse(this);
+﻿//A colour is considered light, if g is more than 190
+Handlebars.registerHelper('if_light', function (v1, opts) {
+    if (v1.g > 190)
+        return opts.fn(this);
+    else
+        return opts.inverse(this);
 });
 
 Handlebars.registerHelper('if_eq', function (a, b, opts) {
-    if (a == b) // Or === depending on your needs
+    if (a == b)
         return opts.fn(this);
     else
         return opts.inverse(this);
 });
 
 Handlebars.registerHelper('if_be', function (a, opts) {
-    if (a) // Or === depending on your needs
+    if (a)
         return opts.fn(this);
     else
         return opts.inverse(this);
@@ -28,14 +29,14 @@ Handlebars.registerHelper('times', function(n, block) {
 });
 
 Handlebars.registerHelper('if_eq_or', function (a, b, c, opts) {
-    if (a == b || c) // Or === depending on your needs
+    if (a == b || c)
         return opts.fn(this);
     else
         return opts.inverse(this);
 });
 
 Handlebars.registerHelper("log", function(something) {
- console.log(something);
+    console.log(something);
 });
 
 Handlebars.registerHelper("formatdate", function(dateString) {
@@ -49,6 +50,7 @@ Handlebars.registerHelper('breaklines', function(text) {
     return new Handlebars.SafeString(text);
 });
 
+//Set ups the content on each page asynchronously
 var templates = [];
 function setUpContentUpdater(objs, callback) {
     asyncLoop({

@@ -6,7 +6,7 @@ $(document).ready(function () {
     headerViewModel = new HeaderViewModel("Find Route", client);
     viewModel = new RoutesViewModel(client, new LoadingService());
 
-    var content = [
+    var configurations = [
         {
             scriptSource: "js/templates/header-template.handlebars", 
             elementId: "header", 
@@ -16,7 +16,15 @@ $(document).ready(function () {
         {
             scriptSource: "js/templates/route-filtering-template.handlebars", 
             elementId: "filter-content", 
-            event: "filteringChanged",
+            event: [
+                "sectionsChanged", 
+                "gradesChanged", 
+                "sortOptionsChanged", 
+                "selectedSectionChanged", 
+                "selectedGradeChanged", 
+                "selectedSortByChanged", 
+                "isSearchingChanged"
+            ],
             viewmodel: viewModel
         },
         {
@@ -27,7 +35,7 @@ $(document).ready(function () {
         }
     ];
 
-    setUpContentUpdater(content, function() {
+    setUpContentUpdater(configurations, function() {
         viewModel.init();
         headerViewModel.init();
     });
@@ -36,6 +44,7 @@ $(document).ready(function () {
         $('#search-field').focus();
     });
 
+    //Searches after 300ms if no new input has been added to the search-field
     $(document).on("input", "#search-field", function(e) {
         if (searchTimeout != null) {
             window.clearTimeout(searchTimeout);
@@ -46,6 +55,7 @@ $(document).ready(function () {
         }, 300);
     });
 
+    //Hides the search-field when pressing the Return key
     $(document).on("keyup", "#search-field", function(e) {
         if (e.keyCode == 13) {//Enter
             $("#search-field").blur();
