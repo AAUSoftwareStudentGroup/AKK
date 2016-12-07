@@ -23,16 +23,18 @@ namespace AKK.Controllers
         private readonly IRepository<Grade> _gradeRepository;
         private readonly IRepository<Image> _imageRepository;
         private readonly IRepository<Hold> _holdRepository;
+        private readonly IRepository<HoldColor> _holdColorRepository;
         private readonly IRepository<Member> _memberRepository;
         private readonly IAuthenticationService _authenticationService;
 
-        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IRepository<Member> memberRepository, IAuthenticationService authenticationService)
+        public RouteController(IRepository<Route> routeRepository, IRepository<Section> sectionRepository, IRepository<Grade> gradeRepository, IRepository<Image> imageRepository, IRepository<Hold> holdRepository, IRepository<HoldColor> holdColorRepository, IRepository<Member> memberRepository, IAuthenticationService authenticationService)
         { 
             _routeRepository = routeRepository;
             _sectionRepository = sectionRepository;
             _gradeRepository = gradeRepository;
             _imageRepository = imageRepository;
             _holdRepository = holdRepository;
+            _holdColorRepository = holdColorRepository;
             _memberRepository = memberRepository;
             _authenticationService = authenticationService;
         }
@@ -100,7 +102,6 @@ namespace AKK.Controllers
         public ApiResponse<Route> AddRoute(string token, Route route) 
         {
             route.Member = _memberRepository.GetAll().FirstOrDefault(x => x.Token == token);
-
             if (!_authenticationService.HasRole(token, Role.Authenticated))
             {
                 return new ApiErrorResponse<Route>("You need to be logged in to create a new route");
@@ -108,8 +109,25 @@ namespace AKK.Controllers
 
             if (route.ColorOfHolds == null)
             {
-                return new ApiErrorResponse<Route>("A hold color must be specified");
+                return new ApiErrorResponse<Route>("A valid hold color must be specified");
+            } 
+ 
+            if(!_holdColorRepository.GetAll().Any(r => r.ColorOfHolds.R == route.ColorOfHolds.R &&
+                                                       r.ColorOfHolds.G == route.ColorOfHolds.G &&
+                                                       r.ColorOfHolds.B == route.ColorOfHolds.B
+                                                       ))
+            {
+                return new ApiErrorResponse<Route>("A valid hold color must be specified");
             }
+
+            if (route.ColorOfTape != null) {
+                if(!_holdColorRepository.GetAll().Any(r => r.ColorOfHolds.R == route.ColorOfTape.R &&
+                                                      r.ColorOfHolds.G == route.ColorOfTape.G &&
+                                                      r.ColorOfHolds.B == route.ColorOfTape.B &&
+                                                      r.ColorOfHolds.A == route.ColorOfTape.A
+                                                      ))
+                    return new ApiErrorResponse<Route>("The specified tape color doesn't exist. Choose a valid one, or none at all");
+            } 
 
             if (route.Name == null)
             {
@@ -395,11 +413,23 @@ namespace AKK.Controllers
             {
                 routeToUpdate.SectionId = route.SectionId;
             }
-
-            if (_routeRepository.GetAll().Any(r => r.GradeId == routeToUpdate.GradeId && r.Name == routeToUpdate.Name && r.Id != routeToUpdate.Id))
+ 
+            if(!_holdColorRepository.GetAll().Any(r => r.ColorOfHolds.R == routeToUpdate.ColorOfHolds.R &&
+                                                       r.ColorOfHolds.G == routeToUpdate.ColorOfHolds.G &&
+                                                       r.ColorOfHolds.B == routeToUpdate.ColorOfHolds.B
+                                                       ))
             {
-                return new ApiErrorResponse<Route>("A route with this grade and number already exists");
+                return new ApiErrorResponse<Route>("A valid hold color must be specified");
             }
+
+            if (routeToUpdate.ColorOfTape != null) {
+                if(!_holdColorRepository.GetAll().Any(r => r.ColorOfHolds.R == routeToUpdate.ColorOfTape.R &&
+                                                      r.ColorOfHolds.G == routeToUpdate.ColorOfTape.G &&
+                                                      r.ColorOfHolds.B == routeToUpdate.ColorOfTape.B &&
+                                                      r.ColorOfHolds.A == routeToUpdate.ColorOfTape.A
+                                                      ))
+                    return new ApiErrorResponse<Route>("The specified tape color doesn't exist. Choose a valid one, or none at all");
+            } 
 
             try
             {
