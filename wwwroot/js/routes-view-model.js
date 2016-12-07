@@ -29,9 +29,9 @@ function RoutesViewModel(client, loadingService) {
                     self.trigger("sectionsChanged");
                     self.grades = self.grades.concat(gradesResponse.data);
                     self.trigger("gradesChanged");
-                    self.changeGrade(self.grades[0].id);
-                    self.changeSection(self.sections[0].id);
-                    self.changeSortBy(self.sortOptions[0].value);
+                    self.selectedGrade = self.grades[0].id;
+                    self.selectedSection = self.sections[0].id;
+                    self.selectedSortBy = self.sortOptions[0].value;
                     self.refreshRoutes();
                 }
             });
