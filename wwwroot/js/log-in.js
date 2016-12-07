@@ -3,7 +3,7 @@ var headerViewModel;
 $(document).ready(function () {
     var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
     headerViewModel = new HeaderViewModel("Log In", client, "/");
-    viewModel = new LogInViewModel(client, new NavigationService(), new CookieService());
+    viewModel = new LogInViewModel(client, new NavigationService(), new CookieService(), new DialogService());
 
     var configurations = [
         {
@@ -21,12 +21,6 @@ $(document).ready(function () {
     ];
 
     setUpContentUpdater(configurations, function() {
-        viewModel.addEventListener("Error", function(response) {
-            $("#error-message").html(response).show();
-        });
-        viewModel.addEventListener("Info", function(response) {
-            $("#info-message").html(response).show();
-        });
         viewModel.init();
         headerViewModel.init();
     });

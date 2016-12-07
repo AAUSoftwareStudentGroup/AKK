@@ -1138,6 +1138,7 @@ input[type=range]::-ms-thumb {
 }
 
 .comment-card .by-line {
+    width: 90%;
     display: block;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
