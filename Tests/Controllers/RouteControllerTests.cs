@@ -22,6 +22,7 @@ namespace AKK.Tests.Controllers
         private IRepository<Route> _routeRepo;
         private IRepository<Image> _imageRepo;
         private IRepository<Hold> _holdRepo;
+        private IRepository<HoldColor> _holdColorRepo;
         private IRepository<Member> _memberRepo;
         private IAuthenticationService _auth;
 
@@ -43,12 +44,13 @@ namespace AKK.Tests.Controllers
             _routeRepo = new TestRepository<Route>(_dataFactory.Routes);
             _imageRepo = new TestRepository<Image>(_dataFactory._images);
             _holdRepo = new TestRepository<Hold>(_dataFactory._holds);
+            _holdColorRepo = new TestRepository<HoldColor>(_dataFactory._holdColors);
 
             _memberRepo = new TestRepository<Member>();
             _auth = new AuthenticationService(_memberRepo);
             _memberRepo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = _auth.HashPassword("Helland"), IsAdmin = false, Token = "TannerHelland"});
             _memberRepo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = _auth.HashPassword("Rask"), IsAdmin = true, Token = "AdminTestToken"});
-            _controller = new RouteController(_routeRepo, _sectionRepo, _gradeRepo, _imageRepo, _holdRepo, _memberRepo, _auth);
+            _controller = new RouteController(_routeRepo, _sectionRepo, _gradeRepo, _imageRepo, _holdRepo, _holdColorRepo, _memberRepo, _auth);
             
             testRoute = new Route();
             testRoute.GradeId = _gradeRepo.GetAll().First().Id;
