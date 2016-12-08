@@ -80,9 +80,13 @@ function RoutesViewModel(client, loadingService) {
         this.isSearching = !this.isSearching;
         self.trigger("isSearchingChanged");
         if(!this.isSearching) {
-            self.changeGrade(self.grades[0].id);
-            self.changeSection(self.sections[0].id);
-            self.changeSortBy(self.sortOptions[0].value);
+            self.selectedGrade = self.grades[0].id;
+            self.selectedSection = self.sections[0].id;
+            self.selectedSortBy = self.sortOptions[0].value;
+            self.trigger("selectedSortByChanged");
+            self.trigger("selectedSectionChanged");
+            self.trigger("selectedGradeChanged");
+
             self.refreshRoutes();
         }
     };
