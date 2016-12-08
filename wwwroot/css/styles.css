@@ -1159,6 +1159,7 @@ input[type=range]::-ms-thumb {
 .comment-field {
     margin-top: 16px;
     fill: #999;
+    position: relative;
 }
 
 .comment-field form {
@@ -1216,6 +1217,24 @@ input[type=range]::-ms-thumb {
 }
 .comment-field:not(.editable) .comment-send {
     background-color:#bbb;
+}
+.comment-field .unavailable {
+    position: absolute;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.35);
+    text-align: center;
+    color: white;
+    font-size: 16px;
+}
+
+.comment-field .unavailable:before {
+    content: '';
+    display: inline-block;
+    height: 100%; 
+    vertical-align: middle;
 }
 
 /* Progress Bar  from http://materializecss.com/preloader.html*/

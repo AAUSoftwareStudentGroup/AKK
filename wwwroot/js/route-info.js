@@ -56,6 +56,10 @@ $(document).ready(function () {
         e.stopPropagation();
         viewModel.changeRating($(this).index() + 1);
     });
+
+    $(document).on("click", ".unavailable", function() {
+        viewModel.addComment($("#comment-form")[0]);
+    });
 });
 
 function addComment(form) {

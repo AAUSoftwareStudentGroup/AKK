@@ -118,6 +118,10 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.addingComment = false;
 
     this.addComment = function(form) {
+        if (!self.isAuthed) {
+            navigationService.toLogin("route-info?routeId=" + self.route.id);
+            return;
+        }
         var fd = new FormData(form);
         this.addingComment = true;
         this.client.routes.addComment(fd, self.route.id, function(response) {
