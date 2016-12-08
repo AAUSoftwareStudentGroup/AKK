@@ -455,7 +455,7 @@ input:checked + .toggle-switch::before {
 
 .drop-down select {
     width: 100%;
-    height: 24px;
+    height: 26px;
     border: none;
     outline: none;
     color: #555555;
@@ -481,7 +481,7 @@ input:checked + .toggle-switch::before {
     display: inline-block;
     color: #666;
     margin-left: -14px;   /* remove the damn :after space */
-    height: 25px;
+    height: 26px;
     line-height: 24px;
     pointer-events:none; /* let the click pass trough */
     font-size: 12px;

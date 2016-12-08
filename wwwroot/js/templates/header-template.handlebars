@@ -23,14 +23,14 @@
 </div>
 <span class="nav-menu" id="navigationid">
     <a href="/">Home</a>
+    <a href="new-route">Add Route</a>
     {{#if isAdmin}}
     <a href="admin-panel">Admin Panel</a>
     {{/if}}
     {{#if isAuthenticated}}
-       <a href="new-route">Add Route</a>
-       <span onclick="headerViewModel.cookieService.expireToken()"> <a href="/">Log out</a></span>
+   <span onclick="headerViewModel.cookieService.expireToken()"> <a href="/">Log out</a></span>
     {{else}}
-        <a href="/login">Log In</a>
+    <a href="/login">Log In</a>
     {{/if}}
 </span>
 <span class="nav-menu-closer"></span>
