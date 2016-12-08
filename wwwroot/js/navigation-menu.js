@@ -1,13 +1,14 @@
 ﻿$(document).ready(function () {
-    var navMenuToggle = $(".nav-menu-toggle");
-    var navMenu = $(".nav-menu");
-
-    $(".nav-menu-toggle").on('click', function () {
+    $(document.body).on('click',".nav-menu-toggle" , function () {
+        var navMenuToggle = $(".nav-menu-toggle");
+        var navMenu = $(".nav-menu");
         navMenuToggle.toggleClass('open');
         navMenu.toggleClass('open');
     });
     
-    $(".nav-menu-closer").on('click', function () {
+    $(document.body).on('click', ".nav-menu-closer", function () {
+        var navMenuToggle = $(".nav-menu-toggle");
+        var navMenu = $(".nav-menu");
         navMenuToggle.removeClass('open');
         navMenu.removeClass('open');
     });
