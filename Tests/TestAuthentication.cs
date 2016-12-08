@@ -23,8 +23,8 @@ namespace AKK.Tests
         { 
             _repo = new TestRepository<Member>();
             _auth = new AuthenticationService(_repo);
-            _repo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "Tanner", Password = _auth.HashPassword("Helland"), IsAdmin = false, Token = "TannerHelland"});
-            _repo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "Morten", Password = _auth.HashPassword("Rask"), IsAdmin = true, Token = "AdminTestToken"});
+            _repo.Add(new Member {Id = new Guid(), DisplayName = "TannerHelland", Username = "tanner", Password = _auth.HashPassword("Helland"), IsAdmin = false, Token = "TannerHelland"});
+            _repo.Add(new Member {Id = new Guid(), DisplayName = "Morten Rask", Username = "morten", Password = _auth.HashPassword("Rask"), IsAdmin = true, Token = "AdminTestToken"});
         }
 
         [TearDown] // Runs after each test
