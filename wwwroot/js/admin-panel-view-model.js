@@ -34,7 +34,7 @@
             }
             else
             {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -68,7 +68,7 @@
                 self.trigger("sectionsChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -88,7 +88,7 @@
                     self.downloadSections();
                 } 
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -102,7 +102,7 @@
                     self.downloadRoutes();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -117,7 +117,7 @@
                     self.downloadRoutes();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -133,7 +133,7 @@
                         self.downloadSections();
                     }
                     else {
-                        self.trigger("Error", response.message);
+                        self.dialogService.showError(response.message);
                     }
                 });
             }
@@ -150,7 +150,7 @@
                 self.trigger("gradesChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         })
     }
@@ -174,7 +174,7 @@
                 self.trigger("gradesChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -191,7 +191,7 @@
                 self.downloadRoutes();
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -215,7 +215,7 @@
                     self.downloadGrades();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -285,7 +285,7 @@
                 self.downloadGrades();
             }
             else
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
         });
     }
 
@@ -338,7 +338,7 @@
                 self.trigger("holdsChanged");
             }
             else
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
         })
     }
 
@@ -359,7 +359,7 @@
                 self.selectedHold = self.holds[self.holds.length-1];           
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
                 self.downloadHolds();
                 self.selectedHold = null;
             }
@@ -382,7 +382,7 @@
                         self.selectedHold = self.holds[self.holds.length-1];           
                     }
                     else {
-                        self.trigger("Error", response.message);
+                        self.dialogService.showError(response.message);
                     }
                     self.downloadHolds();
                     self.selectedHold = null;
@@ -391,7 +391,7 @@
                 
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         })
     }
@@ -412,7 +412,7 @@
                     self.downloadHolds();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -457,7 +457,7 @@
                 self.trigger("membersChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
