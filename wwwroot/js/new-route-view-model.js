@@ -1,6 +1,9 @@
 function NewRouteViewModel(client, navigationService, dialogService) {
     RouteViewModel.apply (this, arguments);
     var self = this;
+
+    //Initialise the new route page by downloading everything from the server and store them in their respective variables
+    //This view model makes use of route-view-model.js 
     this.init = function() {
         this.downloadSections();
         this.downloadGrades();
@@ -17,6 +20,7 @@ function NewRouteViewModel(client, navigationService, dialogService) {
         this.trigger("noteUpdated");
     }
 
+    //Adds a route with all its properties
     this.addRoute = function() {
         var imgObject = null;
         if (this.image != null) {

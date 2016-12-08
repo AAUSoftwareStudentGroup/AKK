@@ -5,7 +5,10 @@ function LogInViewModel(client, navigationService, cookieService, dialogService)
     this.cookieService = cookieService;
     this.dialogService = dialogService;
     
+    //The default address to return to
     this.target = "/";
+
+    //Initialise both username and password
     this.username = "";
     this.password = "";
     
@@ -18,6 +21,7 @@ function LogInViewModel(client, navigationService, cookieService, dialogService)
         self.trigger('loginChanged')
     };
     
+    //Logs the user in if the username and password are correct, then navigate to the page they were trying to navigate to
     this.logIn = function () {
         self.client.members.logIn(self.username, self.password, function(response) {
             if (response.success) {

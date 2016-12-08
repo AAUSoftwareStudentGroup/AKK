@@ -50,6 +50,7 @@ Handlebars.registerHelper('breaklines', function(text) {
     return new Handlebars.SafeString(text);
 });
 
+//Set ups the content on each page asynchronously
 var templates = [];
 function setUpContentUpdater(objs, callback) {
     asyncLoop({

@@ -21,10 +21,12 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             if (routeResponse.success) {
 
                 self.route = routeResponse.data;
+                //Makes the date look nice on a route
                 self.route.date = self.route.createdDate.split("T")[0].split("-").reverse().join("/");
                 self.downloadImage();
                 self.trigger("commentsChanged");
 
+                //Updates the rating on the route in case the member accessing it, has rated
                 self.client.members.getMemberRatings(function(ratingResponse) {
                     var ratingValue = null;
                     if (ratingResponse.success) {
@@ -39,6 +41,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             }
         });
 
+        //If authenticated, show the box that allows members to submit comments/Beta
         self.client.members.getMemberInfo(function(response) {
             if (response.success) {
                 self.isAuthed = true;
@@ -65,7 +68,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
             rating = averageRating;
         }
 
-
+        //Use integer division to color the stars approximately to a route's average rating
         rating = Math.round(rating);
         self.filledStars = rating;
         self.emptyStars = 5 - rating;
@@ -141,6 +144,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         });
     }
 
+    //Deletes a comment if the author of it, or an admin, confirms the deletion
     this.removeComment = function (id, routeId) {
         if (!self.dialogService.confirm("Are you sure that you want to remove the comment?")) return;
         this.client.routes.removeComment(id, routeId, function(response) {
