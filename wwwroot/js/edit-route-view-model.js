@@ -55,26 +55,33 @@ function EditRouteViewModel(client, navigationService, dialogService) {
                 holds : self.HoldPositions || []
             }
         }
+        if (!self.selectedHold) {
+            self.dialogService.showError("A valid hold colour must be specified");
+            return;
+        }
         if (self.selectedTape != null) {
             self.selectedTape = self.selectedTape.colorOfHolds;
         }
-        self.client.routes.updateRoute( self.routeId, 
-                                        self.selectedSection.id, 
-                                        self.author, 
-                                        self.number, 
-                                        self.selectedHold.colorOfHolds, 
-                                        self.selectedGrade.id, 
-                                        self.selectedTape,
-                                        self.note,
-                                        imgObject, function(response) {
-            if(response.success)
-            {
-                navigationService.toRouteInfo(self.routeId);
+        self.client.routes.updateRoute(
+            self.routeId, 
+            self.selectedSection.id, 
+            self.author, 
+            self.number, 
+            self.selectedHold.colorOfHolds, 
+            self.selectedGrade.id, 
+            self.selectedTape,
+            self.note,
+            imgObject, 
+            function(response) {
+                if(response.success)
+                {
+                    navigationService.toRouteInfo(self.routeId);
+                }
+                else
+                {
+                    self.dialogService.showError(response.message);
+                }
             }
-            else
-            {
-                self.dialogService.showError(response.message);
-            }
-        });
+        );
     }
 }

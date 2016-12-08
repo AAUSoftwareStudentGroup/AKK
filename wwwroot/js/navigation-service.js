@@ -31,8 +31,14 @@ function NavigationService() {
     this.toRoutes = function() {
         window.location.href = "/";
     };
-    this.toLogin = function() {
-        window.location = "login";
+    this.toLogin = function(target) {
+        if (target) {
+            target = "?target=" + encodeURIComponent(target);
+        } else {
+            target = "";
+        }
+        var url = "login" + target;
+        window.location = url;
     };
     this.toRegister = function(target) {
         window.location = "register?target=" + encodeURIComponent(target);
