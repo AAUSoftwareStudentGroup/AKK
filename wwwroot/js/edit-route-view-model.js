@@ -39,7 +39,7 @@ function EditRouteViewModel(client, navigationService, dialogService) {
                 self.changeNote(response.data.note);
                 self.trigger("noteUpdated");
             } else {
-                this.dialogService.showError(response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -73,7 +73,7 @@ function EditRouteViewModel(client, navigationService, dialogService) {
             }
             else
             {
-                this.dialogService.showError(response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
