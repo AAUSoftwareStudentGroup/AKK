@@ -20,8 +20,12 @@
     </div>
     {{/each}}
 
-    {{#if isAuthed}}
     <div class="card comment-field editable">
+        {{#unless isAuthed}}
+            <div class="unavailable">
+                Log in to add comment or beta
+            </div>
+        {{/unless}}
         <div class="progress">
             <div class="indeterminate"></div>
         </div>
@@ -46,5 +50,4 @@
         </form>
         <div style="clear:both;height:0;width:100%;"></div>
     </div>
-    {{/if}}
 </div>
