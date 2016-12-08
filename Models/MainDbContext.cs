@@ -123,6 +123,11 @@ namespace AKK.Models
             {
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 2, Member = members["Anton"]},
+                        new Rating {RatingValue = 4, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 5, Member = members["Jacob"]},
+                    },
                     Grade = grades["Green"],
                     Name = "7",
                     Section = sections["A"],
@@ -133,6 +138,11 @@ namespace AKK.Models
                 },
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 1, Member = members["Anton"]},
+                        new Rating {RatingValue = 2, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 4, Member = members["Jacob"]},
+                    },
                     Grade = grades["Green"],
                     Name = "12",
                     Section = sections["A"],
@@ -143,6 +153,11 @@ namespace AKK.Models
                 },
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 4, Member = members["Anton"]},
+                        new Rating {RatingValue = 2, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 2, Member = members["Jacob"]},
+                    },
                     Grade = grades["Green"],
                     Name = "13",
                     Section = sections["D"],
@@ -153,6 +168,11 @@ namespace AKK.Models
                 },
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 3, Member = members["Anton"]},
+                        new Rating {RatingValue = 3, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 4, Member = members["Jacob"]},
+                    },
                     Grade = grades["Green"],
                     Name = "15",
                     Section = sections["C"],
@@ -163,6 +183,11 @@ namespace AKK.Models
                 },
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 4, Member = members["Anton"]},
+                        new Rating {RatingValue = 4, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 3, Member = members["Jacob"]},
+                    },
                     Grade = grades["Green"],
                     Name = "17",
                     Section = sections["C"],
@@ -173,6 +198,11 @@ namespace AKK.Models
                 },
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 1, Member = members["Anton"]},
+                        new Rating {RatingValue = 2, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 2, Member = members["Jacob"]},
+                    },
                     Grade = grades["Green"],
                     Name = "8",
                     Section = sections["D"],
@@ -183,6 +213,11 @@ namespace AKK.Models
                 },
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 2, Member = members["Anton"]},
+                        new Rating {RatingValue = 1, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 2, Member = members["Jacob"]},
+                    },
                     Grade = grades["Blue"],
                     Name = "7",
                     Section = sections["B"],
@@ -194,6 +229,11 @@ namespace AKK.Models
                 },
                 new Route
                 {
+                    Ratings = new List<Rating> {
+                        new Rating {RatingValue = 3, Member = members["Anton"]},
+                        new Rating {RatingValue = 4, Member = members["Grunberg"]},
+                        new Rating {RatingValue = 2, Member = members["Jacob"]},
+                    },
                     Grade = grades["Blue"],
                     Name = "37",
                     Section = sections["B"],
