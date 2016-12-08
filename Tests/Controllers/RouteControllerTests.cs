@@ -362,11 +362,10 @@ namespace AKK.Tests.Controllers
         public void _UpdateRoute_AddTapeOnRouteWithNoTape_TapeGetsAdded()
         {
             Route Origroute = _routeRepo.GetAll().First();
-            testRoute.ColorOfTape = _routeRepo.GetAll().First(t => t.Author == "Manfred").ColorOfTape;
-
+            testRoute.ColorOfTape = _holdColorRepo.GetAll().First().ColorOfHolds;
             var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
 
-            Assert.AreEqual(testRoute.ColorOfTape.G, Origroute.ColorOfTape.G);
+            Assert.IsTrue(testRoute.ColorOfTape.Equals(Origroute.ColorOfTape));
         }
 
         [Test]
