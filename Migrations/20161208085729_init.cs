@@ -23,6 +23,19 @@ namespace AKK.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "HoldColors",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    HexColorOfHolds = table.Column<uint>(nullable: true),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HoldColors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Members",
                 columns: table => new
                 {
@@ -55,6 +68,7 @@ namespace AKK.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
+                    FilePath = table.Column<string>(nullable: true),
                     FileUrl = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -262,6 +276,9 @@ namespace AKK.Migrations
 
             migrationBuilder.DropTable(
                 name: "Holds");
+
+            migrationBuilder.DropTable(
+                name: "HoldColors");
 
             migrationBuilder.DropTable(
                 name: "Rating");
