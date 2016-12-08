@@ -25,7 +25,7 @@ namespace AKK.Services
                 return null;
             }
 
-            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Username == username);
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Username.ToLower() == username);
 
             //Login and assign a token to the member, if the found member's password is the same as the password inputted
             if (member != default(Member) && TestPassword(password, member.Password))

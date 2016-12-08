@@ -84,8 +84,8 @@ namespace AKK.Models
                 {"Ibsen", new Member {DisplayName = "Ibsen", Username = "ibsen123", Password = s.HashPassword("123"), IsAdmin = true}},
                 {"Jakobsen", new Member {DisplayName = "Jakobsen", Username = "jakobsen123", Password = s.HashPassword("123"), IsAdmin = true}},
                 {"Henrik", new Member {DisplayName = "Hense", Username = "hense123", Password = s.HashPassword("123"), IsAdmin = false}},
-                {"TannerHelland", new Member {DisplayName = "Tanner Helland", Username = "tannerhelland", Password = s.HashPassword("adminadmin"), IsAdmin = true}},
-                {"AKK", new Member {DisplayName = "Testbruger", Username = "AKK", Password = s.HashPassword("123"), IsAdmin = true}},
+                {"TannerHelland", new Member {DisplayName = "TannerH", Username = "tannerhelland", Password = s.HashPassword("adminadmin"), IsAdmin = false}},
+                {"TestBruger", new Member {DisplayName = "AdminTestBruger", Username = "Admin", Password = s.HashPassword("1234"), IsAdmin = true}},
             };
 
             //The default Dictionary of sections
