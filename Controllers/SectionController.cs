@@ -38,7 +38,7 @@ namespace AKK.Controllers {
             }
 
             if(_sectionRepository.GetAll().Any(s => s.Name == name)) {
-                return new ApiErrorResponse<Section>("A section with name "+name+" already exist");
+                return new ApiErrorResponse<Section>($"A section with name {name} already exist");
             }
             if (name == null)
             {
@@ -55,7 +55,7 @@ namespace AKK.Controllers {
             }
             catch
             {
-                return new ApiErrorResponse<Section>("Failed to create new section with name " + name);
+                return new ApiErrorResponse<Section>($"Failed to create new section with name {name}");
             }
         }
 
@@ -104,7 +104,7 @@ namespace AKK.Controllers {
             }
 
             if(sections.Count() != 1)
-                return new ApiErrorResponse<Section>("No section with name/id " + name);
+                return new ApiErrorResponse<Section>($"No section with name {name}");
 
             return new ApiSuccessResponse<Section>(sections.First());
         }
@@ -127,14 +127,14 @@ namespace AKK.Controllers {
             }
 
             if(section == null)
-                return new ApiErrorResponse<Section>("No section exists with name/id "+sectionId);
+                return new ApiErrorResponse<Section>($"No section exists with id {sectionId}");
 
             //Change the name of the section if the input name is not null, and if no section exists with the new name    
             if(sectionPatch.Name != null)
                 if(!_sectionRepository.GetAll().Any(s => s.Name == sectionPatch.Name))
                     section.Name = sectionPatch.Name;
                 else
-                    return new ApiErrorResponse<Section>("A section with this name already exists");
+                    return new ApiErrorResponse<Section>($"A section with name {section.Name} already exist");
             else
                 return new ApiErrorResponse<Section>("Section name cannot be null");
 
@@ -145,7 +145,7 @@ namespace AKK.Controllers {
             }
             catch
             {
-                return new ApiErrorResponse<Section>("Failed to update section with name/id " + sectionId);
+                return new ApiErrorResponse<Section>($"Failed to update section with id {sectionId}");
             }
         }
 
@@ -167,7 +167,7 @@ namespace AKK.Controllers {
             }
 
             if(section == null)
-                return new ApiErrorResponse<Section>("No section exists with name/id "+name);
+                return new ApiErrorResponse<Section>($"No section exists with name {name}");
 
             // create copy that can be sent as result // we dont map so that we can output the deleted routes as well
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section)) as Section;
@@ -180,7 +180,7 @@ namespace AKK.Controllers {
             }
             catch
             {
-                return new ApiErrorResponse<Section>("Failed to delete section with name/id " + name);
+                return new ApiErrorResponse<Section>($"Failed to delete section with id {name}");
             }
         }
 
@@ -199,7 +199,7 @@ namespace AKK.Controllers {
             }
 
             if(section == null)
-                return new ApiErrorResponse<IEnumerable<Route>>("No section with name/id "+name);
+                return new ApiErrorResponse<IEnumerable<Route>>($"No section with name {name}");
             return new ApiSuccessResponse<IEnumerable<Route>>(section.Routes);
         }
 
@@ -225,7 +225,7 @@ namespace AKK.Controllers {
             }
 
             if (section == null)
-                return new ApiErrorResponse<IEnumerable<Route>>("No section with name/id "+name);
+                return new ApiErrorResponse<IEnumerable<Route>>($"No section with name {name}");
             
             // create copy that can be sent as result
             var resultCopy = JsonConvert.DeserializeObject(JsonConvert.SerializeObject(section.Routes)) as IEnumerable<Route>;
@@ -246,7 +246,7 @@ namespace AKK.Controllers {
             }
             catch
             {
-                return new ApiErrorResponse<IEnumerable<Route>>("Failed to delete routes of section with name/id " + name);
+                return new ApiErrorResponse<IEnumerable<Route>>($"Failed to delete routes of section with name {name}");
             }
         }
     }

@@ -39,7 +39,7 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Grade>("You need to be logged in as an administrator to add a new grade");
             }
             if(_gradeRepository.GetAll().Count(g => g.Difficulty == grade.Difficulty) != 0)
-                return new ApiErrorResponse<Grade>("A grade already exists with the given difficulty");
+                return new ApiErrorResponse<Grade>("A grade with this difficulty already exists");
 
             //Add the grade to the grade repository, if the caller of the method is an administrator and the grade doesn't already exist
             _gradeRepository.Add(grade);
@@ -50,7 +50,7 @@ namespace AKK.Controllers
             }
             catch
             {
-                return new ApiErrorResponse<Grade>("Failed to add grade");
+                return new ApiErrorResponse<Grade>("Failed to save grade to database");
             }
         }
 
@@ -61,7 +61,7 @@ namespace AKK.Controllers
             var grade = _gradeRepository.Find(id);
             if (grade == null)
             {
-                return new ApiErrorResponse<Grade>("No grades with given id exist");
+                return new ApiErrorResponse<Grade>($"No grade exists with id {id}");
             }
                 
             return new ApiSuccessResponse<Grade>(grade);
@@ -109,7 +109,7 @@ namespace AKK.Controllers
             }
             catch
             {
-                return new ApiErrorResponse<Grade>("Failed to update grade to database");
+                return new ApiErrorResponse<Grade>("Failed to save updated grade to databae");
             }
         }
 
@@ -166,15 +166,9 @@ namespace AKK.Controllers
                 return new ApiErrorResponse<Grade>($"No grade exists with id {id}");
             }
 
-
-            if (grade.Routes == null)
-            {
-                return new ApiErrorResponse<Grade>("Not sure if this grade has any routes. If it has, deleting it would mean trouble!");
-            }
-
             if (grade.Routes.Count != 0)
             {
-                return new ApiErrorResponse<Grade>("Routes already exists with this grade. Remove those before you delete this grade");
+                return new ApiErrorResponse<Grade>("This grade has routes associated with it. Delete them before deleting the grade");
             }
 
             // create copy that can be sent as result
