@@ -372,6 +372,19 @@
     this.updateHold = function()
     {
         self.selectedHold.colorOfHolds.a = 255;
+        self.client.holds.updateHold(self.selectedHold.id, self.selectedHold, function(response) {
+            if(response.success) {
+                self.holds.push(response.data);
+                self.selectedHold = self.holds[self.holds.length-1];           
+            }
+            else {
+                self.dialogService.showError(response.message);
+            }
+            self.downloadHolds();
+            self.selectedHold = null;
+            self.trigger("holdsChanged");
+        });
+/*
         self.client.holds.deleteHold(self.selectedHold.id, function(response) {
             if(response.success) {
 
@@ -394,6 +407,7 @@
                 self.dialogService.showError(response.message);
             }
         })
+*/
     }
 
     //Deletes the selected holdColor

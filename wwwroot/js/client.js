@@ -517,6 +517,22 @@ function HoldClient(url, cookieService)
         });
     };
 
+    //AKK.Controllers.HoldColorController.UpdateHoldColor
+    this.updateHold = function(holdId, changedHold, success)
+    {
+        $.ajax({
+            type: "PATCH",
+            dataType: "json",
+            url: url + "/" + holdId,
+            data:
+            {
+                token: self.cookieService.getToken(),
+                color: changedHold
+            },
+            success: success
+        });
+    }
+
     //AKK.Controllers.HoldColorController.DeleteHoldColor
     this.deleteHold = function(holdId, success)
     {
