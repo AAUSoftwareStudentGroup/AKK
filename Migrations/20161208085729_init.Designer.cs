@@ -8,8 +8,8 @@ using AKK.Models;
 namespace AKK.Migrations
 {
     [DbContext(typeof(MainDbContext))]
-    [Migration("20161130135202_dbinit")]
-    partial class dbinit
+    [Migration("20161208085729_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,17 +21,23 @@ namespace AKK.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<DateTime>("Date");
+
                     b.Property<Guid>("MemberId");
 
                     b.Property<string>("Message");
 
                     b.Property<Guid>("RouteId");
 
+                    b.Property<Guid?>("VideoId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MemberId");
 
                     b.HasIndex("RouteId");
+
+                    b.HasIndex("VideoId");
 
                     b.ToTable("Comments");
                 });
@@ -200,17 +206,11 @@ namespace AKK.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("FilePath");
+
                     b.Property<string>("FileUrl");
 
-                    b.Property<Guid>("MemberId");
-
-                    b.Property<Guid?>("RouteId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("MemberId");
-
-                    b.HasIndex("RouteId");
 
                     b.ToTable("Videos");
                 });
@@ -226,6 +226,10 @@ namespace AKK.Migrations
                         .WithMany("Comments")
                         .HasForeignKey("RouteId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("AKK.Models.Video", "Video")
+                        .WithMany()
+                        .HasForeignKey("VideoId");
                 });
 
             modelBuilder.Entity("AKK.Models.Hold", b =>
@@ -272,18 +276,6 @@ namespace AKK.Migrations
                         .WithMany("Routes")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("AKK.Models.Video", b =>
-                {
-                    b.HasOne("AKK.Models.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("AKK.Models.Route")
-                        .WithMany("Videos")
-                        .HasForeignKey("RouteId");
                 });
         }
     }

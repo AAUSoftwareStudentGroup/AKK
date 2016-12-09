@@ -34,7 +34,7 @@
             }
             else
             {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -68,7 +68,7 @@
                 self.trigger("sectionsChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -88,7 +88,7 @@
                     self.downloadSections();
                 } 
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -102,7 +102,7 @@
                     self.downloadRoutes();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -117,7 +117,7 @@
                     self.downloadRoutes();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -133,7 +133,7 @@
                         self.downloadSections();
                     }
                     else {
-                        self.trigger("Error", response.message);
+                        self.dialogService.showError(response.message);
                     }
                 });
             }
@@ -150,7 +150,7 @@
                 self.trigger("gradesChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         })
     }
@@ -174,7 +174,7 @@
                 self.trigger("gradesChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -191,7 +191,7 @@
                 self.downloadRoutes();
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }
@@ -215,7 +215,7 @@
                     self.downloadGrades();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -285,7 +285,7 @@
                 self.downloadGrades();
             }
             else
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
         });
     }
 
@@ -338,7 +338,7 @@
                 self.trigger("holdsChanged");
             }
             else
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
         })
     }
 
@@ -359,7 +359,7 @@
                 self.selectedHold = self.holds[self.holds.length-1];           
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
                 self.downloadHolds();
                 self.selectedHold = null;
             }
@@ -372,6 +372,19 @@
     this.updateHold = function()
     {
         self.selectedHold.colorOfHolds.a = 255;
+        self.client.holds.updateHold(self.selectedHold.id, self.selectedHold, function(response) {
+            if(response.success) {
+                self.holds.push(response.data);
+                self.selectedHold = self.holds[self.holds.length-1];           
+            }
+            else {
+                self.dialogService.showError(response.message);
+            }
+            self.downloadHolds();
+            self.selectedHold = null;
+            self.trigger("holdsChanged");
+        });
+/*
         self.client.holds.deleteHold(self.selectedHold.id, function(response) {
             if(response.success) {
 
@@ -382,7 +395,7 @@
                         self.selectedHold = self.holds[self.holds.length-1];           
                     }
                     else {
-                        self.trigger("Error", response.message);
+                        self.dialogService.showError(response.message);
                     }
                     self.downloadHolds();
                     self.selectedHold = null;
@@ -391,9 +404,10 @@
                 
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         })
+*/
     }
 
     //Deletes the selected holdColor
@@ -412,7 +426,7 @@
                     self.downloadHolds();
                 }
                 else {
-                    self.trigger("Error", response.message);
+                    self.dialogService.showError(response.message);
                 }
             });
         }
@@ -457,7 +471,7 @@
                 self.trigger("membersChanged");
             }
             else {
-                self.trigger("Error", response.message);
+                self.dialogService.showError(response.message);
             }
         });
     }

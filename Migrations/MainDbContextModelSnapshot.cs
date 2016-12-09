@@ -205,11 +205,9 @@ namespace AKK.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("FilePath");
+
                     b.Property<string>("FileUrl");
-
-                    b.Property<Guid>("MemberId");
-
-                    b.Property<Guid?>("RouteId");
 
                     b.HasKey("Id");
 
@@ -277,18 +275,6 @@ namespace AKK.Migrations
                         .WithMany("Routes")
                         .HasForeignKey("SectionId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("AKK.Models.Video", b =>
-                {
-                    b.HasOne("AKK.Models.Member", "Member")
-                        .WithMany()
-                        .HasForeignKey("MemberId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("AKK.Models.Route")
-                        .WithMany("Videos")
-                        .HasForeignKey("RouteId");
                 });
         }
     }

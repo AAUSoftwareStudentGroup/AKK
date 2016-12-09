@@ -36,7 +36,6 @@ namespace AKK.Controllers
             return new ApiSuccessResponse<IEnumerable<HoldColor>>(holdsColors);
         }
 
-
         [HttpPost]
         public ApiResponse<HoldColor> AddHoldColor(string token, HoldColor holdcolor)
         {
@@ -59,6 +58,37 @@ namespace AKK.Controllers
             catch
             {
                 return new ApiErrorResponse<HoldColor>("Failed to add holdcolor");
+            }
+        }
+
+        [HttpPatch("{id}")]
+        public ApiResponse<HoldColor> UpdateHoldColor(string token, Guid id, HoldColor color) {
+            if (!_authenticationService.HasRole(token, Role.Admin))
+            {
+                return new ApiErrorResponse<HoldColor>("You need to be logged in as an administrator to delete this holdcolor");
+            }
+            var holdColor = _holdColorRepository.Find(id);
+            if (holdColor == null)
+            {
+                return new ApiErrorResponse<HoldColor>("Could not find holdColor");
+            }
+            if(color == null)
+            {
+                return new ApiSuccessResponse<HoldColor>(holdColor);
+            }
+            
+            holdColor.ColorOfHolds = color.ColorOfHolds == null ? holdColor.ColorOfHolds : color.ColorOfHolds;
+            holdColor.Name = color.Name == null ? holdColor.Name : color.Name;
+
+            //Delete the holdcolor matching the given id, if the caller is an administrator
+            try
+            {
+                _holdColorRepository.Save();
+                return new ApiSuccessResponse<HoldColor>(holdColor);
+            }
+            catch
+            {            
+               return new ApiErrorResponse<HoldColor>("Failed to delete holdcolor");
             }
         }
 

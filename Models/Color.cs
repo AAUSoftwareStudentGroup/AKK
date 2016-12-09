@@ -42,5 +42,10 @@ namespace AKK.Models
             c.A = (byte)(col & 0x000000FF);
             return c;
         }
+
+        public bool Equals(Color other)
+        {
+            return R == other.R && G == other.G && B == other.B && A == other.A;
+        }
     }
 }
