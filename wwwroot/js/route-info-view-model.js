@@ -94,6 +94,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.changeRating = function(rating) {
         if (self.isAuthed) {
             self.updateRating(self.route.averageRating, rating);
+            self.dialogService.showInfo("Rating saved");
         }
         else
             self.dialogService.showInfo("You need to log in to rate routes");
