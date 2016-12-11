@@ -462,7 +462,6 @@ namespace AKK.Controllers
                     _holdRepository.Save();
                     _imageRepository.Delete(img.Id);
                 }
-                // Console.WriteLine(JsonConvert.SerializeObject(route.Image));
                 route.Image.RouteId = routeToUpdate.Id;
                 routeToUpdate.Image = route.Image;
                 _imageRepository.Save();
