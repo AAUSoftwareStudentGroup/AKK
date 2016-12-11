@@ -21,6 +21,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "92cc529e-52d3-4b1a-a365-da63d96e740e",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 3.66666675,
       "colorOfHolds": {
         "r": 255,
         "g": 0,
@@ -52,6 +53,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "a23a9480-3533-4291-a981-aa824bf48b66",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 3,
       "colorOfHolds": {
         "r": 255,
         "g": 123,
@@ -83,6 +85,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "5b314675-435f-49bb-8fae-44c1567f9e69",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 2,
       "colorOfHolds": {
         "r": 123,
         "g": 255,
@@ -114,6 +117,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "5b314675-435f-49bb-8fae-44c1567f9e69",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 4,
       "colorOfHolds": {
         "r": 0,
         "g": 22,
@@ -145,6 +149,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "c3dc00d4-e439-430d-b37a-8f43e9ce6925",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 1.5,
       "colorOfHolds": {
         "r": 232,
         "g": 233,
@@ -176,6 +181,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "a23a9480-3533-4291-a981-aa824bf48b66",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 1,
       "colorOfHolds": {
         "r": 0,
         "g": 255,
@@ -207,6 +213,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "a23a9480-3533-4291-a981-aa824bf48b66",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 3,
       "colorOfHolds": {
         "r": 0,
         "g": 22,
@@ -238,6 +245,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "cc03db08-e33f-4655-bf2a-1904801c8ad1",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 3.667,
       "colorOfHolds": {
         "r": 123,
         "g": 22,
@@ -269,6 +277,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "c3dc00d4-e439-430d-b37a-8f43e9ce6925",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 4.5,
       "colorOfHolds": {
         "r": 255,
         "g": 34,
@@ -300,6 +309,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "0ccf3b40-83c1-4583-b778-df8966004e40",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 4.2,
       "colorOfHolds": {
         "r": 255,
         "g": 0,
@@ -331,6 +341,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "c3dc00d4-e439-430d-b37a-8f43e9ce6925",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 3.5,
       "colorOfHolds": {
         "r": 255,
         "g": 255,
@@ -362,6 +373,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "92cc529e-52d3-4b1a-a365-da63d96e740e",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 2.4,
       "colorOfHolds": {
         "r": 123,
         "g": 22,
@@ -393,6 +405,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "5b314675-435f-49bb-8fae-44c1567f9e69",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 5,
       "colorOfHolds": {
         "r": 255,
         "g": 0,
@@ -424,6 +437,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "a23a9480-3533-4291-a981-aa824bf48b66",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 3,
       "colorOfHolds": {
         "r": 35,
         "g": 0,
@@ -491,6 +505,7 @@ var TEST_ROUTES_INIT = [
       "gradeId": "cc03db08-e33f-4655-bf2a-1904801c8ad1",
       "pendingDeletion": false,
       "image": null,
+      "averageRating": 2,
       "colorOfHolds": {
         "r": 100,
         "g": 100,
