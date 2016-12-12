@@ -648,6 +648,7 @@ input:checked + .toggle-switch::before {
     -webkit-box-sizing: border-box;
     border: 1px solid #E0E0E0;
     background-color: #F5F5F5;
+    overflow: hidden;
 }
 
 .section-picker label span {
