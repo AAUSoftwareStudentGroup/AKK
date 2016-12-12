@@ -86,7 +86,7 @@ namespace AKK.Tests.Controllers
             var routes = response.Data;
             Assert.AreEqual(true, response.Success);
             
-            Assert.AreEqual(_routeRepo.GetAll().Count(), routes.Count());
+            CollectionAssert.AreEquivalent(_routeRepo.GetAll(), routes);
         }
 
         [Test]
@@ -129,7 +129,7 @@ namespace AKK.Tests.Controllers
 
             Assert.AreEqual(true, response.Success);
 
-            Assert.AreEqual(section.Routes.Count, routes.Count());
+            CollectionAssert.AreEquivalent(section.Routes, routes);
         }
 
         [Test]
@@ -138,9 +138,9 @@ namespace AKK.Tests.Controllers
             testRoute.Name = "50";
             var response = _controller.AddRoute(token, testRoute);
 
-            Assert.AreEqual(true, response.Success, (response as ApiErrorResponse<Route>)?.ErrorMessage + "\n" + testRoute.SectionId);
+            Assert.True(response.Success, (response as ApiErrorResponse<Route>)?.ErrorMessage + "\n" + testRoute.SectionId);
 
-            Assert.AreEqual(true, _dataFactory.Routes.AsEnumerable<Route>().Contains(testRoute));
+            Assert.True(_dataFactory.Routes.AsEnumerable<Route>().Contains(testRoute));
         }
 
         [Test]
@@ -149,7 +149,7 @@ namespace AKK.Tests.Controllers
             testRoute.GradeId = new Guid();
             var response = _controller.AddRoute(token, testRoute);
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -158,7 +158,7 @@ namespace AKK.Tests.Controllers
             testRoute.SectionId = new Guid();
             var response = _controller.AddRoute(token, testRoute);
             
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -168,7 +168,7 @@ namespace AKK.Tests.Controllers
             testRoute.Name = "15";
             var response = _controller.AddRoute(token, testRoute);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
         }
 
         [Test]
@@ -180,7 +180,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.AddRoute(token, testRoute);
 
-            Assert.IsFalse(response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -188,7 +188,7 @@ namespace AKK.Tests.Controllers
         {
             var response = _controller.DeleteAllRoutes(token);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
             Assert.AreEqual(0, _routeRepo.GetAll().Count());
         }
 
@@ -198,7 +198,7 @@ namespace AKK.Tests.Controllers
             var token = _auth.Login("Tanner", "Helland");
             var response = _controller.DeleteAllRoutes(token);
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -206,7 +206,7 @@ namespace AKK.Tests.Controllers
         {
             var response = _controller.DeleteAllRoutes("123");
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace AKK.Tests.Controllers
             testRoute = _routeRepo.GetAll().First();
             var response = _controller.GetRoute(testRoute.Id);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
             Assert.AreEqual(testRoute, response.Data);
         }
 
@@ -224,7 +224,7 @@ namespace AKK.Tests.Controllers
         {
             var response = _controller.GetRoute(testRoute.Id);
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -232,7 +232,7 @@ namespace AKK.Tests.Controllers
         {
             var response = _controller.GetImage(_routeRepo.GetAll().First().Id);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
         }
 
         [Test]
@@ -242,7 +242,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.GetImage(test.Id);
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 /*
         [Test]
@@ -263,7 +263,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
 
             Assert.AreEqual("40", response.Data.Name);
             Assert.AreEqual("40", _routeRepo.Find(routeToUpdate.Id).Name);
@@ -277,7 +277,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
             Assert.AreEqual(response.Data.GradeId, testRoute.GradeId);
             Assert.AreEqual(_routeRepo.Find(routeToUpdate.Id).GradeId, testRoute.GradeId);
         }
@@ -291,11 +291,11 @@ namespace AKK.Tests.Controllers
             testRoute.Name = "40";
             testRoute.Id = Guid.NewGuid();
 
-            Assert.AreNotEqual(_routeRepo.Find(oldId), null);
+            Assert.NotNull(_routeRepo.Find(oldId));
 
             var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
 
             Assert.AreEqual("40", response.Data.Name);
             Assert.AreEqual(oldId, response.Data.Id);
@@ -310,7 +310,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
             Assert.AreEqual(routeToUpdate.SectionId, response.Data.SectionId);
             Assert.AreEqual(routeToUpdate.SectionId, _routeRepo.Find(routeToUpdate.Id).SectionId);
         }
@@ -326,7 +326,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
-            Assert.AreEqual(true, response.Success);
+            Assert.True(response.Success);
             Assert.AreEqual(response.Data.GradeId, gradeId);
             Assert.AreEqual(_routeRepo.Find(routeToUpdate.Id).GradeId, gradeId);
             Assert.AreEqual(routeToUpdate.SectionId, response.Data.SectionId);
@@ -344,7 +344,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.UpdateRoute(token, routeToUpdate.Id, testRoute);
 
-            Assert.IsFalse(response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -365,7 +365,7 @@ namespace AKK.Tests.Controllers
             testRoute.ColorOfTape = _holdColorRepo.GetAll().First().ColorOfHolds;
             var response = _controller.UpdateRoute(token, Origroute.Id, testRoute);
 
-            Assert.IsTrue(testRoute.ColorOfTape.Equals(Origroute.ColorOfTape));
+            Assert.True(testRoute.ColorOfTape.Equals(Origroute.ColorOfTape));
         }
 
         [Test]
@@ -400,7 +400,7 @@ namespace AKK.Tests.Controllers
 
             var response = _controller.UpdateRoute(token, Origroute.Id, test);
 
-            Assert.IsNull(Origroute.ColorOfTape);
+            Assert.Null(Origroute.ColorOfTape);
         }
 
         [Test]
@@ -410,7 +410,7 @@ namespace AKK.Tests.Controllers
             
             var response = _controller.UpdateRoute("123", Origroute.Id, testRoute);
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
             Assert.AreNotEqual(testRoute, Origroute);
         }
 
@@ -421,8 +421,8 @@ namespace AKK.Tests.Controllers
             int numberOfRoutes = _routeRepo.GetAll().Count();
             var response = _controller.DeleteRoute(token, Origroute.Id);
 
-            Assert.AreEqual(true, response.Success);
-            Assert.AreEqual(numberOfRoutes-1, _routeRepo.GetAll().Count());
+            Assert.True(response.Success);
+            Assert.AreEqual(numberOfRoutes - 1, _routeRepo.GetAll().Count());
             Assert.AreNotEqual(Origroute.Author, _routeRepo.GetAll().First().Author);
         }
 
@@ -431,7 +431,7 @@ namespace AKK.Tests.Controllers
         {
             var response = _controller.DeleteRoute(token, new Guid());
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -440,7 +440,7 @@ namespace AKK.Tests.Controllers
             Route Origroute = _routeRepo.GetAll().First();
             var response = _controller.DeleteRoute("123", Origroute.Id);
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -448,7 +448,7 @@ namespace AKK.Tests.Controllers
         {
             var response = _controller.DeleteRoute(token, _sectionRepo.GetAll().First().Id);
 
-            Assert.AreEqual(false, response.Success);
+            Assert.False(response.Success);
         }
 
         [Test]
@@ -457,7 +457,7 @@ namespace AKK.Tests.Controllers
             Route route = _routeRepo.GetAll().First();
             var response = _controller.SetRating(token, route.Id, 5);
 
-            Assert.IsTrue(response.Success);
+            Assert.True(response.Success);
             Assert.AreEqual(1, route.Ratings.Count);
             Assert.AreEqual(5, route.Ratings.First().RatingValue);
         }
@@ -487,7 +487,7 @@ namespace AKK.Tests.Controllers
         {
             Route route = _routeRepo.GetAll().First();
             var response = _controller.SetRating("123", route.Id, 5);
-            Assert.IsFalse(response.Success);
+            Assert.False(response.Success);
             Assert.IsEmpty(route.Ratings);
         }
 
@@ -499,7 +499,7 @@ namespace AKK.Tests.Controllers
             _controller.SetRating(tokenForMember, route.Id, 5);
             var response = _controller.SetRating(tokenForMember, route.Id, 2);
 
-            Assert.IsTrue(response.Success);
+            Assert.True(response.Success);
             Assert.AreEqual(2, route.Ratings.First().RatingValue);
         }
 
@@ -510,7 +510,7 @@ namespace AKK.Tests.Controllers
             _controller.SetRating(token, route.Id, 5);
             var response = _controller.SetRating("123", route.Id, 2);
 
-            Assert.IsFalse(response.Success);
+            Assert.False(response.Success);
             Assert.AreEqual(5, route.Ratings.First().RatingValue);
         }
     }
