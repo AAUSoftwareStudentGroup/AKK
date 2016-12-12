@@ -2,14 +2,20 @@
     var self = this;
     this.message = "";
     this.confirm = true;
-    self.confirm = function (message) {
+    this.confirm = function (message) {
         return true;
     };
 
-    self.showMessage = function (message) {
+    this.showMessage = function (message) {
     }
 
-    self.prompt = function (message) {
-        return this.message;
+    this.showError = function(message) {
+    }
+
+    this.showInfo = function (message) {
+    }
+
+    this.prompt = function (message) {
+        return self.message;
     }
 }

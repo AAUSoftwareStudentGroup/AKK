@@ -78,10 +78,10 @@ function updateRoute(routeId, sectionId, gradeId, assert, done, client)
   image = { fileUrl: TEST_IMAGE, width: TEST_IMAGE_WIDTH / 2, height: TEST_IMAGE_HEIGHT / 2 };
   note = "Test note ";
   client.routes.updateRoute(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, function (routeResponse) {
+      console.log(routeResponse.data);
     assert.equal(routeResponse.success, true, "updateRoute success = " + true + " message = " + routeResponse.message);
     assert.equal(routeResponse.data.id, routeId, "updateRoute id = " + routeId);
     assert.equal(routeResponse.data.gradeId, gradeId, "updateRoute gradeId = " + gradeId);
-    console.log(routeResponse.data);
     assert.equal(routeResponse.data.colorOfHolds.r, holdColor.r, "updateRoute colorOfHolds.r = " + holdColor.r);
     assert.equal(routeResponse.data.colorOfTape.a, tape.a, "updateRoute colorOfTape.a = " + tape.a);
     assert.equal(routeResponse.data.name, name, "updateRoute name = " + name);
