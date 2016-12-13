@@ -130,6 +130,48 @@ namespace AKK.Tests.Controllers
         }
 
         [Test]
+        public void _GetRoutes_GettingAllRoutesWithSortOrderOfOldest_ExpectOldestRoutesFirst()
+        {
+            var response = _controller.GetRoutes(null,null, null, 0, SortOrder.Oldest);
+            Assert.IsTrue(response.Success);
+
+            var routes = response.Data.ToArray();
+            int length = routes.Count();
+            for (int i = 1; i < length; i++)
+            {
+                Assert.IsTrue(routes[i].CreatedDate.Subtract(routes[i-1].CreatedDate).TotalSeconds >= 0);
+            }
+        }
+
+        [Test]
+        public void _GetRoutes_GettingAllRoutesWithSortOrderOfGrades_ExpectLowestGradesFirst()
+        {
+            var response = _controller.GetRoutes(null,null, null, 0, SortOrder.Grading);
+            Assert.IsTrue(response.Success);
+
+            var routes = response.Data.ToArray();
+            int length = routes.Count();
+            for (int i = 1; i < length; i++)
+            {
+                Assert.IsTrue(routes[i-1].Grade.Difficulty <= routes[i].Grade.Difficulty);
+            }
+        }
+
+        [Test]
+        public void _GetRoutes_GettingAllRoutesWithSortOrderOfRating_ExpectHighestRatedRoutesFirst()
+        {
+            var response = _controller.GetRoutes(null,null, null, 0, SortOrder.Rating);
+            Assert.IsTrue(response.Success);
+
+            var routes = response.Data.ToArray();
+            int length = routes.Count();
+            for (int i = 1; i < length; i++)
+            {
+                Assert.IsTrue(routes[i-1].AverageRating <= routes[i].AverageRating);
+            }
+        }
+
+        [Test]
         public void _AddRoute_NewRouteGetsAdded_RouteGetsAdded()
         {
             var response = _controller.AddRoute(token, testRoute);
@@ -483,18 +525,6 @@ namespace AKK.Tests.Controllers
         }
 
         [Test]
-        public void _SetRating_SetRatingAsAdminWhoDidntAddIt_RatingDoesntGetChanged()
-        {
-            Route route = _routeRepo.GetAll().First();
-            var tokenForMember = _auth.Login("Tanner", "Helland");
-            _controller.SetRating(tokenForMember, route.Id, 5);
-            var response = _controller.SetRating(token, route.Id, 2);
-
-            Assert.IsFalse(response.Success);
-            Assert.AreEqual(5, route.Ratings.First().RatingValue);
-        }
-
-        [Test]
         public void _SetRating_SetRatingAsGuest_RatingDoesntGetChanged()
         {
             Route route = _routeRepo.GetAll().First();
@@ -503,18 +533,6 @@ namespace AKK.Tests.Controllers
 
             Assert.IsFalse(response.Success);
             Assert.AreEqual(5, route.Ratings.First().RatingValue);
-        }
-
-        [Test]
-        public void _SetRating_SetRatingThatDoesntExist_RatingDoesntGetChanged()
-        {
-            Route route = _routeRepo.GetAll().First();
-            var tokenForMember = _auth.Login("Tanner", "Helland");
-            _controller.SetRating(tokenForMember, route.Id, 5);
-            var response = _controller.SetRating(token, route.Id, 2);
-
-            Assert.IsFalse(response.Success);
-            Assert.AreEqual(1, route.Ratings.Count);
         }
     }
 }
