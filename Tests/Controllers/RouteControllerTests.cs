@@ -170,7 +170,7 @@ namespace AKK.Tests.Controllers
             int length = routes.Count();
             for (int i = 1; i < length; i++)
             {
-                Assert.IsTrue(routes[i-1].AverageRating <= routes[i].AverageRating);
+                Assert.IsTrue(routes[i-1].AverageRating >= routes[i].AverageRating);
             }
         }
 
@@ -497,6 +497,7 @@ namespace AKK.Tests.Controllers
         public void _SetRating_SetRatingAsMemberToRoute_RatingGetsAdded()
         {
             Route route = _routeRepo.GetAll().First();
+            route.Ratings.RemoveAll(r => true);
             var response = _controller.SetRating(token, route.Id, 5);
 
             Assert.True(response.Success);
@@ -528,6 +529,7 @@ namespace AKK.Tests.Controllers
         public void _SetRating_SetRatingAsGuest_NoRatingGetsAdded()
         {
             Route route = _routeRepo.GetAll().First();
+            route.Ratings.RemoveAll(r => true);
             var response = _controller.SetRating("123", route.Id, 5);
             Assert.False(response.Success);
             Assert.IsEmpty(route.Ratings);
@@ -537,6 +539,7 @@ namespace AKK.Tests.Controllers
         public void _SetRating_SetRatingAsMemberWhoAddedIt_RatingGetsUpdated()
         {
             Route route = _routeRepo.GetAll().First();
+            route.Ratings.RemoveAll(r => true);
             var tokenForMember = _auth.Login("Tanner", "Helland");
             _controller.SetRating(tokenForMember, route.Id, 5);
             var response = _controller.SetRating(tokenForMember, route.Id, 2);
@@ -549,9 +552,11 @@ namespace AKK.Tests.Controllers
         public void _SetRating_SetRatingAsGuest_RatingDoesntGetChanged()
         {
             Route route = _routeRepo.GetAll().First();
+            route.Ratings.RemoveAll(r => true);
+
             _controller.SetRating(token, route.Id, 5);
             var response = _controller.SetRating("123", route.Id, 2);
-
+    
             Assert.False(response.Success);
             Assert.AreEqual(5, route.Ratings.First().RatingValue);
         }

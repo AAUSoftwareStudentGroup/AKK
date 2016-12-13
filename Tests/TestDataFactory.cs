@@ -306,6 +306,11 @@ namespace AKK.Tests
                 }
             }
 
+            for (int i = 0; i < Routes.Count; i++)
+            {
+                Routes[i].Ratings.Add(new Rating{RatingValue = i%5 + 1, Member = _members[5]});
+            }
+
             _images = new List<Image>();
             _images.AddRange(new List<Image> {
                 new Image {Id = Guid.NewGuid(), RouteId = _routes.First().Id, Width = 800, Height = 500, FileUrl = "https://placeholdit.imgix.net/~text?txtsize=28&txt=500%C3%97800&w=500&h=800"}
