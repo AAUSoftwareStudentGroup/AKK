@@ -63,10 +63,9 @@ function RouteClient(url, cookieService)
     //AKK.Controllers.RouteController.AddComment
     this.addComment = function(formdata, routeId, success, error) {
         formdata.append('token', self.cookieService.getToken());
-        formdata.append('id', routeId);
 
         $.ajax({
-            url: url + "/comment", 
+            url: `${url}/${routeId}/comment`, 
             type: 'POST',
             success: success,
             error: error,
@@ -80,9 +79,9 @@ function RouteClient(url, cookieService)
     //AKK.Controllers.RouteController.RemoveComment
     this.removeComment = function(id, routeId, success) {
         $.ajax({
-            type: "POST",
+            type: "DELETE",
             dataType: "json",
-            url: url + "/comment/remove",
+            url: `${url}/${routeId}/comment/${id}`,
             data:
             {
                 token: self.cookieService.getToken(),
