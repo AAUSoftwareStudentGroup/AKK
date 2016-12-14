@@ -255,8 +255,6 @@ namespace AKK.Controllers
                 return new ApiSuccessResponse<Route>(routeToUpdate);
             }
 
-            //********************
-
             route.GradeId = route.GradeId == default(Guid) ? routeToUpdate.GradeId : route.GradeId;
             
             route.Name = String.IsNullOrEmpty(route.Name) ? routeToUpdate.Name : route.Name;
@@ -330,7 +328,7 @@ namespace AKK.Controllers
                 }
             }
 
-            //route is not validated and should be updated into the database
+            //route is now validated and should be updated into the database
             routeToUpdate.GradeId = route.GradeId;
             routeToUpdate.SectionId = route.SectionId;
             routeToUpdate.Author = route.Author;
@@ -352,7 +350,6 @@ namespace AKK.Controllers
                     _holdRepository.Save();
                     _imageRepository.Delete(img.Id);
                 }
-                // Console.WriteLine(JsonConvert.SerializeObject(route.Image));
                 route.Image.RouteId = routeToUpdate.Id;
                 routeToUpdate.Image = route.Image;
                 _imageRepository.Save();

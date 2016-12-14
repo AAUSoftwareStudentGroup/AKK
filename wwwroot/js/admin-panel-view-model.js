@@ -318,9 +318,11 @@
                 var member = self.members.filter(function (s) { return s.id == id; })[0];
                 member.isAdmin = !member.isAdmin;
                 self.trigger("membersChanged");
+                var adminRole = member.isAdmin ? "now" : "no longer";
+                self.dialogService.showInfo(member.displayName + " is " + adminRole + " an admin");
             }
             else
-                self.dialogService.showMessage(response.message);
+                self.dialogService.showError(response.message);
         });
     }
 ///////////////////////////////////
@@ -461,19 +463,6 @@
 
     this.selectMember = function(id) {
         // how do we lookup member on a route?
-    }
-
-    this.toggleAdmin = function(id, isAdmin) {
-        self.client.members.changeRole(id, (isAdmin ? "Authenticated" : "Admin"), function(response) {
-            if(response.success) {
-                var member = self.members.filter(function (s) { return s.id == id; })[0];
-                member.isAdmin = !member.isAdmin;
-                self.trigger("membersChanged");
-            }
-            else {
-                self.dialogService.showError(response.message);
-            }
-        });
     }
 }
 AdminPanelViewModel.prototype = new EventNotifier();

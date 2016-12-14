@@ -117,8 +117,7 @@ function RouteClient(url, cookieService)
     };
 
     //AKK.Controllers.RouteController.UpdateRoute
-    this.updateRoute = function(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, success)
-    {
+    this.updateRoute = function(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, success) {
         $.ajax({
             type: "PATCH",
             dataType: "json",

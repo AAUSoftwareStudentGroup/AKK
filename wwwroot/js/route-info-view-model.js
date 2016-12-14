@@ -47,7 +47,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
                 self.isAuthed = true;
                 self.member = response.data;
             }
-            self.trigger("commentsChanged")
+            self.trigger("commentsChanged");
         });
 
     };
@@ -58,7 +58,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         if (memberRating) {
             this.hasRated = true;
             rating = memberRating;
-            self.client.routes.setRating(self.route.id, rating, function(response) {
+            self.client.routes.setRating(self.route.id, rating, function (response) {
                 if (!response.success) {
                     self.dialogService.showError(response.message);
                 }
@@ -94,6 +94,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
     this.changeRating = function(rating) {
         if (self.isAuthed) {
             self.updateRating(self.route.averageRating, rating);
+            self.dialogService.showInfo("Rating saved");
         }
         else
             self.dialogService.showInfo("You need to log in to rate routes");
@@ -109,6 +110,7 @@ function RouteInfoViewModel(client, navigationService, dialogService) {
         if (self.route != null && self.dialogService.confirm("Do you really want to delete this route?")) {
             self.client.routes.deleteRoute(self.route.id, function (response) {
                 if (response.success) {
+                    self.route = null;
                     navigationService.toRoutes();
                 }
             });

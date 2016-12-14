@@ -80,7 +80,8 @@ namespace AKK.Controllers
             holdColor.ColorOfHolds = color.ColorOfHolds == null ? holdColor.ColorOfHolds : color.ColorOfHolds;
             holdColor.Name = color.Name == null ? holdColor.Name : color.Name;
 
-            //Delete the holdcolor matching the given id, if the caller is an administrator
+            /*Updates the holdcolor with the id matching the id input parameter, with the values of the color input parameter
+              if the values aren't null*/
             try
             {
                 _holdColorRepository.Save();
