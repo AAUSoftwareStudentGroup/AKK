@@ -23,7 +23,8 @@ namespace AKK.Controllers {
 
         // GET: /api/section
         [HttpGet]
-        public ApiResponse<IEnumerable<Section>> GetAllSections() {
+        public ApiResponse<IEnumerable<Section>> GetAllSections() 
+        {
             var sections = _sectionRepository.GetAll().OrderBy(s => s.Name);
 
             return new ApiSuccessResponse<IEnumerable<Section>>(sections);
@@ -31,7 +32,8 @@ namespace AKK.Controllers {
 
         // POST: /api/section
         [HttpPost]
-        public ApiResponse<Section> AddSection(string token, string name) {
+        public ApiResponse<Section> AddSection(string token, string name) 
+        {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Section>("You need to be logged in as an administrator to add a new section");
@@ -61,7 +63,8 @@ namespace AKK.Controllers {
 
         // DELETE: /api/section
         [HttpDelete]
-        public ApiResponse<IEnumerable<Section>> DeleteAllSections(string token) {
+        public ApiResponse<IEnumerable<Section>> DeleteAllSections(string token) 
+        {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<IEnumerable<Section>>("You need to be logged in as an administrator to delete all sections");
@@ -92,7 +95,8 @@ namespace AKK.Controllers {
 
         // GET: /api/section/{name}
         [HttpGet("{name}")]
-        public ApiResponse<Section> GetSection(string name) {
+        public ApiResponse<Section> GetSection(string name) 
+        {
             var sections = _sectionRepository.GetAll();
             
             //Get a section no matter if the input is the id or name of the section wished for
@@ -151,7 +155,8 @@ namespace AKK.Controllers {
 
         // DELETE: /api/section/{name}
         [HttpDelete("{name}")]
-        public ApiResponse<Section> DeleteSection(string token, string name) {
+        public ApiResponse<Section> DeleteSection(string token, string name) 
+        {
             if (!_authenticationService.HasRole(token, Role.Admin))
             {
                 return new ApiErrorResponse<Section>("You need to be logged in as an administrator to delete this section");
