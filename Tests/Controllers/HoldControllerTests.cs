@@ -43,6 +43,8 @@ namespace AKK.Tests.Controllers
         {
             _controller = null;
             _dataFactory = null;
+            _repo = null;
+            _auth = null;
             token = null;
         }
 

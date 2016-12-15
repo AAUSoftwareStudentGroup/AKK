@@ -73,6 +73,8 @@ namespace AKK.Tests.Controllers
             _routeRepo = null;
             _imageRepo = null;
             _holdRepo = null;
+            _holdColorRepo = null;
+            _memberRepo = null;
             _auth = null;
             _controller = null;
             testRoute = null;
