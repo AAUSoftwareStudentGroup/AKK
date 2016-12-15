@@ -34,6 +34,31 @@ namespace AKK.Controllers
             return new ApiSuccessResponse<IEnumerable<Member>>(_memberRepository.GetAll());
         }
 
+        // POST: /api/member
+        [HttpPost]
+        public ApiResponse<string> AddMember(string username, string password, string displayName)
+        {
+            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(displayName)) {
+                return new ApiErrorResponse<string>("Failed to create user. Missing username, password or display name");
+            }
+            username = username.ToLower();
+
+            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Username == username);
+            if (member != default(Member))
+            {
+                return new ApiErrorResponse<string>("Username is already in use");
+            }
+            
+            //Adds a new member to the system with the inputted values, except for the password which we hash first for security reasons
+            _memberRepository.Add(new Member 
+            {
+                DisplayName = displayName, Username = username, Password = _authenticator.HashPassword(password)
+            });
+            _memberRepository.Save();
+
+            return Login(username, password);
+        }
+
         // GET: /api/member/{token}
         [HttpGet("{token}")]
         public ApiResponse<Member> GetMemberInfo(string token)
@@ -87,31 +112,6 @@ namespace AKK.Controllers
             _authenticator.Logout(token);
 
             return new ApiSuccessResponse<string>("Logout successful");
-        }
-
-        // POST: /api/member
-        [HttpPost]
-        public ApiResponse<string> AddMember(string username, string password, string displayName)
-        {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(displayName)) {
-                return new ApiErrorResponse<string>("Failed to create user. Missing username, password or display name");
-            }
-            username = username.ToLower();
-
-            var member = _memberRepository.GetAll().FirstOrDefault(m => m.Username == username);
-            if (member != default(Member))
-            {
-                return new ApiErrorResponse<string>("Username is already in use");
-            }
-            
-            //Adds a new member to the system with the inputted values, except for the password which we hash first for security reasons
-            _memberRepository.Add(new Member 
-            {
-                DisplayName = displayName, Username = username, Password = _authenticator.HashPassword(password)
-            });
-            _memberRepository.Save();
-
-            return Login(username, password);
         }
 
         // GET: /api/member/role

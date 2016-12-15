@@ -221,129 +221,17 @@ namespace AKK.Controllers
             }
         }
 
-        // GET: /api/route/{id}
-        [HttpGet("{id}")]
-        public ApiResponse<Route> GetRoute(Guid id)
+        // GET: /api/route/{routeId}
+        [HttpGet("{routeId}")]
+        public ApiResponse<Route> GetRoute(Guid routeId)
         {
-            var route = _routeRepository.Find(id);
+            var route = _routeRepository.Find(routeId);
             if (route == null)
             {
-                return new ApiErrorResponse<Route>($"No route exists with id {id}");
+                return new ApiErrorResponse<Route>($"No route exists with id {routeId}");
             }
 
             return new ApiSuccessResponse<Route>(route);
-        }
-
-        // GET: /api/route/{id}/image
-        [HttpGet("{id}/image")]
-        public ApiResponse<Image> GetImage(Guid id)
-        {
-            var route = _routeRepository.Find(id);
-            if (route == null)
-            {
-                return new ApiErrorResponse<Image>($"No route exists with id {id}");
-            }
-            var image = _imageRepository.GetAll().AsQueryable().FirstOrDefault(x => x.RouteId == id);
-            if (image == null)
-            {
-                return new ApiErrorResponse<Image>($"No image exists for route with id {id}");
-            }
-
-            image.Holds = _holdRepository.GetAll().Where(h => h.ImageId == image.Id).ToList();
-
-            return new ApiSuccessResponse<Image>(image);
-        }
-
-        //POST /api/route/beta
-        [HttpPost("comment")]
-        public async Task<ApiResponse<string>> AddComment(string token, IFormFile file, Guid id, string text) {
-            if (text == null && file == null) {
-                return new ApiErrorResponse<string>("You cannot add an empty comment");
-            }
-            if (!_authenticationService.HasRole(token, Role.Authenticated))
-            {
-                return new ApiErrorResponse<string>("You need to be logged in to add a comment");
-            }
-            var route = _routeRepository.Find(id);
-            if (route == null)
-            {
-                return new ApiErrorResponse<string>($"No route exists with id {id}");
-            }
-
-            var member = _memberRepository.GetAll()
-                                          .FirstOrDefault(m => m.Token == token);
-            //Create a new comment and assign a member to it, with the inputted text if the text-field isn't empty
-            var comment = new Comment {Member = member, Message = text ?? ""};
-
-            //Create a new Video object if the file extension is supported, then saves it to wwwroot/files/{fileName}
-            if (file != null) {
-                try {
-                    var fileExtension = ContentDispositionHeaderValue
-                        .Parse(file.ContentDisposition)
-                        .FileName
-                        .Trim('"')
-                        .Split('.')
-                        .Last()
-                        .ToLower();
-                    if (fileExtension != "mp4" && fileExtension != "webm" && fileExtension != "ogg") {
-                        return new ApiErrorResponse<string>("File is not a valid video file");
-                    }
-                    var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
-                    var path = "files/" + fileName;
-                    var savePath = "wwwroot/" + path;
-                        using (var fileStream = System.IO.File.Create(savePath)) {
-                                await file.CopyToAsync(fileStream);
-                        }
-                    var video = new Video {FileUrl = path, FilePath = savePath};
-                    //Adds the Video to the created Comment object
-                    comment.Video = video;
-                } catch (System.OperationCanceledException) {
-                    //ASP.NET bug causes this exception to be thrown, even though it is not an error
-                }
-            }
-            
-            //Adds the comment to the route
-            route.Comments.Add(comment);
-            _routeRepository.Save();
-            
-            return new ApiSuccessResponse<string>("success");
-        }
-
-        [HttpPost("comment/remove")]
-        public ApiResponse<string> RemoveComment(string token, Guid commentId, Guid routeId) {
-            if (!_authenticationService.HasRole(token, Role.Authenticated))
-            {
-                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
-            }
-
-            bool isAdmin = _authenticationService.HasRole(token, Role.Admin);
-            
-            var user = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
-
-            if (user == null)
-                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
-            
-            var route = _routeRepository.Find(routeId);
-            if (route == null) 
-                return new ApiErrorResponse<string>("Invalid route");
-
-            var comment = route.Comments.FirstOrDefault(c => c.Id == commentId);
-            if (comment == null)   
-                return new ApiErrorResponse<string>("Invalid comment");
-
-            //Only the creater of a comment can delete it, unless they're an administrator
-            if (user.Id != comment.MemberId && !isAdmin)
-                return new ApiErrorResponse<string>("You cannot delete a comment you haven't made yourself");
-
-            //Deletes the video from the database if such a video exists
-            if (comment.Video != null) {
-                System.IO.File.Delete(comment.Video.FilePath);
-            }
-
-            route.Comments.Remove(comment);
-            _routeRepository.Save();                  
-            
-            return new ApiSuccessResponse<string>("Comment deleted");
         }
 
         // PATCH: /api/route/{routeId}
@@ -508,6 +396,118 @@ namespace AKK.Controllers
             {
                 return new ApiErrorResponse<Route>($"Failed to remove routes with id {routeId}");
             }
+        }
+
+        // GET: /api/route/{routeId}/image
+        [HttpGet("{routeId}/image")]
+        public ApiResponse<Image> GetImage(Guid routeId)
+        {
+            var route = _routeRepository.Find(routeId);
+            if (route == null)
+            {
+                return new ApiErrorResponse<Image>($"No route exists with id {routeId}");
+            }
+            var image = _imageRepository.GetAll().AsQueryable().FirstOrDefault(x => x.RouteId == routeId);
+            if (image == null)
+            {
+                return new ApiErrorResponse<Image>($"No image exists for route with id {routeId}");
+            }
+
+            image.Holds = _holdRepository.GetAll().Where(h => h.ImageId == image.Id).ToList();
+
+            return new ApiSuccessResponse<Image>(image);
+        }
+
+        //POST /api/route/{routeId}/comment
+        [HttpPost("{routeId}/comment")]
+        public async Task<ApiResponse<string>> AddComment(string token, IFormFile file, Guid routeId, string text) {
+            if (text == null && file == null) {
+                return new ApiErrorResponse<string>("You cannot add an empty comment");
+            }
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to add a comment");
+            }
+            var route = _routeRepository.Find(routeId);
+            if (route == null)
+            {
+                return new ApiErrorResponse<string>($"No route exists with id {routeId}");
+            }
+
+            var member = _memberRepository.GetAll()
+                                          .FirstOrDefault(m => m.Token == token);
+            //Create a new comment and assign a member to it, with the inputted text if the text-field isn't empty
+            var comment = new Comment {Member = member, Message = text ?? ""};
+
+            //Create a new Video object if the file extension is supported, then saves it to wwwroot/files/{fileName}
+            if (file != null) {
+                try {
+                    var fileExtension = ContentDispositionHeaderValue
+                        .Parse(file.ContentDisposition)
+                        .FileName
+                        .Trim('"')
+                        .Split('.')
+                        .Last()
+                        .ToLower();
+                    if (fileExtension != "mp4" && fileExtension != "webm" && fileExtension != "ogg") {
+                        return new ApiErrorResponse<string>("File is not a valid video file");
+                    }
+                    var fileName = Guid.NewGuid().ToString() + $".{fileExtension}";
+                    var path = "files/" + fileName;
+                    var savePath = "wwwroot/" + path;
+                        using (var fileStream = System.IO.File.Create(savePath)) {
+                                await file.CopyToAsync(fileStream);
+                        }
+                    var video = new Video {FileUrl = path, FilePath = savePath};
+                    //Adds the Video to the created Comment object
+                    comment.Video = video;
+                } catch (System.OperationCanceledException) {
+                    //ASP.NET bug causes this exception to be thrown, even though it is not an error
+                }
+            }
+            
+            //Adds the comment to the route
+            route.Comments.Add(comment);
+            _routeRepository.Save();
+            
+            return new ApiSuccessResponse<string>("success");
+        }
+
+        [HttpDelete("{routeId}/comment/{commentId}")]
+        public ApiResponse<string> RemoveComment(string token, Guid commentId, Guid routeId) {
+            if (!_authenticationService.HasRole(token, Role.Authenticated))
+            {
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            }
+
+            bool isAdmin = _authenticationService.HasRole(token, Role.Admin);
+            
+            var user = _memberRepository.GetAll().FirstOrDefault(m => m.Token == token);
+
+            if (user == null)
+                return new ApiErrorResponse<string>("You need to be logged in to remove a comment");
+            
+            var route = _routeRepository.Find(routeId);
+            if (route == null) 
+                return new ApiErrorResponse<string>("Invalid route");
+
+            var comment = route.Comments.FirstOrDefault(c => c.Id == commentId);
+            if (comment == null)   
+                return new ApiErrorResponse<string>("Invalid comment");
+
+            //Only the creater of a comment can delete it, unless they're an administrator
+            if (user.Id != comment.MemberId && !isAdmin)
+                return new ApiErrorResponse<string>("You cannot delete a comment you haven't made yourself");
+
+            //Deletes the video from the database if such a video exists
+            if (comment.Video != null) {
+                System.IO.File.Delete(comment.Video.FilePath);
+            }
+
+            route.Comments.Remove(comment);
+            _routeRepository.Save();                  
+            
+            return new ApiSuccessResponse<string>("Comment deleted");
         }
 
         // PUT: /api/route/{routeId}/rating
