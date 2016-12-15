@@ -511,11 +511,13 @@ namespace AKK.Tests.Controllers
         public void _SetRating_SetRatingAsMemberToRouteWhichHasSeveralRatings_AverageIsCorrect()
         {
             Route route = _routeRepo.GetAll().First();
+            route.Ratings.RemoveAll(r => true);
             _controller.SetRating(token, route.Id, 5);
             _controller.SetRating(_auth.Login("Tanner", "Helland"), route.Id, 3);
             
             Member testMember = new Member();
-            testMember.Password = "123";
+            
+            testMember.Password = _auth.HashPassword("123");
             testMember.Username = "test";
             testMember.IsAdmin = false;
             testMember.DisplayName = "test123";
