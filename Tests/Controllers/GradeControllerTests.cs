@@ -41,6 +41,9 @@ namespace AKK.Tests.Controllers
         public void TearDownTest() 
         {
             _controller?.Dispose();
+            _repo = null;
+            _dataFactory = null;
+            _auth = null;
         }
 
         [Test]
