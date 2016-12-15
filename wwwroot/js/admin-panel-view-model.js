@@ -59,20 +59,6 @@
         }
     }
 
-    //Change the selected section when clicking one
-    this.downloadSections = function() {
-        self.client.sections.getAllSections(function(response) {
-            if(response.success) 
-            {
-                self.sections = response.data;
-                self.trigger("sectionsChanged");
-            }
-            else {
-                self.dialogService.showError(response.message);
-            }
-        });
-    }
-
     this.changeSection = function (sectionId) {
         self.selectedSection = self.sections.filter(function (s) { return s.id == sectionId; })[0];
         self.selectedGrade = null;
@@ -386,30 +372,6 @@
             self.selectedHold = null;
             self.trigger("holdsChanged");
         });
-/*
-        self.client.holds.deleteHold(self.selectedHold.id, function(response) {
-            if(response.success) {
-
-                delete self.selectedHold.id;
-                self.client.holds.addHold(self.selectedHold, function(response) {
-                    if(response.success) {
-                        self.holds.push(response.data);
-                        self.selectedHold = self.holds[self.holds.length-1];           
-                    }
-                    else {
-                        self.dialogService.showError(response.message);
-                    }
-                    self.downloadHolds();
-                    self.selectedHold = null;
-                    self.trigger("holdsChanged");
-                });
-                
-            }
-            else {
-                self.dialogService.showError(response.message);
-            }
-        })
-*/
     }
 
     //Deletes the selected holdColor
@@ -466,11 +428,3 @@
     }
 }
 AdminPanelViewModel.prototype = new EventNotifier();
-
-
-    
-      ;;;;       ;;       ;;;;;;;  ;;;;;;;   ;;;;;;;  ;;;;;;
-    ;;;  ;;;     ;;       ;;       ;;   ;;;  ;;       ;;   ;;
-  ;;;     ;;;    ;;       ;;;;;    ;;;;;;;   ;;;;;    ;;    ;;
- ;;;;;;;;;;;;;   ;;       ;;       ;;  ;;;   ;;       ;;   ;;
-;;;         ;;;  ;;;;;;;  ;;       ;;   ;;;  ;;;;;;;  ;;;;;;
