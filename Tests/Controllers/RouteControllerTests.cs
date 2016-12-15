@@ -129,7 +129,7 @@ namespace AKK.Tests.Controllers
             var response = _controller.GetRoutes(null, section.Id, null, 0, SortOrder.Newest);
             var routes = response.Data;
 
-            Assert.AreEqual(true, response.Success);
+            Assert.IsTrue(response.Success);
 
             CollectionAssert.AreEquivalent(section.Routes, routes);
         }

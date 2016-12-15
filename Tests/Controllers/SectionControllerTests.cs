@@ -75,7 +75,7 @@ namespace AKK.Tests.Controllers
             var sections = response.Data;
 
             Assert.AreEqual(true, response.Success);
-            Assert.AreEqual(_sectionRepo.GetAll().First().Routes[0].Author, sections.First().Routes[0].Author);
+            CollectionAssert.AreEquivalent(_sectionRepo.GetAll(), sections);
         }
 
         [Test]
