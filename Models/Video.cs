@@ -2,11 +2,9 @@
 
 namespace AKK.Models
 {
-    public class Video : Model
+    public class Video : Media
     {
         [JsonIgnore]
         public string FilePath { get; set; }
-
-        public string FileUrl { get; set; }
     }
 }
