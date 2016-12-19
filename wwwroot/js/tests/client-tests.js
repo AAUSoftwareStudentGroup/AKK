@@ -86,11 +86,11 @@ function updateRoute(routeId, sectionId, gradeId, assert, done, client)
     assert.equal(routeResponse.data.colorOfTape.a, tape.a, "updateRoute colorOfTape.a = " + tape.a);
     assert.equal(routeResponse.data.name, name, "updateRoute name = " + name);
     assert.equal(routeResponse.data.note, note, "updateRoute note = " + note);
-    getRoutes(routeId, sectionId, gradeId, holdColor, tape, assert, done, client);
+    getRoutes(routeId, sectionId, gradeId, holdColor, tape, name, assert, done, client);
   });
 }
 
-function getRoutes(routeId, sectionId, gradeId, holdColor, tape, assert, done, client)
+function getRoutes(routeId, sectionId, gradeId, holdColor, tape, name, assert, done, client)
 {
   client.routes.getRoutes(null, null, null, function (routesResponse) {
     assert.equal(routesResponse.success, true, "getRoutes success = " + true);
@@ -98,11 +98,11 @@ function getRoutes(routeId, sectionId, gradeId, holdColor, tape, assert, done, c
     //Added route is in the list of all routes
     assert.equal(routesResponse.data.filter(function(r) { return r.id == routeId; }).length, 1, "getRoutes contains added route");
     //Get added route
-    getRoute(routeId, sectionId, gradeId, holdColor, tape, assert, done, client);
+    getRoute(routeId, sectionId, gradeId, holdColor, tape, name, assert, done, client);
   });
 }
 
-function getRoute(routeId, sectionId, gradeId, holdColor, tape, assert, done, client)
+function getRoute(routeId, sectionId, gradeId, holdColor, tape, name, assert, done, client)
 {
   client.routes.getRoute(routeId, function (getRouteResponse) {
     assert.equal(getRouteResponse.success, true, "getRoute success = " + true);
