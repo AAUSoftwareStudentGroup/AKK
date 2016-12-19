@@ -1,6 +1,6 @@
 ﻿var viewModel;
 
-QUnit.test("route viewModel downloadSections", function (assert) {
+QUnit.test("RouteViewModel downloadSections", function (assert) {
     viewModel = new RouteViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()), new TestNavigationService());
 
     var sectionUpdatedTriggered = false;
@@ -18,12 +18,12 @@ QUnit.test("route viewModel downloadSections", function (assert) {
                 times++;
             }
         }
-        assert.equal(times, viewModel.sections.length, "route ViewModel downloadsections");
+        assert.equal(times, viewModel.sections.length, "RouteViewModel downloadsections");
     }
-    assert.equal(sectionUpdatedTriggered, true, "route ViewModel sectionsUpdated triggered");
+    assert.equal(sectionUpdatedTriggered, true, "RouteViewModel sectionsUpdated triggered");
 });
 
-QUnit.test("route viewModel downloadGrades", function (assert) {
+QUnit.test("RouteViewModel downloadGrades", function (assert) {
     viewModel = new RouteViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()), new TestNavigationService());
 
     var downloadGradesTriggered = false;
@@ -43,12 +43,12 @@ QUnit.test("route viewModel downloadGrades", function (assert) {
                 times++;
             }
         }
-        assert.equal(times, viewModel.grades.length, "route ViewModel downloadgrades");
+        assert.equal(times, viewModel.grades.length, "RouteViewModel downloadgrades");
     }
-    assert.equal(downloadGradesTriggered, true, "route ViewModel gradesUpdated triggered");
+    assert.equal(downloadGradesTriggered, true, "RouteViewModel gradesUpdated triggered");
 });
 
-QUnit.test("route viewModel add holds", function (assert) {
+QUnit.test("RouteViewModel add holds", function (assert) {
     viewModel = new RouteViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()), new TestNavigationService());
 
     var holdsUpdatedtriggered = false;
@@ -62,13 +62,13 @@ QUnit.test("route viewModel add holds", function (assert) {
 
     viewModel.addHold(hold);
 
-    assert.equal(holdsUpdatedtriggered, true, "route ViewModel HoldsUpdated triggered");
-    assert.equal(viewModel.HoldPositions[0], hold, "route viewModel addHolds");
+    assert.equal(holdsUpdatedtriggered, true, "RouteViewModel HoldsUpdated triggered");
+    assert.equal(viewModel.HoldPositions[0], hold, "RouteViewModel addHolds");
 
 });
 
 
-QUnit.test("route viewModel toggle tape", function (assert) {
+QUnit.test("RouteViewModel toggle tape", function (assert) {
     viewModel = new RouteViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()), new TestNavigationService());
 
     var holdsUpdatedtriggered = false;
@@ -81,13 +81,13 @@ QUnit.test("route viewModel toggle tape", function (assert) {
     viewModel.hasTape = false;
     viewModel.toggleTape();
 
-    assert.equal(viewModel.hasTape, true, "route viewModel toggle tape");
+    assert.equal(viewModel.hasTape, true, "RouteViewModel toggle tape");
 
-    assert.equal(holdsUpdatedtriggered, true, "route ViewModel HoldsUpdated triggered");
+    assert.equal(holdsUpdatedtriggered, true, "RouteViewModel HoldsUpdated triggered");
 
 });
 
-QUnit.test("route viewModel change attributes", function (assert) {
+QUnit.test("RouteViewModel change attributes", function (assert) {
     viewModel = new RouteViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, new TestCookieService()), new TestNavigationService());
 
     //initialize stuff in viewModel
@@ -111,11 +111,11 @@ QUnit.test("route viewModel change attributes", function (assert) {
     viewModel.changeTape(color.colorOfHolds);
 
     assert.equal(viewModel.selectedSection, section);
-    assert.equal(viewModel.selectedGrade, grade, "route viewModel chamge grade");
-    assert.equal(viewModel.selectedHold.colorOfHolds.r == color.colorOfHolds.r && viewModel.selectedHold.colorOfHolds.g == color.colorOfHolds.g && viewModel.selectedHold.colorOfHolds.b == color.colorOfHolds.b, true, "route viewModel change hold");
-    assert.equal(viewModel.number, number, "route viewModel change number");
-    assert.equal(viewModel.author, author, "route viewModel change author");
-    assert.equal(viewModel.selectedTape.colorOfHolds.r == color.colorOfHolds.r && viewModel.selectedTape.colorOfHolds.b == color.colorOfHolds.b  && viewModel.selectedTape.colorOfHolds.g == color.colorOfHolds.g, true, "route viewModel  change tape");
-    assert.equal(viewModel.note, note, "route viewModel change note");
+    assert.equal(viewModel.selectedGrade, grade, "RouteViewModel chamge grade");
+    assert.equal(viewModel.selectedHold.colorOfHolds.r == color.colorOfHolds.r && viewModel.selectedHold.colorOfHolds.g == color.colorOfHolds.g && viewModel.selectedHold.colorOfHolds.b == color.colorOfHolds.b, true, "RouteViewModel change hold");
+    assert.equal(viewModel.number, number, "RouteViewModel change number");
+    assert.equal(viewModel.author, author, "RouteViewModel change author");
+    assert.equal(viewModel.selectedTape.colorOfHolds.r == color.colorOfHolds.r && viewModel.selectedTape.colorOfHolds.b == color.colorOfHolds.b  && viewModel.selectedTape.colorOfHolds.g == color.colorOfHolds.g, true, "RouteViewModel  change tape");
+    assert.equal(viewModel.note, note, "RouteViewModel change note");
 });
 

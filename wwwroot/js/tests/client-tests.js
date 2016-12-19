@@ -1,16 +1,16 @@
-QUnit.test("TestClient tests", function( assert ) {
-  var client = new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new TestCookieService());
-  var done = assert.async();
-  register(assert, done, client);
-});
-
 QUnit.test("Client tests", function( assert ) {
   var client = new Client(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new CookieService());
   var done = assert.async();
-  register(assert, done, client);
+  login(assert, done, client);
 });
 
-function register(assert, done, client)
+QUnit.test("TestClient tests", function( assert ) {
+  var client = new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL, new TestCookieService());
+  var done = assert.async();
+  login(assert, done, client);
+});
+
+function login(assert, done, client)
 {
   client.members.register("Test User", "testuser", "password", function(registerResponse) {
     if(registerResponse.success)
@@ -20,7 +20,7 @@ function register(assert, done, client)
     else
     {
       client.members.logIn("testuser", "password", function (loginResponse) {
-        assert.equal(loginResponse.success, true, "login success");
+        assert.equal(loginResponse.success, true, "login success = " + true);
         getAllSections(assert, done, client);
       });
     }
@@ -55,7 +55,7 @@ function addRoute(sectionId, gradeId, assert, done, client)
   var note = "Test note";
   client.routes.getRoutes(null, null, null, function (allRoutesResponse) {
     assert.equal(allRoutesResponse.success, true, "" +
-        "getRoutes success =" + true);
+        "getRoutes success = " + true);
     var testRoutes = allRoutesResponse.data.filter(function(route) { return route.name == name });
     if(testRoutes.length == 0)
     {
@@ -63,7 +63,8 @@ function addRoute(sectionId, gradeId, assert, done, client)
         updateRoute(routeAddedResponse.data.id, sectionId, gradeId, assert, done, client);
       });
     }
-    else {
+    else 
+    {
       updateRoute(testRoutes[0].id, sectionId, gradeId, assert, done, client);
     }
   });
@@ -71,26 +72,25 @@ function addRoute(sectionId, gradeId, assert, done, client)
 
 function updateRoute(routeId, sectionId, gradeId, assert, done, client)
 {
-  name = "2";
-  author = "Morten ";
-  holdColor = { r: 220, g: 200, b: 30, a: 255 };
-  tape = holdColor;
-  image = { fileUrl: TEST_IMAGE, width: TEST_IMAGE_WIDTH / 2, height: TEST_IMAGE_HEIGHT / 2 };
-  note = "Test note ";
+  var name = "2";
+  var author = "Morten ";
+  var holdColor = { r: 220, g: 200, b: 30, a: 255 };
+  var tape = holdColor;
+  var image = { fileUrl: TEST_IMAGE, width: TEST_IMAGE_WIDTH / 2, height: TEST_IMAGE_HEIGHT / 2 };
+  var note = "Test note ";
   client.routes.updateRoute(routeId, sectionId, author, name, holdColor, gradeId, tape, note, image, function (routeResponse) {
-      console.log(routeResponse.data);
-    assert.equal(routeResponse.success, true, "updateRoute success = " + true + " message = " + routeResponse.message);
+    assert.equal(routeResponse.success, true, "updateRoute success = " + true);
     assert.equal(routeResponse.data.id, routeId, "updateRoute id = " + routeId);
     assert.equal(routeResponse.data.gradeId, gradeId, "updateRoute gradeId = " + gradeId);
     assert.equal(routeResponse.data.colorOfHolds.r, holdColor.r, "updateRoute colorOfHolds.r = " + holdColor.r);
     assert.equal(routeResponse.data.colorOfTape.a, tape.a, "updateRoute colorOfTape.a = " + tape.a);
     assert.equal(routeResponse.data.name, name, "updateRoute name = " + name);
     assert.equal(routeResponse.data.note, note, "updateRoute note = " + note);
-    getRoutes(routeId, sectionId, gradeId, assert, done, client);
+    getRoutes(routeId, sectionId, gradeId, holdColor, tape, assert, done, client);
   });
 }
 
-function getRoutes(routeId, sectionId, gradeId, assert, done, client)
+function getRoutes(routeId, sectionId, gradeId, holdColor, tape, assert, done, client)
 {
   client.routes.getRoutes(null, null, null, function (routesResponse) {
     assert.equal(routesResponse.success, true, "getRoutes success = " + true);
@@ -98,11 +98,11 @@ function getRoutes(routeId, sectionId, gradeId, assert, done, client)
     //Added route is in the list of all routes
     assert.equal(routesResponse.data.filter(function(r) { return r.id == routeId; }).length, 1, "getRoutes contains added route");
     //Get added route
-    getRoute(routeId, sectionId, gradeId, assert, done, client);
+    getRoute(routeId, sectionId, gradeId, holdColor, tape, assert, done, client);
   });
 }
 
-function getRoute(routeId, sectionId, gradeId, assert, done, client)
+function getRoute(routeId, sectionId, gradeId, holdColor, tape, assert, done, client)
 {
   client.routes.getRoute(routeId, function (getRouteResponse) {
     assert.equal(getRouteResponse.success, true, "getRoute success = " + true);

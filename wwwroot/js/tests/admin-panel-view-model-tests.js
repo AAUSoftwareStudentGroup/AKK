@@ -6,7 +6,7 @@ var viewModel;
 */
 
 //Sections
-QUnit.test("admin panel viewModel downloadSections", function (assert) 
+QUnit.test("AdminPanelViewModel downloadSections", function (assert) 
 {
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL), new TestDialogService());
 
@@ -28,12 +28,12 @@ QUnit.test("admin panel viewModel downloadSections", function (assert)
                 times++;
             }
         }
-        assert.equal(times, viewModel.sections.length, "admin panel ViewModel downloadSections");
+        assert.equal(times, viewModel.sections.length, "AdminPanelViewModel downloadSections");
     }
-    assert.equal(sectionChangedTriggered, true, "admin panel ViewModel sectionsChanged triggered");
+    assert.equal(sectionChangedTriggered, true, "AdminPanelViewModel sectionsChanged triggered");
 });
 
-QUnit.test("admin panel viewModel changeSection", function (assert) 
+QUnit.test("AdminPanelViewModel changeSection", function (assert) 
 {
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), new TestDialogService());
 
@@ -41,16 +41,16 @@ QUnit.test("admin panel viewModel changeSection", function (assert)
 	var selectedSection = viewModel.selectedSection;
 
 	//Test that no section is selected prior to calling changeSection
-	assert.equal(selectedSection, null, "admin panel viewModel changeSection");
+	assert.equal(selectedSection, null, "AdminPanelViewModel changeSection");
 
 	//Change section
 	viewModel.changeSection(TEST_SECTIONS[0].id);
 
 	//Test that section[0] is selected
-	assert.equal(viewModel.selectedSection, viewModel.sections[0], "admin panel viewModel changeSection");
+	assert.equal(viewModel.selectedSection, viewModel.sections[0], "AdminPanelViewModel changeSection");
 });
 
-QUnit.test("admin panel viewModel addNewSection", function (assert) 
+QUnit.test("AdminPanelViewModel addNewSection", function (assert) 
 {
 	init();
 
@@ -71,7 +71,7 @@ QUnit.test("admin panel viewModel addNewSection", function (assert)
 	assert.equal(viewModel.sections.length, 5, "number of sections =" + 5)
 });
 
-QUnit.test("admin panel viewModel clearSection", function (assert) 
+QUnit.test("AdminPanelViewModel clearSection", function (assert) 
 {
 	var dialogService = new TestDialogService();
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
@@ -93,7 +93,7 @@ QUnit.test("admin panel viewModel clearSection", function (assert)
     assert.equal(TEST_ROUTES.filter(function(r){return r.name == viewModel.sections[1].name; }).length, 0, "Number of routes in selectedSection = " + 0);
 });
 
-QUnit.test("admin panel viewModel deleteSection", function (assert) 
+QUnit.test("AdminPanelViewModel deleteSection", function (assert) 
 {
 	init();
 	var dialogService = new TestDialogService();
@@ -125,7 +125,7 @@ QUnit.test("admin panel viewModel deleteSection", function (assert)
 	} 
 });
 
-QUnit.test("admin panel viewModel renameSection", function (assert) 
+QUnit.test("AdminPanelViewModel renameSection", function (assert) 
 {
 	init();
 	var dialogService = new TestDialogService();
@@ -153,7 +153,7 @@ QUnit.test("admin panel viewModel renameSection", function (assert)
 });
 
 //Grades
-QUnit.test("admin panel viewModel downloadGrades", function (assert) 
+QUnit.test("AdminPanelViewModel downloadGrades", function (assert) 
 {
 	init();
 	var dialogService = new TestDialogService();
@@ -174,10 +174,10 @@ QUnit.test("admin panel viewModel downloadGrades", function (assert)
 
 	//Equal after downloading grades, also event triggered
 	assert.equal(viewModel.grades, TEST_GRADES, "");
-	assert.equal(gradeChangedTriggered, true, "admin panel ViewModel gradesChanged triggered");
+	assert.equal(gradeChangedTriggered, true, "AdminPanelViewModel gradesChanged triggered");
 });
 
-QUnit.test("admin panel viewModel addNewGrade", function (assert) 
+QUnit.test("AdminPanelViewModel addNewGrade", function (assert) 
 {
 	var dialogService = new TestDialogService();
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
@@ -198,13 +198,13 @@ QUnit.test("admin panel viewModel addNewGrade", function (assert)
 
     viewModel.addNewGrade();
 
-	assert.equal(gradeChangedTriggered, true, "admin panel ViewModel gradesChanged triggered");
+	assert.equal(gradeChangedTriggered, true, "AdminPanelViewModel gradesChanged triggered");
 	assert.equal(viewModel.grades[viewModel.grades.length-1].name, "New Grade", "");
 	assert.equal(tempGradeCount+1, TEST_GRADES.length, "");
 	assert.equal(viewModel.grades[viewModel.grades.length-1].color.r == TEST_GRADES[TEST_GRADES.length-1].color.r && viewModel.grades[viewModel.grades.length-1].color.g == TEST_GRADES[TEST_GRADES.length-1].color.g && viewModel.grades[viewModel.grades.length-1].color.b == TEST_GRADES[TEST_GRADES.length-1].color.b, true, "");
 });
 
-QUnit.test("admin panel viewModel deleteGrade", function (assert) 
+QUnit.test("AdminPanelViewModel deleteGrade", function (assert) 
 {
 	var dialogService = new TestDialogService();
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
@@ -238,7 +238,7 @@ QUnit.test("admin panel viewModel deleteGrade", function (assert)
 	}
 });
 
-QUnit.test("admin panel viewModel changeGradeName", function (assert) 
+QUnit.test("AdminPanelViewModel changeGradeName", function (assert) 
 {
 	var dialogService = new TestDialogService();
 	viewModel = new AdminPanelViewModel(new TestClient(API_ROUTE_URL, API_SECTION_URL, API_GRADE_URL, API_MEMBER_URL, API_HOLD_URL), dialogService);
