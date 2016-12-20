@@ -1,0 +1,14 @@
+<form action="javascript:viewModel.logIn()">
+    <div class="content-section string-input">
+        <h2>Username</h2>
+        <input id="username" class="username-input" type="text" onchange="viewModel.changeUsername(this.value)" placeholder="Username">
+    </div>
+    <div class="content-section string-input">
+        <h2>Password</h2>
+        <input id="password" class="password-input" type="password" onchange="viewModel.changePassword(this.value)" placeholder="Password">
+    </div>
+
+    <h2>Don't have an account?</h2>
+    <input class="submit-button neutral left" type="button" onclick="viewModel.register()" value="Register" />
+    <input class="submit-button positive right" type="submit" value="Log In">
+</form>

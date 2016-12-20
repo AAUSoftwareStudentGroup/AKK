@@ -4,12 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using System.IO;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.StaticFiles;
 using AKK.Models;
+using AKK.Models.Repositories;
+using AKK.Services;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace AKK
 {
@@ -36,15 +35,39 @@ namespace AKK
 	        services.AddDbContext<MainDbContext>(options =>
 	        	options.UseSqlite(connection)
 	        );
+
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 1000000000;
+            });
+
+            //Adds each repository
+            services.AddScoped<IRepository<Route>, RouteRepository>();
+            services.AddScoped<IRepository<Section>, SectionRepository>();
+            services.AddScoped<IRepository<Grade>, GradeRepository>();
+            services.AddScoped<IRepository<Image>, ImageRepository>();
+            services.AddScoped<IRepository<Hold>, HoldRepository>();
+            services.AddScoped<IRepository<Member>, MemberRepository>();
+            services.AddScoped<IRepository<HoldColor>, HoldColorRepository>();
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 
-            app.UseStaticFiles();
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".handlebars"] = "text/x-handlebars-template";
+            app.UseStaticFiles(new StaticFileOptions() {ContentTypeProvider = provider});
 
             app.UseMvc();
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var db = serviceScope.ServiceProvider.GetService<MainDbContext>();
+                db.Seed();
+            }
         }
     }
 }

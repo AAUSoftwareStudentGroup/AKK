@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "NUnit": "3.5.0",
+    "dotnet-test-nunit": "3.4.0-beta-3",
+    "AutoMapper": "5.1.1",
     "Microsoft.NETCore.App": {
       "version": "1.0.0",
       "type": "platform"
@@ -13,7 +16,7 @@
         "portable-net45+win8"
       ]
     },
-     
+
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "1.0.0",
@@ -26,13 +29,15 @@
     "Microsoft.Extensions.Configuration.Json": "1.0.0",
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0",
     "Microsoft.Extensions.PlatformAbstractions": "1.0.0",
-     "Microsoft.Extensions.DependencyModel": "1.0.0-*",
+    "Microsoft.Extensions.DependencyModel": "1.0.0-*",
     "Microsoft.Extensions.Logging": "1.0.0",
     "Microsoft.Extensions.Logging.Console": "1.0.0",
     "Microsoft.Extensions.Logging.Debug": "1.0.0",
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0"
   },
- 
+
+  "testRunner": "nunit", 
+
   "tools": {
     "Microsoft.AspNetCore.Razor.Tools": {
       "version": "1.0.0-preview2-final",
