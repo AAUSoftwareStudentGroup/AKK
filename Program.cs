@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore;
 
 namespace AKK
 {
@@ -9,19 +10,14 @@ namespace AKK
     {
         public static void Main(string[] args)
         {
-            string port = Environment.GetEnvironmentVariable("ASPNET_HTTP_PORT");
+            string port = Environment.GetEnvironmentVariable("TELEKLATRING_HOST_PORT");
             port = (port ?? "5000");
 
-            //Populates the database and sets up the web page, then start the program on localhost:5000
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls($"http://0.0.0.0:{port}")
-                .Build();
-
-            host.Run();
+                .UseUrls($"http://localhost:{port}/")
+                .Build()
+                .Run();
         }
     }
 }
